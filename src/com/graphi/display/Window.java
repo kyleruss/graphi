@@ -26,7 +26,7 @@ public class Window
     
     private void initMenu()
     {
-        frame.setMenuBar(menu);
+        frame.setJMenuBar(menu);
     }
     
     private void initLayout()
