@@ -2,8 +2,8 @@
 package com.graphi.display;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 public class Window
 {
@@ -15,12 +15,14 @@ public class Window
     
     private Window()
     {
+        initLookAndFeel();
+        
         layout  =   new Layout();
         menu    =   new MainMenu();
         frame   =   new JFrame(WINDOW_TITLE);
         
         initFrame();
-        initMenu();
+        initMenu();        
     }
     
     
@@ -32,6 +34,20 @@ public class Window
     private void initLayout()
     {
         
+    }
+    
+    private void initLookAndFeel()
+    {
+        try
+        {
+            UIManager.setLookAndFeel("de.javasoft.plaf.synthetica.SyntheticaAluOxideLookAndFeel");
+        } 
+        
+        catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e)
+        {
+            System.out.println("Error: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
     
     private void initFrame()

@@ -3,12 +3,15 @@ package com.graphi.display;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JSplitPane;
 
 public class Layout extends JPanel
 {
     private final ControlPanel controlPanel;
     private final ScreenPanel screenPanel;
+    private final JSplitPane splitPane;
     
     public Layout()
     {
@@ -17,9 +20,11 @@ public class Layout extends JPanel
         
         controlPanel    =   new ControlPanel();
         screenPanel     =   new ScreenPanel();
+        splitPane       =   new JSplitPane();
         
-        add(screenPanel, BorderLayout.CENTER);
-        add(controlPanel, BorderLayout.EAST);
+        splitPane.setLeftComponent(screenPanel);
+        splitPane.setRightComponent(controlPanel);
+        add(splitPane, BorderLayout.CENTER);
     }
     
     private class ControlPanel extends JPanel
@@ -35,7 +40,7 @@ public class Layout extends JPanel
     {
         public ScreenPanel()
         {
-            
+            add(new JButton("Butt"));
         }
     }
 }
