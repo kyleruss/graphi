@@ -8,13 +8,14 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 
@@ -23,6 +24,8 @@ public class Layout extends JPanel
     private final ControlPanel controlPanel;
     private final ScreenPanel screenPanel;
     private final JSplitPane splitPane;
+    
+    public static final Color TRANSPARENT   =   new Color(255, 255, 255, 0);
     
     public Layout()
     {
@@ -43,8 +46,10 @@ public class Layout extends JPanel
     {
         private JPanel modePanel;
         private JPanel simPanel;
-        private JCheckBox editCheck, selectCheck, moveCheck;
+        private JRadioButton editCheck, selectCheck, moveCheck;
         private ButtonGroup modeGroup;
+        private JComboBox genAlgorithmsBox;
+        private JButton resetGeneratorBtn, executeGeneratorBtn;
         
         public ControlPanel()
         {
@@ -53,22 +58,40 @@ public class Layout extends JPanel
             setMinimumSize(new Dimension(230, 650));
             
             modePanel   =   new JPanel();
-           // modePanel.setLayout(new GridLayout(3, 1));
             modePanel.setPreferredSize(new Dimension(230, 100));
             simPanel    =   new JPanel();
             modePanel.setBorder(BorderFactory.createTitledBorder("Mode controls"));
             simPanel.setBorder(BorderFactory.createTitledBorder("Simulation controls"));
   
             modeGroup               =   new ButtonGroup();
-            editCheck               =   new JCheckBox("Edit");
-            selectCheck             =   new JCheckBox("Select");
-            moveCheck               =   new JCheckBox("Move");
+            editCheck               =   new JRadioButton("Edit");
+            selectCheck             =   new JRadioButton("Select");
+            moveCheck               =   new JRadioButton("Move");
+            
             modeGroup.add(editCheck);
             modeGroup.add(selectCheck);
             modeGroup.add(moveCheck);
             modePanel.add(editCheck);
             modePanel.add(selectCheck);
             modePanel.add(moveCheck);
+            
+            genAlgorithmsBox        =   new JComboBox();
+            genAlgorithmsBox.addItem("Kleinberg");
+            genAlgorithmsBox.addItem("Barabasi-Albert");
+            JPanel generatorPanel   =   new JPanel();
+            generatorPanel.add(new JLabel("Generators"));
+            generatorPanel.add(genAlgorithmsBox);
+            generatorPanel.setBackground(TRANSPARENT);
+            
+            JPanel generatorControls    =   new JPanel();
+            resetGeneratorBtn           =   new JButton("Reset");
+            executeGeneratorBtn         =   new JButton("Generate");
+            generatorControls.add(resetGeneratorBtn);
+            generatorControls.add(executeGeneratorBtn);
+            generatorControls.setBackground(simPanel.getBackground());
+            
+            simPanel.add(generatorPanel);
+            simPanel.add(generatorControls);
             
             add(modePanel);
             add(simPanel);
