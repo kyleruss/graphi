@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -45,7 +46,7 @@ public class Layout extends JPanel
         
         splitPane.setLeftComponent(screenPanel);
         splitPane.setRightComponent(controlPanel); 
-       splitPane.setDividerLocation(670);
+        splitPane.setDividerLocation(670);
         add(splitPane, BorderLayout.CENTER);
     }
     
@@ -74,6 +75,10 @@ public class Layout extends JPanel
         
         private final String BA_PANEL_CARD    =   "ba_panel";
         private final String KL_PANEL_CARD    =   "kl_panel";
+        
+        private JPanel ioPanel;
+        private JButton exportBtn, importBtn;
+        private JLabel currentGraphLabel;
         
         public ControlPanel()
         {
@@ -137,19 +142,28 @@ public class Layout extends JPanel
             klOptWrapper.add(new JLabel("Clustering exp."));
             klOptWrapper.add(clusteringSpinner);
             klOptWrapper.setBackground(TRANSPARENT);
-            
-            
             klGenPanel.add(klOptWrapper, BorderLayout.WEST);
             
             simPanel.add(generatorPanel);
             simPanel.add(genPanel);
             simPanel.add(generatorControls);
-            
             CardLayout genCLayout   =   (CardLayout) genPanel.getLayout();
             genCLayout.show(genPanel, KL_PANEL_CARD);
             
+            ioPanel =   new JPanel(new GridLayout(2, 1));
+            ioPanel.setBorder(BorderFactory.createTitledBorder("I/O Controls"));
+            currentGraphLabel           =   new JLabel("None");
+            importBtn                   =   new JButton("Import");
+            exportBtn                   =   new JButton("Export");
+            JPanel storageBtnWrapper    =   wrapComponents(null, importBtn, exportBtn);
+            JPanel currentGraphWrapper  =   wrapComponents(null, new JLabel("Active: "), currentGraphLabel);
+            ioPanel.add(currentGraphWrapper);
+            ioPanel.add(storageBtnWrapper);
+            currentGraphLabel.setFont(new Font("Arial", Font.BOLD, 12));
+            
             add(modePanel);
             add(simPanel);
+            add(ioPanel);
         }
     }
     
