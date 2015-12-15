@@ -9,11 +9,9 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -21,10 +19,10 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
-import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
 public class Layout extends JPanel
@@ -32,20 +30,22 @@ public class Layout extends JPanel
     private final ControlPanel controlPanel;
     private final ScreenPanel screenPanel;
     private final JSplitPane splitPane;
+    private final JScrollPane controlScroll;
     
     public static final Color TRANSPARENT   =   new Color(255, 255, 255, 0);
     
     public Layout()
     {
         setLayout(new BorderLayout());
-        setPreferredSize(new Dimension(900, 650));
+        setPreferredSize(new Dimension(930, 650));
         
         controlPanel    =   new ControlPanel();
         screenPanel     =   new ScreenPanel();
         splitPane       =   new JSplitPane();
+        controlScroll   =   new JScrollPane(controlPanel);
         
         splitPane.setLeftComponent(screenPanel);
-        splitPane.setRightComponent(controlPanel); 
+        splitPane.setRightComponent(controlScroll); 
         splitPane.setDividerLocation(670);
         add(splitPane, BorderLayout.CENTER);
     }
@@ -63,6 +63,12 @@ public class Layout extends JPanel
     
     private class ControlPanel extends JPanel
     {
+        private final String BA_PANEL_CARD      =   "ba_panel";
+        private final String KL_PANEL_CARD      =   "kl_panel";
+        
+        private final String VERTEX_PANEL_CARD  =   "ve_panel";
+        private final String EDGE_PANEL_CARD    =   "ee_panel";
+        
         private JPanel modePanel;
         private JPanel simPanel;
         private JRadioButton editCheck, selectCheck, moveCheck;
@@ -73,17 +79,19 @@ public class Layout extends JPanel
         
         private JSpinner latticeSpinner, clusteringSpinner;
         
-        private final String BA_PANEL_CARD    =   "ba_panel";
-        private final String KL_PANEL_CARD    =   "kl_panel";
-        
         private JPanel ioPanel;
         private JButton exportBtn, importBtn;
         private JLabel currentGraphLabel;
+        
+        private JPanel editPanel, vertexPanel, edgePanel;
+        private JButton vertexAddBtn, vertexEditBtn, vertexRemoveBtn;
+        private JButton edgeAddBtn, edgeEditBtn, edgeRemoveBtn;
         
         public ControlPanel()
         {
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             setBorder(BorderFactory.createEmptyBorder(15, 0, 3, 8));
+            setPreferredSize(new Dimension(230, 650));
             setMinimumSize(new Dimension(230, 650));
             
             modePanel   =   new JPanel();
@@ -151,19 +159,29 @@ public class Layout extends JPanel
             genCLayout.show(genPanel, KL_PANEL_CARD);
             
             ioPanel =   new JPanel(new GridLayout(2, 1));
+            ioPanel.setBackground(TRANSPARENT);
             ioPanel.setBorder(BorderFactory.createTitledBorder("I/O Controls"));
             currentGraphLabel           =   new JLabel("None");
             importBtn                   =   new JButton("Import");
             exportBtn                   =   new JButton("Export");
             JPanel storageBtnWrapper    =   wrapComponents(null, importBtn, exportBtn);
             JPanel currentGraphWrapper  =   wrapComponents(null, new JLabel("Active: "), currentGraphLabel);
+            storageBtnWrapper.setBackground(TRANSPARENT);
+            currentGraphWrapper.setBackground(TRANSPARENT);
             ioPanel.add(currentGraphWrapper);
             ioPanel.add(storageBtnWrapper);
             currentGraphLabel.setFont(new Font("Arial", Font.BOLD, 12));
             
+            editPanel       =   new JPanel();
+            vertexPanel     =   new JPanel();
+            edgePanel       =   new JPanel();
+            
+            editPanel.setBorder(BorderFactory.createTitledBorder("Graph object Controls"));
+            
             add(modePanel);
             add(simPanel);
             add(ioPanel);
+            add(editPanel);
         }
     }
     

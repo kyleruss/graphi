@@ -57,7 +57,7 @@ public class MainMenu extends JMenuBar implements ActionListener
     {
         JLabel nameLabel    =   new JLabel("Kyle Russell 2015", SwingConstants.CENTER);
         JLabel locLabel     =   new JLabel("AUT University");
-        JLabel repoLabel    =   new JLabel("https://github.com/denkers/graphi.git");
+        JLabel repoLabel    =   new JLabel("https://github.com/denkers/graphi");
         
         JPanel aboutPanel   =   new JPanel();
         aboutPanel.setLayout(new BoxLayout(aboutPanel, BoxLayout.Y_AXIS));
