@@ -9,9 +9,10 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -24,6 +25,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 import javax.swing.border.Border;
 
 public class Layout extends JPanel
@@ -206,6 +208,7 @@ public class Layout extends JPanel
     {
         private final DataPanel dataPanel;
         private final GraphPanel graphPanel;
+        private final OutputPanel outputPanel;
         private final JTabbedPane tabPane;
         
         public ScreenPanel()
@@ -215,10 +218,12 @@ public class Layout extends JPanel
             tabPane     =   new JTabbedPane();
             dataPanel   =   new DataPanel();
             graphPanel  =   new GraphPanel();
+            outputPanel =   new OutputPanel();
             
             
             tabPane.addTab("Display", graphPanel);
             tabPane.addTab("Data", dataPanel);
+            tabPane.addTab("Output", outputPanel);
             add(tabPane);
         }
         
@@ -246,5 +251,32 @@ public class Layout extends JPanel
                 cLayout.show(this, "Test");
             }
         }
+        
+        private class OutputPanel extends JPanel
+        {
+            private JTextArea outputArea;
+            public OutputPanel()
+            {
+                outputArea  =   new JTextArea("");
+                outputArea.setBackground(Color.WHITE);
+                outputArea.setPreferredSize(new Dimension(650, 600));
+                JScrollPane outputScroller  =   new JScrollPane(outputArea);
+                outputScroller.setBorder(null);
+                
+                add(outputScroller);
+                
+                sendToOutput("test");
+                sendToOutput("test2");
+            }
+            
+            private void sendToOutput(String output)
+            {
+                SimpleDateFormat sdf    =   new SimpleDateFormat("K:mm a MMM d yyyy");
+                String date             =   sdf.format(new Date());
+                String prefix           =   "\n[" + date + "] ";
+                outputArea.setText(outputArea.getText() + prefix + output);
+            }
+        }
     }
+    
 }
