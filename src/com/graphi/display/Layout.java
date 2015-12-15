@@ -7,8 +7,12 @@ import edu.uci.ics.jung.visualization.control.ScalingControl;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -16,8 +20,11 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JSpinner;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingConstants;
+import javax.swing.border.Border;
 
 public class Layout extends JPanel
 {
@@ -42,6 +49,17 @@ public class Layout extends JPanel
         add(splitPane, BorderLayout.CENTER);
     }
     
+    public static JPanel wrapComponents(Border border, Component... components)
+    {
+        JPanel panel    =   new JPanel();
+        panel.setBorder(border);
+        
+        for(Component component : components)
+            panel.add(component);
+        
+        return panel;
+    }
+    
     private class ControlPanel extends JPanel
     {
         private JPanel modePanel;
@@ -50,6 +68,12 @@ public class Layout extends JPanel
         private ButtonGroup modeGroup;
         private JComboBox genAlgorithmsBox;
         private JButton resetGeneratorBtn, executeGeneratorBtn;
+        private JPanel genPanel, baGenPanel, klGenPanel;
+        
+        private JSpinner latticeSpinner, clusteringSpinner;
+        
+        private final String BA_PANEL_CARD    =   "ba_panel";
+        private final String KL_PANEL_CARD    =   "kl_panel";
         
         public ControlPanel()
         {
@@ -88,10 +112,41 @@ public class Layout extends JPanel
             executeGeneratorBtn         =   new JButton("Generate");
             generatorControls.add(resetGeneratorBtn);
             generatorControls.add(executeGeneratorBtn);
-            generatorControls.setBackground(simPanel.getBackground());
+            resetGeneratorBtn.setBackground(Color.WHITE);
+            executeGeneratorBtn.setBackground(Color.WHITE);
+            generatorControls.setBackground(TRANSPARENT);
+            
+            genPanel    =   new JPanel(new CardLayout());
+            baGenPanel  =   new JPanel();
+            klGenPanel  =   new JPanel(new BorderLayout());
+            baGenPanel.setBackground(TRANSPARENT);
+            klGenPanel.setBackground(TRANSPARENT);
+            klGenPanel.setBorder(null);
+            genPanel.setBorder(null);
+            genPanel.add(baGenPanel, BA_PANEL_CARD);
+            genPanel.add(klGenPanel, KL_PANEL_CARD);
+            
+            latticeSpinner      =   new JSpinner();
+            clusteringSpinner   =   new JSpinner();   
+            latticeSpinner.setPreferredSize(new Dimension(50, 20));
+            clusteringSpinner.setPreferredSize(new Dimension(50, 20));
+            
+            JPanel klOptWrapper     =   new JPanel(new GridLayout(2, 2, 5, 10));
+            klOptWrapper.add(new JLabel("Lattice size"));
+            klOptWrapper.add(latticeSpinner);
+            klOptWrapper.add(new JLabel("Clustering exp."));
+            klOptWrapper.add(clusteringSpinner);
+            klOptWrapper.setBackground(TRANSPARENT);
+            
+            
+            klGenPanel.add(klOptWrapper, BorderLayout.WEST);
             
             simPanel.add(generatorPanel);
+            simPanel.add(genPanel);
             simPanel.add(generatorControls);
+            
+            CardLayout genCLayout   =   (CardLayout) genPanel.getLayout();
+            genCLayout.show(genPanel, KL_PANEL_CARD);
             
             add(modePanel);
             add(simPanel);
