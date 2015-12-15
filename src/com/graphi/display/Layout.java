@@ -9,6 +9,7 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import javax.swing.BorderFactory;
@@ -66,9 +67,6 @@ public class Layout extends JPanel
         private final String BA_PANEL_CARD      =   "ba_panel";
         private final String KL_PANEL_CARD      =   "kl_panel";
         
-        private final String VERTEX_PANEL_CARD  =   "ve_panel";
-        private final String EDGE_PANEL_CARD    =   "ee_panel";
-        
         private JPanel modePanel;
         private JPanel simPanel;
         private JRadioButton editCheck, selectCheck, moveCheck;
@@ -84,6 +82,7 @@ public class Layout extends JPanel
         private JLabel currentGraphLabel;
         
         private JPanel editPanel, vertexPanel, edgePanel;
+        private JTabbedPane editTabPane;
         private JButton vertexAddBtn, vertexEditBtn, vertexRemoveBtn;
         private JButton edgeAddBtn, edgeEditBtn, edgeRemoveBtn;
         
@@ -100,10 +99,10 @@ public class Layout extends JPanel
             modePanel.setBorder(BorderFactory.createTitledBorder("Mode controls"));
             simPanel.setBorder(BorderFactory.createTitledBorder("Simulation controls"));
   
-            modeGroup               =   new ButtonGroup();
-            editCheck               =   new JRadioButton("Edit");
-            selectCheck             =   new JRadioButton("Select");
-            moveCheck               =   new JRadioButton("Move");
+            modeGroup     =   new ButtonGroup();
+            editCheck     =   new JRadioButton("Edit");
+            selectCheck   =   new JRadioButton("Select");
+            moveCheck     =   new JRadioButton("Move");
             
             modeGroup.add(editCheck);
             modeGroup.add(selectCheck);
@@ -164,6 +163,9 @@ public class Layout extends JPanel
             currentGraphLabel           =   new JLabel("None");
             importBtn                   =   new JButton("Import");
             exportBtn                   =   new JButton("Export");
+            importBtn.setBackground(Color.WHITE);
+            exportBtn.setBackground(Color.WHITE);
+            
             JPanel storageBtnWrapper    =   wrapComponents(null, importBtn, exportBtn);
             JPanel currentGraphWrapper  =   wrapComponents(null, new JLabel("Active: "), currentGraphLabel);
             storageBtnWrapper.setBackground(TRANSPARENT);
@@ -172,12 +174,33 @@ public class Layout extends JPanel
             ioPanel.add(storageBtnWrapper);
             currentGraphLabel.setFont(new Font("Arial", Font.BOLD, 12));
             
-            editPanel       =   new JPanel();
+            editPanel       =   new JPanel(new BorderLayout());
             vertexPanel     =   new JPanel();
             edgePanel       =   new JPanel();
+            editTabPane     =   new JTabbedPane();
             
+            editTabPane.addTab("Vertex", vertexPanel);
+            editTabPane.addTab("Edge", edgePanel);
             editPanel.setBorder(BorderFactory.createTitledBorder("Graph object Controls"));
+            editPanel.add(editTabPane);
             
+            
+            vertexAddBtn    =   new JButton("Add");
+            vertexEditBtn   =   new JButton("Edit");
+            vertexRemoveBtn =   new JButton("Delete");
+            
+            edgeAddBtn      =   new JButton("Add");
+            edgeEditBtn     =   new JButton("Edit");
+            edgeRemoveBtn   =   new JButton("Delete");
+            
+            vertexPanel.add(vertexAddBtn);
+            vertexPanel.add(vertexEditBtn);
+            vertexPanel.add(vertexRemoveBtn);
+            
+            edgePanel.add(edgeAddBtn);
+            edgePanel.add(edgeEditBtn);
+            edgePanel.add(edgeRemoveBtn);
+                    
             add(modePanel);
             add(simPanel);
             add(ioPanel);
