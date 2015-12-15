@@ -4,9 +4,14 @@ import java.awt.Menu;
 import java.awt.MenuBar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 public class MainMenu extends JMenuBar implements ActionListener
 {
@@ -47,10 +52,28 @@ public class MainMenu extends JMenuBar implements ActionListener
         settingsItem.addActionListener(this);
         aboutItem.addActionListener(this);
     }
+    
+    private void showAbout()
+    {
+        JLabel nameLabel    =   new JLabel("Kyle Russell 2015", SwingConstants.CENTER);
+        JLabel locLabel     =   new JLabel("AUT University");
+        JLabel repoLabel    =   new JLabel("https://github.com/denkers/graphi.git");
+        
+        JPanel aboutPanel   =   new JPanel();
+        aboutPanel.setLayout(new BoxLayout(aboutPanel, BoxLayout.Y_AXIS));
+        aboutPanel.add(nameLabel);
+        aboutPanel.add(locLabel);
+        aboutPanel.add(repoLabel);
+        
+        JOptionPane.showMessageDialog(null, aboutPanel, "Graphi - About", JOptionPane.INFORMATION_MESSAGE);
+    }
 
     @Override
     public void actionPerformed(ActionEvent e)
     {
         Object src  =   e.getSource();
+        
+        if(src == aboutItem)
+            showAbout();
     }
 }

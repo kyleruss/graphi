@@ -43,6 +43,8 @@ public class Layout extends JPanel
     {
         private JPanel modePanel;
         private JPanel simPanel;
+        private JCheckBox editCheck, selectCheck, moveCheck;
+        private ButtonGroup modeGroup;
         
         public ControlPanel()
         {
@@ -51,17 +53,19 @@ public class Layout extends JPanel
             setMinimumSize(new Dimension(230, 650));
             
             modePanel   =   new JPanel();
+           // modePanel.setLayout(new GridLayout(3, 1));
+            modePanel.setPreferredSize(new Dimension(230, 100));
             simPanel    =   new JPanel();
             modePanel.setBorder(BorderFactory.createTitledBorder("Mode controls"));
             simPanel.setBorder(BorderFactory.createTitledBorder("Simulation controls"));
   
-            ButtonGroup group       =   new ButtonGroup();
-            JCheckBox editCheck     =   new JCheckBox("Edit");
-            JCheckBox selectCheck   =   new JCheckBox("Select");
-            JCheckBox moveCheck     =   new JCheckBox("Move");
-            group.add(editCheck);
-            group.add(selectCheck);
-            group.add(moveCheck);
+            modeGroup               =   new ButtonGroup();
+            editCheck               =   new JCheckBox("Edit");
+            selectCheck             =   new JCheckBox("Select");
+            moveCheck               =   new JCheckBox("Move");
+            modeGroup.add(editCheck);
+            modeGroup.add(selectCheck);
+            modeGroup.add(moveCheck);
             modePanel.add(editCheck);
             modePanel.add(selectCheck);
             modePanel.add(moveCheck);
