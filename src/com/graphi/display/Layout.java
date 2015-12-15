@@ -44,7 +44,8 @@ public class Layout extends JPanel
         screenPanel     =   new ScreenPanel();
         splitPane       =   new JSplitPane();
         controlScroll   =   new JScrollPane(controlPanel);
-        
+
+        controlScroll.setBorder(null);
         splitPane.setLeftComponent(screenPanel);
         splitPane.setRightComponent(controlScroll); 
         splitPane.setDividerLocation(670);
@@ -81,10 +82,9 @@ public class Layout extends JPanel
         private JButton exportBtn, importBtn;
         private JLabel currentGraphLabel;
         
-        private JPanel editPanel, vertexPanel, edgePanel;
-        private JTabbedPane editTabPane;
-        private JButton vertexAddBtn, vertexEditBtn, vertexRemoveBtn;
-        private JButton edgeAddBtn, edgeEditBtn, edgeRemoveBtn;
+        private JPanel editPanel;
+        private JLabel selectedLabel;
+        private JButton gObjAddBtn, gObjEditBtn, gObjRemoveBtn;
         
         public ControlPanel()
         {
@@ -174,33 +174,27 @@ public class Layout extends JPanel
             ioPanel.add(storageBtnWrapper);
             currentGraphLabel.setFont(new Font("Arial", Font.BOLD, 12));
             
-            editPanel       =   new JPanel(new BorderLayout());
-            vertexPanel     =   new JPanel();
-            edgePanel       =   new JPanel();
-            editTabPane     =   new JTabbedPane();
-            
-            editTabPane.addTab("Vertex", vertexPanel);
-            editTabPane.addTab("Edge", edgePanel);
+            editPanel       =   new JPanel(new GridLayout(2, 1));
             editPanel.setBorder(BorderFactory.createTitledBorder("Graph object Controls"));
-            editPanel.add(editTabPane);
+            editPanel.setBackground(TRANSPARENT);
             
+            gObjAddBtn      =   new JButton("Add");
+            gObjEditBtn     =   new JButton("Edit");
+            gObjRemoveBtn   =   new JButton("Delete");
+            selectedLabel   =   new JLabel("None");
+            gObjAddBtn.setBackground(Color.WHITE);
+            gObjEditBtn.setBackground(Color.WHITE);
+            gObjRemoveBtn.setBackground(Color.WHITE);
+            selectedLabel.setFont(new Font("Arial", Font.BOLD, 12));
             
-            vertexAddBtn    =   new JButton("Add");
-            vertexEditBtn   =   new JButton("Edit");
-            vertexRemoveBtn =   new JButton("Delete");
+            JPanel selectedPanel    =   wrapComponents(null, new JLabel("Selected: "), selectedLabel);
+            JPanel gObjPanel        =   wrapComponents(null, gObjAddBtn, gObjEditBtn, gObjRemoveBtn);
+            selectedPanel.setBackground(TRANSPARENT);
+            gObjPanel.setBackground(TRANSPARENT);
             
-            edgeAddBtn      =   new JButton("Add");
-            edgeEditBtn     =   new JButton("Edit");
-            edgeRemoveBtn   =   new JButton("Delete");
+            editPanel.add(selectedPanel);
+            editPanel.add(gObjPanel);
             
-            vertexPanel.add(vertexAddBtn);
-            vertexPanel.add(vertexEditBtn);
-            vertexPanel.add(vertexRemoveBtn);
-            
-            edgePanel.add(edgeAddBtn);
-            edgePanel.add(edgeEditBtn);
-            edgePanel.add(edgeRemoveBtn);
-                    
             add(modePanel);
             add(simPanel);
             add(ioPanel);
