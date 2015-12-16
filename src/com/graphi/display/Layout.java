@@ -11,6 +11,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.BorderFactory;
@@ -30,10 +32,16 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.border.Border;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import net.miginfocom.swing.MigLayout;
 
 public class Layout extends JPanel
 {
+    private final String DATA_PANEL_CARD        =   "data_panel";
+    private final String OUTPUT_PANEL_CARD      =   "output_panel";
+    private final String DISP_PANEL_CARD        =   "display_panel";
+    
     private final ControlPanel controlPanel;
     private final ScreenPanel screenPanel;
     private final JSplitPane splitPane;
@@ -78,7 +86,7 @@ public class Layout extends JPanel
         return panel;
     }
     
-    private class ControlPanel extends JPanel
+    private class ControlPanel extends JPanel implements ActionListener
     {
         private final String BA_PANEL_CARD          =   "ba_panel";
         private final String KL_PANEL_CARD          =   "kl_panel";
@@ -87,6 +95,7 @@ public class Layout extends JPanel
         private final String SPATH_PANEL_CARD       =   "spath_panel";
         private final String CENTRALITY_PANEL_CARD  =   "centrality_panel";   
         
+        private JPanel dataControlPanel, outputControlPanel, displayControlPanel;
         private JPanel modePanel;
         private JPanel simPanel;
         private JRadioButton editCheck, selectCheck, moveCheck;
@@ -120,12 +129,22 @@ public class Layout extends JPanel
         private JRadioButton centralityAllRadio, centralitySelectedRadio;
         private JCheckBox centralityMorphCheck;
         
-        public ControlPanel()
+        public ControlPanel() 
         {
-            setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+            setLayout(new CardLayout());
             setBorder(BorderFactory.createEmptyBorder(15, 0, 3, 8));
-            setPreferredSize(new Dimension(230, 650));
+            setPreferredSize(new Dimension(230, 700));
             setMinimumSize(new Dimension(230, 650));
+            
+            dataControlPanel    =   new JPanel();
+            outputControlPanel  =   new JPanel();
+            displayControlPanel =   new JPanel();
+            dataControlPanel.setLayout(new BoxLayout(dataControlPanel, BoxLayout.Y_AXIS));
+            outputControlPanel.setLayout(new BoxLayout(outputControlPanel, BoxLayout.Y_AXIS));
+            displayControlPanel.setLayout(new BoxLayout(displayControlPanel, BoxLayout.Y_AXIS));
+            add(displayControlPanel, DISP_PANEL_CARD);
+            add(dataControlPanel, DATA_PANEL_CARD);
+            add(outputControlPanel, OUTPUT_PANEL_CARD);
             
             modePanel   =   new JPanel();
             modePanel.setPreferredSize(new Dimension(230, 100));
@@ -246,6 +265,7 @@ public class Layout extends JPanel
             computeBox.addItem("Clusters");
             computeBox.addItem("Centrality");
             computeBox.addItem("Shortest path");
+            computeBox.addActionListener(this);
             
             clusterEdgeRemoveSpinner    =   new JSpinner();
             noClusterRadio              =   new JRadioButton("None");
@@ -281,12 +301,6 @@ public class Layout extends JPanel
             spathToPanel.setBackground(TRANSPARENT);
             spathPanel.add(spathWrapper); 
             
-            /*
-                    private JComboBox centralityTypeBox;
-        private ButtonGroup centralityOptions;
-        private JRadioButton centralityAllRadio, centralitySelectedRadio;
-            */
-            
             centralityTypeBox       =   new JComboBox();
             centralityOptions       =   new ButtonGroup();
             centralityAllRadio      =   new JRadioButton("All");
@@ -296,6 +310,7 @@ public class Layout extends JPanel
             centralityOptions.add(centralitySelectedRadio);
             centralityTypeBox.addItem("Eigenvector");
             centralityTypeBox.addItem("PageRank");
+            centralityTypeBox.addActionListener(this);
             
             JPanel cenTypePanel     =   wrapComponents(null, new JLabel("Type"), centralityTypeBox);
             JPanel cenOptPanel      =   wrapComponents(null, centralityAllRadio, centralitySelectedRadio);
@@ -318,15 +333,41 @@ public class Layout extends JPanel
             CardLayout clusterInnerLayout   =   (CardLayout) computeInnerPanel.getLayout();
             clusterInnerLayout.show(computeInnerPanel, CENTRALITY_PANEL_CARD);
             
-            add(modePanel);
-            add(simPanel);
-            add(ioPanel);
-            add(editPanel);
-            add(computePanel);
+            displayControlPanel.add(modePanel);
+            displayControlPanel.add(simPanel);
+            displayControlPanel.add(ioPanel);
+            displayControlPanel.add(editPanel);
+            displayControlPanel.add(computePanel);
+        }
+        
+        private void showCurrentComputePanel()
+        {
+            int selectedIndex   =   computeBox.getSelectedIndex();
+            String card;
+            
+            switch(selectedIndex)
+            {
+                case 0: card = CLUSTER_PANEL_CARD; break;
+                case 1: card = CENTRALITY_PANEL_CARD; break;
+                case 2: card = SPATH_PANEL_CARD; break;
+                default: return;
+            }
+            
+            CardLayout clusterInnerLayout   =   (CardLayout) this.getLayout();
+            clusterInnerLayout.show(this, card);
+        }
+        
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+            Object src  =   e.getSource();
+            
+            if(src == computeBox)
+                showCurrentComputePanel();
         }
     }
     
-    private class ScreenPanel extends JPanel
+    private class ScreenPanel extends JPanel implements ChangeListener
     {
         private final DataPanel dataPanel;
         private final GraphPanel graphPanel;
@@ -346,7 +387,31 @@ public class Layout extends JPanel
             tabPane.addTab("Display", graphPanel);
             tabPane.addTab("Data", dataPanel);
             tabPane.addTab("Output", outputPanel);
+            tabPane.addChangeListener(this);
             add(tabPane);
+        }
+        
+        private void showCurrentControlPanel()
+        {
+            int selectedIndex   =   screenPanel.tabPane.getSelectedIndex();
+            String card;
+            
+            switch(selectedIndex)
+            {
+                case 0: card = DISP_PANEL_CARD; break;
+                case 1: card = DATA_PANEL_CARD; break;
+                case 2: card = OUTPUT_PANEL_CARD; break;
+                default: return;
+            }
+            
+            CardLayout clusterInnerLayout   =   (CardLayout) controlPanel.getLayout();
+            clusterInnerLayout.show(controlPanel, card);
+        }
+
+        @Override
+        public void stateChanged(ChangeEvent e)
+        {
+            showCurrentControlPanel();
         }
         
         private class DataPanel extends JPanel
