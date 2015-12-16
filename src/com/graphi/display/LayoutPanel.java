@@ -2,13 +2,11 @@ package com.graphi.display;
 
 import com.graphi.io.SerialGraph;
 import com.graphi.io.Storage;
-import com.graphi.test.Edge;
-import com.graphi.test.GraphTest;
-import com.graphi.test.Node;
+import com.graphi.sim.Edge;
+import com.graphi.sim.Node;
 import edu.uci.ics.jung.algorithms.layout.AggregateLayout;
 import edu.uci.ics.jung.algorithms.layout.FRLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
-import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.control.CrossoverScalingControl;
 import edu.uci.ics.jung.visualization.control.EditingModalGraphMouse;
@@ -549,10 +547,30 @@ public class LayoutPanel extends JPanel
             private void loadNodes(SerialGraph graph)
             {
                 Collection<Node> vertices   =   graph.getVertices();
-                for(Node vertex : vertices)
+                SwingUtilities.invokeLater(() -> 
                 {
-                    //int vID =   verte
-                }
+                    vertexDataModel.setRowCount(0);
+                    for(Node vertex : vertices)
+                    {
+                        int vID         =   vertex.getID();
+                        String vName    =   vertex.getName();
+                        vertexDataModel.addRow(new Object[] { vID, vName });
+                    }
+                });
+            }
+            
+            private void loadEdges(SerialGraph graph)
+            {
+                Collection<Edge> edges  =   graph.getEdges();
+                SwingUtilities.invokeLater(() ->
+                {
+                    edgeDataModel.setRowCount(0);
+                    for(Edge edge : edges)
+                    {
+                        int eID         =   edge.getID();
+                        double weight   =   edge.getWeight();
+                    }
+                });
             }
         }
         
