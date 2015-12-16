@@ -54,6 +54,15 @@ public class Layout extends JPanel
         add(splitPane, BorderLayout.CENTER);
     }
     
+    private void sendToOutput(String output)
+    {
+        SimpleDateFormat sdf    =   new SimpleDateFormat("K:MM a dd.MM.yy");
+        String date             =   sdf.format(new Date());
+        String prefix           =   "\n[" + date + "] ";
+        JTextArea outputArea    =   screenPanel.outputPanel.outputArea;
+        outputArea.setText(outputArea.getText() + prefix + output);
+    }
+
     public static JPanel wrapComponents(Border border, Component... components)
     {
         JPanel panel    =   new JPanel();
@@ -88,6 +97,10 @@ public class Layout extends JPanel
         private JLabel selectedLabel;
         private JButton gObjAddBtn, gObjEditBtn, gObjRemoveBtn;
         
+        private JPanel computePanel;
+        private JComboBox computeBox;
+        private JButton computeBtn;
+        
         public ControlPanel()
         {
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -117,7 +130,7 @@ public class Layout extends JPanel
             genAlgorithmsBox.addItem("Kleinberg");
             genAlgorithmsBox.addItem("Barabasi-Albert");
             JPanel generatorPanel   =   new JPanel();
-            generatorPanel.add(new JLabel("Generators"));
+            generatorPanel.add(new JLabel("Generator"));
             generatorPanel.add(genAlgorithmsBox);
             generatorPanel.setBackground(TRANSPARENT);
             
@@ -193,14 +206,29 @@ public class Layout extends JPanel
             JPanel gObjPanel        =   wrapComponents(null, gObjAddBtn, gObjEditBtn, gObjRemoveBtn);
             selectedPanel.setBackground(TRANSPARENT);
             gObjPanel.setBackground(TRANSPARENT);
-            
+
             editPanel.add(selectedPanel);
             editPanel.add(gObjPanel);
+            
+            computePanel    =   new JPanel();
+            computeBox      =   new JComboBox();
+            computeBtn      =   new JButton("Execute");
+            computePanel.setBorder(BorderFactory.createTitledBorder("Computation controls"));
+            computePanel.setBackground(TRANSPARENT);
+            computeBtn.setBackground(Color.WHITE);
+            
+            computeBox.addItem("Clusters");
+            computeBox.addItem("Shortest path");
+            
+            computePanel.add(new JLabel("Compute "));
+            computePanel.add(computeBox);
+            computePanel.add(computeBtn);
             
             add(modePanel);
             add(simPanel);
             add(ioPanel);
             add(editPanel);
+            add(computePanel);
         }
     }
     
@@ -259,22 +287,12 @@ public class Layout extends JPanel
             {
                 outputArea  =   new JTextArea("");
                 outputArea.setBackground(Color.WHITE);
+                outputArea.setEditable(false);
                 outputArea.setPreferredSize(new Dimension(650, 600));
                 JScrollPane outputScroller  =   new JScrollPane(outputArea);
                 outputScroller.setBorder(null);
                 
                 add(outputScroller);
-                
-                sendToOutput("test");
-                sendToOutput("test2");
-            }
-            
-            private void sendToOutput(String output)
-            {
-                SimpleDateFormat sdf    =   new SimpleDateFormat("K:mm a MMM d yyyy");
-                String date             =   sdf.format(new Date());
-                String prefix           =   "\n[" + date + "] ";
-                outputArea.setText(outputArea.getText() + prefix + output);
             }
         }
     }
