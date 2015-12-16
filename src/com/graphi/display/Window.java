@@ -9,7 +9,7 @@ public class Window
 {
     private final String WINDOW_TITLE   =   "Graphi - Kyle Russell 2015";
     
-    private final Layout layout;
+    private final LayoutPanel layout;
     private final MainMenu menu;
     private final JFrame frame;
     
@@ -17,7 +17,7 @@ public class Window
     {
         initLookAndFeel();
         
-        layout  =   new Layout();
+        layout  =   new LayoutPanel();
         menu    =   new MainMenu();
         frame   =   new JFrame(WINDOW_TITLE);
         

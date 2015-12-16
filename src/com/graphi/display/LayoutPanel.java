@@ -2,7 +2,10 @@ package com.graphi.display;
 
 import com.graphi.io.SerialGraph;
 import com.graphi.io.Storage;
+import com.graphi.test.Edge;
 import com.graphi.test.GraphTest;
+import com.graphi.test.Node;
+import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.control.CrossoverScalingControl;
 import edu.uci.ics.jung.visualization.control.ScalingControl;
@@ -40,7 +43,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import net.miginfocom.swing.MigLayout;
 
-public class Layout extends JPanel
+public class LayoutPanel extends JPanel
 {
     private final String DATA_PANEL_CARD        =   "data_panel";
     private final String OUTPUT_PANEL_CARD      =   "output_panel";
@@ -55,7 +58,7 @@ public class Layout extends JPanel
     private SerialGraph currentGraph;
     private File currentGraphFile, currentLogFile;
     
-    public Layout()
+    public LayoutPanel()
     {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(930, 650));
@@ -512,16 +515,18 @@ public class Layout extends JPanel
         
         private class GraphPanel extends JPanel
         {
-            private VisualizationViewer visViewer;
+            private VisualizationViewer<Node, Edge> gViewer;
+            private Layout<Node, Edge> gLayout;
+            
             public GraphPanel()
             {
                 setLayout(new CardLayout());
-                visViewer   =   GraphTest.getGraph();
+                gViewer   =   GraphTest.getGraph();
                 ScalingControl scaler   =   new CrossoverScalingControl();
-                scaler.scale(visViewer, 0.7f, visViewer.getCenter());
-                visViewer.scaleToLayout(scaler);
-                visViewer.setBackground(Color.WHITE);
-                add(visViewer, "Test");
+                scaler.scale(gViewer, 0.7f, gViewer.getCenter());
+                gViewer.scaleToLayout(scaler);
+                gViewer.setBackground(Color.WHITE);
+                add(gViewer, "Test");
                 CardLayout cLayout  =   (CardLayout) getLayout();
                 cLayout.show(this, "Test");
             }
