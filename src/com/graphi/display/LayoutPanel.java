@@ -5,7 +5,10 @@ import com.graphi.io.Storage;
 import com.graphi.test.Edge;
 import com.graphi.test.GraphTest;
 import com.graphi.test.Node;
+import edu.uci.ics.jung.algorithms.layout.AggregateLayout;
+import edu.uci.ics.jung.algorithms.layout.FRLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
+import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.control.CrossoverScalingControl;
 import edu.uci.ics.jung.visualization.control.ScalingControl;
@@ -55,7 +58,7 @@ public class LayoutPanel extends JPanel
     private final JScrollPane controlScroll;
     
     public static final Color TRANSPARENT   =   new Color(255, 255, 255, 0);
-    private SerialGraph currentGraph;
+    private SerialGraph<Node, Edge> currentGraph;
     private File currentGraphFile, currentLogFile;
     
     public LayoutPanel()
@@ -63,6 +66,7 @@ public class LayoutPanel extends JPanel
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(930, 650));
         
+        currentGraph    =   new SerialGraph<>();
         controlPanel    =   new ControlPanel();
         screenPanel     =   new ScreenPanel();
         splitPane       =   new JSplitPane();
@@ -515,20 +519,20 @@ public class LayoutPanel extends JPanel
         
         private class GraphPanel extends JPanel
         {
-            private VisualizationViewer<Node, Edge> gViewer;
+            private final VisualizationViewer<Node, Edge> gViewer;
             private Layout<Node, Edge> gLayout;
             
             public GraphPanel()
             {
-                setLayout(new CardLayout());
-                gViewer   =   GraphTest.getGraph();
+                gLayout     =   new AggregateLayout(new FRLayout(currentGraph));
+                gViewer     =   new VisualizationViewer<>(gLayout);
+                gLayout.setSize(new Dimension(670, 650));
+                gViewer.setPreferredSize(new Dimension(670, 650));
                 ScalingControl scaler   =   new CrossoverScalingControl();
                 scaler.scale(gViewer, 0.7f, gViewer.getCenter());
                 gViewer.scaleToLayout(scaler);
                 gViewer.setBackground(Color.WHITE);
-                add(gViewer, "Test");
-                CardLayout cLayout  =   (CardLayout) getLayout();
-                cLayout.show(this, "Test");
+                add(gViewer);
             }
         }
         
