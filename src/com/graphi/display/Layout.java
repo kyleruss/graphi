@@ -124,6 +124,8 @@ public class Layout extends JPanel
         private JPanel ioPanel;
         private JButton exportBtn, importBtn;
         private JLabel currentGraphLabel;
+        private ButtonGroup storageGroup;
+        private JRadioButton storageGraphRadio, storageLogRadio;
         
         private JPanel editPanel;
         private JLabel selectedLabel;
@@ -226,22 +228,32 @@ public class Layout extends JPanel
             CardLayout genCLayout   =   (CardLayout) genPanel.getLayout();
             genCLayout.show(genPanel, KL_PANEL_CARD);
             
-            ioPanel =   new JPanel(new GridLayout(2, 1));
+            ioPanel =   new JPanel(new GridLayout(3, 1));
             ioPanel.setBackground(TRANSPARENT);
             ioPanel.setBorder(BorderFactory.createTitledBorder("I/O Controls"));
-            currentGraphLabel           =   new JLabel("None");
-            importBtn                   =   new JButton("Import");
-            exportBtn                   =   new JButton("Export");
+            currentGraphLabel       =   new JLabel("None");
+            importBtn               =   new JButton("Import");
+            exportBtn               =   new JButton("Export");
+            storageGroup            =   new ButtonGroup();
+            storageGraphRadio       =   new JRadioButton("Graph");
+            storageLogRadio         =   new JRadioButton("Log");
+            storageGroup.add(storageGraphRadio);
+            storageGroup.add(storageLogRadio);
             importBtn.addActionListener(this);
             exportBtn.addActionListener(this);
+            storageGraphRadio.addActionListener(this);
+            storageLogRadio.addActionListener(this);
             importBtn.setBackground(Color.WHITE);
             exportBtn.setBackground(Color.WHITE);
             
             JPanel storageBtnWrapper    =   wrapComponents(null, importBtn, exportBtn);
             JPanel currentGraphWrapper  =   wrapComponents(null, new JLabel("Active: "), currentGraphLabel);
+            JPanel storageOptsWrapper   =   wrapComponents(null, storageGraphRadio, storageLogRadio);
             storageBtnWrapper.setBackground(TRANSPARENT);
             currentGraphWrapper.setBackground(TRANSPARENT);
+            storageOptsWrapper.setBackground(new Color(200, 200, 200));
             ioPanel.add(currentGraphWrapper);
+            ioPanel.add(storageOptsWrapper);
             ioPanel.add(storageBtnWrapper);
             currentGraphLabel.setFont(new Font("Arial", Font.BOLD, 12));
             
