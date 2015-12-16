@@ -9,6 +9,7 @@ public class Edge
     private int id;
     private double weight;
     private EdgeType edgeType;
+    private Node sourceNode, destNode;
     
     public Edge()
     {
@@ -56,5 +57,25 @@ public class Edge
     public void setEdgeType(EdgeType edgeType)
     {
         this.edgeType   =   edgeType;
+    }
+    
+    public void setSourceNode(Node node)
+    {
+        sourceNode  =   node;
+    }
+    
+    public Node getSourceNode()
+    {
+        return sourceNode;
+    }
+    
+    public void setDestNode(Node node)
+    {
+        destNode    =   node;
+    }
+    
+    public Node getDestNode()
+    {
+        return destNode;
     }
 }
