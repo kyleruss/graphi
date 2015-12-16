@@ -17,6 +17,7 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -79,11 +80,12 @@ public class Layout extends JPanel
     
     private class ControlPanel extends JPanel
     {
-        private final String BA_PANEL_CARD      =   "ba_panel";
-        private final String KL_PANEL_CARD      =   "kl_panel";
+        private final String BA_PANEL_CARD          =   "ba_panel";
+        private final String KL_PANEL_CARD          =   "kl_panel";
         
-        private final String CLUSTER_PANEL_CARD =   "cluster_panel";
-        private final String SPATH_PANEL_CARD   =   "spath_panel";
+        private final String CLUSTER_PANEL_CARD     =   "cluster_panel";
+        private final String SPATH_PANEL_CARD       =   "spath_panel";
+        private final String CENTRALITY_PANEL_CARD  =   "centrality_panel";   
         
         private JPanel modePanel;
         private JPanel simPanel;
@@ -112,6 +114,11 @@ public class Layout extends JPanel
         private JComboBox computeBox;
         private JTextField spathFromField, spathToField;
         private JButton computeBtn;
+        private JPanel centralityPanel;
+        private JComboBox centralityTypeBox;
+        private ButtonGroup centralityOptions;
+        private JRadioButton centralityAllRadio, centralitySelectedRadio;
+        private JCheckBox centralityMorphCheck;
         
         public ControlPanel()
         {
@@ -226,6 +233,7 @@ public class Layout extends JPanel
             computePanel        =   new JPanel();
             computeInnerPanel   =   new JPanel(new CardLayout());
             clusterPanel        =   new JPanel();
+            centralityPanel     =   new JPanel(new MigLayout());
             spathPanel          =   new JPanel();
             computeBox          =   new JComboBox();
             computeBtn          =   new JButton("Execute");
@@ -245,7 +253,6 @@ public class Layout extends JPanel
             clusterCirclesRadio         =   new JRadioButton("Cluster circles");
             clusterGroup                =   new ButtonGroup();
             clusterEdgeRemoveSpinner.setPreferredSize(new Dimension(50, 20));
-            noClusterRadio.setFont(new Font("Arial", Font.PLAIN, 12));
             clusterGroup.add(noClusterRadio);
             clusterGroup.add(clusterRadio);
             clusterGroup.add(clusterCirclesRadio);
@@ -263,7 +270,6 @@ public class Layout extends JPanel
             spathToField    =   new JTextField();
             spathFromField.setPreferredSize(new Dimension(50, 20));
             spathToField.setPreferredSize(new Dimension(50, 20));
-            //JPanel spathFromPanel   =   wrapComponents(null, new JLabel("From ID"), spathFromField, new JLabel("To ID"), spathToField);
             JLabel tLabel = new JLabel("To ID");
             JPanel spathFromPanel   =   wrapComponents(null, new JLabel("From ID"), spathFromField);
             JPanel spathToPanel     =   wrapComponents(null, tLabel, spathToField);
@@ -273,13 +279,36 @@ public class Layout extends JPanel
             spathWrapper.setBackground(TRANSPARENT);
             spathFromPanel.setBackground(TRANSPARENT);
             spathToPanel.setBackground(TRANSPARENT);
-            
             spathPanel.add(spathWrapper); 
             
-  
+            /*
+                    private JComboBox centralityTypeBox;
+        private ButtonGroup centralityOptions;
+        private JRadioButton centralityAllRadio, centralitySelectedRadio;
+            */
+            
+            centralityTypeBox       =   new JComboBox();
+            centralityOptions       =   new ButtonGroup();
+            centralityAllRadio      =   new JRadioButton("All");
+            centralitySelectedRadio =   new JRadioButton("Selected");
+            centralityMorphCheck    =   new JCheckBox("Transform graph");
+            centralityOptions.add(centralityAllRadio);
+            centralityOptions.add(centralitySelectedRadio);
+            centralityTypeBox.addItem("Eigenvector");
+            centralityTypeBox.addItem("PageRank");
+            
+            JPanel cenTypePanel     =   wrapComponents(null, new JLabel("Type"), centralityTypeBox);
+            JPanel cenOptPanel      =   wrapComponents(null, centralityAllRadio, centralitySelectedRadio);
+            centralityPanel.add(cenTypePanel, "wrap");
+            centralityPanel.add(cenOptPanel, "wrap");
+            centralityPanel.add(centralityMorphCheck);
+            cenTypePanel.setBackground(new Color(200, 200, 200));
+            cenOptPanel.setBackground(new Color(200, 200, 200));
+            centralityPanel.setBackground(new Color(200, 200, 200));
             
             computeInnerPanel.add(clusterPanel, CLUSTER_PANEL_CARD);
             computeInnerPanel.add(spathPanel, SPATH_PANEL_CARD);
+            computeInnerPanel.add(centralityPanel, CENTRALITY_PANEL_CARD);
             
             computePanel.add(new JLabel("Compute "));
             computePanel.add(computeBox);
@@ -287,7 +316,7 @@ public class Layout extends JPanel
             computePanel.add(computeBtn);
             
             CardLayout clusterInnerLayout   =   (CardLayout) computeInnerPanel.getLayout();
-            clusterInnerLayout.show(computeInnerPanel, SPATH_PANEL_CARD);
+            clusterInnerLayout.show(computeInnerPanel, CENTRALITY_PANEL_CARD);
             
             add(modePanel);
             add(simPanel);
