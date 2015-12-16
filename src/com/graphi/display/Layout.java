@@ -34,6 +34,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -52,6 +53,7 @@ public class Layout extends JPanel
     
     public static final Color TRANSPARENT   =   new Color(255, 255, 255, 0);
     private SerialGraph currentGraph;
+    private File currentGraphFile, currentLogFile;
     
     public Layout()
     {
@@ -367,6 +369,7 @@ public class Layout extends JPanel
             displayControlPanel.add(ioPanel);
             displayControlPanel.add(editPanel);
             displayControlPanel.add(computePanel);
+            outputControlPanel.add(ioPanel);
         }
         
         private void showCurrentComputePanel()
@@ -397,7 +400,27 @@ public class Layout extends JPanel
         {
             File file   =   getFileName(true);
             if(file != null)
-                currentGraph    =   Storage.openGraph(file);
+            {
+                currentGraph        =   Storage.openGraph(file);
+                currentGraphFile    =   file;   
+            }
+        }
+        
+        private void exportLog()
+        {
+            File file   =   getFileName(false);
+            if(file != null)
+                Storage.saveOutputLog(screenPanel.outputPanel.outputArea.getText(), file);
+        }
+        
+        private void importLog()
+        {
+            File file   =   getFileName(true);
+            if(file != null)
+            {
+                currentLogFile  =   file;
+                screenPanel.outputPanel.outputArea.setText(Storage.openOutputLog(file));
+            }
         }
         
         @Override
@@ -409,10 +432,20 @@ public class Layout extends JPanel
                 showCurrentComputePanel();
             
             else if(src == importBtn)
-                importGraph();
+            {
+                if(storageGraphRadio.isSelected())
+                    importGraph();
+                else
+                    importLog();
+            }
             
             else if(src == exportBtn)
-                exportGraph();
+            {
+                if(storageGraphRadio.isSelected())
+                    exportGraph();
+                else
+                    exportLog();
+            }
         }
         
     }
@@ -454,8 +487,13 @@ public class Layout extends JPanel
                 default: return;
             }
             
-            CardLayout clusterInnerLayout   =   (CardLayout) controlPanel.getLayout();
-            clusterInnerLayout.show(controlPanel, card);
+            SwingUtilities.invokeLater(() ->
+            {
+                CardLayout clusterInnerLayout   =   (CardLayout) controlPanel.getLayout();
+                controlPanel.setVisible(false);
+                clusterInnerLayout.show(controlPanel, card);
+                controlPanel.setVisible(true);
+            });
         }
 
         @Override
