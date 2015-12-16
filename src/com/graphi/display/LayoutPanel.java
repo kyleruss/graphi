@@ -11,6 +11,8 @@ import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.control.CrossoverScalingControl;
+import edu.uci.ics.jung.visualization.control.EditingModalGraphMouse;
+import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.ScalingControl;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -45,6 +47,7 @@ import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import net.miginfocom.swing.MigLayout;
+import org.apache.commons.collections15.Factory;
 
 public class LayoutPanel extends JPanel
 {
@@ -521,6 +524,7 @@ public class LayoutPanel extends JPanel
         {
             private final VisualizationViewer<Node, Edge> gViewer;
             private Layout<Node, Edge> gLayout;
+            private EditingModalGraphMouse mouse;
             
             public GraphPanel()
             {
@@ -532,6 +536,13 @@ public class LayoutPanel extends JPanel
                 scaler.scale(gViewer, 0.7f, gViewer.getCenter());
                 gViewer.scaleToLayout(scaler);
                 gViewer.setBackground(Color.WHITE);
+                
+                Factory<Node> nFactory  =   () -> new Node();
+                Factory<Edge> eFactory  =   () -> new Edge();
+                
+                mouse       =   new EditingModalGraphMouse(gViewer.getRenderContext(), nFactory, eFactory);
+                gViewer.setGraphMouse(mouse);
+                mouse.setMode(ModalGraphMouse.Mode.PICKING);
                 add(gViewer);
             }
         }
