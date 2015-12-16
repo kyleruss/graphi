@@ -27,7 +27,9 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SpringLayout;
 import javax.swing.border.Border;
+import net.miginfocom.swing.MigLayout;
 
 public class Layout extends JPanel
 {
@@ -265,8 +267,9 @@ public class Layout extends JPanel
             JLabel tLabel = new JLabel("To ID");
             JPanel spathFromPanel   =   wrapComponents(null, new JLabel("From ID"), spathFromField);
             JPanel spathToPanel     =   wrapComponents(null, tLabel, spathToField);
-            JPanel spathWrapper     =   wrapComponents(null, spathFromPanel, spathToPanel); 
-            spathWrapper.setLayout(new GridLayout(2, 1));
+            JPanel spathWrapper     =   new JPanel(new MigLayout()); 
+            spathWrapper.add(spathFromPanel, "wrap");
+            spathWrapper.add(spathToPanel);
             spathWrapper.setBackground(TRANSPARENT);
             spathFromPanel.setBackground(TRANSPARENT);
             spathToPanel.setBackground(TRANSPARENT);
@@ -284,7 +287,7 @@ public class Layout extends JPanel
             computePanel.add(computeBtn);
             
             CardLayout clusterInnerLayout   =   (CardLayout) computeInnerPanel.getLayout();
-            clusterInnerLayout.show(computeInnerPanel, CLUSTER_PANEL_CARD);
+            clusterInnerLayout.show(computeInnerPanel, SPATH_PANEL_CARD);
             
             add(modePanel);
             add(simPanel);
