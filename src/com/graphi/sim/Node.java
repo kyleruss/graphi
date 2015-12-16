@@ -42,4 +42,24 @@ public class Node
     {
         this.color  =   color;
     }
+    
+    public String getName()
+    {
+        return name;
+    }
+    
+    public void setName(String name)
+    {
+        this.name   =   name;
+    }
+    
+    public int getID()
+    {
+        return id;
+    }
+    
+    public void setID(int id)
+    {
+        this.id =   id;
+    }
 }
