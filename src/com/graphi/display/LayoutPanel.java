@@ -40,12 +40,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.collections15.Factory;
 
@@ -514,9 +516,32 @@ public class LayoutPanel extends JPanel
         
         private class DataPanel extends JPanel
         {
+            private final JTable vertexTable, edgeTable;
+            private final DefaultTableModel vertexDataModel, edgeDataModel;
+            private final JTabbedPane dataTabPane;
+            private final JScrollPane vertexScroller, edgeScroller;
+            
             public DataPanel()
             {
+                dataTabPane         =   new JTabbedPane();
+                vertexDataModel     =   new DefaultTableModel();
+                vertexTable         =   new JTable(vertexDataModel);
+                edgeDataModel       =   new DefaultTableModel();
+                edgeTable           =   new JTable(edgeDataModel);
+                vertexScroller      =   new JScrollPane(vertexTable);
+                edgeScroller        =   new JScrollPane(edgeTable);
                 
+                vertexDataModel.addColumn("ID");
+                vertexDataModel.addColumn("Name");
+                
+                edgeDataModel.addColumn("ID");
+                edgeDataModel.addColumn("Name");
+                edgeDataModel.addColumn("Weight");
+                
+                dataTabPane.addTab("Vertex table", vertexScroller);
+                dataTabPane.addTab("Edge table", edgeScroller);
+                
+                add(dataTabPane);
             }
         }
         
