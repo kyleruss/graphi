@@ -1,5 +1,7 @@
 package com.graphi.display;
 
+import com.graphi.io.SerialGraph;
+import com.graphi.io.Storage;
 import com.graphi.test.GraphTest;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.control.CrossoverScalingControl;
@@ -13,6 +15,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.BorderFactory;
@@ -21,6 +24,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -47,6 +51,7 @@ public class Layout extends JPanel
     private final JScrollPane controlScroll;
     
     public static final Color TRANSPARENT   =   new Color(255, 255, 255, 0);
+    private SerialGraph currentGraph;
     
     public Layout()
     {
@@ -72,6 +77,17 @@ public class Layout extends JPanel
         String prefix           =   "\n[" + date + "] ";
         JTextArea outputArea    =   screenPanel.outputPanel.outputArea;
         outputArea.setText(outputArea.getText() + prefix + output);
+    }
+    
+    private File getFileName(boolean open)
+    {
+        JFileChooser jfc    =   new JFileChooser();
+        if(open)
+            jfc.showOpenDialog(null);
+        else
+            jfc.showSaveDialog(null);
+        
+        return jfc.getSelectedFile();
     }
 
     public static JPanel wrapComponents(Border border, Component... components)
@@ -216,6 +232,8 @@ public class Layout extends JPanel
             currentGraphLabel           =   new JLabel("None");
             importBtn                   =   new JButton("Import");
             exportBtn                   =   new JButton("Export");
+            importBtn.addActionListener(this);
+            exportBtn.addActionListener(this);
             importBtn.setBackground(Color.WHITE);
             exportBtn.setBackground(Color.WHITE);
             
@@ -356,6 +374,20 @@ public class Layout extends JPanel
             clusterInnerLayout.show(this, card);
         }
         
+        private void exportGraph()
+        {
+            File file   =   getFileName(false);
+            if(file != null && currentGraph != null)
+                Storage.saveGraph(currentGraph, file);
+        }
+        
+        private void importGraph()
+        {
+            File file   =   getFileName(true);
+            if(file != null)
+                currentGraph    =   Storage.openGraph(file);
+        }
+        
         @Override
         public void actionPerformed(ActionEvent e)
         {
@@ -363,7 +395,14 @@ public class Layout extends JPanel
             
             if(src == computeBox)
                 showCurrentComputePanel();
+            
+            else if(src == importBtn)
+                importGraph();
+            
+            else if(src == exportBtn)
+                exportGraph();
         }
+        
     }
     
     private class ScreenPanel extends JPanel implements ChangeListener

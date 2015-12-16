@@ -3,6 +3,7 @@ package com.graphi.io;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -15,7 +16,7 @@ import javax.swing.JOptionPane;
 
 public class Storage
 {
-    public static void saveGraph(SerialGraph graph, String file)
+    public static void saveGraph(SerialGraph graph, File file)
     {
         try(ObjectOutputStream oos  =   new ObjectOutputStream(new FileOutputStream(file)))
         {
@@ -28,7 +29,7 @@ public class Storage
         }
     }
     
-    public static SerialGraph openGraph(SerialGraph graph, String file)
+    public static SerialGraph openGraph(File file)
     {
         try(ObjectInputStream ois   =   new ObjectInputStream(new FileInputStream(file)))
         {
@@ -43,7 +44,7 @@ public class Storage
         }
     }
     
-    public static void saveOutputLog(String logText, String file)
+    public static void saveOutputLog(String logText, File file)
     {
         try(BufferedWriter bw   =   new BufferedWriter(new FileWriter(file)))
         {
@@ -56,7 +57,7 @@ public class Storage
         }
     }
     
-    public static String openOutputLog(String file)
+    public static String openOutputLog(File file)
     {
         try(BufferedReader br = new BufferedReader(new FileReader(file)))
         {
