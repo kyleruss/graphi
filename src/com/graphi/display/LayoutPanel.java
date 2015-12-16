@@ -25,6 +25,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -535,13 +536,23 @@ public class LayoutPanel extends JPanel
                 vertexDataModel.addColumn("Name");
                 
                 edgeDataModel.addColumn("ID");
-                edgeDataModel.addColumn("Name");
+                edgeDataModel.addColumn("FromVertex");
+                edgeDataModel.addColumn("ToVertex");
                 edgeDataModel.addColumn("Weight");
                 
                 dataTabPane.addTab("Vertex table", vertexScroller);
                 dataTabPane.addTab("Edge table", edgeScroller);
                 
                 add(dataTabPane);
+            }
+            
+            private void loadNodes(SerialGraph graph)
+            {
+                Collection<Node> vertices   =   graph.getVertices();
+                for(Node vertex : vertices)
+                {
+                    //int vID =   verte
+                }
             }
         }
         
