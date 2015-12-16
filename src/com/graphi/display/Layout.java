@@ -79,6 +79,9 @@ public class Layout extends JPanel
         private final String BA_PANEL_CARD      =   "ba_panel";
         private final String KL_PANEL_CARD      =   "kl_panel";
         
+        private final String CLUSTER_PANEL_CARD =   "cluster_panel";
+        private final String SPATH_PANEL_CARD   =   "spath_panel";
+        
         private JPanel modePanel;
         private JPanel simPanel;
         private JRadioButton editCheck, selectCheck, moveCheck;
@@ -98,6 +101,11 @@ public class Layout extends JPanel
         private JButton gObjAddBtn, gObjEditBtn, gObjRemoveBtn;
         
         private JPanel computePanel;
+        private JPanel computeInnerPanel;
+        private JPanel clusterPanel, spathPanel;
+        private JSpinner clusterEdgeRemoveSpinner;
+        private JRadioButton noClusterRadio, clusterRadio, clusterCirclesRadio;
+        private ButtonGroup clusterGroup;
         private JComboBox computeBox;
         private JButton computeBtn;
         
@@ -210,19 +218,50 @@ public class Layout extends JPanel
             editPanel.add(selectedPanel);
             editPanel.add(gObjPanel);
             
-            computePanel    =   new JPanel();
-            computeBox      =   new JComboBox();
-            computeBtn      =   new JButton("Execute");
+            computePanel        =   new JPanel();
+            computeInnerPanel   =   new JPanel(new CardLayout());
+            clusterPanel        =   new JPanel();
+            spathPanel          =   new JPanel();
+            computeBox          =   new JComboBox();
+            computeBtn          =   new JButton("Execute");
+            computePanel.setPreferredSize(new Dimension(230, 400));
             computePanel.setBorder(BorderFactory.createTitledBorder("Computation controls"));
-            computePanel.setBackground(TRANSPARENT);
+            spathPanel.setBackground(TRANSPARENT);
             computeBtn.setBackground(Color.WHITE);
             
             computeBox.addItem("Clusters");
             computeBox.addItem("Shortest path");
             
+            clusterEdgeRemoveSpinner    =   new JSpinner();
+            noClusterRadio              =   new JRadioButton("None");
+            clusterRadio                =   new JRadioButton("Clusters");
+            clusterCirclesRadio         =   new JRadioButton("Cluster circles");
+            clusterGroup                =   new ButtonGroup();
+            clusterEdgeRemoveSpinner.setPreferredSize(new Dimension(50, 20));
+            noClusterRadio.setFont(new Font("Arial", Font.PLAIN, 12));
+            clusterGroup.add(noClusterRadio);
+            clusterGroup.add(clusterRadio);
+            clusterGroup.add(clusterCirclesRadio);
+            clusterPanel.setLayout(new BoxLayout(clusterPanel, BoxLayout.Y_AXIS));
+            
+            JPanel clusterEdgesPanel        =   wrapComponents(null, new JLabel("Delete edges"), clusterEdgeRemoveSpinner);
+            JPanel clusterOptionsPanel      =   wrapComponents(null, noClusterRadio, clusterRadio, clusterCirclesRadio);   
+            clusterOptionsPanel.setLayout(new GridLayout(3, 1));
+            clusterPanel.add(clusterEdgesPanel);
+            clusterPanel.add(clusterOptionsPanel);
+            clusterEdgesPanel.setBackground(new Color(200, 200, 200));
+            clusterOptionsPanel.setBackground(new Color(200, 200, 200));  
+            
+            computeInnerPanel.add(clusterPanel, CLUSTER_PANEL_CARD);
+            computeInnerPanel.add(spathPanel, SPATH_PANEL_CARD);
+            
             computePanel.add(new JLabel("Compute "));
             computePanel.add(computeBox);
+            computePanel.add(computeInnerPanel);
             computePanel.add(computeBtn);
+            
+            //CardLayout computeInnerLayout    =   (CardLayout) computeInnerPanel.getLayout();
+            //computeInnerLayout.show(computeInnerPanel, CLUSTER_PANEL_CARD);
             
             add(modePanel);
             add(simPanel);
