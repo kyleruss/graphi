@@ -26,6 +26,7 @@ import javax.swing.JSpinner;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 public class Layout extends JPanel
@@ -107,6 +108,7 @@ public class Layout extends JPanel
         private JRadioButton noClusterRadio, clusterRadio, clusterCirclesRadio;
         private ButtonGroup clusterGroup;
         private JComboBox computeBox;
+        private JTextField spathFromField, spathToField;
         private JButton computeBtn;
         
         public ControlPanel()
@@ -121,6 +123,7 @@ public class Layout extends JPanel
             simPanel    =   new JPanel();
             modePanel.setBorder(BorderFactory.createTitledBorder("Mode controls"));
             simPanel.setBorder(BorderFactory.createTitledBorder("Simulation controls"));
+            simPanel.setPreferredSize(new Dimension(230, 500));
   
             modeGroup     =   new ButtonGroup();
             editCheck     =   new JRadioButton("Edit");
@@ -224,12 +227,14 @@ public class Layout extends JPanel
             spathPanel          =   new JPanel();
             computeBox          =   new JComboBox();
             computeBtn          =   new JButton("Execute");
-            computePanel.setPreferredSize(new Dimension(230, 400));
+            computePanel.setPreferredSize(new Dimension(230, 500));
             computePanel.setBorder(BorderFactory.createTitledBorder("Computation controls"));
+            spathPanel.setLayout(new BoxLayout(spathPanel, BoxLayout.Y_AXIS));
             spathPanel.setBackground(TRANSPARENT);
             computeBtn.setBackground(Color.WHITE);
             
             computeBox.addItem("Clusters");
+            computeBox.addItem("Centrality");
             computeBox.addItem("Shortest path");
             
             clusterEdgeRemoveSpinner    =   new JSpinner();
@@ -242,15 +247,33 @@ public class Layout extends JPanel
             clusterGroup.add(noClusterRadio);
             clusterGroup.add(clusterRadio);
             clusterGroup.add(clusterCirclesRadio);
-            clusterPanel.setLayout(new BoxLayout(clusterPanel, BoxLayout.Y_AXIS));
             
             JPanel clusterEdgesPanel        =   wrapComponents(null, new JLabel("Delete edges"), clusterEdgeRemoveSpinner);
             JPanel clusterOptionsPanel      =   wrapComponents(null, noClusterRadio, clusterRadio, clusterCirclesRadio);   
             clusterOptionsPanel.setLayout(new GridLayout(3, 1));
+            clusterPanel.setLayout(new BoxLayout(clusterPanel, BoxLayout.Y_AXIS));
             clusterPanel.add(clusterEdgesPanel);
             clusterPanel.add(clusterOptionsPanel);
             clusterEdgesPanel.setBackground(new Color(200, 200, 200));
             clusterOptionsPanel.setBackground(new Color(200, 200, 200));  
+            
+            spathFromField  =   new JTextField();
+            spathToField    =   new JTextField();
+            spathFromField.setPreferredSize(new Dimension(50, 20));
+            spathToField.setPreferredSize(new Dimension(50, 20));
+            //JPanel spathFromPanel   =   wrapComponents(null, new JLabel("From ID"), spathFromField, new JLabel("To ID"), spathToField);
+            JLabel tLabel = new JLabel("To ID");
+            JPanel spathFromPanel   =   wrapComponents(null, new JLabel("From ID"), spathFromField);
+            JPanel spathToPanel     =   wrapComponents(null, tLabel, spathToField);
+            JPanel spathWrapper     =   wrapComponents(null, spathFromPanel, spathToPanel); 
+            spathWrapper.setLayout(new GridLayout(2, 1));
+            spathWrapper.setBackground(TRANSPARENT);
+            spathFromPanel.setBackground(TRANSPARENT);
+            spathToPanel.setBackground(TRANSPARENT);
+            
+            spathPanel.add(spathWrapper); 
+            
+  
             
             computeInnerPanel.add(clusterPanel, CLUSTER_PANEL_CARD);
             computeInnerPanel.add(spathPanel, SPATH_PANEL_CARD);
@@ -260,8 +283,8 @@ public class Layout extends JPanel
             computePanel.add(computeInnerPanel);
             computePanel.add(computeBtn);
             
-            //CardLayout computeInnerLayout    =   (CardLayout) computeInnerPanel.getLayout();
-            //computeInnerLayout.show(computeInnerPanel, CLUSTER_PANEL_CARD);
+            CardLayout clusterInnerLayout   =   (CardLayout) computeInnerPanel.getLayout();
+            clusterInnerLayout.show(computeInnerPanel, CLUSTER_PANEL_CARD);
             
             add(modePanel);
             add(simPanel);
