@@ -13,6 +13,7 @@ import edu.uci.ics.jung.visualization.control.CrossoverScalingControl;
 import edu.uci.ics.jung.visualization.control.EditingModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.ScalingControl;
+import edu.uci.ics.jung.visualization.picking.PickedState;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -28,6 +29,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -747,14 +749,29 @@ public class LayoutPanel extends JPanel
             
             private void removeVertex()
             {
-                int id  =   getDialogID("Enter vertex ID to remove", currentNodes);
-                
-                if(id != -1)
+                Set<Node> pickedNodes    =   graphPanel.gViewer.getPickedVertexState().getPicked();
+                if(!pickedNodes.isEmpty())
                 {
-                    Node removedNode    =   currentNodes.remove(id);
-                    currentGraph.removeVertex(removedNode);
-                    loadNodes(currentGraph);
-                    graphPanel.gViewer.repaint();
+                    for(Node node : pickedNodes)
+                    {
+                        int id  =   node.getID();
+                        currentNodes.remove(id);
+                        currentGraph.removeVertex(node);
+                        graphPanel.gViewer.repaint();
+                        loadNodes(currentGraph);
+                    }
+                }
+                
+                else
+                {
+                    int id  =   getDialogID("Enter vertex ID to remove", currentNodes);
+                    if(id != -1)
+                    {
+                        Node removedNode    =   currentNodes.remove(id);
+                        currentGraph.removeVertex(removedNode);
+                        loadNodes(currentGraph);
+                        graphPanel.gViewer.repaint();
+                    }
                 }
             }
             
