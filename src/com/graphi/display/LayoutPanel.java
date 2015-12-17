@@ -613,7 +613,7 @@ public class LayoutPanel extends JPanel
             
             private void addVertex()
             {
-                VertexAddPanel addPanel =   new VertexAddPanel();
+                VertexAddPanel addPanel    =   new VertexAddPanel();
                 
                 int option  =   JOptionPane.showConfirmDialog(null, addPanel, "Add vertex", JOptionPane.OK_CANCEL_OPTION);
                 
@@ -639,6 +639,14 @@ public class LayoutPanel extends JPanel
                     VertexAddPanel editPanel    =   new VertexAddPanel();
                     editPanel.idSpinner.setValue(id);
                     editPanel.nameField.setText(editNode.getName());
+                    
+                    int option  =   JOptionPane.showConfirmDialog(null, editPanel, "Edit vertex", JOptionPane.OK_CANCEL_OPTION);
+                    if(option == JOptionPane.OK_OPTION)
+                    {
+                        editNode.setID((int) editPanel.idSpinner.getValue());
+                        editNode.setName(editPanel.nameField.getText());
+                        loadNodes(currentGraph);
+                    }
                 }
             }
             
