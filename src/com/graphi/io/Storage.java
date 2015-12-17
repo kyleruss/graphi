@@ -25,7 +25,7 @@ public class Storage
         
         catch(IOException e)
         {
-            JOptionPane.showMessageDialog(null, "[Error] Failed to save graph");
+            JOptionPane.showMessageDialog(null, "[Error] Failed to save graph: " + e.getMessage());
         }
     }
     

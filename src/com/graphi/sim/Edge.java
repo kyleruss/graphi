@@ -2,9 +2,10 @@
 package com.graphi.sim;
 
 import edu.uci.ics.jung.graph.util.EdgeType;
+import java.io.Serializable;
 
 
-public class Edge
+public class Edge implements Serializable
 {
     private int id;
     private double weight;

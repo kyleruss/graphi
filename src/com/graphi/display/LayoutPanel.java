@@ -101,7 +101,7 @@ public class LayoutPanel extends JPanel
         outputArea.setText(outputArea.getText() + prefix + output);
     }
     
-    private File getFileName(boolean open)
+    private File getFile(boolean open)
     {
         JFileChooser jfc    =   new JFileChooser();
         if(open)
@@ -143,13 +143,7 @@ public class LayoutPanel extends JPanel
         
         private JSpinner latticeSpinner, clusteringSpinner;
         
-        /*private JPanel ioPanel;
-        private JButton exportBtn, importBtn;
-        private JLabel currentGraphLabel;
-        private ButtonGroup storageGroup;
-        private JRadioButton storageGraphRadio, storageLogRadio; */
         private IOPanel ioPanel;
-        
         private JPanel editPanel;
         private JLabel selectedLabel;
         private JButton gObjAddBtn, gObjEditBtn, gObjRemoveBtn;
@@ -175,7 +169,7 @@ public class LayoutPanel extends JPanel
         {
             setLayout(new CardLayout());
             setBorder(BorderFactory.createEmptyBorder(15, 0, 3, 8));
-            setPreferredSize(new Dimension(230, 700));
+            setPreferredSize(new Dimension(230, 800));
             setMinimumSize(new Dimension(230, 650));
             
             dataControlPanel    =   new JPanel();
@@ -490,31 +484,34 @@ public class LayoutPanel extends JPanel
         
         private void exportGraph()
         {
-            File file   =   getFileName(false);
+            File file   =   getFile(false);
             if(file != null && currentGraph != null)
                 Storage.saveGraph(currentGraph, file);
         }
         
         private void importGraph()
         {
-            File file   =   getFileName(true);
+            File file   =   getFile(true);
             if(file != null)
             {
                 currentGraph        =   Storage.openGraph(file);
                 currentGraphFile    =   file;   
+                screenPanel.dataPanel.loadNodes(currentGraph);
+                screenPanel.dataPanel.loadEdges(currentGraph);
+                screenPanel.graphPanel.gViewer.repaint();
             }
         }
         
         private void exportLog()
         {
-            File file   =   getFileName(false);
+            File file   =   getFile(false);
             if(file != null)
                 Storage.saveOutputLog(screenPanel.outputPanel.outputArea.getText(), file);
         }
         
         private void importLog()
         {
-            File file   =   getFileName(true);
+            File file   =   getFile(true);
             if(file != null)
             {
                 currentLogFile  =   file;

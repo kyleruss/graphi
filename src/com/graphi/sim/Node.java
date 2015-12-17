@@ -2,9 +2,10 @@
 package com.graphi.sim;
 
 import java.awt.Color;
+import java.io.Serializable;
 
 
-public class Node
+public class Node implements Serializable
 {
     private int id;
     private String name;
