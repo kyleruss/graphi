@@ -46,6 +46,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
@@ -763,20 +764,7 @@ public class LayoutPanel extends JPanel
                     
                     int fromID          =   (int) addPanel.fromSpinner.getValue();
                     int toID            =   (int) addPanel.toSpinner.getValue();
-                    
-                    double weight;
-                    try 
-                    { 
-                        weight = Double.parseDouble(addPanel.weightField.getText()); 
-                        if(weight < 0) throw new NumberFormatException();
-                    }
-                    
-                    catch(NumberFormatException e)
-                    {
-                        JOptionPane.showMessageDialog(null, "Invalit input found");
-                        return;
-                    }
-                    
+                    double weight       =   (double) addPanel.weightSpinner.getValue();
                     int eType           =   addPanel.edgeTypeBox.getSelectedIndex();
                     EdgeType edgeType   =   (eType == 0)? EdgeType.UNDIRECTED : EdgeType.DIRECTED;
                     
@@ -809,7 +797,7 @@ public class LayoutPanel extends JPanel
                     editPanel.idSpinner.setValue(editEdge.getID());
                     editPanel.fromSpinner.setValue(editEdge.getSourceNode().getID());
                     editPanel.toSpinner.setValue(editEdge.getDestNode().getID());
-                    editPanel.weightField.setText("" + editEdge.getWeight());
+                    editPanel.weightSpinner.setValue(editEdge.getWeight());
                     editPanel.edgeTypeBox.setSelectedIndex(editEdge.getEdgeType() == EdgeType.UNDIRECTED? 0 : 1);
                     
                     editPanel.fromSpinner.setEnabled(false);
@@ -819,20 +807,7 @@ public class LayoutPanel extends JPanel
                     int option  =   JOptionPane.showConfirmDialog(null, editPanel, "Edit edge", JOptionPane.OK_CANCEL_OPTION);
                     if(option == JOptionPane.OK_OPTION)
                     {
-                        double weight;
-                        try 
-                        { 
-                            weight = Double.parseDouble(editPanel.weightField.getText()); 
-                            if(weight < 0) throw new NumberFormatException();
-                        }
-                        
-                        catch(NumberFormatException e)
-                        {
-                            JOptionPane.showMessageDialog(null, "Invalit input found");
-                            return;
-                        }
-                        
-                        editEdge.setWeight(weight);
+                        editEdge.setWeight((double) editPanel.weightSpinner.getValue());
                         editEdge.setEdgeType(editPanel.edgeTypeBox.getSelectedIndex() == 0? EdgeType.UNDIRECTED : EdgeType.DIRECTED);
                         loadEdges(currentGraph);
                         graphPanel.gViewer.repaint();
@@ -892,7 +867,7 @@ public class LayoutPanel extends JPanel
                 public VertexAddPanel()
                 {
                     setLayout(new MigLayout());
-                    idSpinner      =   new JSpinner();   
+                    idSpinner      =   new JSpinner(new SpinnerNumberModel(0, 0, 10000, 1));   
                     autoCheck      =   new JCheckBox("Auto");
                     nameField      =   new JTextField();
                     
@@ -906,18 +881,18 @@ public class LayoutPanel extends JPanel
             
             private class EdgeAddPanel extends JPanel
             {
-                private JSpinner idSpinner, fromSpinner, toSpinner;
+                private JSpinner idSpinner, fromSpinner, toSpinner, weightSpinner;
                 private JCheckBox autoCheck;
                 private JComboBox edgeTypeBox;
-                private JTextField weightField;
                 
                 public EdgeAddPanel()
                 {
                     setLayout(new MigLayout());
-                    idSpinner       =   new JSpinner();
-                    fromSpinner     =   new JSpinner();
-                    toSpinner       =   new JSpinner();
-                    weightField     =   new JTextField();
+                    SpinnerNumberModel idModel  =   new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1);
+                    idSpinner       =   new JSpinner(idModel);
+                    fromSpinner     =   new JSpinner(idModel);
+                    toSpinner       =   new JSpinner(idModel);
+                    weightSpinner   =   new JSpinner(new SpinnerNumberModel(0.0, 0.0, 10000.0, 0.1));
                     autoCheck       =   new JCheckBox("Auto");
                     edgeTypeBox     =   new JComboBox();
                     
@@ -932,7 +907,7 @@ public class LayoutPanel extends JPanel
                     add(new JLabel("To vertex ID"));
                     add(toSpinner, "span 2, width :40:, wrap");
                     add(new JLabel("Weight"));
-                    add(weightField, "span 2, width :70:, wrap");
+                    add(weightSpinner, "span 2, width :70:, wrap");
                     add(new JLabel("Type"));
                     add(edgeTypeBox, "span 2");
                 }
