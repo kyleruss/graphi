@@ -15,7 +15,7 @@ import edu.uci.ics.jung.visualization.control.CrossoverScalingControl;
 import edu.uci.ics.jung.visualization.control.EditingModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.ScalingControl;
-import edu.uci.ics.jung.visualization.picking.PickedState;
+import edu.uci.ics.jung.visualization.picking.PickedInfo;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -23,6 +23,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Paint;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -60,6 +61,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.collections15.Factory;
+import org.apache.commons.collections15.Transformer;
 
 public class LayoutPanel extends JPanel
 {
@@ -312,6 +314,7 @@ public class LayoutPanel extends JPanel
             spathPanel.setLayout(new BoxLayout(spathPanel, BoxLayout.Y_AXIS));
             spathPanel.setBackground(TRANSPARENT);
             computeBtn.setBackground(Color.WHITE);
+            computeBtn.addActionListener(this);
             
             computeBox.addItem("Clusters");
             computeBox.addItem("Centrality");
@@ -404,6 +407,12 @@ public class LayoutPanel extends JPanel
                         selectedLabel.setText("Edge (ID=" + ((Edge) selectedObj).getID() + ")");
                 }
             }
+        }
+        
+        private void computeExecute()
+        {
+            if(computeBox.getSelectedIndex() == 0)
+                screenPanel.graphPanel.showCluster();
         }
         
         private void showGeneratorSim()
@@ -619,6 +628,9 @@ public class LayoutPanel extends JPanel
             
             else if(src == resetGeneratorBtn)
                 resetSim();
+            
+            else if(src == computeBtn)
+                computeExecute();
         }
     }
     
@@ -1001,7 +1013,7 @@ public class LayoutPanel extends JPanel
         private class GraphPanel extends JPanel implements ItemListener
         {
             private final VisualizationViewer<Node, Edge> gViewer;
-            private Layout<Node, Edge> gLayout;
+            private AggregateLayout<Node, Edge> gLayout;
             private EditingModalGraphMouse mouse;
             
             public GraphPanel()
@@ -1020,10 +1032,37 @@ public class LayoutPanel extends JPanel
                 
                 mouse       =   new EditingModalGraphMouse(gViewer.getRenderContext(), nFactory, eFactory);
                 gViewer.setGraphMouse(mouse);
+                gViewer.getRenderContext().setVertexFillPaintTransformer(new ColorTransformer(gViewer.getPickedVertexState()));
                 gViewer.getPickedVertexState().addItemListener(this);
                 gViewer.getPickedEdgeState().addItemListener(this);
                 mouse.setMode(ModalGraphMouse.Mode.PICKING);
                 add(gViewer);
+            }
+            
+            private class ColorTransformer implements Transformer<Node, Paint>
+            {
+                PickedInfo pickedInfo;
+                public ColorTransformer(PickedInfo pickedInfo)
+                {
+                    this.pickedInfo =   pickedInfo;
+                }
+
+                @Override
+                public Paint transform(Node i)
+                {
+                    if(pickedInfo.isPicked(i))
+                        return Color.YELLOW;
+                    else
+                        return i.getColor();
+                }
+            }
+            
+            private void showCluster()
+            {
+                int numRemoved  =   (int) controlPanel.clusterEdgeRemoveSpinner.getValue();
+                boolean group   =   controlPanel.clusterTransformCheck.isSelected();
+                Network.cluster(gLayout, currentGraph, numRemoved, group);
+                gViewer.repaint();
             }
             
             private void reloadGraph()
