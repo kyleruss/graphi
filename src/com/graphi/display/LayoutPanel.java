@@ -159,8 +159,7 @@ public class LayoutPanel extends JPanel
         private JPanel computeInnerPanel;
         private JPanel clusterPanel, spathPanel;
         private JSpinner clusterEdgeRemoveSpinner;
-        private JRadioButton noClusterRadio, clusterRadio, clusterCirclesRadio;
-        private ButtonGroup clusterGroup;
+        private JCheckBox clusterTransformCheck;
         private JComboBox computeBox;
         private JTextField spathFromField, spathToField;
         private JButton computeBtn;
@@ -320,23 +319,15 @@ public class LayoutPanel extends JPanel
             computeBox.addActionListener(this);
             
             clusterEdgeRemoveSpinner    =   new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
-            noClusterRadio              =   new JRadioButton("None");
-            clusterRadio                =   new JRadioButton("Clusters");
-            clusterCirclesRadio         =   new JRadioButton("Cluster circles");
-            clusterGroup                =   new ButtonGroup();
+            clusterTransformCheck       =   new JCheckBox("Transform graph");
             clusterEdgeRemoveSpinner.setPreferredSize(new Dimension(50, 20));
-            clusterGroup.add(noClusterRadio);
-            clusterGroup.add(clusterRadio);
-            clusterGroup.add(clusterCirclesRadio);
             
             JPanel clusterEdgesPanel        =   wrapComponents(null, new JLabel("Delete edges"), clusterEdgeRemoveSpinner);
-            JPanel clusterOptionsPanel      =   wrapComponents(null, noClusterRadio, clusterRadio, clusterCirclesRadio);   
-            clusterOptionsPanel.setLayout(new GridLayout(3, 1));
-            clusterPanel.setLayout(new BoxLayout(clusterPanel, BoxLayout.Y_AXIS));
-            clusterPanel.add(clusterEdgesPanel);
-            clusterPanel.add(clusterOptionsPanel);
+            clusterPanel.setLayout(new MigLayout());
+            clusterPanel.add(clusterEdgesPanel, "wrap");
+            clusterPanel.add(clusterTransformCheck);
             clusterEdgesPanel.setBackground(new Color(200, 200, 200));
-            clusterOptionsPanel.setBackground(new Color(200, 200, 200));  
+            clusterPanel.setBackground(new Color(200, 200, 200));
             
             spathFromField  =   new JTextField();
             spathToField    =   new JTextField();
