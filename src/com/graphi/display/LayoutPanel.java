@@ -194,6 +194,10 @@ public class LayoutPanel extends JPanel
             selectCheck   =   new JRadioButton("Select");
             moveCheck     =   new JRadioButton("Move");
             
+            editCheck.addActionListener(this);
+            selectCheck.addActionListener(this);
+            moveCheck.addActionListener(this);
+            
             modeGroup.add(editCheck);
             modeGroup.add(selectCheck);
             modeGroup.add(moveCheck);
@@ -551,6 +555,15 @@ public class LayoutPanel extends JPanel
                 else
                     screenPanel.dataPanel.removeEdge();
             }
+            
+            else if(src == editCheck)
+                screenPanel.graphPanel.mouse.setMode(ModalGraphMouse.Mode.EDITING);
+            
+            else if(src == moveCheck)
+                screenPanel.graphPanel.mouse.setMode(ModalGraphMouse.Mode.TRANSFORMING);
+            
+            else if(src == selectCheck)
+                screenPanel.graphPanel.mouse.setMode(ModalGraphMouse.Mode.PICKING);
         }
         
     }
