@@ -1,12 +1,14 @@
 package com.graphi.display;
 
-import com.graphi.io.SerialGraph;
 import com.graphi.io.Storage;
 import com.graphi.sim.Edge;
+import com.graphi.sim.Network;
 import com.graphi.sim.Node;
 import edu.uci.ics.jung.algorithms.layout.AggregateLayout;
 import edu.uci.ics.jung.algorithms.layout.FRLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
+import edu.uci.ics.jung.graph.Graph;
+import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.control.CrossoverScalingControl;
@@ -71,7 +73,7 @@ public class LayoutPanel extends JPanel
     private final JScrollPane controlScroll;
     
     public static final Color TRANSPARENT   =   new Color(255, 255, 255, 0);
-    private SerialGraph<Node, Edge> currentGraph;
+    private Graph<Node, Edge> currentGraph;
     private File currentGraphFile, currentLogFile;
     private Map<Integer, Node> currentNodes;
     private Map<Integer, Edge> currentEdges;
@@ -82,7 +84,7 @@ public class LayoutPanel extends JPanel
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(930, 650));
         
-        currentGraph    =   new SerialGraph<>();
+        currentGraph    =   new SparseMultigraph<>();
         currentNodes    =   new HashMap<>();
         currentEdges    =   new HashMap<>();
         controlPanel    =   new ControlPanel();
@@ -222,6 +224,8 @@ public class LayoutPanel extends JPanel
             JPanel generatorControls    =   new JPanel();
             resetGeneratorBtn           =   new JButton("Reset");
             executeGeneratorBtn         =   new JButton("Generate");
+            executeGeneratorBtn.addActionListener(this);
+            resetGeneratorBtn.addActionListener(this);
             generatorControls.add(resetGeneratorBtn);
             generatorControls.add(executeGeneratorBtn);
             resetGeneratorBtn.setBackground(Color.WHITE);
@@ -408,6 +412,23 @@ public class LayoutPanel extends JPanel
             }
         }
         
+        private void showGeneratorSim()
+        {
+            int genIndex    =   genAlgorithmsBox.getSelectedIndex();
+            switch(genIndex)
+            {
+                case 0: showKleinbergSim();
+            }
+        }
+        
+        private void showKleinbergSim()
+        {
+            int latticeSize =   (int) latticeSpinner.getValue();
+            int clusterExp  =   (int) clusteringSpinner.getValue();
+            currentGraph    =   (Graph) Network.generateKleinberg(latticeSize, clusterExp);
+            screenPanel.graphPanel.reloadGraph();
+        }
+        
         private class IOPanel extends JPanel implements ActionListener
         {
             private JButton exportBtn, importBtn;
@@ -590,6 +611,9 @@ public class LayoutPanel extends JPanel
             
             else if(src == selectCheck)
                 screenPanel.graphPanel.mouse.setMode(ModalGraphMouse.Mode.PICKING);
+            
+            else if(src == executeGeneratorBtn)
+                showGeneratorSim();
         }
         
     }
@@ -678,7 +702,7 @@ public class LayoutPanel extends JPanel
                 add(dataTabPane);
             }
             
-            private void loadNodes(SerialGraph graph)
+            private void loadNodes(Graph graph)
             {
                 Collection<Node> vertices   =   graph.getVertices();
                 SwingUtilities.invokeLater(() -> 
@@ -693,7 +717,7 @@ public class LayoutPanel extends JPanel
                 });
             }
             
-            private void loadEdges(SerialGraph graph)
+            private void loadEdges(Graph graph)
             {
                 Collection<Edge> edges  =   graph.getEdges();
                 SwingUtilities.invokeLater(() ->
@@ -991,6 +1015,14 @@ public class LayoutPanel extends JPanel
                 gViewer.getPickedEdgeState().addItemListener(this);
                 mouse.setMode(ModalGraphMouse.Mode.PICKING);
                 add(gViewer);
+            }
+            
+            private void reloadGraph()
+            {
+                gLayout.setGraph(currentGraph);
+                gViewer.repaint();
+                dataPanel.loadNodes(currentGraph);
+                dataPanel.loadEdges(currentGraph);
             }
 
             @Override

@@ -1,6 +1,7 @@
 
 package com.graphi.io;
 
+import edu.uci.ics.jung.graph.Graph;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -16,7 +17,7 @@ import javax.swing.JOptionPane;
 
 public class Storage
 {
-    public static void saveGraph(SerialGraph graph, File file)
+    public static void saveGraph(Graph graph, File file)
     {
         try(ObjectOutputStream oos  =   new ObjectOutputStream(new FileOutputStream(file)))
         {
@@ -29,11 +30,11 @@ public class Storage
         }
     }
     
-    public static SerialGraph openGraph(File file)
+    public static Graph openGraph(File file)
     {
         try(ObjectInputStream ois   =   new ObjectInputStream(new FileInputStream(file)))
         {
-            SerialGraph gObj =   (SerialGraph) ois.readObject();
+            Graph gObj =   (Graph) ois.readObject();
             return gObj;
         }
         
