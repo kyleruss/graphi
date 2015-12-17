@@ -166,6 +166,8 @@ public class LayoutPanel extends JPanel
         private ButtonGroup centralityOptions;
         private JRadioButton centralityAllRadio, centralitySelectedRadio;
         private JCheckBox centralityMorphCheck;
+        private ButtonGroup editObjGroup;
+        private JRadioButton editVertexRadio, editEdgeRadio;
         
         public ControlPanel() 
         {
@@ -278,10 +280,13 @@ public class LayoutPanel extends JPanel
             ioPanel.add(storageBtnWrapper);
             currentGraphLabel.setFont(new Font("Arial", Font.BOLD, 12));
             
-            editPanel       =   new JPanel(new GridLayout(2, 1));
+            editPanel       =   new JPanel(new GridLayout(3, 1));
             editPanel.setBorder(BorderFactory.createTitledBorder("Graph object Controls"));
             editPanel.setBackground(TRANSPARENT);
             
+            editObjGroup    =   new ButtonGroup();
+            editVertexRadio =   new JRadioButton("Vertex");
+            editEdgeRadio   =   new JRadioButton("Edge");
             gObjAddBtn      =   new JButton("Add");
             gObjEditBtn     =   new JButton("Edit");
             gObjRemoveBtn   =   new JButton("Delete");
@@ -295,13 +300,19 @@ public class LayoutPanel extends JPanel
             gObjEditBtn.addActionListener(this);
             gObjRemoveBtn.addActionListener(this);
             
-            JPanel selectedPanel    =   wrapComponents(null, new JLabel("Selected: "), selectedLabel);
-            JPanel gObjPanel        =   wrapComponents(null, gObjAddBtn, gObjEditBtn, gObjRemoveBtn);
+            editObjGroup.add(editVertexRadio);
+            editObjGroup.add(editEdgeRadio);
+            
+            JPanel selectedPanel        =   wrapComponents(null, new JLabel("Selected: "), selectedLabel);
+            JPanel editObjPanel         =   wrapComponents(null, editVertexRadio, editEdgeRadio);
+            JPanel gObjOptsPanel        =   wrapComponents(null, gObjAddBtn, gObjEditBtn, gObjRemoveBtn);
             selectedPanel.setBackground(TRANSPARENT);
-            gObjPanel.setBackground(TRANSPARENT);
+            gObjOptsPanel.setBackground(TRANSPARENT);
+            editObjPanel.setBackground(new Color(200, 200, 200));
 
             editPanel.add(selectedPanel);
-            editPanel.add(gObjPanel);
+            editPanel.add(editObjPanel);
+            editPanel.add(gObjOptsPanel);
             
             computePanel        =   new JPanel();
             computeInnerPanel   =   new JPanel(new CardLayout());
