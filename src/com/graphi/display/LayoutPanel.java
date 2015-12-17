@@ -192,17 +192,17 @@ public class LayoutPanel extends JPanel
             ioPanelDisp     =   new IOPanel();
             ioPanelOutput   =   new IOPanel();   
             
-            modePanel   =   new JPanel();
+            modePanel       =   new JPanel();
+            simPanel        =   new JPanel();
             modePanel.setPreferredSize(new Dimension(230, 100));
-            simPanel    =   new JPanel();
             modePanel.setBorder(BorderFactory.createTitledBorder("Mode controls"));
             simPanel.setBorder(BorderFactory.createTitledBorder("Simulation controls"));
             simPanel.setPreferredSize(new Dimension(230, 500));
   
-            modeGroup     =   new ButtonGroup();
-            editCheck     =   new JRadioButton("Edit");
-            selectCheck   =   new JRadioButton("Select");
-            moveCheck     =   new JRadioButton("Move");
+            modeGroup       =   new ButtonGroup();
+            editCheck       =   new JRadioButton("Edit");
+            selectCheck     =   new JRadioButton("Select");
+            moveCheck       =   new JRadioButton("Move");
             
             editCheck.addActionListener(this);
             selectCheck.addActionListener(this);
@@ -245,8 +245,8 @@ public class LayoutPanel extends JPanel
             genPanel.add(baGenPanel, BA_PANEL_CARD);
             genPanel.add(klGenPanel, KL_PANEL_CARD);
             
-            latticeSpinner      =   new JSpinner();
-            clusteringSpinner   =   new JSpinner();   
+            latticeSpinner      =   new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
+            clusteringSpinner   =   new JSpinner(new SpinnerNumberModel(0, 0, 10, 1));   
             latticeSpinner.setPreferredSize(new Dimension(50, 20));
             clusteringSpinner.setPreferredSize(new Dimension(50, 20));
             latticeSpinner.setValue(15);
@@ -319,7 +319,7 @@ public class LayoutPanel extends JPanel
             computeBox.addItem("Shortest path");
             computeBox.addActionListener(this);
             
-            clusterEdgeRemoveSpinner    =   new JSpinner();
+            clusterEdgeRemoveSpinner    =   new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
             noClusterRadio              =   new JRadioButton("None");
             clusterRadio                =   new JRadioButton("Clusters");
             clusterCirclesRadio         =   new JRadioButton("Cluster circles");
@@ -384,7 +384,7 @@ public class LayoutPanel extends JPanel
             computePanel.add(computeBtn);
             
             CardLayout clusterInnerLayout   =   (CardLayout) computeInnerPanel.getLayout();
-            clusterInnerLayout.show(computeInnerPanel, CENTRALITY_PANEL_CARD);
+            clusterInnerLayout.show(computeInnerPanel, CLUSTER_PANEL_CARD);
             
             displayControlPanel.add(modePanel);
             displayControlPanel.add(simPanel);
