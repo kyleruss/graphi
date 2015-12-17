@@ -533,6 +533,8 @@ public class LayoutPanel extends JPanel
             {
                 if(editVertexRadio.isSelected())
                     screenPanel.dataPanel.addVertex();
+                else
+                    screenPanel.dataPanel.addEdge();
             }
             
             else if(src == gObjEditBtn)
@@ -734,6 +736,18 @@ public class LayoutPanel extends JPanel
                 }
             }
             
+            private void addEdge()
+            {
+                EdgeAddPanel addPanel   =   new EdgeAddPanel();
+                
+                int option  =   JOptionPane.showConfirmDialog(null, addPanel, "Add edge", JOptionPane.OK_CANCEL_OPTION);
+                
+                if(option == JOptionPane.OK_OPTION)
+                {
+                    
+                }
+            }
+            
             private int getDialogID(String message, Map collection)
             {
                 String idStr = JOptionPane.showInputDialog(message);
@@ -777,11 +791,44 @@ public class LayoutPanel extends JPanel
                     autoCheck      =   new JCheckBox("Auto");
                     nameField      =   new JTextField();
                     
-                    add(new JLabel("ID: "));
+                    add(new JLabel("ID "));
                     add(idSpinner, "width :40:");
                     add(autoCheck, "wrap");
                     add(new JLabel("Name: "));
                     add(nameField, "span 3, width :100:");
+                }
+            }
+            
+            private class EdgeAddPanel extends JPanel
+            {
+                private JSpinner idSpinner, fromSpinner, toSpinner, weightSpinner;
+                private JCheckBox autoCheck;
+                private JComboBox edgeTypeBox;
+                
+                public EdgeAddPanel()
+                {
+                    setLayout(new MigLayout());
+                    idSpinner       =   new JSpinner();
+                    fromSpinner     =   new JSpinner();
+                    toSpinner       =   new JSpinner();
+                    weightSpinner   =   new JSpinner();
+                    autoCheck       =   new JCheckBox("Auto");
+                    edgeTypeBox     =   new JComboBox();
+                    
+                    edgeTypeBox.addItem("Undirected");
+                    edgeTypeBox.addItem("Directed");
+                    
+                    add(new JLabel("ID "));
+                    add(idSpinner, "width :40:");
+                    add(autoCheck, "wrap");
+                    add(new JLabel("From vertex ID"));
+                    add(fromSpinner, "span 2, width :40:, wrap");
+                    add(new JLabel("To vertex ID"));
+                    add(toSpinner, "span 2, width :40:, wrap");
+                    add(new JLabel("Weight"));
+                    add(weightSpinner, "span 2, width :70:, wrap");
+                    add(new JLabel("Type"));
+                    add(edgeTypeBox, "span 2");
                 }
             }
         }
