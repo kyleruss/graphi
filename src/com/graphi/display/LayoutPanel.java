@@ -142,11 +142,12 @@ public class LayoutPanel extends JPanel
         
         private JSpinner latticeSpinner, clusteringSpinner;
         
-        private JPanel ioPanel;
+        /*private JPanel ioPanel;
         private JButton exportBtn, importBtn;
         private JLabel currentGraphLabel;
         private ButtonGroup storageGroup;
-        private JRadioButton storageGraphRadio, storageLogRadio;
+        private JRadioButton storageGraphRadio, storageLogRadio; */
+        private IOPanel ioPanel;
         
         private JPanel editPanel;
         private JLabel selectedLabel;
@@ -251,7 +252,7 @@ public class LayoutPanel extends JPanel
             CardLayout genCLayout   =   (CardLayout) genPanel.getLayout();
             genCLayout.show(genPanel, KL_PANEL_CARD);
             
-            ioPanel =   new JPanel(new GridLayout(3, 1));
+           /* ioPanel =   new JPanel(new GridLayout(3, 1));
             ioPanel.setBackground(TRANSPARENT);
             ioPanel.setBorder(BorderFactory.createTitledBorder("I/O Controls"));
             currentGraphLabel       =   new JLabel("None");
@@ -278,7 +279,7 @@ public class LayoutPanel extends JPanel
             ioPanel.add(currentGraphWrapper);
             ioPanel.add(storageOptsWrapper);
             ioPanel.add(storageBtnWrapper);
-            currentGraphLabel.setFont(new Font("Arial", Font.BOLD, 12));
+            currentGraphLabel.setFont(new Font("Arial", Font.BOLD, 12)); */
             
             editPanel       =   new JPanel(new GridLayout(3, 1));
             editPanel.setBorder(BorderFactory.createTitledBorder("Graph object Controls"));
@@ -400,10 +401,73 @@ public class LayoutPanel extends JPanel
             
             displayControlPanel.add(modePanel);
             displayControlPanel.add(simPanel);
-            displayControlPanel.add(ioPanel);
+            displayControlPanel.add(new IOPanel());
             displayControlPanel.add(editPanel);
             displayControlPanel.add(computePanel);
-            outputControlPanel.add(ioPanel);
+            outputControlPanel.add(new IOPanel());
+        }
+        
+        private class IOPanel extends JPanel implements ActionListener
+        {
+            private JPanel ioPanel;
+            private JButton exportBtn, importBtn;
+            private JLabel currentGraphLabel;
+            private ButtonGroup storageGroup;
+            private JRadioButton storageGraphRadio, storageLogRadio;
+            
+            public IOPanel()
+            {
+                setLayout(new GridLayout(3, 1));
+                setBackground(TRANSPARENT);
+                setBorder(BorderFactory.createTitledBorder("I/O Controls"));
+                currentGraphLabel       =   new JLabel("None");
+                importBtn               =   new JButton("Import");
+                exportBtn               =   new JButton("Export");
+                storageGroup            =   new ButtonGroup();
+                storageGraphRadio       =   new JRadioButton("Graph");
+                storageLogRadio         =   new JRadioButton("Log");
+                storageGroup.add(storageGraphRadio);
+                storageGroup.add(storageLogRadio);
+                importBtn.addActionListener(this);
+                exportBtn.addActionListener(this);
+                storageGraphRadio.addActionListener(this);
+                storageLogRadio.addActionListener(this);
+                importBtn.setBackground(Color.WHITE);
+                exportBtn.setBackground(Color.WHITE);
+
+                JPanel storageBtnWrapper    =   wrapComponents(null, importBtn, exportBtn);
+                JPanel currentGraphWrapper  =   wrapComponents(null, new JLabel("Active: "), currentGraphLabel);
+                JPanel storageOptsWrapper   =   wrapComponents(null, storageGraphRadio, storageLogRadio);
+                storageBtnWrapper.setBackground(TRANSPARENT);
+                currentGraphWrapper.setBackground(TRANSPARENT);
+                storageOptsWrapper.setBackground(new Color(200, 200, 200));
+                add(currentGraphWrapper);
+                add(storageOptsWrapper);
+                add(storageBtnWrapper);
+                currentGraphLabel.setFont(new Font("Arial", Font.BOLD, 12));
+            }
+
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                Object src  =   e.getSource();
+                
+                if(src == importBtn)
+                {
+                    if(storageGraphRadio.isSelected())
+                        importGraph();
+                    else
+                        importLog();
+                }
+
+                else if(src == exportBtn)
+                {
+                    if(storageGraphRadio.isSelected())
+                        exportGraph();
+                    else
+                        exportLog();
+                }
+            }
         }
         
         private void showCurrentComputePanel()
@@ -465,30 +529,23 @@ public class LayoutPanel extends JPanel
             if(src == computeBox)
                 showCurrentComputePanel();
             
-            else if(src == importBtn)
-            {
-                if(storageGraphRadio.isSelected())
-                    importGraph();
-                else
-                    importLog();
-            }
-            
-            else if(src == exportBtn)
-            {
-                if(storageGraphRadio.isSelected())
-                    exportGraph();
-                else
-                    exportLog();
-            }
-            
             else if(src == gObjAddBtn)
-                screenPanel.dataPanel.addVertex();
+            {
+                if(editVertexRadio.isSelected())
+                    screenPanel.dataPanel.addVertex();
+            }
             
             else if(src == gObjEditBtn)
-                screenPanel.dataPanel.editVertex();
+            {
+                if(editVertexRadio.isSelected())
+                    screenPanel.dataPanel.editVertex();
+            }
             
             else if(src == gObjRemoveBtn)
-                screenPanel.dataPanel.removeVertex();
+            {
+                if(editVertexRadio.isSelected())
+                    screenPanel.dataPanel.removeVertex();
+            }
         }
         
     }
