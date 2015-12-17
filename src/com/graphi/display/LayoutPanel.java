@@ -7,6 +7,7 @@ import com.graphi.sim.Node;
 import edu.uci.ics.jung.algorithms.layout.AggregateLayout;
 import edu.uci.ics.jung.algorithms.layout.FRLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
+import edu.uci.ics.jung.graph.util.EdgeType;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.control.CrossoverScalingControl;
 import edu.uci.ics.jung.visualization.control.EditingModalGraphMouse;
@@ -537,6 +538,7 @@ public class LayoutPanel extends JPanel
                 edgeDataModel.addColumn("FromVertex");
                 edgeDataModel.addColumn("ToVertex");
                 edgeDataModel.addColumn("Weight");
+                edgeDataModel.addColumn("EdgeType");
                 
                 dataTabPane.addTab("Vertex table", vertexScroller);
                 dataTabPane.addTab("Edge table", edgeScroller);
@@ -567,8 +569,27 @@ public class LayoutPanel extends JPanel
                     edgeDataModel.setRowCount(0);
                     for(Edge edge : edges)
                     {
-                        int eID         =   edge.getID();
-                        double weight   =   edge.getWeight();
+                        int eID                     =   edge.getID();
+                        double weight               =   edge.getWeight();
+                        Collection<Node> vertices   =   graph.getIncidentVertices(edge);
+                        String edgeType             =   graph.getEdgeType(edge).toString();
+                        Node n1, n2;
+                        int n1_id, n2_id;
+                        n1  =   vertices.iterator().next();
+                        n2  =   vertices.iterator().next();
+                        
+                        if(n1 != null)
+                            n1_id   =   n1.getID();
+                        else
+                            n1_id   =   -1;
+                        
+                        if(n2 != null)
+                            n2_id   =   n2.getID();
+                        else
+                            n2_id   =   -1;
+                        
+                        edgeDataModel.addRow(new Object[] { eID, n1_id, n2_id, weight, edgeType });
+                        
                     }
                 });
             }
