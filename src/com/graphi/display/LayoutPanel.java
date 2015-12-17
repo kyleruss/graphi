@@ -454,8 +454,8 @@ public class LayoutPanel extends JPanel
                 default: return;
             }
             
-            CardLayout clusterInnerLayout   =   (CardLayout) this.getLayout();
-            clusterInnerLayout.show(this, card);
+            CardLayout clusterInnerLayout   =   (CardLayout) computeInnerPanel.getLayout();
+            clusterInnerLayout.show(computeInnerPanel, card);
         }
         
         private void exportGraph()
