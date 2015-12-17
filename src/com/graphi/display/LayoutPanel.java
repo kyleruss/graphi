@@ -23,6 +23,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -73,6 +75,7 @@ public class LayoutPanel extends JPanel
     private File currentGraphFile, currentLogFile;
     private Map<Integer, Node> currentNodes;
     private Map<Integer, Edge> currentEdges;
+    private Object[] selectedItems;
     
     public LayoutPanel()
     {
@@ -283,7 +286,7 @@ public class LayoutPanel extends JPanel
             JPanel selectedPanel        =   wrapComponents(null, new JLabel("Selected: "), selectedLabel);
             JPanel editObjPanel         =   wrapComponents(null, editVertexRadio, editEdgeRadio);
             JPanel gObjOptsPanel        =   wrapComponents(null, gObjAddBtn, gObjEditBtn, gObjRemoveBtn);
-            selectedPanel.setBackground(TRANSPARENT);
+            selectedPanel.setBackground(new Color(200, 200, 200));
             gObjOptsPanel.setBackground(TRANSPARENT);
             editObjPanel.setBackground(new Color(200, 200, 200));
 
@@ -382,6 +385,27 @@ public class LayoutPanel extends JPanel
             displayControlPanel.add(editPanel);
             displayControlPanel.add(computePanel);
             outputControlPanel.add(new IOPanel());
+        }
+        
+        private void updateSelectedComponents()
+        {
+            if(selectedItems == null || selectedItems.length == 0)
+                selectedLabel.setText("None");
+            else
+            {
+                if(selectedItems.length > 1)
+                    selectedLabel.setText(selectedItems.length + " objects");
+                else
+                {
+                    Object selectedObj  =   selectedItems[0];
+                    if(selectedObj instanceof Node)
+                        selectedLabel.setText("Node (ID=" + ((Node) selectedObj).getID() + ")");
+                        
+                    
+                    else if(selectedObj instanceof Edge)
+                        selectedLabel.setText("Edge (ID=" + ((Edge) selectedObj).getID() + ")");
+                }
+            }
         }
         
         private class IOPanel extends JPanel implements ActionListener
@@ -941,7 +965,7 @@ public class LayoutPanel extends JPanel
             }
         }
         
-        private class GraphPanel extends JPanel
+        private class GraphPanel extends JPanel implements ItemListener
         {
             private final VisualizationViewer<Node, Edge> gViewer;
             private Layout<Node, Edge> gLayout;
@@ -963,8 +987,17 @@ public class LayoutPanel extends JPanel
                 
                 mouse       =   new EditingModalGraphMouse(gViewer.getRenderContext(), nFactory, eFactory);
                 gViewer.setGraphMouse(mouse);
+                gViewer.getPickedVertexState().addItemListener(this);
+                gViewer.getPickedEdgeState().addItemListener(this);
                 mouse.setMode(ModalGraphMouse.Mode.PICKING);
                 add(gViewer);
+            }
+
+            @Override
+            public void itemStateChanged(ItemEvent e)
+            {
+                selectedItems   =   e.getItemSelectable().getSelectedObjects();
+                controlPanel.updateSelectedComponents();
             }
         }
         
