@@ -150,7 +150,7 @@ public class LayoutPanel extends JPanel
         
         private JSpinner latticeSpinner, clusteringSpinner;
         
-        private IOPanel ioPanel;
+        private IOPanel ioPanelDisp, ioPanelOutput;
         private JPanel editPanel;
         private JLabel selectedLabel;
         private JButton gObjAddBtn, gObjEditBtn, gObjRemoveBtn;
@@ -188,6 +188,9 @@ public class LayoutPanel extends JPanel
             add(displayControlPanel, DISP_PANEL_CARD);
             add(dataControlPanel, DATA_PANEL_CARD);
             add(outputControlPanel, OUTPUT_PANEL_CARD);
+            
+            ioPanelDisp     =   new IOPanel();
+            ioPanelOutput   =   new IOPanel();   
             
             modePanel   =   new JPanel();
             modePanel.setPreferredSize(new Dimension(230, 100));
@@ -385,10 +388,10 @@ public class LayoutPanel extends JPanel
             
             displayControlPanel.add(modePanel);
             displayControlPanel.add(simPanel);
-            displayControlPanel.add(new IOPanel());
+            displayControlPanel.add(ioPanelDisp);
             displayControlPanel.add(editPanel);
             displayControlPanel.add(computePanel);
-            outputControlPanel.add(new IOPanel());
+            outputControlPanel.add(ioPanelOutput);
         }
         
         private void updateSelectedComponents()
@@ -421,6 +424,12 @@ public class LayoutPanel extends JPanel
             }
         }
         
+        private void resetSim()
+        {
+            currentGraph    =   new SparseMultigraph();
+            screenPanel.graphPanel.reloadGraph();
+        }
+        
         private void showKleinbergSim()
         {
             int latticeSize =   (int) latticeSpinner.getValue();
@@ -432,7 +441,7 @@ public class LayoutPanel extends JPanel
         private class IOPanel extends JPanel implements ActionListener
         {
             private JButton exportBtn, importBtn;
-            private JLabel currentGraphLabel;
+            private JLabel currentStorageLabel;
             private ButtonGroup storageGroup;
             private JRadioButton storageGraphRadio, storageLogRadio;
             
@@ -441,7 +450,7 @@ public class LayoutPanel extends JPanel
                 setLayout(new GridLayout(3, 1));
                 setBackground(TRANSPARENT);
                 setBorder(BorderFactory.createTitledBorder("I/O Controls"));
-                currentGraphLabel       =   new JLabel("None");
+                currentStorageLabel     =   new JLabel("None");
                 importBtn               =   new JButton("Import");
                 exportBtn               =   new JButton("Export");
                 storageGroup            =   new ButtonGroup();
@@ -458,7 +467,7 @@ public class LayoutPanel extends JPanel
                 storageGraphRadio.setSelected(true);
 
                 JPanel storageBtnWrapper    =   wrapComponents(null, importBtn, exportBtn);
-                JPanel currentGraphWrapper  =   wrapComponents(null, new JLabel("Active: "), currentGraphLabel);
+                JPanel currentGraphWrapper  =   wrapComponents(null, new JLabel("Active: "), currentStorageLabel);
                 JPanel storageOptsWrapper   =   wrapComponents(null, storageGraphRadio, storageLogRadio);
                 storageBtnWrapper.setBackground(TRANSPARENT);
                 currentGraphWrapper.setBackground(TRANSPARENT);
@@ -466,7 +475,7 @@ public class LayoutPanel extends JPanel
                 add(currentGraphWrapper);
                 add(storageOptsWrapper);
                 add(storageBtnWrapper);
-                currentGraphLabel.setFont(new Font("Arial", Font.BOLD, 12));
+                currentStorageLabel.setFont(new Font("Arial", Font.BOLD, 12));
             }
 
             @Override
@@ -523,6 +532,7 @@ public class LayoutPanel extends JPanel
             {
                 currentGraph        =   Storage.openGraph(file);
                 currentGraphFile    =   file;   
+                ioPanelDisp.currentStorageLabel.setText(file.getName());
                 
                 initCurrentNodes();
                 initCurrentEdges();
@@ -567,6 +577,7 @@ public class LayoutPanel extends JPanel
             if(file != null)
             {
                 currentLogFile  =   file;
+                ioPanelDisp.currentStorageLabel.setText(file.getName());
                 screenPanel.outputPanel.outputArea.setText(Storage.openOutputLog(file));
             }
         }
@@ -614,8 +625,10 @@ public class LayoutPanel extends JPanel
             
             else if(src == executeGeneratorBtn)
                 showGeneratorSim();
+            
+            else if(src == resetGeneratorBtn)
+                resetSim();
         }
-        
     }
     
     private class ScreenPanel extends JPanel implements ChangeListener
@@ -705,6 +718,7 @@ public class LayoutPanel extends JPanel
             private void loadNodes(Graph graph)
             {
                 Collection<Node> vertices   =   graph.getVertices();
+                currentNodes.clear();
                 SwingUtilities.invokeLater(() -> 
                 {
                     vertexDataModel.setRowCount(0);
@@ -712,6 +726,8 @@ public class LayoutPanel extends JPanel
                     {
                         int vID         =   vertex.getID();
                         String vName    =   vertex.getName();
+                        
+                        currentNodes.put(vID, vertex);
                         vertexDataModel.addRow(new Object[] { vID, vName });
                     }
                 });
@@ -720,6 +736,8 @@ public class LayoutPanel extends JPanel
             private void loadEdges(Graph graph)
             {
                 Collection<Edge> edges  =   graph.getEdges();
+                currentEdges.clear();
+                
                 SwingUtilities.invokeLater(() ->
                 {
                     edgeDataModel.setRowCount(0);
@@ -744,8 +762,8 @@ public class LayoutPanel extends JPanel
                         else
                             n2_id   =   -1;
                         
+                        currentEdges.put(eID, edge);
                         edgeDataModel.addRow(new Object[] { eID, n1_id, n2_id, weight, edgeType });
-                        
                     }
                 });
             }
