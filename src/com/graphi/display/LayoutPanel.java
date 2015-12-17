@@ -496,10 +496,33 @@ public class LayoutPanel extends JPanel
             {
                 currentGraph        =   Storage.openGraph(file);
                 currentGraphFile    =   file;   
+                
+                initCurrentNodes();
+                initCurrentEdges();
+                
+                screenPanel.graphPanel.gLayout.setGraph(currentGraph);
+                screenPanel.graphPanel.gViewer.repaint();
                 screenPanel.dataPanel.loadNodes(currentGraph);
                 screenPanel.dataPanel.loadEdges(currentGraph);
-                screenPanel.graphPanel.gViewer.repaint();
             }
+        }
+        
+        private void initCurrentNodes()
+        {
+            if(currentGraph == null) return;
+            
+            Collection<Node> nodes  =   currentGraph.getVertices();
+            for(Node node : nodes)
+                currentNodes.put(node.getID(), node);
+        }
+        
+        private void initCurrentEdges()
+        {
+            if(currentGraph == null) return;
+            
+            Collection<Edge> edges  =   currentGraph.getEdges();
+            for(Edge edge : edges)
+                currentEdges.put(edge.getID(), edge);
         }
         
         private void exportLog()
@@ -885,10 +908,9 @@ public class LayoutPanel extends JPanel
                 public EdgeAddPanel()
                 {
                     setLayout(new MigLayout());
-                    SpinnerNumberModel idModel  =   new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1);
-                    idSpinner       =   new JSpinner(idModel);
-                    fromSpinner     =   new JSpinner(idModel);
-                    toSpinner       =   new JSpinner(idModel);
+                    idSpinner       =   new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+                    fromSpinner     =   new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+                    toSpinner       =   new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
                     weightSpinner   =   new JSpinner(new SpinnerNumberModel(0.0, 0.0, 10000.0, 0.1));
                     autoCheck       =   new JCheckBox("Auto");
                     edgeTypeBox     =   new JComboBox();
