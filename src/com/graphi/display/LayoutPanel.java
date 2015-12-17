@@ -541,6 +541,8 @@ public class LayoutPanel extends JPanel
             {
                 if(editVertexRadio.isSelected())
                     screenPanel.dataPanel.editVertex();
+                else
+                    screenPanel.dataPanel.editEdge();
             }
             
             else if(src == gObjRemoveBtn)
@@ -695,6 +697,12 @@ public class LayoutPanel extends JPanel
                 if(option == JOptionPane.OK_OPTION)
                 {
                     int id      =   (int) addPanel.idSpinner.getValue();
+                    if(currentNodes.containsKey(id))
+                    {
+                        JOptionPane.showMessageDialog(null, "Vertex already exists");
+                        return;
+                    }
+                    
                     String name =   addPanel.nameField.getText();
                     Node node   =   new Node(id, name);
                     currentGraph.addVertex(node);
@@ -755,7 +763,20 @@ public class LayoutPanel extends JPanel
                     
                     int fromID          =   (int) addPanel.fromSpinner.getValue();
                     int toID            =   (int) addPanel.toSpinner.getValue();
-                    int weight          =   (int) addPanel.weightSpinner.getValue();
+                    
+                    double weight;
+                    try 
+                    { 
+                        weight = Double.parseDouble(addPanel.weightField.getText()); 
+                        if(weight < 0) throw new NumberFormatException();
+                    }
+                    
+                    catch(NumberFormatException e)
+                    {
+                        JOptionPane.showMessageDialog(null, "Invalit input found");
+                        return;
+                    }
+                    
                     int eType           =   addPanel.edgeTypeBox.getSelectedIndex();
                     EdgeType edgeType   =   (eType == 0)? EdgeType.UNDIRECTED : EdgeType.DIRECTED;
                     
@@ -764,6 +785,8 @@ public class LayoutPanel extends JPanel
                         Edge edge       =   new Edge(id, weight, edgeType);
                         Node n1         =   currentNodes.get(fromID);
                         Node n2         =   currentNodes.get(toID);
+                        edge.setSourceNode(n1);
+                        edge.setDestNode(n2);
                         
                         currentEdges.put(id, edge);
                         currentGraph.addEdge(edge, n1, n2, edgeType);
@@ -772,6 +795,48 @@ public class LayoutPanel extends JPanel
                     }
                     
                     else JOptionPane.showMessageDialog(null, "Vertex ID does not exist");
+                }
+            }
+            
+            private void editEdge()
+            {
+                int id  =   getDialogID("Enter edge ID to edit", currentEdges);
+                
+                if(id != -1)
+                {
+                    Edge editEdge           =   currentEdges.get(id);
+                    EdgeAddPanel editPanel  =   new EdgeAddPanel();
+                    editPanel.idSpinner.setValue(editEdge.getID());
+                    editPanel.fromSpinner.setValue(editEdge.getSourceNode().getID());
+                    editPanel.toSpinner.setValue(editEdge.getDestNode().getID());
+                    editPanel.weightField.setText("" + editEdge.getWeight());
+                    editPanel.edgeTypeBox.setSelectedIndex(editEdge.getEdgeType() == EdgeType.UNDIRECTED? 0 : 1);
+                    
+                    editPanel.fromSpinner.setEnabled(false);
+                    editPanel.toSpinner.setEnabled(false);
+                    editPanel.idSpinner.setEnabled(false);
+                    
+                    int option  =   JOptionPane.showConfirmDialog(null, editPanel, "Edit edge", JOptionPane.OK_CANCEL_OPTION);
+                    if(option == JOptionPane.OK_OPTION)
+                    {
+                        double weight;
+                        try 
+                        { 
+                            weight = Double.parseDouble(editPanel.weightField.getText()); 
+                            if(weight < 0) throw new NumberFormatException();
+                        }
+                        
+                        catch(NumberFormatException e)
+                        {
+                            JOptionPane.showMessageDialog(null, "Invalit input found");
+                            return;
+                        }
+                        
+                        editEdge.setWeight(weight);
+                        editEdge.setEdgeType(editPanel.edgeTypeBox.getSelectedIndex() == 0? EdgeType.UNDIRECTED : EdgeType.DIRECTED);
+                        loadEdges(currentGraph);
+                        graphPanel.gViewer.repaint();
+                    }
                 }
             }
             
@@ -841,9 +906,10 @@ public class LayoutPanel extends JPanel
             
             private class EdgeAddPanel extends JPanel
             {
-                private JSpinner idSpinner, fromSpinner, toSpinner, weightSpinner;
+                private JSpinner idSpinner, fromSpinner, toSpinner;
                 private JCheckBox autoCheck;
                 private JComboBox edgeTypeBox;
+                private JTextField weightField;
                 
                 public EdgeAddPanel()
                 {
@@ -851,7 +917,7 @@ public class LayoutPanel extends JPanel
                     idSpinner       =   new JSpinner();
                     fromSpinner     =   new JSpinner();
                     toSpinner       =   new JSpinner();
-                    weightSpinner   =   new JSpinner();
+                    weightField     =   new JTextField();
                     autoCheck       =   new JCheckBox("Auto");
                     edgeTypeBox     =   new JComboBox();
                     
@@ -866,7 +932,7 @@ public class LayoutPanel extends JPanel
                     add(new JLabel("To vertex ID"));
                     add(toSpinner, "span 2, width :40:, wrap");
                     add(new JLabel("Weight"));
-                    add(weightSpinner, "span 2, width :70:, wrap");
+                    add(weightField, "span 2, width :70:, wrap");
                     add(new JLabel("Type"));
                     add(edgeTypeBox, "span 2");
                 }
