@@ -475,6 +475,9 @@ public class LayoutPanel extends JPanel
             
             else if(src == gObjEditBtn)
                 screenPanel.dataPanel.editVertex();
+            
+            else if(src == gObjRemoveBtn)
+                screenPanel.dataPanel.removeVertex();
         }
         
     }
@@ -647,6 +650,19 @@ public class LayoutPanel extends JPanel
                         editNode.setName(editPanel.nameField.getText());
                         loadNodes(currentGraph);
                     }
+                }
+            }
+            
+            private void removeVertex()
+            {
+                int id  =   getDialogID("Enter vertex ID to remove", currentNodes);
+                
+                if(id != -1)
+                {
+                    Node removedNode    =   currentNodes.remove(id);
+                    currentGraph.removeVertex(removedNode);
+                    loadNodes(currentGraph);
+                    graphPanel.gViewer.repaint();
                 }
             }
             
