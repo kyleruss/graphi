@@ -26,6 +26,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -76,6 +77,8 @@ public class LayoutPanel extends JPanel
         setPreferredSize(new Dimension(930, 650));
         
         currentGraph    =   new SerialGraph<>();
+        currentNodes    =   new HashMap<>();
+        currentEdges    =   new HashMap<>();
         controlPanel    =   new ControlPanel();
         screenPanel     =   new ScreenPanel();
         splitPane       =   new JSplitPane();
@@ -469,6 +472,9 @@ public class LayoutPanel extends JPanel
             
             else if(src == gObjAddBtn)
                 screenPanel.dataPanel.addVertex();
+            
+            else if(src == gObjEditBtn)
+                screenPanel.dataPanel.editVertex();
         }
         
     }
@@ -607,28 +613,85 @@ public class LayoutPanel extends JPanel
             
             private void addVertex()
             {
-                JPanel addPanel         =   new JPanel(new MigLayout());
-                JSpinner idSpinner      =   new JSpinner();   
-                JCheckBox autoCheck     =   new JCheckBox("Auto");
-                JTextField nameField    =   new JTextField();
-                
-                addPanel.add(new JLabel("ID: "));
-                addPanel.add(idSpinner, "width :40:");
-                addPanel.add(autoCheck, "wrap");
-                addPanel.add(new JLabel("Name: "));
-                addPanel.add(nameField, "span 3, width :100:");
+                VertexAddPanel addPanel =   new VertexAddPanel();
                 
                 int option  =   JOptionPane.showConfirmDialog(null, addPanel, "Add vertex", JOptionPane.OK_CANCEL_OPTION);
                 
                 if(option == JOptionPane.OK_OPTION)
                 {
-                    Node node   =   new Node((int) idSpinner.getValue(), nameField.getText());
+                    int id      =   (int) addPanel.idSpinner.getValue();
+                    String name =   addPanel.nameField.getText();
+                    Node node   =   new Node(id, name);
                     currentGraph.addVertex(node);
                     graphPanel.gViewer.repaint();
                     loadNodes(currentGraph);
+                    currentNodes.put(id, node);
                 }
             }
             
+            private void editVertex()
+            {
+                int id  =   getDialogID("Enter vertex ID to edit", currentNodes);
+                    
+                if(id != -1)
+                {
+                    Node editNode               =   currentNodes.get(id);
+                    VertexAddPanel editPanel    =   new VertexAddPanel();
+                    editPanel.idSpinner.setValue(id);
+                    editPanel.nameField.setText(editNode.getName());
+                }
+            }
+            
+            private int getDialogID(String message, Map collection)
+            {
+                String idStr = JOptionPane.showInputDialog(message);
+                int id = -1;
+                while(idStr != null && id == -1)
+                {
+                    try
+                    {
+                        id  =   Integer.parseInt(idStr);
+                        if(collection.containsKey(id))
+                            break;
+                        else
+                        {
+                            id      =   -1;
+                            JOptionPane.showMessageDialog(null, "ID was not found");
+                            idStr   =   JOptionPane.showInputDialog(message);
+                        }
+                    }
+                    
+                    catch(NumberFormatException e)
+                    {
+                        JOptionPane.showMessageDialog(null, "Invalid input found");
+                        idStr = JOptionPane.showInputDialog(message);
+                    }
+                }
+                
+                return id;
+            }
+           
+            
+            private class VertexAddPanel extends JPanel
+            {
+                private JSpinner idSpinner;
+                private JCheckBox autoCheck;
+                private JTextField nameField;
+                
+                public VertexAddPanel()
+                {
+                    setLayout(new MigLayout());
+                    idSpinner      =   new JSpinner();   
+                    autoCheck      =   new JCheckBox("Auto");
+                    nameField      =   new JTextField();
+                    
+                    add(new JLabel("ID: "));
+                    add(idSpinner, "width :40:");
+                    add(autoCheck, "wrap");
+                    add(new JLabel("Name: "));
+                    add(nameField, "span 3, width :100:");
+                }
+            }
         }
         
         private class GraphPanel extends JPanel
