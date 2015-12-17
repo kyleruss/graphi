@@ -26,6 +26,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -34,6 +35,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -65,6 +67,8 @@ public class LayoutPanel extends JPanel
     public static final Color TRANSPARENT   =   new Color(255, 255, 255, 0);
     private SerialGraph<Node, Edge> currentGraph;
     private File currentGraphFile, currentLogFile;
+    private Map<Integer, Node> currentNodes;
+    private Map<Integer, Edge> currentEdges;
     
     public LayoutPanel()
     {
@@ -284,6 +288,10 @@ public class LayoutPanel extends JPanel
             gObjRemoveBtn.setBackground(Color.WHITE);
             selectedLabel.setFont(new Font("Arial", Font.BOLD, 12));
             
+            gObjAddBtn.addActionListener(this);
+            gObjEditBtn.addActionListener(this);
+            gObjRemoveBtn.addActionListener(this);
+            
             JPanel selectedPanel    =   wrapComponents(null, new JLabel("Selected: "), selectedLabel);
             JPanel gObjPanel        =   wrapComponents(null, gObjAddBtn, gObjEditBtn, gObjRemoveBtn);
             selectedPanel.setBackground(TRANSPARENT);
@@ -458,6 +466,9 @@ public class LayoutPanel extends JPanel
                 else
                     exportLog();
             }
+            
+            else if(src == gObjAddBtn)
+                screenPanel.dataPanel.addVertex();
         }
         
     }
@@ -593,6 +604,31 @@ public class LayoutPanel extends JPanel
                     }
                 });
             }
+            
+            private void addVertex()
+            {
+                JPanel addPanel         =   new JPanel(new MigLayout());
+                JSpinner idSpinner      =   new JSpinner();   
+                JCheckBox autoCheck     =   new JCheckBox("Auto");
+                JTextField nameField    =   new JTextField();
+                
+                addPanel.add(new JLabel("ID: "));
+                addPanel.add(idSpinner, "width :40:");
+                addPanel.add(autoCheck, "wrap");
+                addPanel.add(new JLabel("Name: "));
+                addPanel.add(nameField, "span 3, width :100:");
+                
+                int option  =   JOptionPane.showConfirmDialog(null, addPanel, "Add vertex", JOptionPane.OK_CANCEL_OPTION);
+                
+                if(option == JOptionPane.OK_OPTION)
+                {
+                    Node node   =   new Node((int) idSpinner.getValue(), nameField.getText());
+                    currentGraph.addVertex(node);
+                    graphPanel.gViewer.repaint();
+                    loadNodes(currentGraph);
+                }
+            }
+            
         }
         
         private class GraphPanel extends JPanel
