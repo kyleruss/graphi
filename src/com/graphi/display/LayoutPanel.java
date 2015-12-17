@@ -547,6 +547,8 @@ public class LayoutPanel extends JPanel
             {
                 if(editVertexRadio.isSelected())
                     screenPanel.dataPanel.removeVertex();
+                else
+                    screenPanel.dataPanel.removeEdge();
             }
         }
         
@@ -744,7 +746,7 @@ public class LayoutPanel extends JPanel
                 
                 if(option == JOptionPane.OK_OPTION)
                 {
-                    int id              =   (int) addPanel.idSpinner.getValue();
+                    int id  =   (int) addPanel.idSpinner.getValue();
                     if(currentEdges.containsKey(id))
                     {
                         JOptionPane.showMessageDialog(null, "Edge ID already exists");
@@ -762,12 +764,27 @@ public class LayoutPanel extends JPanel
                         Edge edge       =   new Edge(id, weight, edgeType);
                         Node n1         =   currentNodes.get(fromID);
                         Node n2         =   currentNodes.get(toID);
+                        
+                        currentEdges.put(id, edge);
                         currentGraph.addEdge(edge, n1, n2, edgeType);
                         loadEdges(currentGraph);
                         graphPanel.gViewer.repaint();
                     }
                     
                     else JOptionPane.showMessageDialog(null, "Vertex ID does not exist");
+                }
+            }
+            
+            private void removeEdge()
+            {
+                int id  =   getDialogID("Enter edge ID to remove", currentEdges);
+                
+                if(id != -1)
+                {
+                    Edge removeEdge =   currentEdges.get(id);
+                    currentGraph.removeEdge(removeEdge);
+                    loadEdges(currentGraph);
+                    graphPanel.gViewer.repaint();
                 }
             }
             
