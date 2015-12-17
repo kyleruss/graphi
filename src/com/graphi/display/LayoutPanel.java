@@ -200,6 +200,7 @@ public class LayoutPanel extends JPanel
             modePanel.add(editCheck);
             modePanel.add(selectCheck);
             modePanel.add(moveCheck);
+            selectCheck.setSelected(true);
             
             genAlgorithmsBox        =   new JComboBox();
             genAlgorithmsBox.addItem("Kleinberg");
@@ -232,6 +233,8 @@ public class LayoutPanel extends JPanel
             clusteringSpinner   =   new JSpinner();   
             latticeSpinner.setPreferredSize(new Dimension(50, 20));
             clusteringSpinner.setPreferredSize(new Dimension(50, 20));
+            latticeSpinner.setValue(15);
+            clusteringSpinner.setValue(2);
             
             JPanel klOptWrapper     =   new JPanel(new GridLayout(2, 2, 5, 10));
             klOptWrapper.add(new JLabel("Lattice size"));
@@ -246,35 +249,6 @@ public class LayoutPanel extends JPanel
             simPanel.add(generatorControls);
             CardLayout genCLayout   =   (CardLayout) genPanel.getLayout();
             genCLayout.show(genPanel, KL_PANEL_CARD);
-            
-           /* ioPanel =   new JPanel(new GridLayout(3, 1));
-            ioPanel.setBackground(TRANSPARENT);
-            ioPanel.setBorder(BorderFactory.createTitledBorder("I/O Controls"));
-            currentGraphLabel       =   new JLabel("None");
-            importBtn               =   new JButton("Import");
-            exportBtn               =   new JButton("Export");
-            storageGroup            =   new ButtonGroup();
-            storageGraphRadio       =   new JRadioButton("Graph");
-            storageLogRadio         =   new JRadioButton("Log");
-            storageGroup.add(storageGraphRadio);
-            storageGroup.add(storageLogRadio);
-            importBtn.addActionListener(this);
-            exportBtn.addActionListener(this);
-            storageGraphRadio.addActionListener(this);
-            storageLogRadio.addActionListener(this);
-            importBtn.setBackground(Color.WHITE);
-            exportBtn.setBackground(Color.WHITE);
-            
-            JPanel storageBtnWrapper    =   wrapComponents(null, importBtn, exportBtn);
-            JPanel currentGraphWrapper  =   wrapComponents(null, new JLabel("Active: "), currentGraphLabel);
-            JPanel storageOptsWrapper   =   wrapComponents(null, storageGraphRadio, storageLogRadio);
-            storageBtnWrapper.setBackground(TRANSPARENT);
-            currentGraphWrapper.setBackground(TRANSPARENT);
-            storageOptsWrapper.setBackground(new Color(200, 200, 200));
-            ioPanel.add(currentGraphWrapper);
-            ioPanel.add(storageOptsWrapper);
-            ioPanel.add(storageBtnWrapper);
-            currentGraphLabel.setFont(new Font("Arial", Font.BOLD, 12)); */
             
             editPanel       =   new JPanel(new GridLayout(3, 1));
             editPanel.setBorder(BorderFactory.createTitledBorder("Graph object Controls"));
@@ -298,6 +272,7 @@ public class LayoutPanel extends JPanel
             
             editObjGroup.add(editVertexRadio);
             editObjGroup.add(editEdgeRadio);
+            editVertexRadio.setSelected(true);
             
             JPanel selectedPanel        =   wrapComponents(null, new JLabel("Selected: "), selectedLabel);
             JPanel editObjPanel         =   wrapComponents(null, editVertexRadio, editEdgeRadio);
@@ -372,6 +347,7 @@ public class LayoutPanel extends JPanel
             centralityTypeBox.addItem("Eigenvector");
             centralityTypeBox.addItem("PageRank");
             centralityTypeBox.addActionListener(this);
+            centralityAllRadio.setSelected(true);
             
             JPanel cenTypePanel     =   wrapComponents(null, new JLabel("Type"), centralityTypeBox);
             JPanel cenOptPanel      =   wrapComponents(null, centralityAllRadio, centralitySelectedRadio);
@@ -404,7 +380,6 @@ public class LayoutPanel extends JPanel
         
         private class IOPanel extends JPanel implements ActionListener
         {
-            private JPanel ioPanel;
             private JButton exportBtn, importBtn;
             private JLabel currentGraphLabel;
             private ButtonGroup storageGroup;
@@ -429,6 +404,7 @@ public class LayoutPanel extends JPanel
                 storageLogRadio.addActionListener(this);
                 importBtn.setBackground(Color.WHITE);
                 exportBtn.setBackground(Color.WHITE);
+                storageGraphRadio.setSelected(true);
 
                 JPanel storageBtnWrapper    =   wrapComponents(null, importBtn, exportBtn);
                 JPanel currentGraphWrapper  =   wrapComponents(null, new JLabel("Active: "), currentGraphLabel);
@@ -511,6 +487,7 @@ public class LayoutPanel extends JPanel
         {
             if(currentGraph == null) return;
             
+            currentNodes.clear();
             Collection<Node> nodes  =   currentGraph.getVertices();
             for(Node node : nodes)
                 currentNodes.put(node.getID(), node);
@@ -520,6 +497,7 @@ public class LayoutPanel extends JPanel
         {
             if(currentGraph == null) return;
             
+            currentEdges.clear();
             Collection<Edge> edges  =   currentGraph.getEdges();
             for(Edge edge : edges)
                 currentEdges.put(edge.getID(), edge);
@@ -841,7 +819,7 @@ public class LayoutPanel extends JPanel
                 
                 if(id != -1)
                 {
-                    Edge removeEdge =   currentEdges.get(id);
+                    Edge removeEdge =   currentEdges.remove(id);
                     currentGraph.removeEdge(removeEdge);
                     loadEdges(currentGraph);
                     graphPanel.gViewer.repaint();
