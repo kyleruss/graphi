@@ -702,6 +702,9 @@ public class LayoutPanel extends JPanel
                         
                         currentNodes.put(vID, vertex);
                         vertexDataModel.addRow(new Object[] { vID, vName });
+                        
+                        if(vID > lastNodeID)
+                            lastNodeID = vID;
                     }
                 });
             }
@@ -743,6 +746,9 @@ public class LayoutPanel extends JPanel
                         
                         currentEdges.put(eID, edge);
                         edgeDataModel.addRow(new Object[] { eID, n1_id, n2_id, weight, edgeType });
+                        
+                        if(eID > lastEdgeID)
+                            lastEdgeID = eID;
                     }
                 });
             }
