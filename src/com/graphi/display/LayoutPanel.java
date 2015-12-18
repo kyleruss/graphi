@@ -359,6 +359,8 @@ public class LayoutPanel extends JPanel
             centralityOptions.add(centralitySelectedRadio);
             centralityTypeBox.addItem("Eigenvector");
             centralityTypeBox.addItem("PageRank");
+            centralityTypeBox.addItem("Closeness");
+            centralityTypeBox.addItem("Betweenness");
             centralityTypeBox.addActionListener(this);
             centralityAllRadio.setSelected(true);
             
@@ -1192,22 +1194,25 @@ public class LayoutPanel extends JPanel
                 switch(selectedCentrality)
                 {
                     case 0: 
+                        centrality  =   new EigenvectorCentrality(currentGraph, new WeightTransformer()); 
+                        prefix      =   "EigenVector";
+                        break;
+                        
+                    case 1: 
                         centrality  =   new PageRank<>(currentGraph, new WeightTransformer(), 0.15);
                         prefix      =   "PageRank";
                         break;
                         
-                    case 1: 
-                        centrality  =   new EigenvectorCentrality(currentGraph, new WeightTransformer()); 
-                        prefix      =   "EigenVector";
-                        break;
-                    case 2: 
-                        centrality  =   new BetweennessCentrality(currentGraph, new WeightTransformer()); 
-                        prefix      =   "Betweenness";
-                        break;
                     case 3: 
                         centrality  =   new ClosenessCentrality(currentGraph, new WeightTransformer()); 
                         prefix      =   "Closeness";
                         break;
+                        
+                    case 2: 
+                        centrality  =   new BetweennessCentrality(currentGraph, new WeightTransformer()); 
+                        prefix      =   "Betweenness";
+                        break;
+                        
                     default: return;
                 }
                 
