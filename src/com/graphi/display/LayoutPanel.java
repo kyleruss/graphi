@@ -36,6 +36,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -408,6 +409,8 @@ public class LayoutPanel extends JPanel
         private void showGeneratorSim()
         {
             int genIndex    =   genAlgorithmsBox.getSelectedIndex();
+            lastNodeID      =   0;
+            lastEdgeID      =   0;
             switch(genIndex)
             {
                 case 0: showKleinbergSim();
@@ -520,6 +523,8 @@ public class LayoutPanel extends JPanel
             File file   =   getFile(true);
             if(file != null)
             {
+                lastNodeID          =   0;
+                lastEdgeID          =   0;
                 currentGraph        =   Storage.openGraph(file);
                 currentGraphFile    =   file;   
                 ioPanel.currentStorageLabel.setText(file.getName());
@@ -718,8 +723,9 @@ public class LayoutPanel extends JPanel
                         String edgeType             =   graph.getEdgeType(edge).toString();
                         Node n1, n2;
                         int n1_id, n2_id;
-                        n1  =   vertices.iterator().next();
-                        n2  =   vertices.iterator().next();
+                        Iterator<Node> iter         =   vertices.iterator();
+                        n1  =   iter.next();
+                        n2  =   iter.next();
                         
                         if(n1 != null)
                             n1_id   =   n1.getID();
