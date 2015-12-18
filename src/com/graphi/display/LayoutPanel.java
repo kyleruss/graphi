@@ -769,13 +769,25 @@ public class LayoutPanel extends JPanel
             
             private void editVertex()
             {
-                int id  =   getDialogID("Enter vertex ID to edit", currentNodes);
-                    
-                if(id != -1)
+                Node editNode;
+                Set<Node> selectedVertices      =   graphPanel.gViewer.getPickedVertexState().getPicked();
+                
+                if(selectedVertices.size() == 1)
+                    editNode = selectedVertices.iterator().next();
+                else
                 {
-                    Node editNode               =   currentNodes.get(id);
+                    int id      =   getDialogID("Enter vertex ID to edit", currentNodes);
+                    
+                    if(id != -1)
+                        editNode    =   currentNodes.get(id);
+                    else
+                        return;
+                }
+                    
+                if(editNode != null)
+                {
                     VertexAddPanel editPanel    =   new VertexAddPanel();
-                    editPanel.idSpinner.setValue(id);
+                    editPanel.idSpinner.setValue(editNode.getID());
                     editPanel.nameField.setText(editNode.getName());
                     
                     int option  =   JOptionPane.showConfirmDialog(null, editPanel, "Edit vertex", JOptionPane.OK_CANCEL_OPTION);
