@@ -8,8 +8,10 @@ import edu.uci.ics.jung.algorithms.layout.AggregateLayout;
 import edu.uci.ics.jung.algorithms.layout.FRLayout;
 import edu.uci.ics.jung.algorithms.scoring.BetweennessCentrality;
 import edu.uci.ics.jung.algorithms.scoring.ClosenessCentrality;
+import edu.uci.ics.jung.algorithms.scoring.DistanceCentralityScorer;
 import edu.uci.ics.jung.algorithms.scoring.EigenvectorCentrality;
 import edu.uci.ics.jung.algorithms.scoring.PageRank;
+import edu.uci.ics.jung.algorithms.scoring.VertexScorer;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
@@ -33,6 +35,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -415,7 +418,7 @@ public class LayoutPanel extends JPanel
             switch(selectedIndex)
             {
                 case 0: screenPanel.graphPanel.showCluster();
-                case 1: screenPanel.graphPanel.showCentrality(0);
+                case 1: screenPanel.graphPanel.showCentrality();
             }
         }
         
@@ -1180,14 +1183,41 @@ public class LayoutPanel extends JPanel
                 gViewer.repaint();
             }
             
-            private void showCentrality(int type)
+            private void showCentrality()
             {
-                ClosenessCentrality<Node, Edge> centrality    =   new ClosenessCentrality<>(currentGraph);
+                VertexScorer<Node, Double> centrality;
+                int selectedCentrality  =   controlPanel.centralityTypeBox.getSelectedIndex();
+                String prefix;
+                
+                switch(selectedCentrality)
+                {
+                    case 0: 
+                        centrality  =   new PageRank<>(currentGraph, new WeightTransformer(), 0.15);
+                        prefix      =   "PageRank";
+                        break;
+                        
+                    case 1: 
+                        centrality  =   new EigenvectorCentrality(currentGraph, new WeightTransformer()); 
+                        prefix      =   "EigenVector";
+                        break;
+                    case 2: 
+                        centrality  =   new BetweennessCentrality(currentGraph, new WeightTransformer()); 
+                        prefix      =   "Betweenness";
+                        break;
+                    case 3: 
+                        centrality  =   new ClosenessCentrality(currentGraph, new WeightTransformer()); 
+                        prefix      =   "Closeness";
+                        break;
+                    default: return;
+                }
+                
+                
                 Collection<Node> vertices                       =   currentGraph.getVertices();
                 for(Node node : vertices)
                 {
                     double score    =   centrality.getVertexScore(node);
-                    sendToOutput("Node: " + node.getID() + " score: " + score);
+                    String output   =   MessageFormat.format("({0}) Vertex: {1}, Score: {2}", prefix, node.getID(), score);
+                    sendToOutput(output);
                 }
             }
             
