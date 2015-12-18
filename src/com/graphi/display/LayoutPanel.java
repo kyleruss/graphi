@@ -6,7 +6,6 @@ import com.graphi.sim.Network;
 import com.graphi.sim.Node;
 import edu.uci.ics.jung.algorithms.layout.AggregateLayout;
 import edu.uci.ics.jung.algorithms.layout.FRLayout;
-import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
@@ -65,10 +64,6 @@ import org.apache.commons.collections15.Transformer;
 
 public class LayoutPanel extends JPanel
 {
-    private final String DATA_PANEL_CARD        =   "data_panel";
-    private final String OUTPUT_PANEL_CARD      =   "output_panel";
-    private final String DISP_PANEL_CARD        =   "display_panel";
-    
     private final ControlPanel controlPanel;
     private final ScreenPanel screenPanel;
     private final JSplitPane splitPane;
@@ -152,7 +147,7 @@ public class LayoutPanel extends JPanel
         
         private JSpinner latticeSpinner, clusteringSpinner;
         
-        private IOPanel ioPanelDisp, ioPanelOutput;
+        private IOPanel ioPanel;
         private JPanel editPanel;
         private JLabel selectedLabel;
         private JButton gObjAddBtn, gObjEditBtn, gObjRemoveBtn;
@@ -175,23 +170,12 @@ public class LayoutPanel extends JPanel
         
         public ControlPanel() 
         {
-            setLayout(new CardLayout());
+            setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             setBorder(BorderFactory.createEmptyBorder(15, 0, 3, 8));
             setPreferredSize(new Dimension(230, 800));
             setMinimumSize(new Dimension(230, 650));
             
-            dataControlPanel    =   new JPanel();
-            outputControlPanel  =   new JPanel();
-            displayControlPanel =   new JPanel();
-            dataControlPanel.setLayout(new BoxLayout(dataControlPanel, BoxLayout.Y_AXIS));
-            outputControlPanel.setLayout(new BoxLayout(outputControlPanel, BoxLayout.Y_AXIS));
-            displayControlPanel.setLayout(new BoxLayout(displayControlPanel, BoxLayout.Y_AXIS));
-            add(displayControlPanel, DISP_PANEL_CARD);
-            add(dataControlPanel, DATA_PANEL_CARD);
-            add(outputControlPanel, OUTPUT_PANEL_CARD);
-            
-            ioPanelDisp     =   new IOPanel();
-            ioPanelOutput   =   new IOPanel();   
+            ioPanel         =   new IOPanel();
             
             modePanel       =   new JPanel();
             simPanel        =   new JPanel();
@@ -380,12 +364,11 @@ public class LayoutPanel extends JPanel
             CardLayout clusterInnerLayout   =   (CardLayout) computeInnerPanel.getLayout();
             clusterInnerLayout.show(computeInnerPanel, CLUSTER_PANEL_CARD);
             
-            displayControlPanel.add(modePanel);
-            displayControlPanel.add(simPanel);
-            displayControlPanel.add(ioPanelDisp);
-            displayControlPanel.add(editPanel);
-            displayControlPanel.add(computePanel);
-            outputControlPanel.add(ioPanelOutput);
+            add(modePanel);
+            add(simPanel);
+            add(ioPanel);
+            add(editPanel);
+            add(computePanel);
         }
         
         private void updateSelectedComponents()
@@ -532,7 +515,7 @@ public class LayoutPanel extends JPanel
             {
                 currentGraph        =   Storage.openGraph(file);
                 currentGraphFile    =   file;   
-                ioPanelDisp.currentStorageLabel.setText(file.getName());
+                ioPanel.currentStorageLabel.setText(file.getName());
                 
                 initCurrentNodes();
                 initCurrentEdges();
@@ -577,7 +560,7 @@ public class LayoutPanel extends JPanel
             if(file != null)
             {
                 currentLogFile  =   file;
-                ioPanelDisp.currentStorageLabel.setText(file.getName());
+                ioPanel.currentStorageLabel.setText(file.getName());
                 screenPanel.outputPanel.outputArea.setText(Storage.openOutputLog(file));
             }
         }
@@ -665,18 +648,18 @@ public class LayoutPanel extends JPanel
             
             switch(selectedIndex)
             {
-                case 0: card = DISP_PANEL_CARD; break;
+                /*case 0: card = DISP_PANEL_CARD; break;
                 case 1: card = DATA_PANEL_CARD; break;
                 case 2: card = OUTPUT_PANEL_CARD; break;
-                default: return;
+                default: return; */
             }
             
             SwingUtilities.invokeLater(() ->
             {
-                CardLayout clusterInnerLayout   =   (CardLayout) controlPanel.getLayout();
+                /*CardLayout clusterInnerLayout   =   (CardLayout) controlPanel.getLayout();
                 controlPanel.setVisible(false);
-                clusterInnerLayout.show(controlPanel, card);
-                controlPanel.setVisible(true);
+                //clusterInnerLayout.show(controlPanel, card);
+                controlPanel.setVisible(true); */
             });
         }
 
