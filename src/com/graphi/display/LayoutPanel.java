@@ -22,6 +22,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.List;
 import java.awt.Paint;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,10 +30,14 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -55,8 +60,6 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.collections15.Factory;
@@ -74,6 +77,8 @@ public class LayoutPanel extends JPanel
     private File currentGraphFile, currentLogFile;
     private Map<Integer, Node> currentNodes;
     private Map<Integer, Edge> currentEdges;
+    private int lastNodeID;
+    private int lastEdgeID;
     private Object[] selectedItems;
     
     public LayoutPanel()
@@ -88,6 +93,8 @@ public class LayoutPanel extends JPanel
         screenPanel     =   new ScreenPanel();
         splitPane       =   new JSplitPane();
         controlScroll   =   new JScrollPane(controlPanel);
+        lastNodeID      =   0;
+        lastEdgeID      =   0;
 
         controlScroll.setBorder(null);
         splitPane.setLeftComponent(screenPanel);
@@ -417,7 +424,7 @@ public class LayoutPanel extends JPanel
         {
             int latticeSize =   (int) latticeSpinner.getValue();
             int clusterExp  =   (int) clusteringSpinner.getValue();
-            currentGraph    =   (Graph) Network.generateKleinberg(latticeSize, clusterExp);
+            currentGraph    =   (Graph) Network.generateKleinberg(latticeSize, clusterExp, new NodeFactory(), new EdgeFactory());
             screenPanel.graphPanel.reloadGraph();
         }
         
@@ -617,7 +624,7 @@ public class LayoutPanel extends JPanel
         }
     }
     
-    private class ScreenPanel extends JPanel implements ChangeListener
+    private class ScreenPanel extends JPanel
     {
         private final DataPanel dataPanel;
         private final GraphPanel graphPanel;
@@ -637,36 +644,7 @@ public class LayoutPanel extends JPanel
             tabPane.addTab("Display", graphPanel);
             tabPane.addTab("Data", dataPanel);
             tabPane.addTab("Output", outputPanel);
-            tabPane.addChangeListener(this);
             add(tabPane);
-        }
-        
-        private void showCurrentControlPanel()
-        {
-            int selectedIndex   =   screenPanel.tabPane.getSelectedIndex();
-            String card;
-            
-            switch(selectedIndex)
-            {
-                /*case 0: card = DISP_PANEL_CARD; break;
-                case 1: card = DATA_PANEL_CARD; break;
-                case 2: card = OUTPUT_PANEL_CARD; break;
-                default: return; */
-            }
-            
-            SwingUtilities.invokeLater(() ->
-            {
-                /*CardLayout clusterInnerLayout   =   (CardLayout) controlPanel.getLayout();
-                controlPanel.setVisible(false);
-                //clusterInnerLayout.show(controlPanel, card);
-                controlPanel.setVisible(true); */
-            });
-        }
-
-        @Override
-        public void stateChanged(ChangeEvent e)
-        {
-            showCurrentControlPanel();
         }
         
         private class DataPanel extends JPanel
@@ -685,6 +663,7 @@ public class LayoutPanel extends JPanel
                 edgeTable           =   new JTable(edgeDataModel);
                 vertexScroller      =   new JScrollPane(vertexTable);
                 edgeScroller        =   new JScrollPane(edgeTable);
+                vertexTable.setPreferredScrollableViewportSize(new Dimension(630, 500));
                 
                 vertexDataModel.addColumn("ID");
                 vertexDataModel.addColumn("Name");
@@ -703,7 +682,9 @@ public class LayoutPanel extends JPanel
             
             private void loadNodes(Graph graph)
             {
-                Collection<Node> vertices   =   graph.getVertices();
+                ArrayList<Node> vertices   =   new ArrayList<>(graph.getVertices());
+                Collections.sort(vertices, (Node n1, Node n2) -> Integer.compare(n1.getID(), n2.getID()));
+                
                 currentNodes.clear();
                 SwingUtilities.invokeLater(() -> 
                 {
@@ -721,7 +702,9 @@ public class LayoutPanel extends JPanel
             
             private void loadEdges(Graph graph)
             {
-                Collection<Edge> edges  =   graph.getEdges();
+                ArrayList<Edge> edges  =   new ArrayList<>(graph.getEdges());
+                Collections.sort(edges, (Edge e1, Edge e2) -> Integer.compare(e1.getID(), e2.getID())); 
+                
                 currentEdges.clear();
                 
                 SwingUtilities.invokeLater(() ->
@@ -1081,4 +1064,27 @@ public class LayoutPanel extends JPanel
         }
     }
     
+    
+    private class NodeFactory implements Factory<Node>
+    {
+        @Override
+        public Node create() 
+        {
+            lastNodeID++;
+            return new Node(lastNodeID, Integer.toHexString(lastNodeID));
+        }
+    }
+    
+    private class EdgeFactory implements Factory<Edge>
+    {
+        Random random   =   new Random();
+        
+        @Override
+        public Edge create() 
+        {
+            lastEdgeID++;
+            double weight   =   random.nextDouble() * 100.0;
+            return new Edge(lastEdgeID, weight, EdgeType.UNDIRECTED);
+        }
+    }
 }

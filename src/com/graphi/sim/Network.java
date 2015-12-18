@@ -17,10 +17,11 @@ import org.apache.commons.collections15.Factory;
 
 public class Network
 {
-    public static Graph<Node, Edge> generateKleinberg(int latticeSize, int clusterExp)
+    public static Graph<Node, Edge> generateKleinberg(int latticeSize, int clusterExp, Factory<Node> nodeFactory, Factory<Edge> edgeFactory)
     {
-        Factory<Node> nodeFactory                   =   () -> new Node();
-        Factory<Edge> edgeFactory                   =   () -> new Edge();
+        if(nodeFactory == null) nodeFactory         =   () -> new Node();
+        if(edgeFactory == null) edgeFactory         =   () -> new Edge();
+        
         Factory<Graph<Node, Edge>> graphFactory     =   () -> new SparseMultigraph<>();   
         
         KleinbergSmallWorldGenerator gen            =   new KleinbergSmallWorldGenerator(graphFactory, nodeFactory, edgeFactory, latticeSize, clusterExp);
