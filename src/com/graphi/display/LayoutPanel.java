@@ -728,6 +728,9 @@ public class LayoutPanel extends JPanel
                         n1  =   iter.next();
                         n2  =   iter.next();
                         
+                        edge.setSourceNode(n1);
+                        edge.setDestNode(n2);
+                        
                         if(n1 != null)
                             n1_id   =   n1.getID();
                         else
@@ -798,6 +801,7 @@ public class LayoutPanel extends JPanel
                 VertexAddPanel editPanel    =   new VertexAddPanel();
                 editPanel.idSpinner.setValue(editNode.getID());
                 editPanel.nameField.setText(editNode.getName());
+                editPanel.idSpinner.setEnabled(false);
 
                 int option  =   JOptionPane.showConfirmDialog(null, editPanel, "Edit vertex", JOptionPane.OK_CANCEL_OPTION);
                 if(option == JOptionPane.OK_OPTION)
