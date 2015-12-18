@@ -319,7 +319,6 @@ public class LayoutPanel extends JPanel
             
             computeBox.addItem("Clusters");
             computeBox.addItem("Centrality");
-            computeBox.addItem("Shortest path");
             computeBox.addActionListener(this);
             
             clusterEdgeRemoveSpinner    =   new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
@@ -416,7 +415,7 @@ public class LayoutPanel extends JPanel
             switch(selectedIndex)
             {
                 case 0: screenPanel.graphPanel.showCluster();
-                case 1: screenPanel.graphPanel.showCentrality();
+                case 1: screenPanel.graphPanel.showCentrality(0);
             }
         }
         
@@ -1181,7 +1180,7 @@ public class LayoutPanel extends JPanel
                 gViewer.repaint();
             }
             
-            private void showCentrality()
+            private void showCentrality(int type)
             {
                 ClosenessCentrality<Node, Edge> centrality    =   new ClosenessCentrality<>(currentGraph);
                 Collection<Node> vertices                       =   currentGraph.getVertices();
