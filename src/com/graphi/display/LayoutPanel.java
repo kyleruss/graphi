@@ -784,19 +784,16 @@ public class LayoutPanel extends JPanel
                         return;
                 }
                     
-                if(editNode != null)
+                VertexAddPanel editPanel    =   new VertexAddPanel();
+                editPanel.idSpinner.setValue(editNode.getID());
+                editPanel.nameField.setText(editNode.getName());
+
+                int option  =   JOptionPane.showConfirmDialog(null, editPanel, "Edit vertex", JOptionPane.OK_CANCEL_OPTION);
+                if(option == JOptionPane.OK_OPTION)
                 {
-                    VertexAddPanel editPanel    =   new VertexAddPanel();
-                    editPanel.idSpinner.setValue(editNode.getID());
-                    editPanel.nameField.setText(editNode.getName());
-                    
-                    int option  =   JOptionPane.showConfirmDialog(null, editPanel, "Edit vertex", JOptionPane.OK_CANCEL_OPTION);
-                    if(option == JOptionPane.OK_OPTION)
-                    {
-                        editNode.setID((int) editPanel.idSpinner.getValue());
-                        editNode.setName(editPanel.nameField.getText());
-                        loadNodes(currentGraph);
-                    }
+                    editNode.setID((int) editPanel.idSpinner.getValue());
+                    editNode.setName(editPanel.nameField.getText());
+                    loadNodes(currentGraph);
                 }
             }
             
@@ -869,44 +866,69 @@ public class LayoutPanel extends JPanel
             
             private void editEdge()
             {
-                int id  =   getDialogID("Enter edge ID to edit", currentEdges);
-                
-                if(id != -1)
+                Edge editEdge;
+                Set<Edge> selectedEdges =   graphPanel.gViewer.getPickedEdgeState().getPicked();
+                if(selectedEdges.size() == 1)
+                    editEdge    =   selectedEdges.iterator().next();
+                else
                 {
-                    Edge editEdge           =   currentEdges.get(id);
-                    EdgeAddPanel editPanel  =   new EdgeAddPanel();
-                    editPanel.idSpinner.setValue(editEdge.getID());
-                    editPanel.fromSpinner.setValue(editEdge.getSourceNode().getID());
-                    editPanel.toSpinner.setValue(editEdge.getDestNode().getID());
-                    editPanel.weightSpinner.setValue(editEdge.getWeight());
-                    editPanel.edgeTypeBox.setSelectedIndex(editEdge.getEdgeType() == EdgeType.UNDIRECTED? 0 : 1);
+                    int id  =   getDialogID("Enter edge ID to edit", currentEdges);
                     
-                    editPanel.fromSpinner.setEnabled(false);
-                    editPanel.toSpinner.setEnabled(false);
-                    editPanel.idSpinner.setEnabled(false);
-                    
-                    int option  =   JOptionPane.showConfirmDialog(null, editPanel, "Edit edge", JOptionPane.OK_CANCEL_OPTION);
-                    if(option == JOptionPane.OK_OPTION)
-                    {
-                        editEdge.setWeight((double) editPanel.weightSpinner.getValue());
-                        editEdge.setEdgeType(editPanel.edgeTypeBox.getSelectedIndex() == 0? EdgeType.UNDIRECTED : EdgeType.DIRECTED);
-                        loadEdges(currentGraph);
-                        graphPanel.gViewer.repaint();
-                    }
+                    if(id != -1)
+                        editEdge    =   currentEdges.get(id);
+                    else
+                        return;
+                }
+                
+                EdgeAddPanel editPanel  =   new EdgeAddPanel();
+                editPanel.idSpinner.setValue(editEdge.getID());
+                editPanel.fromSpinner.setValue(editEdge.getSourceNode().getID());
+                editPanel.toSpinner.setValue(editEdge.getDestNode().getID());
+                editPanel.weightSpinner.setValue(editEdge.getWeight());
+                editPanel.edgeTypeBox.setSelectedIndex(editEdge.getEdgeType() == EdgeType.UNDIRECTED? 0 : 1);
+
+                editPanel.fromSpinner.setEnabled(false);
+                editPanel.toSpinner.setEnabled(false);
+                editPanel.idSpinner.setEnabled(false);
+
+                int option  =   JOptionPane.showConfirmDialog(null, editPanel, "Edit edge", JOptionPane.OK_CANCEL_OPTION);
+                if(option == JOptionPane.OK_OPTION)
+                {
+                    editEdge.setWeight((double) editPanel.weightSpinner.getValue());
+                    editEdge.setEdgeType(editPanel.edgeTypeBox.getSelectedIndex() == 0? EdgeType.UNDIRECTED : EdgeType.DIRECTED);
+                    loadEdges(currentGraph);
+                    graphPanel.gViewer.repaint();
                 }
             }
             
             private void removeEdge()
             {
-                int id  =   getDialogID("Enter edge ID to remove", currentEdges);
+                Set<Edge> selectedEdges =   graphPanel.gViewer.getPickedEdgeState().getPicked();
                 
-                if(id != -1)
+                if(selectedEdges.isEmpty())
                 {
-                    Edge removeEdge =   currentEdges.remove(id);
-                    currentGraph.removeEdge(removeEdge);
-                    loadEdges(currentGraph);
-                    graphPanel.gViewer.repaint();
+                    int id  =   getDialogID("Enter edge ID to remove", currentEdges);
+
+                    if(id != -1)
+                    {
+                        Edge removeEdge =   currentEdges.remove(id);
+                        currentGraph.removeEdge(removeEdge);
+                    }
+                    
+                    else return;
                 }
+                
+                else
+                {
+                    for(Edge edge : selectedEdges)
+                    {
+                        currentEdges.remove(edge.getID());
+                        currentGraph.removeEdge(edge);
+                    }
+                }
+                
+                loadEdges(currentGraph);
+                graphPanel.gViewer.repaint();
             }
             
             private int getDialogID(String message, Map collection)
