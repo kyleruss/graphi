@@ -63,4 +63,22 @@ public class Node implements Serializable
     {
         this.id =   id;
     }
+    
+    @Override
+    public int hashCode()
+    {
+        return Integer.hashCode(id);
+    }
+    
+    @Override
+    public boolean equals(Object node)
+    {
+        if(node != null && node instanceof Node)
+        {
+            Node n2 =   (Node) node;
+            return Integer.compare(this.getID(), n2.getID()) == 0;
+        }
+        
+        else return false;
+    }
 }

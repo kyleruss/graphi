@@ -79,4 +79,22 @@ public class Edge implements Serializable
     {
         return destNode;
     }
+    
+    @Override
+    public int hashCode()
+    {
+        return Integer.hashCode(id);
+    }
+    
+    @Override
+    public boolean equals(Object edge)
+    {
+        if(edge != null && edge instanceof Edge)
+        {
+            Edge e2 =   (Edge) edge;
+            return Integer.compare(this.getID(), e2.getID()) == 0;
+        }
+        
+        else return false;
+    }
 }

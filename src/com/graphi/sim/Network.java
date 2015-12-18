@@ -11,6 +11,10 @@ import edu.uci.ics.jung.graph.SparseMultigraph;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Random;
 import java.util.Set;
 import org.apache.commons.collections15.Factory;
 
@@ -26,6 +30,45 @@ public class Network
         
         KleinbergSmallWorldGenerator gen            =   new KleinbergSmallWorldGenerator(graphFactory, nodeFactory, edgeFactory, latticeSize, clusterExp);
         return gen.create();
+    }
+    
+    public static Graph<Node, Edge> generateBerbasiAlbert(Factory<Node> nodeFactory, Factory<Edge> edgeFactory, int n, int m)
+    {
+        Graph<Node, Edge> graph =   new SparseMultigraph<>();
+        Node n1 =   nodeFactory.create();
+        Node n2 =   nodeFactory.create();
+        graph.addVertex(n1);
+        graph.addVertex(n2);
+        graph.addEdge(edgeFactory.create(), n1, n2);
+        
+        for(int i = 0; i < n; i++)
+        {
+            Node current    =   nodeFactory.create();
+            graph.addVertex(current);
+            
+            ArrayList<Node> vertices    =   new ArrayList<>(graph.getVertices());
+            Random rGen                 =   new Random();
+            
+            while(graph.degree(current) != m)
+            {
+                int index   =   rGen.nextInt(vertices.size());
+                Node next   =   vertices.get(index);
+                
+                if(!next.equals(current))
+                {
+                    int degree      =   graph.degree(next);
+                    int degreeSum   =   degreeSum(graph);
+                    double p        =   degree / (degreeSum * 1.0);
+
+                    if(p >= 0.5)
+                        graph.addEdge(edgeFactory.create(), current, next);
+                }
+                
+                vertices.remove(index);
+            }
+        }
+        
+        return graph;
     }
     
     public static void groupCluster(AggregateLayout layout, Set<Node> cluster)
@@ -64,5 +107,16 @@ public class Network
                     node.setColor(setColor);
             } 
         } 
+    }
+    
+    public static int degreeSum(Graph<Node, Edge> graph)
+    {
+        Collection<Node> vertices   =   graph.getVertices();
+        int sum =  0;
+        
+        for(Node node : vertices)
+            sum += graph.degree(node);
+        
+        return sum;
     }
 }
