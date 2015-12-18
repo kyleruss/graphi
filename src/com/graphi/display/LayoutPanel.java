@@ -802,6 +802,7 @@ public class LayoutPanel extends JPanel
                 editPanel.idSpinner.setValue(editNode.getID());
                 editPanel.nameField.setText(editNode.getName());
                 editPanel.idSpinner.setEnabled(false);
+                editPanel.autoCheck.setVisible(false);
 
                 int option  =   JOptionPane.showConfirmDialog(null, editPanel, "Edit vertex", JOptionPane.OK_CANCEL_OPTION);
                 if(option == JOptionPane.OK_OPTION)
@@ -939,6 +940,7 @@ public class LayoutPanel extends JPanel
                 editPanel.fromSpinner.setEnabled(false);
                 editPanel.toSpinner.setEnabled(false);
                 editPanel.idSpinner.setEnabled(false);
+                editPanel.autoCheck.setVisible(false);
 
                 int option  =   JOptionPane.showConfirmDialog(null, editPanel, "Edit edge", JOptionPane.OK_CANCEL_OPTION);
                 if(option == JOptionPane.OK_OPTION)
@@ -1024,7 +1026,7 @@ public class LayoutPanel extends JPanel
             }
            
             
-            private class VertexAddPanel extends JPanel
+            private class VertexAddPanel extends JPanel implements ActionListener
             {
                 private JSpinner idSpinner;
                 private JCheckBox autoCheck;
@@ -1037,15 +1039,28 @@ public class LayoutPanel extends JPanel
                     autoCheck      =   new JCheckBox("Auto");
                     nameField      =   new JTextField();
                     
+                    autoCheck.setSelected(true);
+                    idSpinner.setValue(lastNodeID + 1);
+                    idSpinner.setEnabled(false);
+                    
                     add(new JLabel("ID "));
                     add(idSpinner, "width :40:");
                     add(autoCheck, "wrap");
                     add(new JLabel("Name: "));
                     add(nameField, "span 3, width :100:");
+                    autoCheck.addActionListener(this);
+                }
+
+                @Override
+                public void actionPerformed(ActionEvent e) 
+                {
+                    Object src  =   e.getSource();
+                    if(src == autoCheck)
+                        idSpinner.setEnabled(!autoCheck.isSelected());
                 }
             }
             
-            private class EdgeAddPanel extends JPanel
+            private class EdgeAddPanel extends JPanel implements ActionListener
             {
                 private JSpinner idSpinner, fromSpinner, toSpinner, weightSpinner;
                 private JCheckBox autoCheck;
@@ -1064,6 +1079,11 @@ public class LayoutPanel extends JPanel
                     edgeTypeBox.addItem("Undirected");
                     edgeTypeBox.addItem("Directed");
                     
+                    idSpinner.setValue(lastEdgeID + 1);
+                    idSpinner.setEnabled(false);
+                    autoCheck.setSelected(true);
+                    autoCheck.addActionListener(this);
+                    
                     add(new JLabel("ID "));
                     add(idSpinner, "width :40:");
                     add(autoCheck, "wrap");
@@ -1075,6 +1095,14 @@ public class LayoutPanel extends JPanel
                     add(weightSpinner, "span 2, width :70:, wrap");
                     add(new JLabel("Type"));
                     add(edgeTypeBox, "span 2");
+                }
+
+                @Override
+                public void actionPerformed(ActionEvent e)
+                {
+                    Object src  =   e.getSource();
+                    if(src == autoCheck)
+                        idSpinner.setEnabled(!autoCheck.isSelected());
                 }
             }
         }
