@@ -36,6 +36,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
@@ -776,12 +777,22 @@ public class LayoutPanel extends JPanel
                     editNode = selectedVertices.iterator().next();
                 else
                 {
-                    int id      =   getDialogID("Enter vertex ID to edit", currentNodes);
+                    int[] selectedRows  =   dataPanel.vertexTable.getSelectedRows();
+                    if(selectedRows.length == 1)
+                    {
+                        int id      =   (int) dataPanel.vertexDataModel.getValueAt(selectedRows[0], 0);
+                        editNode    =   currentNodes.get(id);   
+                    }
                     
-                    if(id != -1)
-                        editNode    =   currentNodes.get(id);
                     else
-                        return;
+                    {
+                        int id      =   getDialogID("Enter vertex ID to edit", currentNodes);
+
+                        if(id != -1)
+                            editNode    =   currentNodes.get(id);
+                        else
+                            return;
+                    }
                 }
                     
                 VertexAddPanel editPanel    =   new VertexAddPanel();
@@ -797,30 +808,54 @@ public class LayoutPanel extends JPanel
                 }
             }
             
+            private void removeVertices(Set<Node> vertices)
+            {
+                if(vertices.isEmpty()) return;
+                
+                for(Node node : vertices)
+                {
+                    int id  =   node.getID();
+                    currentNodes.remove(id);
+                    currentGraph.removeVertex(node);
+                    graphPanel.gViewer.repaint();
+                    loadNodes(currentGraph);
+                }
+            }
+            
             private void removeVertex()
             {
                 Set<Node> pickedNodes    =   graphPanel.gViewer.getPickedVertexState().getPicked();
                 if(!pickedNodes.isEmpty())
-                {
-                    for(Node node : pickedNodes)
-                    {
-                        int id  =   node.getID();
-                        currentNodes.remove(id);
-                        currentGraph.removeVertex(node);
-                        graphPanel.gViewer.repaint();
-                        loadNodes(currentGraph);
-                    }
-                }
+                    removeVertices(pickedNodes);
                 
                 else
                 {
-                    int id  =   getDialogID("Enter vertex ID to remove", currentNodes);
-                    if(id != -1)
+                    int[] selectedRows  =   dataPanel.vertexTable.getSelectedRows();
+                    if(selectedRows.length > 0)
                     {
-                        Node removedNode    =   currentNodes.remove(id);
-                        currentGraph.removeVertex(removedNode);
-                        loadNodes(currentGraph);
-                        graphPanel.gViewer.repaint();
+                        Set<Node> selectedNodes  =   new HashSet<>();
+                        for(int row : selectedRows)
+                        {
+                            int id          =   (int) dataPanel.vertexDataModel.getValueAt(row, 0);
+                            Node current    =   currentNodes.get(id);
+                            
+                            if(current != null)
+                                selectedNodes.add(current);
+                        }
+                        
+                        removeVertices(selectedNodes);
+                    }
+                    
+                    else
+                    {
+                        int id  =   getDialogID("Enter vertex ID to remove", currentNodes);
+                        if(id != -1)
+                        {
+                            Node removedNode    =   currentNodes.remove(id);
+                            currentGraph.removeVertex(removedNode);
+                            loadNodes(currentGraph);
+                            graphPanel.gViewer.repaint();
+                        }
                     }
                 }
             }
@@ -872,12 +907,22 @@ public class LayoutPanel extends JPanel
                     editEdge    =   selectedEdges.iterator().next();
                 else
                 {
-                    int id  =   getDialogID("Enter edge ID to edit", currentEdges);
-                    
-                    if(id != -1)
+                    int[] selectedRows  =   dataPanel.edgeTable.getSelectedRows();
+                    if(selectedRows.length == 1)
+                    {
+                        int id      =   (int) dataPanel.edgeDataModel.getValueAt(selectedRows[0], 0);
                         editEdge    =   currentEdges.get(id);
+                    }
+                    
                     else
-                        return;
+                    {
+                        int id  =   getDialogID("Enter edge ID to edit", currentEdges);
+
+                        if(id != -1)
+                            editEdge    =   currentEdges.get(id);
+                        else
+                            return;
+                    }
                 }
                 
                 EdgeAddPanel editPanel  =   new EdgeAddPanel();
@@ -907,15 +952,29 @@ public class LayoutPanel extends JPanel
                 
                 if(selectedEdges.isEmpty())
                 {
-                    int id  =   getDialogID("Enter edge ID to remove", currentEdges);
-
-                    if(id != -1)
+                    int[] selectedRows  =   dataPanel.edgeTable.getSelectedRows();
+                    if(selectedRows.length > 0)
                     {
-                        Edge removeEdge =   currentEdges.remove(id);
-                        currentGraph.removeEdge(removeEdge);
+                        for(int row : selectedRows)
+                        {
+                            int id          =   (int) dataPanel.edgeDataModel.getValueAt(row, 0);
+                            Edge current    =   currentEdges.remove(id);
+                            currentGraph.removeEdge(current);
+                        }
                     }
                     
-                    else return;
+                    else
+                    {
+                        int id  =   getDialogID("Enter edge ID to remove", currentEdges);
+
+                        if(id != -1)
+                        {
+                            Edge removeEdge =   currentEdges.remove(id);
+                            currentGraph.removeEdge(removeEdge);
+                        }
+
+                        else return;
+                    }
                 }
                 
                 else
