@@ -680,10 +680,27 @@ public class LayoutPanel extends JPanel
             public DataPanel()
             {
                 dataTabPane         =   new JTabbedPane();
+                
                 vertexDataModel     =   new DefaultTableModel();
-                vertexTable         =   new JTable(vertexDataModel);
+                vertexTable         =   new JTable(vertexDataModel)
+                {
+                    @Override
+                    public boolean isCellEditable(int row, int col)
+                    {
+                        return false;
+                    };
+                };
+                
                 edgeDataModel       =   new DefaultTableModel();
-                edgeTable           =   new JTable(edgeDataModel);
+                edgeTable           =   new JTable(edgeDataModel)
+                {
+                    @Override
+                    public boolean isCellEditable(int row, int col)
+                    {
+                        return false;
+                    }
+                };
+                
                 vertexScroller      =   new JScrollPane(vertexTable);
                 edgeScroller        =   new JScrollPane(edgeTable);
                 vertexTable.setPreferredScrollableViewportSize(new Dimension(630, 500));
