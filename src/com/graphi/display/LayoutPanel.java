@@ -6,6 +6,10 @@ import com.graphi.sim.Network;
 import com.graphi.sim.Node;
 import edu.uci.ics.jung.algorithms.layout.AggregateLayout;
 import edu.uci.ics.jung.algorithms.layout.FRLayout;
+import edu.uci.ics.jung.algorithms.scoring.BetweennessCentrality;
+import edu.uci.ics.jung.algorithms.scoring.ClosenessCentrality;
+import edu.uci.ics.jung.algorithms.scoring.EigenvectorCentrality;
+import edu.uci.ics.jung.algorithms.scoring.PageRank;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
@@ -111,7 +115,11 @@ public class LayoutPanel extends JPanel
         String date             =   sdf.format(new Date());
         String prefix           =   "\n[" + date + "] ";
         JTextArea outputArea    =   screenPanel.outputPanel.outputArea;
-        outputArea.setText(outputArea.getText() + prefix + output);
+        
+        SwingUtilities.invokeLater(()->
+        {
+            outputArea.setText(outputArea.getText() + prefix + output);
+        });
     }
     
     private File getFile(boolean open)
@@ -403,8 +411,13 @@ public class LayoutPanel extends JPanel
         
         private void computeExecute()
         {
-            if(computeBox.getSelectedIndex() == 0)
-                screenPanel.graphPanel.showCluster();
+            int selectedIndex   =   computeBox.getSelectedIndex();
+            
+            switch(selectedIndex)
+            {
+                case 0: screenPanel.graphPanel.showCluster();
+                case 1: screenPanel.graphPanel.showCentrality();
+            }
         }
         
         private void showGeneratorSim()
@@ -1168,6 +1181,17 @@ public class LayoutPanel extends JPanel
                 gViewer.repaint();
             }
             
+            private void showCentrality()
+            {
+                ClosenessCentrality<Node, Edge> centrality    =   new ClosenessCentrality<>(currentGraph);
+                Collection<Node> vertices                       =   currentGraph.getVertices();
+                for(Node node : vertices)
+                {
+                    double score    =   centrality.getVertexScore(node);
+                    sendToOutput("Node: " + node.getID() + " score: " + score);
+                }
+            }
+            
             private void reloadGraph()
             {
                 gLayout.setGraph(currentGraph);
@@ -1192,8 +1216,8 @@ public class LayoutPanel extends JPanel
                 outputArea  =   new JTextArea("");
                 outputArea.setBackground(Color.WHITE);
                 outputArea.setEditable(false);
-                outputArea.setPreferredSize(new Dimension(650, 600));
                 JScrollPane outputScroller  =   new JScrollPane(outputArea);
+                outputScroller.setPreferredSize(new Dimension(650, 565));
                 outputScroller.setBorder(null);
                 
                 add(outputScroller);
@@ -1222,6 +1246,15 @@ public class LayoutPanel extends JPanel
             lastEdgeID++;
             double weight   =   random.nextDouble() * 100.0;
             return new Edge(lastEdgeID, weight, EdgeType.UNDIRECTED);
+        }
+    }
+    
+    private class WeightTransformer implements Transformer<Edge, Double>
+    {
+        @Override
+        public Double transform(Edge edge)
+        {
+            return 1.0 - (edge.getWeight() / 100.0);
         }
     }
 }
