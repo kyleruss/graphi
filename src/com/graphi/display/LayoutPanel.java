@@ -814,9 +814,14 @@ public class LayoutPanel extends JPanel
             else if(src == menu.aboutItem)
                 showAbout();
             
-            
             else if(src == menu.exitItem)
                 System.exit(0);
+            
+            else if(src == menu.miniItem)
+                frame.setState(JFrame.ICONIFIED);
+            
+            else if(src == menu.maxItem)
+                frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
             
         }
     }
