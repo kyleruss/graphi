@@ -1277,6 +1277,8 @@ public class LayoutPanel extends JPanel
                 @Override
                 public Paint transform(Node node) 
                 {
+                    if(gViewer.getPickedVertexState().isPicked(node))
+                        return Color.YELLOW;
                     
                     for(int i = 0; i < 3; i++)
                     {
