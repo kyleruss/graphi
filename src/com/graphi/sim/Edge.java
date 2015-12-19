@@ -2,6 +2,7 @@
 package com.graphi.sim;
 
 import edu.uci.ics.jung.graph.util.EdgeType;
+import java.awt.Color;
 import java.io.Serializable;
 
 
@@ -11,6 +12,7 @@ public class Edge implements Serializable
     private double weight;
     private EdgeType edgeType;
     private Node sourceNode, destNode;
+    private Color colour;
     
     public Edge()
     {
@@ -22,6 +24,7 @@ public class Edge implements Serializable
         this.id         =   id;
         this.weight     =   weight;
         this.edgeType   =   edgeType;
+        colour          =   Color.BLACK;
     }
     
     public double getWeight()
@@ -78,6 +81,16 @@ public class Edge implements Serializable
     public Node getDestNode()
     {
         return destNode;
+    }
+    
+    public Color getColour()
+    {
+        return colour;
+    }
+    
+    public void setColour(Color colour)
+    {
+        this.colour =   colour;
     }
     
     @Override

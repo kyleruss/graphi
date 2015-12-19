@@ -61,6 +61,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -97,21 +98,24 @@ public class LayoutPanel extends JPanel
     private int lastNodeID;
     private int lastEdgeID;
     private Object[] selectedItems;
+    private Color currentVertexColour, currentEdgeColour;
     
     public LayoutPanel()
     {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(930, 650));
         
-        currentGraph    =   new SparseMultigraph<>();
-        currentNodes    =   new HashMap<>();
-        currentEdges    =   new HashMap<>();
-        controlPanel    =   new ControlPanel();
-        screenPanel     =   new ScreenPanel();
-        splitPane       =   new JSplitPane();
-        controlScroll   =   new JScrollPane(controlPanel);
-        lastNodeID      =   0;
-        lastEdgeID      =   0;
+        currentVertexColour =   Color.GREEN;
+        currentEdgeColour   =   Color.BLACK;
+        currentGraph        =   new SparseMultigraph<>();
+        currentNodes        =   new HashMap<>();
+        currentEdges        =   new HashMap<>();
+        controlPanel        =   new ControlPanel();
+        screenPanel         =   new ScreenPanel();
+        splitPane           =   new JSplitPane();
+        controlScroll       =   new JScrollPane(controlPanel);
+        lastNodeID          =   0;
+        lastEdgeID          =   0;
 
         controlScroll.setBorder(null);
         splitPane.setLeftComponent(screenPanel);
@@ -507,6 +511,22 @@ public class LayoutPanel extends JPanel
             currentGraph    =   Network.generateBerbasiAlbert(new NodeFactory(), new EdgeFactory(), n, m);
         }
         
+        private void showVertexBGChange()
+        {
+            Color selectedColour    =   JColorChooser.showDialog(null, "Choose vertex colour", Color.BLACK);
+            
+            if(selectedColour != null)
+                screenPanel.graphPanel.setVertexColour(selectedColour, null);
+        }
+        
+        private void showEdgeBGChange()
+        {
+            Color selectedColour    =   JColorChooser.showDialog(null, "Choose edge colour", Color.BLACK);
+            
+            if(selectedColour != null)
+                screenPanel.graphPanel.setEdgeColour(selectedColour, null);
+        }
+        
         private class IOPanel extends JPanel implements ActionListener
         {
             private JButton exportBtn, importBtn;
@@ -668,7 +688,7 @@ public class LayoutPanel extends JPanel
                 screenPanel.outputPanel.outputArea.setText(Storage.openOutputLog(file));
             }
         }
-  
+        
         
         
         @Override
@@ -723,6 +743,12 @@ public class LayoutPanel extends JPanel
             
             else if(src == genAlgorithmsBox)
                 showSimPanel();
+            
+            else if(src == vertexBGBtn)
+                showVertexBGChange();
+            
+            else if(src == edgeBGBtn)
+                showEdgeBGChange();
         }
     }
     
@@ -1246,7 +1272,8 @@ public class LayoutPanel extends JPanel
                 Factory<Node> nFactory  =   () -> new Node();
                 Factory<Edge> eFactory  =   () -> new Edge();
                 
-                gViewer.getRenderContext().setVertexFillPaintTransformer(new ColorTransformer(gViewer.getPickedVertexState()));
+                gViewer.getRenderContext().setVertexFillPaintTransformer(new VertexColourTransformer());
+                gViewer.getRenderContext().setEdgeDrawPaintTransformer(new EdgeColourTransformer());
                 gViewer.getPickedVertexState().addItemListener(this);
                 gViewer.getPickedEdgeState().addItemListener(this);
                 add(gViewer);
@@ -1256,42 +1283,26 @@ public class LayoutPanel extends JPanel
                 gViewer.setGraphMouse(mouse);
             }
             
-            private class ColorTransformer implements Transformer<Node, Paint>
-            {
-                PickedInfo pickedInfo;
-                public ColorTransformer(PickedInfo pickedInfo)
-                {
-                    this.pickedInfo =   pickedInfo;
-                }
-
-                @Override
-                public Paint transform(Node i)
-                {
-                    if(pickedInfo.isPicked(i))
-                        return Color.YELLOW;
-                    else
-                        return i.getColor();
-                }
-            }
-            
             private class CentralityTransformer implements Transformer<Node, Shape>
             {
                 List<Node> centralNodes;
+                int numRanks;
                 
-                public CentralityTransformer(List<Node> centralNodes)
+                public CentralityTransformer(List<Node> centralNodes, int numRanks)
                 {
                     this.centralNodes   =   centralNodes;
+                    this.numRanks       =   numRanks;
                 }
                 
                 @Override
                 public Shape transform(Node node) 
                 {
                     
-                    for(int i = 0; i < 3; i++)
+                    for(int i = 0; i < numRanks; i++)
                     {
                         if(node.equals(centralNodes.get(i)))
                         {
-                            int size    =   20 + ((3 - i) * 15);
+                            int size    =   20 + ((numRanks - i) * 10);
                             return new Ellipse2D.Double(-10, -10, size, size);
                         }
                     }
@@ -1300,31 +1311,52 @@ public class LayoutPanel extends JPanel
                 }
             }
             
-            private class CentralityColourTransformer implements Transformer<Node, Paint>
+            private class VertexColourTransformer implements Transformer<Node, Paint>
             {
-                 List<Node> centralNodes;
-                 Color[] colours;
-                
-                public CentralityColourTransformer(List<Node> centralNodes)
-                {
-                    this.centralNodes   =   centralNodes;
-                    colours             =   new Color[] { Color.RED, Color.ORANGE, Color.BLUE };
-                }
-
                 @Override
                 public Paint transform(Node node) 
                 {
                     if(gViewer.getPickedVertexState().isPicked(node))
                         return Color.YELLOW;
-                    
-                    for(int i = 0; i < 3; i++)
-                    {
-                        if(node.equals(centralNodes.get(i)))
-                            return colours[i];
-                    }
-                    
-                    return Color.GREEN;
+                    else
+                        return node.getColor();
                 }
+            }
+            
+            private class EdgeColourTransformer implements Transformer<Edge, Paint>
+            {
+
+                @Override
+                public Paint transform(Edge edge) 
+                {
+                    if(gViewer.getPickedEdgeState().isPicked(edge))
+                        return Color.BLUE;
+                    else
+                        return edge.getColour();
+                }
+                
+            }
+            
+            private void setVertexColour(Color colour, Collection<Node> vertices)
+            {
+                if(vertices == null)
+                    vertices   =   currentGraph.getVertices();
+                
+                for(Node vertex : vertices)
+                    vertex.setColor(colour);
+                
+                gViewer.repaint();
+            }
+            
+            private void setEdgeColour(Color colour, Collection<Edge> edges)
+            {
+                if(edges == null)
+                    edges   =   currentGraph.getEdges();
+                
+                for(Edge edge : edges)
+                    edge.setColour(colour);
+                
+                gViewer.repaint();
             }
             
             
@@ -1390,16 +1422,17 @@ public class LayoutPanel extends JPanel
                 
                 if(transform)
                 {
-                    ArrayList<Node> centralNodes =   new ArrayList<>();
+                    ArrayList<Node> centralNodes    =   new ArrayList<>();
+                    Color[] centralColours          =   new Color[] { Color.RED, Color.ORANGE, Color.BLUE };
                     
                     for(int i = 0; i < 3; i++)
                     {
                         SimpleEntry<Node, Double> entry = scores.poll();
                         centralNodes.add(entry.getKey());
+                        entry.getKey().setColor(centralColours[i]);
                     }
                         
-                    graphPanel.gViewer.getRenderContext().setVertexShapeTransformer(new CentralityTransformer(centralNodes));
-                    graphPanel.gViewer.getRenderContext().setVertexFillPaintTransformer(new CentralityColourTransformer(centralNodes));
+                    graphPanel.gViewer.getRenderContext().setVertexShapeTransformer(new CentralityTransformer(centralNodes, 3));
                     graphPanel.gViewer.repaint();
                 }
             }
