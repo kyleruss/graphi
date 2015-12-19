@@ -11,9 +11,14 @@ import edu.uci.ics.jung.graph.SparseMultigraph;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.geom.Point2D;
+import java.util.AbstractMap;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.Set;
 import org.apache.commons.collections15.Factory;
@@ -34,55 +39,38 @@ public class Network
     
     public static Graph<Node, Edge> generateBerbasiAlbert(Factory<Node> nodeFactory, Factory<Edge> edgeFactory, int n, int m)
     {
-        Graph<Node, Edge> graph =   generateConnectedGraph(nodeFactory, edgeFactory, m);
-       /* Node n1 =   nodeFactory.create();
-        Node n2 =   nodeFactory.create();
-        graph.addVertex(n1);
-        graph.addVertex(n2);
-        graph.addEdge(edgeFactory.create(), n1, n2); */
-        
+        Graph<Node, Edge> graph                 =   generateConnectedGraph(nodeFactory, edgeFactory, m);
         
         
         for(int i = 0; i < n; i++)
         {
             Node current    =   nodeFactory.create();
-            //graph.addVertex(current);
+            
+            PriorityQueue<SimpleEntry<Node, Double>> nextVerticies =   new PriorityQueue<>
+                ((SimpleEntry<Node, Double> a1, SimpleEntry<Node, Double> a2) 
+                -> Double.compare(a1.getValue(), a2.getValue()));
             
             ArrayList<Node> vertices    =   new ArrayList<>(graph.getVertices());
             Random rGen                 =   new Random();
-            Node next1 = null;
-            Node next2 = null;
-            double n1p  =   0.0;
-            double n2p  =   0.0;
             
-            while((next1 == null || next2 == null) && !vertices.isEmpty())
+            while(!vertices.isEmpty())
             {
                 int index   =   rGen.nextInt(vertices.size());
                 Node next   =   vertices.get(index);
-                
                 int degree      =   graph.degree(next);
                 int degreeSum   =   degreeSum(graph);
                 double p        =   degree / (degreeSum * 1.0);
 
-                if(next1 == null || p > n1p)
-                {
-                    next1   =   next;
-                    n1p     =   p;
-                }
-
-                else if(next2 ==  null || p > n2p)
-                {
-                    next2   =   next;
-                    n2p     =   p;
-                }
+                if(nextVerticies.size() < m || p > nextVerticies.peek().getValue())
+                    nextVerticies.add(new SimpleEntry<> (next, p));
                 
                 vertices.remove(index);
             }
             
-            System.out.println("Add vertex");
             graph.addVertex(current);
-            graph.addEdge(edgeFactory.create(), current, next1);
-            graph.addEdge(edgeFactory.create(), current, next2);
+            
+            while(!nextVerticies.isEmpty())
+                graph.addEdge(edgeFactory.create(), current, nextVerticies.poll().getKey());
         }
         
         return graph;

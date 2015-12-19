@@ -453,7 +453,7 @@ public class LayoutPanel extends JPanel
         
         private void showBASim()
         {
-            currentGraph    =   Network.generateBerbasiAlbert(new NodeFactory(), new EdgeFactory(), 0, 5);
+            currentGraph    =   Network.generateBerbasiAlbert(new NodeFactory(), new EdgeFactory(), 5, 5);
         }
         
         private class IOPanel extends JPanel implements ActionListener
