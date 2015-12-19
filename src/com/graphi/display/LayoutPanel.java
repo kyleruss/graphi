@@ -18,6 +18,7 @@ import edu.uci.ics.jung.graph.util.EdgeType;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.control.CrossoverScalingControl;
 import edu.uci.ics.jung.visualization.control.EditingModalGraphMouse;
+import edu.uci.ics.jung.visualization.control.GraphMouseListener;
 import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.ScalingControl;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
@@ -37,6 +38,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
@@ -1268,7 +1270,7 @@ public class LayoutPanel extends JPanel
             }
         }
         
-        private class GraphPanel extends JPanel implements ItemListener
+        private class GraphPanel extends JPanel implements ItemListener, GraphMouseListener
         {
             private final VisualizationViewer<Node, Edge> gViewer;
             private AggregateLayout<Node, Edge> gLayout;
@@ -1295,6 +1297,26 @@ public class LayoutPanel extends JPanel
                 mouse.setMode(ModalGraphMouse.Mode.EDITING);
                 mouse.remove(mouse.getPopupEditingPlugin());
                 gViewer.setGraphMouse(mouse);
+                gViewer.addGraphMouseListener(this);
+                
+            }
+
+            @Override
+            public void graphClicked(Object v, MouseEvent me) 
+            {
+            }
+
+            @Override
+            public void graphPressed(Object v, MouseEvent me) {}
+
+            @Override
+            public void graphReleased(Object v, MouseEvent me)
+            {
+                if(controlPanel.editCheck.isSelected())
+                {
+                    dataPanel.loadNodes(currentGraph);
+                    dataPanel.loadEdges(currentGraph);
+                }
             }
             
             private class CentralityTransformer implements Transformer<Node, Shape>
@@ -1515,8 +1537,12 @@ public class LayoutPanel extends JPanel
             @Override
             public void itemStateChanged(ItemEvent e)
             {
-                selectedItems   =   e.getItemSelectable().getSelectedObjects();
-                controlPanel.updateSelectedComponents();
+                if(controlPanel.selectCheck.isSelected())
+                {
+                    System.out.println("selectedzz");
+                    selectedItems   =   e.getItemSelectable().getSelectedObjects();
+                    controlPanel.updateSelectedComponents();
+                }
             }
         }
         
