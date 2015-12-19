@@ -1285,17 +1285,15 @@ public class LayoutPanel extends JPanel
                 gViewer.scaleToLayout(scaler);
                 gViewer.setBackground(Color.WHITE);
                 
-                Factory<Node> nFactory  =   () -> new Node();
-                Factory<Edge> eFactory  =   () -> new Edge();
-                
                 gViewer.getRenderContext().setVertexFillPaintTransformer(new VertexColourTransformer());
                 gViewer.getRenderContext().setEdgeDrawPaintTransformer(new EdgeColourTransformer());
                 gViewer.getPickedVertexState().addItemListener(this);
                 gViewer.getPickedEdgeState().addItemListener(this);
                 add(gViewer);
                 
-                mouse       =   new EditingModalGraphMouse(gViewer.getRenderContext(), nFactory, eFactory);
+                mouse       =   new EditingModalGraphMouse(gViewer.getRenderContext(), new NodeFactory(), new EdgeFactory());
                 mouse.setMode(ModalGraphMouse.Mode.EDITING);
+                mouse.remove(mouse.getPopupEditingPlugin());
                 gViewer.setGraphMouse(mouse);
             }
             
