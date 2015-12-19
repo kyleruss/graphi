@@ -68,6 +68,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -104,13 +105,15 @@ public class LayoutPanel extends JPanel
     private int lastEdgeID;
     private Object[] selectedItems;
     private MainMenu menu;
+    private JFrame frame;
     
-    public LayoutPanel(MainMenu menu)
+    public LayoutPanel(MainMenu menu, JFrame frame)
     {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(930, 650));
         
         this.menu           =   menu;
+        this.frame          =   frame;
         currentGraph        =   new SparseMultigraph<>();
         currentNodes        =   new HashMap<>();
         currentEdges        =   new HashMap<>();
@@ -440,7 +443,27 @@ public class LayoutPanel extends JPanel
             innerViewerPanel.add(new JLabel("Viewer background"));
             innerViewerPanel.add(viewerBGBtn, "wrap");
             viewerPanel.add(innerViewerPanel);
-            
+
+            menu.exitItem.addActionListener(this);
+            menu.miniItem.addActionListener(this);
+            menu.maxItem.addActionListener(this);
+            menu.importGraphItem.addActionListener(this);
+            menu.exportGraphItem.addActionListener(this);
+            menu.importLogItem.addActionListener(this);
+            menu.exportLogItem.addActionListener(this);
+            menu.vLabelsItem.addActionListener(this);
+            menu.eLabelsItem.addActionListener(this);
+            menu.viewerBGItem.addActionListener(this);
+            menu.edgeBGItem.addActionListener(this);
+            menu.vertexBGItem.addActionListener(this);
+            menu.clearLogItem.addActionListener(this);
+            menu.resetGraphItem.addActionListener(this);
+            menu.addVertexItem.addActionListener(this);
+            menu.editVertexItem.addActionListener(this);
+            menu.removeVertexItem.addActionListener(this);
+            menu.addEdgeItem.addActionListener(this);
+            menu.editEdgeItem.addActionListener(this);
+            menu.removeEdgeItem.addActionListener(this);
             menu.aboutItem.addActionListener(this);
             
             add(modePanel);
@@ -790,6 +813,11 @@ public class LayoutPanel extends JPanel
             
             else if(src == menu.aboutItem)
                 showAbout();
+            
+            
+            else if(src == menu.exitItem)
+                System.exit(0);
+            
         }
     }
     

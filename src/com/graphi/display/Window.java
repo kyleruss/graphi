@@ -18,8 +18,8 @@ public class Window
         initLookAndFeel();
         
         menu    =   new MainMenu();
-        layout  =   new LayoutPanel(menu);
         frame   =   new JFrame(WINDOW_TITLE);
+        layout  =   new LayoutPanel(menu, frame);
         
         initFrame();
         initMenu();        
