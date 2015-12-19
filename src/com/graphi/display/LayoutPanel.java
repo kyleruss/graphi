@@ -527,6 +527,14 @@ public class LayoutPanel extends JPanel
                 screenPanel.graphPanel.setEdgeColour(selectedColour, null);
         }
         
+        private void showViewerBGChange()
+        {
+            Color selectedColour    =   JColorChooser.showDialog(null, "Choose viewer background colour", Color.WHITE);
+            
+            if(selectedColour != null)
+                screenPanel.graphPanel.gViewer.setBackground(selectedColour);
+        }
+        
         private class IOPanel extends JPanel implements ActionListener
         {
             private JButton exportBtn, importBtn;
@@ -749,6 +757,9 @@ public class LayoutPanel extends JPanel
             
             else if(src == edgeBGBtn)
                 showEdgeBGChange();
+            
+            else if(src == viewerBGBtn)
+                showViewerBGChange();
         }
     }
     
