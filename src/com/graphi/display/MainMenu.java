@@ -29,7 +29,7 @@ public class MainMenu extends JMenuBar
     {
         fileMenu            =   new JMenu("File");
         optionsMenu         =   new JMenu("Options");
-        helpMenu            =   new JMenu("Help");
+        helpMenu            =   new JMenu("About");
         graphMenu           =   new JMenu("Graph");
         loggingMenu         =   new JMenu("Log");
         vertexMenu          =   new JMenu("Vertex");
@@ -39,7 +39,7 @@ public class MainMenu extends JMenuBar
         exitItem            =   new JMenuItem("Exit");
         miniItem            =   new JMenuItem("Minimize");
         maxItem             =   new JMenuItem("Maximize");
-        aboutItem           =   new JMenuItem("About");
+        aboutItem           =   new JMenuItem("Author");
         importGraphItem     =   new JMenuItem("Import Graph");
         exportGraphItem     =   new JMenuItem("Export Graph");
         importLogItem       =   new JMenuItem("Import Log");

@@ -532,7 +532,7 @@ public class LayoutPanel extends JPanel
             aboutPanel.add(locLabel);
             aboutPanel.add(repoLabel);
 
-            JOptionPane.showMessageDialog(null, aboutPanel, "Graphi - About", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, aboutPanel, "Graphi - Author", JOptionPane.INFORMATION_MESSAGE);
         }
         
         private void resetSim()
@@ -823,6 +823,56 @@ public class LayoutPanel extends JPanel
             else if(src == menu.maxItem)
                 frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
             
+            else if(src == menu.importGraphItem)
+                importGraph();
+            
+            else if(src == menu.exportGraphItem)
+                exportGraph();
+            
+            else if(src == menu.importLogItem)
+                importLog();
+            
+            else if(src == menu.exportLogItem)
+                exportLog();
+            
+            else if(src == menu.vLabelsItem)
+                screenPanel.graphPanel.showVertexLabels(true);
+            
+            else if(src == menu.eLabelsItem)
+                screenPanel.graphPanel.showEdgeLabels(true);
+            
+            else if(src == menu.viewerBGItem)
+                showViewerBGChange();
+            
+            else if(src == menu.edgeBGItem)
+                showEdgeBGChange();
+            
+            else if(src == menu.vertexBGItem)
+                showVertexBGChange();
+            
+            else if(src == menu.clearLogItem)
+                screenPanel.outputPanel.clearLog();
+            
+            else if(src == menu.resetGraphItem)
+                screenPanel.graphPanel.resetGraph();
+            
+            else if(src == menu.addVertexItem)
+                screenPanel.dataPanel.addVertex();
+            
+            else if(src == menu.editVertexItem)
+                screenPanel.dataPanel.editVertex();
+            
+            else if(src == menu.removeVertexItem)
+                screenPanel.dataPanel.removeVertex();
+            
+            else if(src == menu.addEdgeItem)
+                screenPanel.dataPanel.addEdge();
+            
+            else if(src == menu.editEdgeItem)
+                screenPanel.dataPanel.editEdge();
+            
+            else if(src == menu.removeEdgeItem)
+                screenPanel.dataPanel.removeEdge();
         }
     }
     
@@ -1587,6 +1637,12 @@ public class LayoutPanel extends JPanel
                 dataPanel.loadNodes(currentGraph);
                 dataPanel.loadEdges(currentGraph);
             }
+            
+            private void resetGraph()
+            {
+                currentGraph    =   new SparseMultigraph<>();
+                reloadGraph();
+            }
 
             @Override
             public void itemStateChanged(ItemEvent e)
@@ -1613,6 +1669,11 @@ public class LayoutPanel extends JPanel
                 outputScroller.setBorder(null);
                 
                 add(outputScroller);
+            }
+            
+            private void clearLog()
+            {
+                outputArea.setText("");
             }
         }
     }
