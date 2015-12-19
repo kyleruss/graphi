@@ -20,6 +20,7 @@ import edu.uci.ics.jung.visualization.control.CrossoverScalingControl;
 import edu.uci.ics.jung.visualization.control.EditingModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.ScalingControl;
+import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 import edu.uci.ics.jung.visualization.picking.PickedInfo;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -40,6 +41,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.io.File;
+import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.AbstractMap;
@@ -98,15 +100,12 @@ public class LayoutPanel extends JPanel
     private int lastNodeID;
     private int lastEdgeID;
     private Object[] selectedItems;
-    private Color currentVertexColour, currentEdgeColour;
     
     public LayoutPanel()
     {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(930, 650));
         
-        currentVertexColour =   Color.GREEN;
-        currentEdgeColour   =   Color.BLACK;
         currentGraph        =   new SparseMultigraph<>();
         currentNodes        =   new HashMap<>();
         currentEdges        =   new HashMap<>();
@@ -760,6 +759,12 @@ public class LayoutPanel extends JPanel
             
             else if(src == viewerBGBtn)
                 showViewerBGChange();
+            
+            else if(src == viewerVLabelsCheck)
+                screenPanel.graphPanel.showVertexLabels(viewerVLabelsCheck.isSelected());
+            
+            else if(src == viewerELabelsCheck)
+                screenPanel.graphPanel.showEdgeLabels(viewerELabelsCheck.isSelected());
         }
     }
     
@@ -1345,6 +1350,47 @@ public class LayoutPanel extends JPanel
                     else
                         return edge.getColour();
                 }
+            }
+            
+            private class EdgeLabelTransformer implements Transformer<Edge, String>
+            {
+                boolean show;
+                
+                public EdgeLabelTransformer(boolean show)
+                {
+                    this.show   =   show;
+                }
+                        
+                @Override
+                public String transform(Edge edge)
+                {
+                    if(show)
+                    {
+                        DecimalFormat formatter =   new DecimalFormat("#.##");
+                        return formatter.format(edge.getWeight());
+                    }
+                    else
+                        return "";
+                }
+            }
+            
+            private class VertexLabelTransformer implements Transformer<Node, String>
+            {
+                boolean show;
+            
+                public VertexLabelTransformer(boolean show)
+                {
+                    this.show   =   show;
+                }
+                
+                @Override
+                public String transform(Node node)
+                {
+                    if(show)
+                        return node.getName();
+                    else
+                        return "";
+                }
                 
             }
             
@@ -1367,6 +1413,18 @@ public class LayoutPanel extends JPanel
                 for(Edge edge : edges)
                     edge.setColour(colour);
                 
+                gViewer.repaint();
+            }
+            
+            private void showVertexLabels(boolean show)
+            {
+                gViewer.getRenderContext().setVertexLabelTransformer(new VertexLabelTransformer(show));
+                gViewer.repaint();
+            }
+            
+            private void showEdgeLabels(boolean show)
+            {
+                gViewer.getRenderContext().setEdgeLabelTransformer(new EdgeLabelTransformer(show));
                 gViewer.repaint();
             }
             

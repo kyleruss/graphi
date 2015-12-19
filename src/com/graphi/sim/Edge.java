@@ -40,7 +40,7 @@ public class Edge implements Serializable
     @Override
     public String toString()
     {
-        return "[ID: " + id + ", WEIGHT: " + weight + "]";
+        return "" + weight;
     }
     
     public int getID()
