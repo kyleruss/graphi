@@ -431,8 +431,11 @@ public class LayoutPanel extends JPanel
             lastEdgeID      =   0;
             switch(genIndex)
             {
-                case 0: showKleinbergSim();
+                case 0: showKleinbergSim(); break;
+                case 1: showBASim(); break;
             }
+            
+            screenPanel.graphPanel.reloadGraph();
         }
         
         private void resetSim()
@@ -445,8 +448,12 @@ public class LayoutPanel extends JPanel
         {
             int latticeSize =   (int) latticeSpinner.getValue();
             int clusterExp  =   (int) clusteringSpinner.getValue();
-            currentGraph    =   (Graph) Network.generateKleinberg(latticeSize, clusterExp, new NodeFactory(), new EdgeFactory());
-            screenPanel.graphPanel.reloadGraph();
+            currentGraph    =   Network.generateKleinberg(latticeSize, clusterExp, new NodeFactory(), new EdgeFactory());
+        }
+        
+        private void showBASim()
+        {
+            currentGraph    =   Network.generateBerbasiAlbert(new NodeFactory(), new EdgeFactory(), 0, 5);
         }
         
         private class IOPanel extends JPanel implements ActionListener

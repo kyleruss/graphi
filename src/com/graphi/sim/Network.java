@@ -34,39 +34,69 @@ public class Network
     
     public static Graph<Node, Edge> generateBerbasiAlbert(Factory<Node> nodeFactory, Factory<Edge> edgeFactory, int n, int m)
     {
-        Graph<Node, Edge> graph =   new SparseMultigraph<>();
-        Node n1 =   nodeFactory.create();
+        Graph<Node, Edge> graph =   generateConnectedGraph(nodeFactory, edgeFactory, m);
+       /* Node n1 =   nodeFactory.create();
         Node n2 =   nodeFactory.create();
         graph.addVertex(n1);
         graph.addVertex(n2);
-        graph.addEdge(edgeFactory.create(), n1, n2);
+        graph.addEdge(edgeFactory.create(), n1, n2); */
+        
+        
         
         for(int i = 0; i < n; i++)
         {
             Node current    =   nodeFactory.create();
-            graph.addVertex(current);
+            //graph.addVertex(current);
             
             ArrayList<Node> vertices    =   new ArrayList<>(graph.getVertices());
             Random rGen                 =   new Random();
+            Node next1 = null;
+            Node next2 = null;
+            double n1p  =   0.0;
+            double n2p  =   0.0;
             
-            while(graph.degree(current) != m)
+            while((next1 == null || next2 == null) && !vertices.isEmpty())
             {
                 int index   =   rGen.nextInt(vertices.size());
                 Node next   =   vertices.get(index);
                 
-                if(!next.equals(current))
-                {
-                    int degree      =   graph.degree(next);
-                    int degreeSum   =   degreeSum(graph);
-                    double p        =   degree / (degreeSum * 1.0);
+                int degree      =   graph.degree(next);
+                int degreeSum   =   degreeSum(graph);
+                double p        =   degree / (degreeSum * 1.0);
 
-                    if(p >= 0.5)
-                        graph.addEdge(edgeFactory.create(), current, next);
+                if(next1 == null || p > n1p)
+                {
+                    next1   =   next;
+                    n1p     =   p;
+                }
+
+                else if(next2 ==  null || p > n2p)
+                {
+                    next2   =   next;
+                    n2p     =   p;
                 }
                 
                 vertices.remove(index);
             }
+            
+            System.out.println("Add vertex");
+            graph.addVertex(current);
+            graph.addEdge(edgeFactory.create(), current, next1);
+            graph.addEdge(edgeFactory.create(), current, next2);
         }
+        
+        return graph;
+    }
+    
+    public static Graph<Node, Edge> generateConnectedGraph(Factory<Node> nodeFactory, Factory<Edge> edgeFactory, int n)
+    {
+        Graph<Node, Edge> graph =   new SparseMultigraph<>();
+        for(int i = 0; i < n; i++)
+            graph.addVertex(nodeFactory.create());
+        
+        ArrayList<Node> vertices    =   new ArrayList<>(graph.getVertices());
+        for(int i = 1; i < n; i++)
+            graph.addEdge(edgeFactory.create(), vertices.get(i - 1), vertices.get(i));
         
         return graph;
     }
