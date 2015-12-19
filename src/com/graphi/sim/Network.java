@@ -1,3 +1,8 @@
+//=========================================
+//  Kyle Russell
+//  AUT University 2015
+//  https://github.com/denkers/graphi
+//=========================================
 
 package com.graphi.sim;
 
@@ -11,13 +16,9 @@ import edu.uci.ics.jung.graph.SparseMultigraph;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.geom.Point2D;
-import java.util.AbstractMap;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.Set;
