@@ -61,8 +61,14 @@ public class Network
                 int degreeSum   =   degreeSum(graph);
                 double p        =   degree / (degreeSum * 1.0);
 
-                if(nextVerticies.size() < m || p > nextVerticies.peek().getValue())
+                if(nextVerticies.size() < m)
                     nextVerticies.add(new SimpleEntry<> (next, p));
+                
+                else if(p > nextVerticies.peek().getValue())
+                {
+                    nextVerticies.poll();
+                    nextVerticies.add(new SimpleEntry<> (next, p));
+                }
                 
                 vertices.remove(index);
             }

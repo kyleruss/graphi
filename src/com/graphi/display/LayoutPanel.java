@@ -28,15 +28,21 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.List;
+import java.util.List;
 import java.awt.Paint;
+import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.io.File;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
+import java.util.AbstractMap;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -46,6 +52,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.Set;
 import javax.swing.BorderFactory;
@@ -164,8 +171,8 @@ public class LayoutPanel extends JPanel
         private JComboBox genAlgorithmsBox;
         private JButton resetGeneratorBtn, executeGeneratorBtn;
         private JPanel genPanel, baGenPanel, klGenPanel;
-        
         private JSpinner latticeSpinner, clusteringSpinner;
+        private JSpinner initialNSpinner, addNSpinner;
         
         private IOPanel ioPanel;
         private JPanel editPanel;
@@ -228,6 +235,7 @@ public class LayoutPanel extends JPanel
             generatorPanel.add(new JLabel("Generator"));
             generatorPanel.add(genAlgorithmsBox);
             generatorPanel.setBackground(TRANSPARENT);
+            genAlgorithmsBox.addActionListener(this);
             
             JPanel generatorControls    =   new JPanel();
             resetGeneratorBtn           =   new JButton("Reset");
@@ -241,7 +249,7 @@ public class LayoutPanel extends JPanel
             generatorControls.setBackground(TRANSPARENT);
             
             genPanel    =   new JPanel(new CardLayout());
-            baGenPanel  =   new JPanel();
+            baGenPanel  =   new JPanel(new MigLayout());
             klGenPanel  =   new JPanel(new BorderLayout());
             baGenPanel.setBackground(TRANSPARENT);
             klGenPanel.setBackground(TRANSPARENT);
@@ -250,12 +258,17 @@ public class LayoutPanel extends JPanel
             genPanel.add(baGenPanel, BA_PANEL_CARD);
             genPanel.add(klGenPanel, KL_PANEL_CARD);
             
-            latticeSpinner      =   new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
-            clusteringSpinner   =   new JSpinner(new SpinnerNumberModel(0, 0, 10, 1));   
+            latticeSpinner      =   new JSpinner(new SpinnerNumberModel(15, 0, 100, 1));
+            clusteringSpinner   =   new JSpinner(new SpinnerNumberModel(2, 0, 10, 1));   
             latticeSpinner.setPreferredSize(new Dimension(50, 20));
             clusteringSpinner.setPreferredSize(new Dimension(50, 20));
-            latticeSpinner.setValue(15);
-            clusteringSpinner.setValue(2);
+            
+            initialNSpinner     =   new JSpinner(new SpinnerNumberModel(2, 0, 1000, 1));
+            addNSpinner         =   new JSpinner(new SpinnerNumberModel(100, 0, 1000, 1));
+            baGenPanel.add(new JLabel("Initial nodes"));
+            baGenPanel.add(initialNSpinner, "wrap");
+            baGenPanel.add(new JLabel("Generated nodes"));
+            baGenPanel.add(addNSpinner);
             
             JPanel klOptWrapper     =   new JPanel(new GridLayout(2, 2, 5, 10));
             klOptWrapper.add(new JLabel("Lattice size"));
@@ -453,7 +466,9 @@ public class LayoutPanel extends JPanel
         
         private void showBASim()
         {
-            currentGraph    =   Network.generateBerbasiAlbert(new NodeFactory(), new EdgeFactory(), 5, 5);
+            int m           =   (int) initialNSpinner.getValue();
+            int n           =   (int) addNSpinner.getValue();
+            currentGraph    =   Network.generateBerbasiAlbert(new NodeFactory(), new EdgeFactory(), n, m);
         }
         
         private class IOPanel extends JPanel implements ActionListener
@@ -534,6 +549,22 @@ public class LayoutPanel extends JPanel
             
             CardLayout clusterInnerLayout   =   (CardLayout) computeInnerPanel.getLayout();
             clusterInnerLayout.show(computeInnerPanel, card);
+        }
+        
+        private void showSimPanel()
+        {
+            int selectedIndex   =   genAlgorithmsBox.getSelectedIndex();
+            String card;
+            
+            switch(selectedIndex)
+            {
+                case 0: card    =   KL_PANEL_CARD; break;
+                case 1: card    =   BA_PANEL_CARD; break;
+                default: return;
+            }
+            
+            CardLayout gLayout  =   (CardLayout) genPanel.getLayout();
+            gLayout.show(genPanel, card);
         }
         
         private void exportGraph()
@@ -651,6 +682,9 @@ public class LayoutPanel extends JPanel
             
             else if(src == computeBtn)
                 computeExecute();
+            
+            else if(src == genAlgorithmsBox)
+                showSimPanel();
         }
     }
     
@@ -1174,13 +1208,14 @@ public class LayoutPanel extends JPanel
                 Factory<Node> nFactory  =   () -> new Node();
                 Factory<Edge> eFactory  =   () -> new Edge();
                 
-                mouse       =   new EditingModalGraphMouse(gViewer.getRenderContext(), nFactory, eFactory);
-                gViewer.setGraphMouse(mouse);
                 gViewer.getRenderContext().setVertexFillPaintTransformer(new ColorTransformer(gViewer.getPickedVertexState()));
                 gViewer.getPickedVertexState().addItemListener(this);
                 gViewer.getPickedEdgeState().addItemListener(this);
-                mouse.setMode(ModalGraphMouse.Mode.PICKING);
                 add(gViewer);
+                
+                mouse       =   new EditingModalGraphMouse(gViewer.getRenderContext(), nFactory, eFactory);
+                mouse.setMode(ModalGraphMouse.Mode.EDITING);
+                gViewer.setGraphMouse(mouse);
             }
             
             private class ColorTransformer implements Transformer<Node, Paint>
@@ -1201,6 +1236,37 @@ public class LayoutPanel extends JPanel
                 }
             }
             
+            private class CentralityTransformer implements Transformer<Node, Shape>
+            {
+                List<Node> centralNodes;
+                
+                public CentralityTransformer(List<Node> centralNodes)
+                {
+                    this.centralNodes   =   centralNodes;
+                }
+                
+                @Override
+                public Shape transform(Node node) 
+                {
+                    Shape shape =   null;
+                    
+                    for(int i = 0; i < 3; i++)
+                    {
+                        if(node.equals(centralNodes.get(i)))
+                        {
+                            int size    =   20 + ((3 - i) * 15);
+                            shape       =   new Ellipse2D.Double(-10, -10, size, size);
+                        }
+                    }
+                    
+                    if(shape == null)
+                        shape =   new Ellipse2D.Double(-10, -10, 20, 20);
+                    
+                    return shape;
+                }
+            }
+            
+            
             private void showCluster()
             {
                 int numRemoved  =   (int) controlPanel.clusterEdgeRemoveSpinner.getValue();
@@ -1213,6 +1279,7 @@ public class LayoutPanel extends JPanel
             {
                 VertexScorer<Node, Double> centrality;
                 int selectedCentrality  =   controlPanel.centralityTypeBox.getSelectedIndex();
+                boolean transform       =   controlPanel.centralityMorphCheck.isSelected();
                 String prefix;
                 
                 switch(selectedCentrality)
@@ -1241,12 +1308,37 @@ public class LayoutPanel extends JPanel
                 }
                 
                 
-                Collection<Node> vertices                       =   currentGraph.getVertices();
+                Collection<Node> vertices     =   currentGraph.getVertices();
+                PriorityQueue<SimpleEntry<Node, Double>> scores = null;
+                
+                if(transform)
+                {
+                    scores =   new PriorityQueue<>((SimpleEntry<Node, Double> a1, SimpleEntry<Node, Double> a2) 
+                    -> Double.compare(a2.getValue(), a1.getValue()));
+                }
+                
                 for(Node node : vertices)
                 {
                     double score    =   centrality.getVertexScore(node);
                     String output   =   MessageFormat.format("({0}) Vertex: {1}, Score: {2}", prefix, node.getID(), score);
                     sendToOutput(output);
+                    
+                    if(transform)
+                        scores.add(new SimpleEntry(node, score));
+                }
+                
+                if(transform)
+                {
+                    ArrayList<Node> centralNodes =   new ArrayList<>();
+                    
+                    for(int i = 0; i < 3; i++)
+                    {
+                        SimpleEntry<Node, Double> entry = scores.poll();
+                        centralNodes.add(entry.getKey());
+                    }
+                        
+                    graphPanel.gViewer.getRenderContext().setVertexShapeTransformer(new CentralityTransformer(centralNodes));
+                    graphPanel.gViewer.repaint();
                 }
             }
             
