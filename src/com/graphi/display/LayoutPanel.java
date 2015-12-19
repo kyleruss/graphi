@@ -196,11 +196,16 @@ public class LayoutPanel extends JPanel
         private ButtonGroup editObjGroup;
         private JRadioButton editVertexRadio, editEdgeRadio;
         
+        private JPanel viewerPanel;
+        private JCheckBox viewerVLabelsCheck;
+        private JCheckBox viewerELabelsCheck;
+        private JButton viewerBGBtn, vertexBGBtn, edgeBGBtn;
+        
         public ControlPanel() 
         {
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             setBorder(BorderFactory.createEmptyBorder(15, 0, 3, 8));
-            setPreferredSize(new Dimension(230, 800));
+            setPreferredSize(new Dimension(230, 1000));
             setMinimumSize(new Dimension(230, 650));
             
             ioPanel         =   new IOPanel();
@@ -399,11 +404,41 @@ public class LayoutPanel extends JPanel
             CardLayout clusterInnerLayout   =   (CardLayout) computeInnerPanel.getLayout();
             clusterInnerLayout.show(computeInnerPanel, CLUSTER_PANEL_CARD);
             
+            
+            viewerPanel             =   new JPanel();
+            JPanel innerViewerPanel =   new JPanel(new MigLayout());
+            viewerVLabelsCheck      =   new JCheckBox("Vertex labels");
+            viewerELabelsCheck      =   new JCheckBox("Edge labels");
+            viewerBGBtn             =   new JButton("Choose");
+            vertexBGBtn             =   new JButton("Choose");
+            edgeBGBtn               =   new JButton("Choose");
+            
+            viewerBGBtn.addActionListener(this);
+            vertexBGBtn.addActionListener(this);
+            edgeBGBtn.addActionListener(this);
+            viewerVLabelsCheck.addActionListener(this);
+            viewerELabelsCheck.addActionListener(this);
+            
+            viewerPanel.setBorder(BorderFactory.createTitledBorder("Viewer controls"));
+            viewerPanel.setPreferredSize(new Dimension(500, 300));
+            innerViewerPanel.setBackground(new Color(200, 200, 200));
+            
+            innerViewerPanel.add(viewerVLabelsCheck, "wrap, span 2");
+            innerViewerPanel.add(viewerELabelsCheck, "wrap, span 2");
+            innerViewerPanel.add(new JLabel("Vertex background"));
+            innerViewerPanel.add(vertexBGBtn, "wrap");
+            innerViewerPanel.add(new JLabel("Edge background"));
+            innerViewerPanel.add(edgeBGBtn, "wrap");
+            innerViewerPanel.add(new JLabel("Viewer background"));
+            innerViewerPanel.add(viewerBGBtn, "wrap");
+            viewerPanel.add(innerViewerPanel);
+            
             add(modePanel);
             add(simPanel);
             add(ioPanel);
             add(editPanel);
             add(computePanel);
+            add(viewerPanel);
         }
         
         private void updateSelectedComponents()
@@ -633,6 +668,8 @@ public class LayoutPanel extends JPanel
                 screenPanel.outputPanel.outputArea.setText(Storage.openOutputLog(file));
             }
         }
+  
+        
         
         @Override
         public void actionPerformed(ActionEvent e)
