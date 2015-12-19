@@ -202,7 +202,6 @@ public class LayoutPanel extends JPanel
         private JPanel centralityPanel;
         private JComboBox centralityTypeBox;
         private ButtonGroup centralityOptions;
-        private JRadioButton centralityAllRadio, centralitySelectedRadio;
         private JCheckBox centralityMorphCheck;
         private ButtonGroup editObjGroup;
         private JRadioButton editVertexRadio, editEdgeRadio;
@@ -382,25 +381,17 @@ public class LayoutPanel extends JPanel
             
             centralityTypeBox       =   new JComboBox();
             centralityOptions       =   new ButtonGroup();
-            centralityAllRadio      =   new JRadioButton("All");
-            centralitySelectedRadio =   new JRadioButton("Selected");
             centralityMorphCheck    =   new JCheckBox("Transform graph");
-            centralityOptions.add(centralityAllRadio);
-            centralityOptions.add(centralitySelectedRadio);
             centralityTypeBox.addItem("Eigenvector");
             centralityTypeBox.addItem("PageRank");
             centralityTypeBox.addItem("Closeness");
             centralityTypeBox.addItem("Betweenness");
             centralityTypeBox.addActionListener(this);
-            centralityAllRadio.setSelected(true);
             
             JPanel cenTypePanel     =   wrapComponents(null, new JLabel("Type"), centralityTypeBox);
-            JPanel cenOptPanel      =   wrapComponents(null, centralityAllRadio, centralitySelectedRadio);
             centralityPanel.add(cenTypePanel, "wrap");
-            centralityPanel.add(cenOptPanel, "wrap");
             centralityPanel.add(centralityMorphCheck);
             cenTypePanel.setBackground(new Color(200, 200, 200));
-            cenOptPanel.setBackground(new Color(200, 200, 200));
             centralityPanel.setBackground(new Color(200, 200, 200));
             
             computeInnerPanel.add(clusterPanel, CLUSTER_PANEL_CARD);
@@ -1580,12 +1571,12 @@ public class LayoutPanel extends JPanel
                         prefix      =   "PageRank";
                         break;
                         
-                    case 3: 
+                    case 2: 
                         centrality  =   new ClosenessCentrality(currentGraph, new WeightTransformer()); 
                         prefix      =   "Closeness";
                         break;
                         
-                    case 2: 
+                    case 3: 
                         centrality  =   new BetweennessCentrality(currentGraph, new WeightTransformer()); 
                         prefix      =   "Betweenness";
                         break;
@@ -1649,7 +1640,6 @@ public class LayoutPanel extends JPanel
             {
                 if(controlPanel.selectCheck.isSelected())
                 {
-                    System.out.println("selectedzz");
                     selectedItems   =   e.getItemSelectable().getSelectedObjects();
                     controlPanel.updateSelectedComponents();
                 }
