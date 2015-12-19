@@ -97,8 +97,8 @@ public class LayoutPanel extends JPanel
     private final JScrollPane controlScroll;
     
     public static final Color TRANSPARENT   =   new Color(255, 255, 255, 0);
+    public static final Color PRESET_BG     =   new Color(200, 200, 200);
     private Graph<Node, Edge> currentGraph;
-    private File currentGraphFile, currentLogFile;
     private Map<Integer, Node> currentNodes;
     private Map<Integer, Edge> currentEdges;
     private int lastNodeID;
@@ -327,9 +327,9 @@ public class LayoutPanel extends JPanel
             JPanel selectedPanel        =   wrapComponents(null, new JLabel("Selected: "), selectedLabel);
             JPanel editObjPanel         =   wrapComponents(null, editVertexRadio, editEdgeRadio);
             JPanel gObjOptsPanel        =   wrapComponents(null, gObjAddBtn, gObjEditBtn, gObjRemoveBtn);
-            selectedPanel.setBackground(new Color(200, 200, 200));
+            selectedPanel.setBackground(PRESET_BG);
             gObjOptsPanel.setBackground(TRANSPARENT);
-            editObjPanel.setBackground(new Color(200, 200, 200));
+            editObjPanel.setBackground(PRESET_BG);
 
             editPanel.add(selectedPanel);
             editPanel.add(editObjPanel);
@@ -361,8 +361,8 @@ public class LayoutPanel extends JPanel
             clusterPanel.setLayout(new MigLayout());
             clusterPanel.add(clusterEdgesPanel, "wrap");
             clusterPanel.add(clusterTransformCheck);
-            clusterEdgesPanel.setBackground(new Color(200, 200, 200));
-            clusterPanel.setBackground(new Color(200, 200, 200));
+            clusterEdgesPanel.setBackground(PRESET_BG);
+            clusterPanel.setBackground(PRESET_BG);
             
             spathFromField  =   new JTextField();
             spathToField    =   new JTextField();
@@ -391,8 +391,8 @@ public class LayoutPanel extends JPanel
             JPanel cenTypePanel     =   wrapComponents(null, new JLabel("Type"), centralityTypeBox);
             centralityPanel.add(cenTypePanel, "wrap");
             centralityPanel.add(centralityMorphCheck);
-            cenTypePanel.setBackground(new Color(200, 200, 200));
-            centralityPanel.setBackground(new Color(200, 200, 200));
+            cenTypePanel.setBackground(PRESET_BG);
+            centralityPanel.setBackground(PRESET_BG);
             
             computeInnerPanel.add(clusterPanel, CLUSTER_PANEL_CARD);
             computeInnerPanel.add(spathPanel, SPATH_PANEL_CARD);
@@ -423,7 +423,7 @@ public class LayoutPanel extends JPanel
             
             viewerPanel.setBorder(BorderFactory.createTitledBorder("Viewer controls"));
             viewerPanel.setPreferredSize(new Dimension(500, 300));
-            innerViewerPanel.setBackground(new Color(200, 200, 200));
+            innerViewerPanel.setBackground(PRESET_BG);
             
             innerViewerPanel.add(viewerVLabelsCheck, "wrap, span 2");
             innerViewerPanel.add(viewerELabelsCheck, "wrap, span 2");
@@ -603,7 +603,7 @@ public class LayoutPanel extends JPanel
                 JPanel storageOptsWrapper   =   wrapComponents(null, storageGraphRadio, storageLogRadio);
                 storageBtnWrapper.setBackground(TRANSPARENT);
                 currentGraphWrapper.setBackground(TRANSPARENT);
-                storageOptsWrapper.setBackground(new Color(200, 200, 200));
+                storageOptsWrapper.setBackground(PRESET_BG);
                 add(currentGraphWrapper);
                 add(storageOptsWrapper);
                 add(storageBtnWrapper);
@@ -681,7 +681,6 @@ public class LayoutPanel extends JPanel
                 lastNodeID          =   0;
                 lastEdgeID          =   0;
                 currentGraph        =   Storage.openGraph(file);
-                currentGraphFile    =   file;   
                 ioPanel.currentStorageLabel.setText(file.getName());
                 
                 initCurrentNodes();
@@ -726,7 +725,6 @@ public class LayoutPanel extends JPanel
             File file   =   getFile(true);
             if(file != null)
             {
-                currentLogFile  =   file;
                 ioPanel.currentStorageLabel.setText(file.getName());
                 screenPanel.outputPanel.outputArea.setText(Storage.openOutputLog(file));
             }
