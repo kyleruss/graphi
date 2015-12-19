@@ -31,6 +31,7 @@ import java.awt.GridLayout;
 import java.util.List;
 import java.awt.Paint;
 import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -1248,21 +1249,42 @@ public class LayoutPanel extends JPanel
                 @Override
                 public Shape transform(Node node) 
                 {
-                    Shape shape =   null;
                     
                     for(int i = 0; i < 3; i++)
                     {
                         if(node.equals(centralNodes.get(i)))
                         {
                             int size    =   20 + ((3 - i) * 15);
-                            shape       =   new Ellipse2D.Double(-10, -10, size, size);
+                            return new Ellipse2D.Double(-10, -10, size, size);
                         }
                     }
                     
-                    if(shape == null)
-                        shape =   new Ellipse2D.Double(-10, -10, 20, 20);
+                    return new Ellipse2D.Double(-10, -10, 20, 20);
+                }
+            }
+            
+            private class CentralityColourTransformer implements Transformer<Node, Paint>
+            {
+                 List<Node> centralNodes;
+                 Color[] colours;
+                
+                public CentralityColourTransformer(List<Node> centralNodes)
+                {
+                    this.centralNodes   =   centralNodes;
+                    colours             =   new Color[] { Color.RED, Color.ORANGE, Color.BLUE };
+                }
+
+                @Override
+                public Paint transform(Node node) 
+                {
                     
-                    return shape;
+                    for(int i = 0; i < 3; i++)
+                    {
+                        if(node.equals(centralNodes.get(i)))
+                            return colours[i];
+                    }
+                    
+                    return Color.GREEN;
                 }
             }
             
@@ -1338,6 +1360,7 @@ public class LayoutPanel extends JPanel
                     }
                         
                     graphPanel.gViewer.getRenderContext().setVertexShapeTransformer(new CentralityTransformer(centralNodes));
+                    graphPanel.gViewer.getRenderContext().setVertexFillPaintTransformer(new CentralityColourTransformer(centralNodes));
                     graphPanel.gViewer.repaint();
                 }
             }
