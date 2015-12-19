@@ -17,8 +17,8 @@ public class Window
     {
         initLookAndFeel();
         
-        layout  =   new LayoutPanel();
         menu    =   new MainMenu();
+        layout  =   new LayoutPanel(menu);
         frame   =   new JFrame(WINDOW_TITLE);
         
         initFrame();
@@ -29,11 +29,6 @@ public class Window
     private void initMenu()
     {
         frame.setJMenuBar(menu);
-    }
-    
-    private void initLayout()
-    {
-        
     }
     
     private void initLookAndFeel()

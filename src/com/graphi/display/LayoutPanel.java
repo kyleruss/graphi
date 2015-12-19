@@ -80,6 +80,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
@@ -102,12 +103,14 @@ public class LayoutPanel extends JPanel
     private int lastNodeID;
     private int lastEdgeID;
     private Object[] selectedItems;
+    private MainMenu menu;
     
-    public LayoutPanel()
+    public LayoutPanel(MainMenu menu)
     {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(930, 650));
         
+        this.menu           =   menu;
         currentGraph        =   new SparseMultigraph<>();
         currentNodes        =   new HashMap<>();
         currentEdges        =   new HashMap<>();
@@ -438,6 +441,8 @@ public class LayoutPanel extends JPanel
             innerViewerPanel.add(viewerBGBtn, "wrap");
             viewerPanel.add(innerViewerPanel);
             
+            menu.aboutItem.addActionListener(this);
+            
             add(modePanel);
             add(simPanel);
             add(ioPanel);
@@ -490,6 +495,21 @@ public class LayoutPanel extends JPanel
             }
             
             screenPanel.graphPanel.reloadGraph();
+        }
+        
+        private void showAbout()
+        {
+            JLabel nameLabel    =   new JLabel("Kyle Russell 2015", SwingConstants.CENTER);
+            JLabel locLabel     =   new JLabel("AUT University");
+            JLabel repoLabel    =   new JLabel("https://github.com/denkers/graphi");
+
+            JPanel aboutPanel   =   new JPanel();
+            aboutPanel.setLayout(new BoxLayout(aboutPanel, BoxLayout.Y_AXIS));
+            aboutPanel.add(nameLabel);
+            aboutPanel.add(locLabel);
+            aboutPanel.add(repoLabel);
+
+            JOptionPane.showMessageDialog(null, aboutPanel, "Graphi - About", JOptionPane.INFORMATION_MESSAGE);
         }
         
         private void resetSim()
@@ -767,6 +787,9 @@ public class LayoutPanel extends JPanel
             
             else if(src == viewerELabelsCheck)
                 screenPanel.graphPanel.showEdgeLabels(viewerELabelsCheck.isSelected());
+            
+            else if(src == menu.aboutItem)
+                showAbout();
         }
     }
     
@@ -1294,7 +1317,7 @@ public class LayoutPanel extends JPanel
                 add(gViewer);
                 
                 mouse       =   new EditingModalGraphMouse(gViewer.getRenderContext(), new NodeFactory(), new EdgeFactory());
-                mouse.setMode(ModalGraphMouse.Mode.EDITING);
+                mouse.setMode(ModalGraphMouse.Mode.PICKING);
                 mouse.remove(mouse.getPopupEditingPlugin());
                 gViewer.setGraphMouse(mouse);
                 gViewer.addGraphMouseListener(this);
@@ -1302,9 +1325,7 @@ public class LayoutPanel extends JPanel
             }
 
             @Override
-            public void graphClicked(Object v, MouseEvent me) 
-            {
-            }
+            public void graphClicked(Object v, MouseEvent me) {}
 
             @Override
             public void graphPressed(Object v, MouseEvent me) {}

@@ -11,18 +11,17 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 
-public class MainMenu extends JMenuBar implements ActionListener
+public class MainMenu extends JMenuBar
 {
-    private final JMenu fileMenu;
-    private final JMenu helpMenu;
-    private final JMenu optionsMenu;
+    protected final JMenu fileMenu;
+    protected final JMenu helpMenu;
+    protected final JMenu optionsMenu;
     
-    private final JMenuItem saveItem, loadItem;
-    private final JMenuItem exitItem;
-    private final JMenuItem settingsItem;
-    private final JMenuItem aboutItem;
+    protected final JMenuItem saveItem, loadItem;
+    protected final JMenuItem exitItem;
+    protected final JMenuItem settingsItem;
+    protected final JMenuItem aboutItem;
     
     public MainMenu()
     {
@@ -46,34 +45,5 @@ public class MainMenu extends JMenuBar implements ActionListener
         add(optionsMenu);
         add(helpMenu);
         
-        saveItem.addActionListener(this);
-        loadItem.addActionListener(this);
-        exitItem.addActionListener(this);
-        settingsItem.addActionListener(this);
-        aboutItem.addActionListener(this);
-    }
-    
-    private void showAbout()
-    {
-        JLabel nameLabel    =   new JLabel("Kyle Russell 2015", SwingConstants.CENTER);
-        JLabel locLabel     =   new JLabel("AUT University");
-        JLabel repoLabel    =   new JLabel("https://github.com/denkers/graphi");
-        
-        JPanel aboutPanel   =   new JPanel();
-        aboutPanel.setLayout(new BoxLayout(aboutPanel, BoxLayout.Y_AXIS));
-        aboutPanel.add(nameLabel);
-        aboutPanel.add(locLabel);
-        aboutPanel.add(repoLabel);
-        
-        JOptionPane.showMessageDialog(null, aboutPanel, "Graphi - About", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e)
-    {
-        Object src  =   e.getSource();
-        
-        if(src == aboutItem)
-            showAbout();
     }
 }
