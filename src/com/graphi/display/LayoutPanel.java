@@ -59,6 +59,7 @@ import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.Set;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -108,7 +109,7 @@ public class LayoutPanel extends JPanel
     public LayoutPanel(MainMenu menu, JFrame frame)
     {
         setLayout(new BorderLayout());
-        setPreferredSize(new Dimension(930, 650));
+        setPreferredSize(new Dimension(950, 650));
         
         this.menu           =   menu;
         this.frame          =   frame;
@@ -125,7 +126,7 @@ public class LayoutPanel extends JPanel
         controlScroll.setBorder(null);
         splitPane.setLeftComponent(screenPanel);
         splitPane.setRightComponent(controlScroll); 
-        splitPane.setDividerLocation(670);
+        splitPane.setResizeWeight(0.7);
         add(splitPane, BorderLayout.CENTER);
     }
     
@@ -213,7 +214,7 @@ public class LayoutPanel extends JPanel
         {
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             setBorder(BorderFactory.createEmptyBorder(15, 0, 3, 8));
-            setPreferredSize(new Dimension(230, 1000));
+            setPreferredSize(new Dimension(230, 1150));
             setMinimumSize(new Dimension(230, 650));
             
             ioPanel         =   new IOPanel();
@@ -456,10 +457,15 @@ public class LayoutPanel extends JPanel
             menu.aboutItem.addActionListener(this);
             
             add(modePanel);
+            add(Box.createRigidArea(new Dimension(230, 30)));
             add(simPanel);
+            add(Box.createRigidArea(new Dimension(230, 30)));
             add(ioPanel);
+            add(Box.createRigidArea(new Dimension(230, 30)));
             add(editPanel);
+            add(Box.createRigidArea(new Dimension(230, 30)));
             add(computePanel);
+            add(Box.createRigidArea(new Dimension(230, 30)));
             add(viewerPanel);
         }
         
@@ -1371,10 +1377,11 @@ public class LayoutPanel extends JPanel
             
             public GraphPanel()
             {
+                setLayout(new BorderLayout());
                 gLayout     =   new AggregateLayout(new FRLayout(currentGraph));
                 gViewer     =   new VisualizationViewer<>(gLayout);
-                gLayout.setSize(new Dimension(670, 650));
-                gViewer.setPreferredSize(new Dimension(670, 650));
+                //gLayout.setSize(new Dimension(670, 650));
+                //gViewer.setPreferredSize(new Dimension(670, 650));
                 ScalingControl scaler   =   new CrossoverScalingControl();
                 scaler.scale(gViewer, 0.7f, gViewer.getCenter());
                 gViewer.scaleToLayout(scaler);
