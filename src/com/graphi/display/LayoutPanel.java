@@ -14,7 +14,7 @@ import com.graphi.util.EdgeLabelTransformer;
 import com.graphi.util.GraphUtilities;
 import com.graphi.util.Node;
 import com.graphi.util.NodeFactory;
-import com.graphi.util.VertexFillTransformer;
+import com.graphi.util.ObjectFillTransformer;
 import com.graphi.util.VertexLabelTransformer;
 import com.graphi.util.WeightTransformer;
 import edu.uci.ics.jung.algorithms.layout.AggregateLayout;
@@ -1420,8 +1420,8 @@ public class LayoutPanel extends JPanel
                 gViewer.scaleToLayout(scaler);
                 
                 gViewer.setBackground(Color.WHITE);
-                gViewer.getRenderContext().setVertexFillPaintTransformer(new VertexFillTransformer(gViewer.getPickedVertexState()));
-                gViewer.getRenderContext().setEdgeDrawPaintTransformer(new EdgeColourTransformer());
+                gViewer.getRenderContext().setVertexFillPaintTransformer(new ObjectFillTransformer<>(gViewer.getPickedVertexState()));
+                gViewer.getRenderContext().setEdgeDrawPaintTransformer(new ObjectFillTransformer(gViewer.getPickedEdgeState()));
                 gViewer.getPickedVertexState().addItemListener(this);
                 gViewer.getPickedEdgeState().addItemListener(this);
                 add(gViewer);
