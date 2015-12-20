@@ -9,8 +9,10 @@ package com.graphi.display;
 import com.graphi.io.Storage;
 import com.graphi.util.Edge;
 import com.graphi.sim.Network;
+import com.graphi.util.EdgeLabelTransformer;
 import com.graphi.util.GraphUtilities;
 import com.graphi.util.Node;
+import com.graphi.util.VertexLabelTransformer;
 import edu.uci.ics.jung.algorithms.layout.AggregateLayout;
 import edu.uci.ics.jung.algorithms.layout.FRLayout;
 import edu.uci.ics.jung.algorithms.scoring.BetweennessCentrality;
@@ -1505,48 +1507,6 @@ public class LayoutPanel extends JPanel
                     else
                         return edge.getColour();
                 }
-            }
-            
-            private class EdgeLabelTransformer implements Transformer<Edge, String>
-            {
-                boolean show;
-                
-                public EdgeLabelTransformer(boolean show)
-                {
-                    this.show   =   show;
-                }
-                        
-                @Override
-                public String transform(Edge edge)
-                {
-                    if(show)
-                    {
-                        DecimalFormat formatter =   new DecimalFormat("#.##");
-                        return formatter.format(edge.getWeight());
-                    }
-                    else
-                        return "";
-                }
-            }
-            
-            private class VertexLabelTransformer implements Transformer<Node, String>
-            {
-                boolean show;
-            
-                public VertexLabelTransformer(boolean show)
-                {
-                    this.show   =   show;
-                }
-                
-                @Override
-                public String transform(Node node)
-                {
-                    if(show)
-                        return node.getName();
-                    else
-                        return "";
-                }
-                
             }
             
             private void setVertexColour(Color colour, Collection<Node> vertices)
