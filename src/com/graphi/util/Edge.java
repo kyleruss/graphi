@@ -11,13 +11,13 @@ import java.awt.Color;
 import java.io.Serializable;
 
 
-public class Edge implements Serializable
+public class Edge implements Serializable, GraphObject
 {
     private int id;
     private double weight;
     private EdgeType edgeType;
     private Node sourceNode, destNode;
-    private Color colour;
+    private Color fill;
     
     public Edge()
     {
@@ -29,7 +29,7 @@ public class Edge implements Serializable
         this.id         =   id;
         this.weight     =   weight;
         this.edgeType   =   edgeType;
-        colour          =   Color.BLACK;
+        fill            =   Color.BLACK;
     }
     
     public double getWeight()
@@ -48,11 +48,13 @@ public class Edge implements Serializable
         return "" + weight;
     }
     
+    @Override
     public int getID()
     {
         return id;
     }
     
+    @Override
     public void setID(int id)
     {
         this.id =   id;
@@ -88,14 +90,16 @@ public class Edge implements Serializable
         return destNode;
     }
     
-    public Color getColour()
+    @Override
+    public Color getFill()
     {
-        return colour;
+        return fill;
     }
     
-    public void setColour(Color colour)
+    @Override
+    public void setFill(Color fill)
     {
-        this.colour =   colour;
+        this.fill =   fill;
     }
     
     @Override

@@ -10,11 +10,11 @@ import java.awt.Color;
 import java.io.Serializable;
 
 
-public class Node implements Serializable
+public class Node implements Serializable, GraphObject
 {
     private int id;
     private String name;
-    private Color color;
+    private Color fill;
     
     public Node()
     {
@@ -26,11 +26,11 @@ public class Node implements Serializable
         this(id, name, Color.GREEN);
     }
     
-    public Node(int id, String name, Color color)
+    public Node(int id, String name, Color fill)
     {
         this.id     =   id;
         this.name   =   name;
-        this.color  =   color;
+        this.fill   =   fill;
     }
     
     @Override
@@ -39,14 +39,14 @@ public class Node implements Serializable
         return name;
     }
     
-    public Color getColor()
+    public Color getFill()
     {
-        return color;
+        return fill;
     }
     
-    public void setColor(Color color)
+    public void setFill(Color fill)
     {
-        this.color  =   color;
+        this.fill  =   fill;
     }
     
     public String getName()

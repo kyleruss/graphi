@@ -11,12 +11,12 @@ import java.awt.Color;
 import java.awt.Paint;
 import org.apache.commons.collections15.Transformer;
 
-public class VertexColourTransformer implements Transformer<Node, Paint>
+public class VertexFillTransformer implements Transformer<Node, Paint>
 {
     private final PickedInfo<Node> pickedInfo;
     private Color selectedColour;
     
-    public VertexColourTransformer(PickedInfo<Node> pickedInfo)
+    public VertexFillTransformer(PickedInfo<Node> pickedInfo)
     {
         this.pickedInfo =   pickedInfo;
         selectedColour  =   Color.YELLOW;   
@@ -28,7 +28,7 @@ public class VertexColourTransformer implements Transformer<Node, Paint>
         if(pickedInfo.isPicked(node))
             return selectedColour;
         else
-            return node.getColor();
+            return node.getFill();
     }
     
     public void setSelectedColour(Color selectedColour)

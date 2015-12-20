@@ -14,7 +14,7 @@ import com.graphi.util.EdgeLabelTransformer;
 import com.graphi.util.GraphUtilities;
 import com.graphi.util.Node;
 import com.graphi.util.NodeFactory;
-import com.graphi.util.VertexColourTransformer;
+import com.graphi.util.VertexFillTransformer;
 import com.graphi.util.VertexLabelTransformer;
 import com.graphi.util.WeightTransformer;
 import edu.uci.ics.jung.algorithms.layout.AggregateLayout;
@@ -1420,7 +1420,7 @@ public class LayoutPanel extends JPanel
                 gViewer.scaleToLayout(scaler);
                 
                 gViewer.setBackground(Color.WHITE);
-                gViewer.getRenderContext().setVertexFillPaintTransformer(new VertexColourTransformer(gViewer.getPickedVertexState()));
+                gViewer.getRenderContext().setVertexFillPaintTransformer(new VertexFillTransformer(gViewer.getPickedVertexState()));
                 gViewer.getRenderContext().setEdgeDrawPaintTransformer(new EdgeColourTransformer());
                 gViewer.getPickedVertexState().addItemListener(this);
                 gViewer.getPickedEdgeState().addItemListener(this);
@@ -1492,7 +1492,7 @@ public class LayoutPanel extends JPanel
                     if(gViewer.getPickedEdgeState().isPicked(edge))
                         return Color.BLUE;
                     else
-                        return edge.getColour();
+                        return edge.getFill();
                 }
             }
             
@@ -1502,7 +1502,7 @@ public class LayoutPanel extends JPanel
                     vertices   =   currentGraph.getVertices();
                 
                 for(Node vertex : vertices)
-                    vertex.setColor(colour);
+                    vertex.setFill(colour);
                 
                 gViewer.repaint();
             }
@@ -1513,7 +1513,7 @@ public class LayoutPanel extends JPanel
                     edges   =   currentGraph.getEdges();
                 
                 for(Edge edge : edges)
-                    edge.setColour(colour);
+                    edge.setFill(colour);
                 
                 gViewer.repaint();
             }
@@ -1600,7 +1600,7 @@ public class LayoutPanel extends JPanel
                     {
                         SimpleEntry<Node, Double> entry = scores.poll();
                         centralNodes.add(entry.getKey());
-                        entry.getKey().setColor(centralColours[i]);
+                        entry.getKey().setFill(centralColours[i]);
                     }
                         
                     graphPanel.gViewer.getRenderContext().setVertexShapeTransformer(new CentralityTransformer(centralNodes, 3));

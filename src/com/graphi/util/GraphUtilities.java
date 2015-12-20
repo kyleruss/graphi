@@ -52,7 +52,7 @@ public class GraphUtilities
                 Color setColor = colors[++colorIndex % colors.length];
 
                 for(Node node : set)
-                    node.setColor(setColor);
+                    node.setFill(setColor);
             } 
         } 
     }
