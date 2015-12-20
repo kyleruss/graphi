@@ -99,8 +99,8 @@ public class LayoutPanel extends JPanel
     public static final Color TRANSPARENT   =   new Color(255, 255, 255, 0);
     public static final Color PRESET_BG     =   new Color(200, 200, 200);
     private Graph<Node, Edge> currentGraph;
-    private Map<Integer, Node> currentNodes;
-    private Map<Integer, Edge> currentEdges;
+    private final Map<Integer, Node> currentNodes;
+    private final Map<Integer, Edge> currentEdges;
     private int lastNodeID;
     private int lastEdgeID;
     private Object[] selectedItems;
@@ -168,6 +168,10 @@ public class LayoutPanel extends JPanel
         
         return panel;
     }
+    
+    //--------------------------------------
+    //  CONTROL PANEL
+    //--------------------------------------
     
     private class ControlPanel extends JPanel implements ActionListener
     {
@@ -578,6 +582,10 @@ public class LayoutPanel extends JPanel
                 screenPanel.graphPanel.gViewer.setBackground(selectedColour);
         }
         
+        //--------------------------------------
+        //  IO PANEL
+        //--------------------------------------
+        
         private class IOPanel extends JPanel implements ActionListener
         {
             private JButton exportBtn, importBtn;
@@ -739,7 +747,6 @@ public class LayoutPanel extends JPanel
         }
         
         
-        
         @Override
         public void actionPerformed(ActionEvent e)
         {
@@ -872,6 +879,10 @@ public class LayoutPanel extends JPanel
                 screenPanel.dataPanel.removeEdge();
         }
     }
+    
+    //--------------------------------------
+    //  SCREEN PANEL
+    //--------------------------------------
     
     private class ScreenPanel extends JPanel
     {
@@ -1291,6 +1302,9 @@ public class LayoutPanel extends JPanel
                 return id;
             }
            
+            //--------------------------------------
+            //  VERTEX ADD PANEL
+            //--------------------------------------
             
             private class VertexAddPanel extends JPanel implements ActionListener
             {
@@ -1325,6 +1339,10 @@ public class LayoutPanel extends JPanel
                         idSpinner.setEnabled(!autoCheck.isSelected());
                 }
             }
+            
+            //--------------------------------------
+            //  EDGE ADD PANEL
+            //--------------------------------------
             
             private class EdgeAddPanel extends JPanel implements ActionListener
             {
@@ -1373,6 +1391,10 @@ public class LayoutPanel extends JPanel
             }
         }
         
+        
+        //--------------------------------------
+        //  GRAPH PANEL
+        //--------------------------------------
         private class GraphPanel extends JPanel implements ItemListener, GraphMouseListener
         {
             private final VisualizationViewer<Node, Edge> gViewer;
@@ -1421,6 +1443,11 @@ public class LayoutPanel extends JPanel
                 }
             }
             
+            
+            //--------------------------------------
+            //  CENTRALITY TRANSFORMER
+            //--------------------------------------
+            
             private class CentralityTransformer implements Transformer<Node, Shape>
             {
                 List<Node> centralNodes;
@@ -1448,6 +1475,11 @@ public class LayoutPanel extends JPanel
                     return new Ellipse2D.Double(-10, -10, 20, 20);
                 }
             }
+            
+            
+            //--------------------------------------
+            //  VERTEX COLOUR TRANSFORMER
+            //--------------------------------------
             
             private class VertexColourTransformer implements Transformer<Node, Paint>
             {
@@ -1652,6 +1684,10 @@ public class LayoutPanel extends JPanel
                 }
             }
         }
+        
+        //--------------------------------------
+        //  OUTPUT PANEL
+        //--------------------------------------
         
         private class OutputPanel extends JPanel
         {
