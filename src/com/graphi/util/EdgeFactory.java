@@ -13,6 +13,11 @@ public class EdgeFactory extends GraphObjFactory<Edge>
 {
     private final Random RGEN =   new Random();
     
+    public EdgeFactory()
+    {
+        super();
+    }
+    
     public EdgeFactory(int lastID)
     {
         super(lastID);

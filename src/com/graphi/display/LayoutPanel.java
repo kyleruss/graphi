@@ -9,9 +9,11 @@ package com.graphi.display;
 import com.graphi.io.Storage;
 import com.graphi.util.Edge;
 import com.graphi.sim.Network;
+import com.graphi.util.EdgeFactory;
 import com.graphi.util.EdgeLabelTransformer;
 import com.graphi.util.GraphUtilities;
 import com.graphi.util.Node;
+import com.graphi.util.NodeFactory;
 import com.graphi.util.VertexLabelTransformer;
 import edu.uci.ics.jung.algorithms.layout.AggregateLayout;
 import edu.uci.ics.jung.algorithms.layout.FRLayout;
@@ -104,8 +106,8 @@ public class LayoutPanel extends JPanel
     private Graph<Node, Edge> currentGraph;
     private final Map<Integer, Node> currentNodes;
     private final Map<Integer, Edge> currentEdges;
-    private int lastNodeID;
-    private int lastEdgeID;
+    private NodeFactory nodeFactory;
+    private EdgeFactory edgeFactory;
     private Object[] selectedItems;
     private MainMenu menu;
     private JFrame frame;
@@ -117,6 +119,8 @@ public class LayoutPanel extends JPanel
         
         this.menu           =   menu;
         this.frame          =   frame;
+        nodeFactory         =   new NodeFactory();
+        edgeFactory         =   new EdgeFactory();
         currentGraph        =   new SparseMultigraph<>();
         currentNodes        =   new HashMap<>();
         currentEdges        =   new HashMap<>();
@@ -124,8 +128,6 @@ public class LayoutPanel extends JPanel
         screenPanel         =   new ScreenPanel();
         splitPane           =   new JSplitPane();
         controlScroll       =   new JScrollPane(controlPanel);
-        lastNodeID          =   0;
-        lastEdgeID          =   0;
 
         controlScroll.setBorder(null);
         splitPane.setLeftComponent(screenPanel);
@@ -515,8 +517,9 @@ public class LayoutPanel extends JPanel
         private void showGeneratorSim()
         {
             int genIndex    =   genAlgorithmsBox.getSelectedIndex();
-            lastNodeID      =   0;
-            lastEdgeID      =   0;
+            nodeFactory.setLastID(0);
+            edgeFactory.setLastID(0);
+            
             switch(genIndex)
             {
                 case 0: showKleinbergSim(); break;
@@ -697,8 +700,8 @@ public class LayoutPanel extends JPanel
             File file   =   getFile(true, "Graphi .graph file", ".graph");
             if(file != null)
             {
-                lastNodeID          =   0;
-                lastEdgeID          =   0;
+                nodeFactory.setLastID(0);
+                edgeFactory.setLastID(0);
                 currentGraph        =   Storage.openGraph(file);
                 ioPanel.currentStorageLabel.setText(file.getName());
                 
@@ -977,8 +980,8 @@ public class LayoutPanel extends JPanel
                         currentNodes.put(vID, vertex);
                         vertexDataModel.addRow(new Object[] { vID, vName });
                         
-                        if(vID > lastNodeID)
-                            lastNodeID = vID;
+                        if(vID > nodeFactory.getLastID())
+                            nodeFactory.setLastID(vID);
                     }
                 });
             }
@@ -1021,8 +1024,8 @@ public class LayoutPanel extends JPanel
                         currentEdges.put(eID, edge);
                         edgeDataModel.addRow(new Object[] { eID, n1_id, n2_id, weight, edgeType });
                         
-                        if(eID > lastEdgeID)
-                            lastEdgeID = eID;
+                        if(eID > edgeFactory.getLastID())
+                            edgeFactory.setLastID(eID);
                     }
                 });
             }
@@ -1323,7 +1326,7 @@ public class LayoutPanel extends JPanel
                     nameField      =   new JTextField();
                     
                     autoCheck.setSelected(true);
-                    idSpinner.setValue(lastNodeID + 1);
+                    idSpinner.setValue(nodeFactory.getLastID() + 1);
                     idSpinner.setEnabled(false);
                     
                     add(new JLabel("ID "));
@@ -1366,7 +1369,7 @@ public class LayoutPanel extends JPanel
                     edgeTypeBox.addItem("Undirected");
                     edgeTypeBox.addItem("Directed");
                     
-                    idSpinner.setValue(lastEdgeID + 1);
+                    idSpinner.setValue(edgeFactory.getLastID() + 1);
                     idSpinner.setEnabled(false);
                     autoCheck.setSelected(true);
                     autoCheck.addActionListener(this);
@@ -1422,7 +1425,7 @@ public class LayoutPanel extends JPanel
                 gViewer.getPickedEdgeState().addItemListener(this);
                 add(gViewer);
                 
-                mouse       =   new EditingModalGraphMouse(gViewer.getRenderContext(), new NodeFactory(), new EdgeFactory());
+                mouse       =   new EditingModalGraphMouse(gViewer.getRenderContext(), nodeFactory, edgeFactory);
                 mouse.setMode(ModalGraphMouse.Mode.PICKING);
                 mouse.remove(mouse.getPopupEditingPlugin());
                 gViewer.setGraphMouse(mouse);
@@ -1673,7 +1676,7 @@ public class LayoutPanel extends JPanel
     }
     
     
-    private class NodeFactory implements Factory<Node>
+    /*private class NodeFactory implements Factory<Node>
     {
         @Override
         public Node create() 
@@ -1694,7 +1697,7 @@ public class LayoutPanel extends JPanel
             double weight   =   random.nextDouble() * 100.0;
             return new Edge(lastEdgeID, weight, EdgeType.UNDIRECTED);
         }
-    }
+    } */
     
     private class WeightTransformer implements Transformer<Edge, Double>
     {

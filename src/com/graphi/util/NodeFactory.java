@@ -8,6 +8,11 @@ package com.graphi.util;
 
 public class NodeFactory extends GraphObjFactory<Node>
 {
+    public NodeFactory()
+    {
+        super();
+    }
+    
     public NodeFactory(int lastID)
     {
         super(lastID);
