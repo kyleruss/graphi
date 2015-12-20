@@ -7,9 +7,10 @@
 package com.graphi.display;
 
 import com.graphi.io.Storage;
-import com.graphi.sim.Edge;
+import com.graphi.util.Edge;
 import com.graphi.sim.Network;
-import com.graphi.sim.Node;
+import com.graphi.util.GraphUtilities;
+import com.graphi.util.Node;
 import edu.uci.ics.jung.algorithms.layout.AggregateLayout;
 import edu.uci.ics.jung.algorithms.layout.FRLayout;
 import edu.uci.ics.jung.algorithms.scoring.BetweennessCentrality;
@@ -1587,7 +1588,7 @@ public class LayoutPanel extends JPanel
             {
                 int numRemoved  =   (int) controlPanel.clusterEdgeRemoveSpinner.getValue();
                 boolean group   =   controlPanel.clusterTransformCheck.isSelected();
-                Network.cluster(gLayout, currentGraph, numRemoved, group);
+                GraphUtilities.cluster(gLayout, currentGraph, numRemoved, group);
                 gViewer.repaint();
             }
             

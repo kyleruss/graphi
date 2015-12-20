@@ -4,7 +4,7 @@
 //  https://github.com/denkers/graphi
 //=========================================
 
-package com.graphi.sim;
+package com.graphi.util;
 
 import java.awt.Color;
 import java.io.Serializable;

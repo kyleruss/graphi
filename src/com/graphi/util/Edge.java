@@ -4,7 +4,7 @@
 //  https://github.com/denkers/graphi
 //=========================================
 
-package com.graphi.sim;
+package com.graphi.util;
 
 import edu.uci.ics.jung.graph.util.EdgeType;
 import java.awt.Color;
