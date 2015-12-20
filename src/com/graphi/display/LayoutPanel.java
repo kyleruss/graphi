@@ -1675,30 +1675,6 @@ public class LayoutPanel extends JPanel
         }
     }
     
-    
-    /*private class NodeFactory implements Factory<Node>
-    {
-        @Override
-        public Node create() 
-        {
-            lastNodeID++;
-            return new Node(lastNodeID, Integer.toHexString(lastNodeID));
-        }
-    }
-    
-    private class EdgeFactory implements Factory<Edge>
-    {
-        Random random   =   new Random();
-        
-        @Override
-        public Edge create() 
-        {
-            lastEdgeID++;
-            double weight   =   random.nextDouble() * 100.0;
-            return new Edge(lastEdgeID, weight, EdgeType.UNDIRECTED);
-        }
-    } */
-    
     private class WeightTransformer implements Transformer<Edge, Double>
     {
         @Override
