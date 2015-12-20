@@ -56,7 +56,6 @@ public class Window
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setLocationRelativeTo(null);
-        //frame.setResizable(false);
     }
     
     private void display()

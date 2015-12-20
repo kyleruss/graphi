@@ -83,6 +83,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.collections15.Factory;
@@ -143,9 +144,12 @@ public class LayoutPanel extends JPanel
         });
     }
     
-    private File getFile(boolean open)
+    private File getFile(boolean open, String desc, String...extensions)
     {
-        JFileChooser jfc    =   new JFileChooser();
+        JFileChooser jfc                =   new JFileChooser();
+        FileNameExtensionFilter filter  =   new FileNameExtensionFilter(desc, extensions);
+        jfc.setFileFilter(filter);
+        
         if(open)
             jfc.showOpenDialog(null);
         else
@@ -672,14 +676,14 @@ public class LayoutPanel extends JPanel
         
         private void exportGraph()
         {
-            File file   =   getFile(false);
+            File file   =   getFile(false, "Graphi .graph file", ".graph");
             if(file != null && currentGraph != null)
                 Storage.saveGraph(currentGraph, file);
         }
         
         private void importGraph()
         {
-            File file   =   getFile(true);
+            File file   =   getFile(true, "Graphi .graph file", ".graph");
             if(file != null)
             {
                 lastNodeID          =   0;
@@ -719,14 +723,14 @@ public class LayoutPanel extends JPanel
         
         private void exportLog()
         {
-            File file   =   getFile(false);
+            File file   =   getFile(false, "Graphi .log file", ".log");
             if(file != null)
                 Storage.saveOutputLog(screenPanel.outputPanel.outputArea.getText(), file);
         }
         
         private void importLog()
         {
-            File file   =   getFile(true);
+            File file   =   getFile(true, "Graphi .log file", ".log");
             if(file != null)
             {
                 ioPanel.currentStorageLabel.setText(file.getName());
