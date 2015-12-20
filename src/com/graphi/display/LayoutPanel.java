@@ -14,7 +14,9 @@ import com.graphi.util.EdgeLabelTransformer;
 import com.graphi.util.GraphUtilities;
 import com.graphi.util.Node;
 import com.graphi.util.NodeFactory;
+import com.graphi.util.VertexColourTransformer;
 import com.graphi.util.VertexLabelTransformer;
+import com.graphi.util.WeightTransformer;
 import edu.uci.ics.jung.algorithms.layout.AggregateLayout;
 import edu.uci.ics.jung.algorithms.layout.FRLayout;
 import edu.uci.ics.jung.algorithms.scoring.BetweennessCentrality;
@@ -1412,14 +1414,13 @@ public class LayoutPanel extends JPanel
                 setLayout(new BorderLayout());
                 gLayout     =   new AggregateLayout(new FRLayout(currentGraph));
                 gViewer     =   new VisualizationViewer<>(gLayout);
-                //gLayout.setSize(new Dimension(670, 650));
-                //gViewer.setPreferredSize(new Dimension(670, 650));
+                
                 ScalingControl scaler   =   new CrossoverScalingControl();
                 scaler.scale(gViewer, 0.7f, gViewer.getCenter());
                 gViewer.scaleToLayout(scaler);
-                gViewer.setBackground(Color.WHITE);
                 
-                gViewer.getRenderContext().setVertexFillPaintTransformer(new VertexColourTransformer());
+                gViewer.setBackground(Color.WHITE);
+                gViewer.getRenderContext().setVertexFillPaintTransformer(new VertexColourTransformer(gViewer.getPickedVertexState()));
                 gViewer.getRenderContext().setEdgeDrawPaintTransformer(new EdgeColourTransformer());
                 gViewer.getPickedVertexState().addItemListener(this);
                 gViewer.getPickedEdgeState().addItemListener(this);
@@ -1479,23 +1480,6 @@ public class LayoutPanel extends JPanel
                     }
                     
                     return new Ellipse2D.Double(-10, -10, 20, 20);
-                }
-            }
-            
-            
-            //--------------------------------------
-            //  VERTEX COLOUR TRANSFORMER
-            //--------------------------------------
-            
-            private class VertexColourTransformer implements Transformer<Node, Paint>
-            {
-                @Override
-                public Paint transform(Node node) 
-                {
-                    if(gViewer.getPickedVertexState().isPicked(node))
-                        return Color.YELLOW;
-                    else
-                        return node.getColor();
                 }
             }
             
@@ -1672,15 +1656,6 @@ public class LayoutPanel extends JPanel
             {
                 outputArea.setText("");
             }
-        }
-    }
-    
-    private class WeightTransformer implements Transformer<Edge, Double>
-    {
-        @Override
-        public Double transform(Edge edge)
-        {
-            return 1.0 - (edge.getWeight() / 100.0);
         }
     }
 }
