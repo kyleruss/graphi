@@ -1471,19 +1471,6 @@ public class LayoutPanel extends JPanel
                 }
             }
             
-            private class EdgeColourTransformer implements Transformer<Edge, Paint>
-            {
-
-                @Override
-                public Paint transform(Edge edge) 
-                {
-                    if(gViewer.getPickedEdgeState().isPicked(edge))
-                        return Color.BLUE;
-                    else
-                        return edge.getFill();
-                }
-            }
-            
             private void setVertexColour(Color colour, Collection<Node> vertices)
             {
                 if(vertices == null)
@@ -1630,6 +1617,7 @@ public class LayoutPanel extends JPanel
             private JTextArea outputArea;
             public OutputPanel()
             {
+                setLayout(new BorderLayout());
                 outputArea  =   new JTextArea("");
                 outputArea.setBackground(Color.WHITE);
                 outputArea.setEditable(false);
