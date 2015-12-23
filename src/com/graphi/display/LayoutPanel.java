@@ -50,7 +50,6 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
 import java.io.File;
-import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.AbstractMap.SimpleEntry;
@@ -63,7 +62,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.PriorityQueue;
-import java.util.Random;
 import java.util.Set;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -93,7 +91,6 @@ import javax.swing.border.Border;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
-import org.apache.commons.collections15.Factory;
 import org.apache.commons.collections15.Transformer;
 
 public class LayoutPanel extends JPanel
@@ -238,8 +235,8 @@ public class LayoutPanel extends JPanel
             simPanel        =   new JPanel();
             modePanel.setPreferredSize(new Dimension(230, 100));
             modePanel.setBorder(BorderFactory.createTitledBorder("Mode controls"));
-            simPanel.setBorder(BorderFactory.createTitledBorder("Simulation controls"));
             simPanel.setPreferredSize(new Dimension(230, 500));
+            simPanel.setBorder(BorderFactory.createTitledBorder("Simulation controls"));
   
             modeGroup       =   new ButtonGroup();
             editCheck       =   new JRadioButton("Edit");
@@ -261,58 +258,51 @@ public class LayoutPanel extends JPanel
             genAlgorithmsBox        =   new JComboBox();
             genAlgorithmsBox.addItem("Kleinberg");
             genAlgorithmsBox.addItem("Barabasi-Albert");
-            JPanel generatorPanel   =   new JPanel();
-            generatorPanel.add(new JLabel("Generator"));
-            generatorPanel.add(genAlgorithmsBox);
-            generatorPanel.setBackground(TRANSPARENT);
             genAlgorithmsBox.addActionListener(this);
             
-            JPanel generatorControls    =   new JPanel();
             resetGeneratorBtn           =   new JButton("Reset");
             executeGeneratorBtn         =   new JButton("Generate");
             executeGeneratorBtn.addActionListener(this);
             resetGeneratorBtn.addActionListener(this);
-            generatorControls.add(resetGeneratorBtn);
-            generatorControls.add(executeGeneratorBtn);
             resetGeneratorBtn.setBackground(Color.WHITE);
             executeGeneratorBtn.setBackground(Color.WHITE);
-            generatorControls.setBackground(TRANSPARENT);
             
             genPanel    =   new JPanel(new CardLayout());
             baGenPanel  =   new JPanel(new MigLayout());
-            klGenPanel  =   new JPanel(new BorderLayout());
+            klGenPanel  =   new JPanel(new MigLayout());
+            genPanel.add(klGenPanel, KL_PANEL_CARD);
+            genPanel.add(baGenPanel, BA_PANEL_CARD);
+            genPanel.setBackground(TRANSPARENT);
             baGenPanel.setBackground(TRANSPARENT);
             klGenPanel.setBackground(TRANSPARENT);
-            klGenPanel.setBorder(null);
-            genPanel.setBorder(null);
-            genPanel.add(baGenPanel, BA_PANEL_CARD);
-            genPanel.add(klGenPanel, KL_PANEL_CARD);
             
             latticeSpinner      =   new JSpinner(new SpinnerNumberModel(15, 0, 100, 1));
             clusteringSpinner   =   new JSpinner(new SpinnerNumberModel(2, 0, 10, 1));   
             latticeSpinner.setPreferredSize(new Dimension(50, 20));
             clusteringSpinner.setPreferredSize(new Dimension(50, 20));
+            latticeSpinner.setOpaque(true);
+            clusteringSpinner.setOpaque(true);
             
             initialNSpinner     =   new JSpinner(new SpinnerNumberModel(2, 0, 1000, 1));
             addNSpinner         =   new JSpinner(new SpinnerNumberModel(100, 0, 1000, 1));
+            initialNSpinner.setOpaque(true);
+            addNSpinner.setOpaque(true);
+            
             baGenPanel.add(new JLabel("Initial nodes"));
             baGenPanel.add(initialNSpinner, "wrap");
             baGenPanel.add(new JLabel("Generated nodes"));
             baGenPanel.add(addNSpinner);
             
-            JPanel klOptWrapper     =   new JPanel(new GridLayout(2, 2, 5, 10));
-            klOptWrapper.add(new JLabel("Lattice size"));
-            klOptWrapper.add(latticeSpinner);
-            klOptWrapper.add(new JLabel("Clustering exp."));
-            klOptWrapper.add(clusteringSpinner);
-            klOptWrapper.setBackground(TRANSPARENT);
-            klGenPanel.add(klOptWrapper, BorderLayout.WEST);
+            klGenPanel.add(new JLabel("Lattice size"));
+            klGenPanel.add(latticeSpinner, "wrap");
+            klGenPanel.add(new JLabel("Clustering exp."));
+            klGenPanel.add(clusteringSpinner);
             
-            simPanel.add(generatorPanel);
+            simPanel.add(new JLabel("Generator"));
+            simPanel.add(genAlgorithmsBox);
             simPanel.add(genPanel);
-            simPanel.add(generatorControls);
-            CardLayout genCLayout   =   (CardLayout) genPanel.getLayout();
-            genCLayout.show(genPanel, KL_PANEL_CARD);
+            simPanel.add(resetGeneratorBtn);
+            simPanel.add(executeGeneratorBtn);
             
             editPanel       =   new JPanel(new GridLayout(3, 1));
             editPanel.setBorder(BorderFactory.createTitledBorder("Graph object Controls"));
@@ -342,7 +332,7 @@ public class LayoutPanel extends JPanel
             JPanel editObjPanel         =   wrapComponents(null, editVertexRadio, editEdgeRadio);
             JPanel gObjOptsPanel        =   wrapComponents(null, gObjAddBtn, gObjEditBtn, gObjRemoveBtn);
             selectedPanel.setBackground(PRESET_BG);
-            gObjOptsPanel.setBackground(TRANSPARENT);
+            gObjOptsPanel.setBackground(PRESET_BG);
             editObjPanel.setBackground(PRESET_BG);
 
             editPanel.add(selectedPanel);
@@ -419,7 +409,6 @@ public class LayoutPanel extends JPanel
             
             CardLayout clusterInnerLayout   =   (CardLayout) computeInnerPanel.getLayout();
             clusterInnerLayout.show(computeInnerPanel, CLUSTER_PANEL_CARD);
-            
             
             viewerPanel             =   new JPanel();
             JPanel innerViewerPanel =   new JPanel(new MigLayout());
@@ -604,7 +593,6 @@ public class LayoutPanel extends JPanel
             public IOPanel()
             {
                 setLayout(new GridLayout(3, 1));
-                setBackground(TRANSPARENT);
                 setBorder(BorderFactory.createTitledBorder("I/O Controls"));
                 currentStorageLabel     =   new JLabel("None");
                 importBtn               =   new JButton("Import");
@@ -625,8 +613,8 @@ public class LayoutPanel extends JPanel
                 JPanel storageBtnWrapper    =   wrapComponents(null, importBtn, exportBtn);
                 JPanel currentGraphWrapper  =   wrapComponents(null, new JLabel("Active: "), currentStorageLabel);
                 JPanel storageOptsWrapper   =   wrapComponents(null, storageGraphRadio, storageLogRadio);
-                storageBtnWrapper.setBackground(TRANSPARENT);
-                currentGraphWrapper.setBackground(TRANSPARENT);
+                storageBtnWrapper.setBackground(PRESET_BG);
+                currentGraphWrapper.setBackground(PRESET_BG);
                 storageOptsWrapper.setBackground(PRESET_BG);
                 add(currentGraphWrapper);
                 add(storageOptsWrapper);
