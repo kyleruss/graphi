@@ -41,7 +41,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.util.List;
-import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -114,7 +113,6 @@ public class LayoutPanel extends JPanel
     public LayoutPanel(MainMenu menu, JFrame frame)
     {
         setLayout(new BorderLayout());
-        setPreferredSize(new Dimension(950, 650));
         
         this.menu           =   menu;
         this.frame          =   frame;

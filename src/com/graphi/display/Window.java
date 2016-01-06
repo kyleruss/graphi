@@ -6,6 +6,7 @@
 
 package com.graphi.display;
 
+import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -54,7 +55,7 @@ public class Window
     {
         frame.getContentPane().add(layout);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
+        frame.setSize(new Dimension(950, 650));
         frame.setLocationRelativeTo(null);
     }
     
