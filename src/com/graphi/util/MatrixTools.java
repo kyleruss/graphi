@@ -7,7 +7,11 @@
 package com.graphi.util;
 
 import cern.colt.matrix.impl.SparseDoubleMatrix2D;
+import edu.uci.ics.jung.graph.Graph;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MatrixTools 
 {   
@@ -140,7 +144,8 @@ public class MatrixTools
         SparseDoubleMatrix2D v          =   new SparseDoubleMatrix2D(1, n);
         SparseDoubleMatrix2D u;
         
-        Arrays.fill(v[0], 1.0 / n);
+        v.assign(1.0 / n);
+        
         v   =   transpose(v);
         b   =   transpose(b);
 
@@ -164,7 +169,7 @@ public class MatrixTools
         SparseDoubleMatrix2D v      =   new SparseDoubleMatrix2D(1, n);
         adjMatrix                   =   transpose(adjMatrix);
         
-        Arrays.fill(v[0], 1.0 / n);
+        v.assign(1.0 / n);
         v = transpose(v);
         
         for(int i = 0; i < LIMIT; i++)
@@ -183,5 +188,17 @@ public class MatrixTools
             
             System.out.println();
         }
+    }
+    
+    public static Map<Node, Double> getScores(SparseDoubleMatrix2D v, Graph<Node, Edge> g)
+    {
+        Map<Node, Double> nodeScores    =   new HashMap<>();
+        Collection<Node> vertices       =   g.getVertices();
+        int index                       =   0;
+        
+        for(Node vertex : vertices)
+            nodeScores.put(vertex, v.getQuick(0, index));
+        
+        return nodeScores;
     }
 }

@@ -6,6 +6,7 @@
 
 package com.graphi.display;
 
+import cern.colt.matrix.impl.SparseDoubleMatrix2D;
 import static com.graphi.display.Window.HEIGHT;
 import static com.graphi.display.Window.WIDTH;
 import com.graphi.io.Storage;
@@ -14,6 +15,7 @@ import com.graphi.sim.Network;
 import com.graphi.util.EdgeFactory;
 import com.graphi.util.EdgeLabelTransformer;
 import com.graphi.util.GraphUtilities;
+import com.graphi.util.MatrixTools;
 import com.graphi.util.Node;
 import com.graphi.util.NodeFactory;
 import com.graphi.util.ObjectFillTransformer;
@@ -21,6 +23,7 @@ import com.graphi.util.VertexLabelTransformer;
 import com.graphi.util.WeightTransformer;
 import edu.uci.ics.jung.algorithms.layout.AggregateLayout;
 import edu.uci.ics.jung.algorithms.layout.FRLayout;
+import edu.uci.ics.jung.algorithms.matrix.GraphMatrixOperations;
 import edu.uci.ics.jung.algorithms.scoring.BetweennessCentrality;
 import edu.uci.ics.jung.algorithms.scoring.ClosenessCentrality;
 import edu.uci.ics.jung.algorithms.scoring.EigenvectorCentrality;
@@ -1526,24 +1529,27 @@ public class LayoutPanel extends JPanel
             
             private void showCentrality()
             {
-                VertexScorer<Node, Double> centrality;
-                int selectedCentrality  =   controlPanel.centralityTypeBox.getSelectedIndex();
-                boolean transform       =   controlPanel.centralityMorphCheck.isSelected();
+                Map<Node, Double> centrality;
+                if(currentGraph.getVertexCount() <= 1) return;
+                
+                SparseDoubleMatrix2D matrix =   GraphMatrixOperations.graphToSparseMatrix(currentGraph);
+                int selectedCentrality      =   controlPanel.centralityTypeBox.getSelectedIndex();
+                boolean transform           =   controlPanel.centralityMorphCheck.isSelected();
                 String prefix;
                 
                 switch(selectedCentrality)
                 {
                     case 0: 
-                        centrality  =   new EigenvectorCentrality(currentGraph, new WeightTransformer()); 
+                        centrality  =   MatrixTools.getScores(MatrixTools.powerIterationFull(matrix), currentGraph);
                         prefix      =   "EigenVector";
                         break;
                         
                     case 1: 
-                        centrality  =   new PageRank<>(currentGraph, new WeightTransformer(), 0.15);
+                        centrality  =   MatrixTools.getScores(MatrixTools.pageRankPI(matrix), currentGraph);
                         prefix      =   "PageRank";
                         break;
                         
-                    case 2: 
+                   /* case 2: 
                         centrality  =   new ClosenessCentrality(currentGraph, new WeightTransformer()); 
                         prefix      =   "Closeness";
                         break;
@@ -1551,7 +1557,7 @@ public class LayoutPanel extends JPanel
                     case 3: 
                         centrality  =   new BetweennessCentrality(currentGraph, new WeightTransformer()); 
                         prefix      =   "Betweenness";
-                        break;
+                        break; */
                         
                     default: return;
                 }
@@ -1568,7 +1574,7 @@ public class LayoutPanel extends JPanel
                 
                 for(Node node : vertices)
                 {
-                    double score    =   centrality.getVertexScore(node);
+                    double score    =   centrality.get(node);
                     String output   =   MessageFormat.format("({0}) Vertex: {1}, Score: {2}", prefix, node.getID(), score);
                     sendToOutput(output);
                     
