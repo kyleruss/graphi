@@ -7,7 +7,9 @@
 package com.graphi.display;
 
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -18,6 +20,15 @@ public class Window
     private final LayoutPanel layout;
     private final MainMenu menu;
     private final JFrame frame;
+    public static final int WIDTH;
+    public static final int HEIGHT;
+    
+    static
+    {
+        Dimension dim   =   Toolkit.getDefaultToolkit().getScreenSize();
+        WIDTH           =   dim.width;
+        HEIGHT          =   dim.height;
+    }
     
     private Window()
     {
@@ -54,8 +65,8 @@ public class Window
     private void initFrame()
     {
         frame.getContentPane().add(layout);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(new Dimension(950, 650));
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);     
+        frame.pack();
         frame.setLocationRelativeTo(null);
     }
     

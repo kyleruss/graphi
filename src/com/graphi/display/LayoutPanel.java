@@ -6,6 +6,8 @@
 
 package com.graphi.display;
 
+import static com.graphi.display.Window.HEIGHT;
+import static com.graphi.display.Window.WIDTH;
 import com.graphi.io.Storage;
 import com.graphi.util.Edge;
 import com.graphi.sim.Network;
@@ -112,7 +114,9 @@ public class LayoutPanel extends JPanel
     
     public LayoutPanel(MainMenu menu, JFrame frame)
     {
-        setLayout(new BorderLayout());
+        //setPreferredSize(new Dimension(950, 650));
+        setPreferredSize(new Dimension((int)(Window.WIDTH * 0.7), (int) (Window.HEIGHT * 0.85)));
+        setLayout(new BorderLayout());        
         
         this.menu           =   menu;
         this.frame          =   frame;
@@ -224,16 +228,14 @@ public class LayoutPanel extends JPanel
         {
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             setBorder(BorderFactory.createEmptyBorder(15, 0, 3, 8));
-            setPreferredSize(new Dimension(230, 1150));
-            setMinimumSize(new Dimension(230, 650));
+            setPreferredSize(new Dimension(230, 1200));
             
-            ioPanel         =   new IOPanel();
-            
+            ioPanel         =   new IOPanel();            
             modePanel       =   new JPanel();
-            simPanel        =   new JPanel();
-            modePanel.setPreferredSize(new Dimension(230, 100));
+            simPanel        =   new JPanel(new MigLayout());
+            modePanel.setPreferredSize(new Dimension(230, 65));
             modePanel.setBorder(BorderFactory.createTitledBorder("Mode controls"));
-            simPanel.setPreferredSize(new Dimension(230, 500));
+            simPanel.setPreferredSize(new Dimension(230, 150));
             simPanel.setBorder(BorderFactory.createTitledBorder("Simulation controls"));
   
             modeGroup       =   new ButtonGroup();
@@ -296,11 +298,14 @@ public class LayoutPanel extends JPanel
             klGenPanel.add(new JLabel("Clustering exp."));
             klGenPanel.add(clusteringSpinner);
             
-            simPanel.add(new JLabel("Generator"));
-            simPanel.add(genAlgorithmsBox);
-            simPanel.add(genPanel);
-            simPanel.add(resetGeneratorBtn);
-            simPanel.add(executeGeneratorBtn);
+            JPanel simMigPanel  =   new JPanel(new MigLayout());
+            simMigPanel.setBackground(PRESET_BG);
+            simPanel.add(new JLabel("Generator"), "");
+            simPanel.add(genAlgorithmsBox, "wrap");
+            simPanel.add(genPanel, "wrap, span 2");
+            simPanel.add(resetGeneratorBtn, "al left");
+            simPanel.add(executeGeneratorBtn, "al right");
+            //simPanel.add(simMigPanel);
             
             editPanel       =   new JPanel(new GridLayout(3, 1));
             editPanel.setBorder(BorderFactory.createTitledBorder("Graph object Controls"));
@@ -344,7 +349,7 @@ public class LayoutPanel extends JPanel
             spathPanel          =   new JPanel();
             computeBox          =   new JComboBox();
             computeBtn          =   new JButton("Execute");
-            computePanel.setPreferredSize(new Dimension(230, 500));
+            computePanel.setPreferredSize(new Dimension(230, 180));
             computePanel.setBorder(BorderFactory.createTitledBorder("Computation controls"));
             spathPanel.setLayout(new BoxLayout(spathPanel, BoxLayout.Y_AXIS));
             spathPanel.setBackground(TRANSPARENT);
@@ -400,10 +405,13 @@ public class LayoutPanel extends JPanel
             computeInnerPanel.add(spathPanel, SPATH_PANEL_CARD);
             computeInnerPanel.add(centralityPanel, CENTRALITY_PANEL_CARD);
             
-            computePanel.add(new JLabel("Compute "));
-            computePanel.add(computeBox);
-            computePanel.add(computeInnerPanel);
-            computePanel.add(computeBtn);
+            JPanel computeMigPanel  =   new JPanel(new MigLayout());
+            computeMigPanel.setBackground(PRESET_BG);
+            computeMigPanel.add(new JLabel("Compute "));
+            computeMigPanel.add(computeBox, "wrap");
+            computeMigPanel.add(computeInnerPanel, "wrap, span 2");
+            computeMigPanel.add(computeBtn, "span 2, al center");
+            computePanel.add(computeMigPanel);
             
             CardLayout clusterInnerLayout   =   (CardLayout) computeInnerPanel.getLayout();
             clusterInnerLayout.show(computeInnerPanel, CLUSTER_PANEL_CARD);
@@ -423,7 +431,7 @@ public class LayoutPanel extends JPanel
             viewerELabelsCheck.addActionListener(this);
             
             viewerPanel.setBorder(BorderFactory.createTitledBorder("Viewer controls"));
-            viewerPanel.setPreferredSize(new Dimension(500, 300));
+            viewerPanel.setPreferredSize(new Dimension(500, 200));
             innerViewerPanel.setBackground(PRESET_BG);
             
             innerViewerPanel.add(viewerVLabelsCheck, "wrap, span 2");
@@ -469,6 +477,7 @@ public class LayoutPanel extends JPanel
             add(computePanel);
             add(Box.createRigidArea(new Dimension(230, 30)));
             add(viewerPanel);
+            
         }
         
         private void updateSelectedComponents()
@@ -1585,6 +1594,7 @@ public class LayoutPanel extends JPanel
             
             private void reloadGraph()
             {
+                gLayout.removeAll();
                 gLayout.setGraph(currentGraph);
                 gViewer.repaint();
                 dataPanel.loadNodes(currentGraph);
