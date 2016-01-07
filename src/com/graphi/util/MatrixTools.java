@@ -6,20 +6,21 @@
 
 package com.graphi.util;
 
+import cern.colt.matrix.impl.SparseDoubleMatrix2D;
 import java.util.Arrays;
 
 public class MatrixTools 
 {   
     //Returns the square identity matrix with size
-    public static double[][] identity(int size)
+    public static SparseDoubleMatrix2D identity(int size)
     {
-        double[][] identityMatrix  =   new double[size][size];
+        SparseDoubleMatrix2D identityMatrix  =   new SparseDoubleMatrix2D(size, size);
         for(int row = 0; row < size; row++)
         {
             for(int col = 0; col < size; col++)
             {
-                if(row == col) identityMatrix[row][col] = 1;
-                else identityMatrix[row][col] = 0;
+                if(row == col) identityMatrix.setQuick(row, col, 1);
+                else identityMatrix.setQuick(row, col, 0);
             }
         }
         
@@ -27,30 +28,30 @@ public class MatrixTools
     }
     
     //Returns the sum of matrices a, b 
-    public static double[][] addMatrix(double[][] a, double[][] b)
+    public static SparseDoubleMatrix2D addMatrix(SparseDoubleMatrix2D a, SparseDoubleMatrix2D b)
     {
-        int size    =   Math.max(a.length, b.length);
-        double[][] c   =   new double[size][size];
+        int size                    =   Math.max(a.rows(), b.rows());
+        SparseDoubleMatrix2D c      =   new SparseDoubleMatrix2D(size, size);
         for(int row = 0; row < size; row++)
             for(int col = 0; col < size; col++)
-                c[row][col] = a[row][col] + b[row][col];
+                c.setQuick(row, col, a.getQuick(row, col) + b.getQuick(row, col));
         
         return c;
     }
     
     //Returns the product of matrices a, b
-    public static double[][] multiplyMatrix (double[][] a, double[][] b)
+    public static SparseDoubleMatrix2D multiplyMatrix (SparseDoubleMatrix2D a, SparseDoubleMatrix2D b)
     {
-        double[][] c    =   new double[a.length][b[0].length];
+        SparseDoubleMatrix2D c    =   new SparseDoubleMatrix2D(a.rows(), b.columns());
         double kSum     =   0.0;
-        for(int row = 0; row < c.length; row++)
+        for(int row = 0; row < c.rows(); row++)
         {
-            for(int col = 0; col < c[0].length; col++)
+            for(int col = 0; col < c.columns(); col++)
             {
-                for(int k = 0; k < b.length; k++)
-                    kSum += a[row][k]  * b[k][col];
+                for(int k = 0; k < b.rows(); k++)
+                    kSum += a.getQuick(row, k)  * b.getQuick(k, col);
                 
-                c[row][col] =   kSum;
+                c.setQuick(row, col, kSum);
                 kSum        =   0.0;
             }
         }
@@ -59,60 +60,60 @@ public class MatrixTools
     }
     
     //Divides a column vector by divisor div
-    public static double[][] divColVector(double[][] v, double div)
+    public static SparseDoubleMatrix2D divColVector(SparseDoubleMatrix2D v, double div)
     {
-        final int LEN   =   v[0].length;
-        double[][] c    =   new double[1][LEN];
+        final int LEN               =   v.columns();
+        SparseDoubleMatrix2D c      =   new SparseDoubleMatrix2D(1, LEN);
         
         for(int i = 0; i < LEN; i++)
-            c[0][i] = v[0][i] / div;
+            c.setQuick(0, i, v.getQuick(0, i) / div);
         
         return c;
     }
     
     //Divides a row vector by divisor div
-    public static double[][] divRowVector(double[][] v, double div)
+    public static SparseDoubleMatrix2D divRowVector(SparseDoubleMatrix2D v, double div)
     {
-        final int LEN   =   v.length;
-        double[][] c    =   new double[LEN][1];
+        final int LEN               =   v.rows();
+        SparseDoubleMatrix2D c      =   new SparseDoubleMatrix2D(LEN, 1);
         
         for(int i = 0; i < LEN; i++)
-            c[i][0] = v[i][0] / div;
+            c.setQuick(i, 0, v.getQuick(i, 0) / div);
         
         return c;
     }
     
     //Returns true if the two column vectors a, b are comparable
-    public static boolean colVectorSame(double[][] a, double[][] b)
+    public static boolean colVectorSame(SparseDoubleMatrix2D a, SparseDoubleMatrix2D b)
     {
-        if(a[0].length != b[0].length) return false;
+        if(a.columns() != b.columns()) return false;
         
-        for(int i = 0; i < a.length; i++)
-            if(a[0][i] != b[0][i]) return false;
+        for(int i = 0; i < a.rows(); i++)
+            if(a.getQuick(0, i) != b.getQuick(0, i)) return false;
         
         return true;
     }
     
     //Returns true if the vector is a row vector
-    public static boolean isRowVector(double[][] vector)
+    public static boolean isRowVector(SparseDoubleMatrix2D vector)
     {
-        return vector.length > vector[0].length;
+        return vector.rows() > vector.columns();
     }
     
     //Returns the vectors length/dot product
-    public static double getVectorLength(double[][] vector)
+    public static double getVectorLength(SparseDoubleMatrix2D vector)
     {
         double total    =   0;
         if(isRowVector(vector)) vector = transpose(vector);
         
-        for(int i = 0; i < vector[0].length; i++)
-            total += Math.pow(vector[0][i], 2);
+        for(int i = 0; i < vector.columns(); i++)
+            total += Math.pow(vector.getQuick(0, i), 2);
         
         return Math.sqrt(total);
     }
     
     //Returns a normalized vector of vector
-    public static double[][] normalizeVector(double[][] vector)
+    public static SparseDoubleMatrix2D normalizeVector(SparseDoubleMatrix2D vector)
     {
         double vectorLength =   getVectorLength(vector);
         if(!isRowVector(vector)) return divColVector(vector, vectorLength);
@@ -120,24 +121,24 @@ public class MatrixTools
     }
     
     //Returns the transpose of the matrix
-    public static double[][] transpose(double[][] matrix)
+    public static SparseDoubleMatrix2D transpose(SparseDoubleMatrix2D matrix)
     {
-        double[][] transpose    =   new double[matrix[0].length][matrix.length];
-        for(int row = 0; row < transpose.length; row++)
-            for(int col = 0; col < transpose[0].length; col++)
-                transpose[row][col] = matrix[col][row];
+        SparseDoubleMatrix2D transpose    =   new SparseDoubleMatrix2D(matrix.columns(), matrix.rows());
+        for(int row = 0; row < transpose.rows(); row++)
+            for(int col = 0; col < transpose.columns(); col++)
+                transpose.setQuick(row, col, matrix.getQuick(col, row));
         
         return transpose;
     }
     
     //Returns the stationary vector after performing power iteration on adjMatrix
-    public static double[][] powerIterationFull(double[][] adjMatrix)
+    public static SparseDoubleMatrix2D powerIterationFull(SparseDoubleMatrix2D adjMatrix)
     {
-        final int LIMIT             =   20;
-        final int n                 =   adjMatrix.length;
-        double[][] b                =   addMatrix(adjMatrix, identity(n));
-        double[][] v                =   new double[1][n];
-        double[][] u;
+        final int LIMIT                 =   20;
+        final int n                     =   adjMatrix.rows();
+        SparseDoubleMatrix2D b          =   addMatrix(adjMatrix, identity(n));
+        SparseDoubleMatrix2D v          =   new SparseDoubleMatrix2D(1, n);
+        SparseDoubleMatrix2D u;
         
         Arrays.fill(v[0], 1.0 / n);
         v   =   transpose(v);
@@ -147,7 +148,7 @@ public class MatrixTools
         for(int i = 0; i < LIMIT; i++)
         {
             u           =   multiplyMatrix(b, v);
-            double div  =   u[0][0];
+            double div  =   u.getQuick(0, 0);
             v           =   (isRowVector(u))? divRowVector(u, div) : divColVector(u, div);
         }
 
@@ -156,11 +157,11 @@ public class MatrixTools
     
     //Returns the stationary vector
     //Where each entry corresponds to the page ranks of input adjMatrix
-    public static double[][] pageRankPI(double[][] adjMatrix)
+    public static SparseDoubleMatrix2D pageRankPI(SparseDoubleMatrix2D adjMatrix)
     {
         final int LIMIT             =   20;
-        int n                       =   adjMatrix.length;
-        double[][] v                =   new double[1][n];
+        int n                       =   adjMatrix.rows();
+        SparseDoubleMatrix2D v      =   new SparseDoubleMatrix2D(1, n);
         adjMatrix                   =   transpose(adjMatrix);
         
         Arrays.fill(v[0], 1.0 / n);
