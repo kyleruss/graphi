@@ -15,7 +15,7 @@ public class ObjectFillTransformer<T extends GraphObject> implements Transformer
     public ObjectFillTransformer(PickedInfo<T> pickedInfo)
     {
         this.pickedInfo =   pickedInfo;
-        selectedColour  =   Color.YELLOW;   
+        selectedColour  =   Color.RED;   
     }
 
     @Override

@@ -678,14 +678,14 @@ public class LayoutPanel extends JPanel
         
         private void exportGraph()
         {
-            File file   =   getFile(false, "Graphi .graph file", ".graph");
+            File file   =   getFile(false, "Graphi .graph file", "graph");
             if(file != null && currentGraph != null)
                 Storage.saveGraph(currentGraph, file);
         }
         
         private void importGraph()
         {
-            File file   =   getFile(true, "Graphi .graph file", ".graph");
+            File file   =   getFile(true, "Graphi .graph file", "graph");
             if(file != null)
             {
                 nodeFactory.setLastID(0);
@@ -725,14 +725,14 @@ public class LayoutPanel extends JPanel
         
         private void exportLog()
         {
-            File file   =   getFile(false, "Graphi .log file", ".log");
+            File file   =   getFile(false, "Graphi .log file", "log");
             if(file != null)
                 Storage.saveOutputLog(screenPanel.outputPanel.outputArea.getText(), file);
         }
         
         private void importLog()
         {
-            File file   =   getFile(true, "Graphi .log file", ".log");
+            File file   =   getFile(true, "Graphi .log file", "log");
             if(file != null)
             {
                 ioPanel.currentStorageLabel.setText(file.getName());
