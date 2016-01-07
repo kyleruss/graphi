@@ -303,8 +303,8 @@ public class LayoutPanel extends JPanel
             simPanel.add(new JLabel("Generator"), "");
             simPanel.add(genAlgorithmsBox, "wrap");
             simPanel.add(genPanel, "wrap, span 2");
-            simPanel.add(resetGeneratorBtn, "al left");
-            simPanel.add(executeGeneratorBtn, "al right");
+            simPanel.add(resetGeneratorBtn, "");
+            simPanel.add(executeGeneratorBtn, "");
             //simPanel.add(simMigPanel);
             
             editPanel       =   new JPanel(new GridLayout(3, 1));
@@ -922,8 +922,8 @@ public class LayoutPanel extends JPanel
             
             public DataPanel()
             {
+                setLayout(new BorderLayout());
                 dataTabPane         =   new JTabbedPane();
-                
                 vertexDataModel     =   new DefaultTableModel();
                 vertexTable         =   new JTable(vertexDataModel)
                 {
@@ -1415,8 +1415,8 @@ public class LayoutPanel extends JPanel
                 
                 ScalingControl scaler   =   new CrossoverScalingControl();
                 scaler.scale(gViewer, 0.7f, gViewer.getCenter());
-                gViewer.scaleToLayout(scaler);
-                
+                gViewer.scaleToLayout(scaler); 
+
                 gViewer.setBackground(Color.WHITE);
                 gViewer.getRenderContext().setVertexFillPaintTransformer(new ObjectFillTransformer<>(gViewer.getPickedVertexState()));
                 gViewer.getRenderContext().setEdgeDrawPaintTransformer(new ObjectFillTransformer(gViewer.getPickedEdgeState()));
@@ -1429,6 +1429,7 @@ public class LayoutPanel extends JPanel
                 gViewer.addGraphMouseListener(this);
                 mouse.remove(mouse.getPopupEditingPlugin());
                 gViewer.setGraphMouse(mouse);
+                
             }
 
             @Override
