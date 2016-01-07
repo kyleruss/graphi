@@ -9,6 +9,7 @@ package com.graphi.util;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import java.awt.Color;
 import java.io.Serializable;
+import java.text.DecimalFormat;
 
 
 public class Edge implements Serializable, GraphObject
@@ -26,10 +27,10 @@ public class Edge implements Serializable, GraphObject
     
     public Edge(int id, double weight, EdgeType edgeType)
     {
-        this.id         =   id;
-        this.weight     =   weight;
+        this.id         =   id;        
         this.edgeType   =   edgeType;
         fill            =   Color.BLACK;
+        setWeight(weight);
     }
     
     public double getWeight()
@@ -39,7 +40,8 @@ public class Edge implements Serializable, GraphObject
     
     public void setWeight(double weight)
     {
-        this.weight =   weight;
+        DecimalFormat formatter =   new DecimalFormat("#.##");
+        this.weight             =   Double.parseDouble(formatter.format(weight));
     }
     
     @Override
