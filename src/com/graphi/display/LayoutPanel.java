@@ -774,7 +774,10 @@ public class LayoutPanel extends JPanel
             }
             
             else if(src == editCheck)
+            {
                 screenPanel.graphPanel.mouse.setMode(ModalGraphMouse.Mode.EDITING);
+                screenPanel.graphPanel.mouse.remove(screenPanel.graphPanel.mouse.getPopupEditingPlugin());
+            }
             
             else if(src == moveCheck)
                 screenPanel.graphPanel.mouse.setMode(ModalGraphMouse.Mode.TRANSFORMING);
@@ -1414,10 +1417,9 @@ public class LayoutPanel extends JPanel
                 
                 mouse       =   new EditingModalGraphMouse(gViewer.getRenderContext(), nodeFactory, edgeFactory);
                 mouse.setMode(ModalGraphMouse.Mode.PICKING);
+                gViewer.addGraphMouseListener(this);
                 mouse.remove(mouse.getPopupEditingPlugin());
                 gViewer.setGraphMouse(mouse);
-                gViewer.addGraphMouseListener(this);
-                
             }
 
             @Override
