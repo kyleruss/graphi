@@ -235,10 +235,9 @@ public class LayoutPanel extends JPanel
             
             ioPanel         =   new IOPanel();            
             modePanel       =   new JPanel();
-            simPanel        =   new JPanel(new MigLayout());
+            simPanel        =   new JPanel(new MigLayout("fillx"));
             modePanel.setPreferredSize(new Dimension(230, 65));
             modePanel.setBorder(BorderFactory.createTitledBorder("Mode controls"));
-            simPanel.setPreferredSize(new Dimension(230, 150));
             simPanel.setBorder(BorderFactory.createTitledBorder("Simulation controls"));
   
             modeGroup       =   new ButtonGroup();
@@ -301,14 +300,15 @@ public class LayoutPanel extends JPanel
             klGenPanel.add(new JLabel("Clustering exp."));
             klGenPanel.add(clusteringSpinner);
             
-            JPanel simMigPanel  =   new JPanel(new MigLayout());
-            simMigPanel.setBackground(PRESET_BG);
-            simPanel.add(new JLabel("Generator"), "");
+            simPanel.add(new JLabel("Generator"), "al right");
             simPanel.add(genAlgorithmsBox, "wrap");
-            simPanel.add(genPanel, "wrap, span 2");
-            simPanel.add(resetGeneratorBtn, "");
+            simPanel.add(genPanel, "wrap, span 2, al center");
+            simPanel.add(resetGeneratorBtn, "al right");
             simPanel.add(executeGeneratorBtn, "");
             //simPanel.add(simMigPanel);
+            
+            JPanel simWrapperPanel   =   new JPanel(new BorderLayout());
+            simWrapperPanel.add(simPanel);
             
             editPanel       =   new JPanel(new GridLayout(3, 1));
             editPanel.setBorder(BorderFactory.createTitledBorder("Graph object Controls"));
@@ -345,7 +345,7 @@ public class LayoutPanel extends JPanel
             editPanel.add(editObjPanel);
             editPanel.add(gObjOptsPanel);
             
-            computePanel        =   new JPanel();
+            computePanel        =   new JPanel(new MigLayout("fillx"));
             computeInnerPanel   =   new JPanel(new CardLayout());
             clusterPanel        =   new JPanel();
             centralityPanel     =   new JPanel(new MigLayout());
@@ -408,13 +408,13 @@ public class LayoutPanel extends JPanel
             computeInnerPanel.add(spathPanel, SPATH_PANEL_CARD);
             computeInnerPanel.add(centralityPanel, CENTRALITY_PANEL_CARD);
             
-            JPanel computeMigPanel  =   new JPanel(new MigLayout());
-            computeMigPanel.setBackground(PRESET_BG);
-            computeMigPanel.add(new JLabel("Compute "));
-            computeMigPanel.add(computeBox, "wrap");
-            computeMigPanel.add(computeInnerPanel, "wrap, span 2");
-            computeMigPanel.add(computeBtn, "span 2, al center");
-            computePanel.add(computeMigPanel);
+            computePanel.add(new JLabel("Compute "), "al right");
+            computePanel.add(computeBox, "wrap");
+            computePanel.add(computeInnerPanel, "wrap, span 2, al center");
+            computePanel.add(computeBtn, "span 2, al center");
+            
+            JPanel computeWrapperPanel   =   new JPanel(new BorderLayout());
+            computeWrapperPanel.add(computePanel);
             
             CardLayout clusterInnerLayout   =   (CardLayout) computeInnerPanel.getLayout();
             clusterInnerLayout.show(computeInnerPanel, CLUSTER_PANEL_CARD);
@@ -469,15 +469,17 @@ public class LayoutPanel extends JPanel
             menu.removeEdgeItem.addActionListener(this);
             menu.aboutItem.addActionListener(this);
             
+            
+            
             add(modePanel);
             add(Box.createRigidArea(new Dimension(230, 30)));
-            add(simPanel);
+            add(simWrapperPanel);
             add(Box.createRigidArea(new Dimension(230, 30)));
             add(ioPanel);
             add(Box.createRigidArea(new Dimension(230, 30)));
             add(editPanel);
             add(Box.createRigidArea(new Dimension(230, 30)));
-            add(computePanel);
+            add(computeWrapperPanel);
             add(Box.createRigidArea(new Dimension(230, 30)));
             add(viewerPanel);
             
