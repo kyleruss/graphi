@@ -608,17 +608,19 @@ public class LayoutPanel extends JPanel
                 
                 storageGroup.add(storageGraphRadio);
                 storageGroup.add(storageLogRadio);
+                storageGroup.add(storageScriptRadio);
                 importBtn.addActionListener(this);
                 exportBtn.addActionListener(this);
                 storageGraphRadio.addActionListener(this);
                 storageLogRadio.addActionListener(this);
+                storageScriptRadio.addActionListener(this);
                 importBtn.setBackground(Color.WHITE);
                 exportBtn.setBackground(Color.WHITE);
                 storageGraphRadio.setSelected(true);
 
                 JPanel storageBtnWrapper    =   wrapComponents(null, importBtn, exportBtn);
                 JPanel currentGraphWrapper  =   wrapComponents(null, new JLabel("Active: "), currentStorageLabel);
-                JPanel storageOptsWrapper   =   wrapComponents(null, storageGraphRadio, storageLogRadio);
+                JPanel storageOptsWrapper   =   wrapComponents(null, storageGraphRadio, storageLogRadio, storageScriptRadio);
                 storageBtnWrapper.setBackground(PRESET_BG);
                 currentGraphWrapper.setBackground(PRESET_BG);
                 storageOptsWrapper.setBackground(PRESET_BG);
@@ -688,7 +690,7 @@ public class LayoutPanel extends JPanel
         {
             File file   =   getFile(false, "Graphi .graph file", "graph");
             if(file != null && currentGraph != null)
-                Storage.saveGraph(currentGraph, file);
+                Storage.saveObj(currentGraph, file);
         }
         
         private void importGraph()
@@ -698,7 +700,7 @@ public class LayoutPanel extends JPanel
             {
                 nodeFactory.setLastID(0);
                 edgeFactory.setLastID(0);
-                currentGraph        =   Storage.openGraph(file);
+                currentGraph        =   (Graph) Storage.openObj(file);
                 ioPanel.currentStorageLabel.setText(file.getName());
                 
                 initCurrentNodes();

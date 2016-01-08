@@ -22,11 +22,11 @@ import javax.swing.JOptionPane;
 
 public class Storage
 {
-    public static void saveGraph(Graph graph, File file)
+    public static void saveObj(Object obj, File file)
     {
         try(ObjectOutputStream oos  =   new ObjectOutputStream(new FileOutputStream(file)))
         {
-            oos.writeObject(graph);
+            oos.writeObject(obj);
         }
         
         catch(IOException e)
@@ -35,12 +35,11 @@ public class Storage
         }
     }
     
-    public static Graph openGraph(File file)
+    public static Object openObj(File file)
     {
         try(ObjectInputStream ois   =   new ObjectInputStream(new FileInputStream(file)))
         {
-            Graph gObj =   (Graph) ois.readObject();
-            return gObj;
+            return ois.readObject();
         }
         
         catch(Exception e)
