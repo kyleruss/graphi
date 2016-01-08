@@ -1507,14 +1507,18 @@ public class LayoutPanel extends JPanel
                 pbPlay          =   new JButton("Play");
                 pbStop          =   new JButton("Stop");
                 pbProgress      =   new JSlider();
-                pbProgressSpeed =   new JSpinner();
+                pbProgressSpeed =   new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
                 pbControls.setVisible(true);
                 
-                pbControls.add(pbProgress, "al center, span 4, wrap");
-                pbControls.add(pbPlay, "al right");
-                pbControls.add(pbStop, "");
-                pbControls.add(new JLabel("Speed"), "al right");
-                pbControls.add(pbProgressSpeed, "");
+                JPanel pbInnerWrapper   =   new JPanel();
+                pbInnerWrapper.add(pbPlay);
+                pbInnerWrapper.add(pbStop);
+                pbInnerWrapper.add(new JLabel("Speed"));
+                pbInnerWrapper.add(pbProgressSpeed);
+                
+                pbControls.add(pbProgress, "al center, wrap");
+                pbControls.add(pbInnerWrapper, "al center");
+                
                 JPanel pbControlsWrapper    =   new JPanel(new BorderLayout());
                 pbControlsWrapper.add(pbControls);
                 
