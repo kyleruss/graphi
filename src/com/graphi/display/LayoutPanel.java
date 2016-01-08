@@ -675,16 +675,24 @@ public class LayoutPanel extends JPanel
                 {
                     if(storageGraphRadio.isSelected())
                         importGraph();
-                    else
+                    
+                    else if(storageLogRadio.isSelected())
                         importLog();
+                    
+                    else if(storageScriptRadio.isSelected())
+                        importScript();
                 }
 
                 else if(src == exportBtn)
                 {
                     if(storageGraphRadio.isSelected())
                         exportGraph();
-                    else
+                    
+                    else if(storageLogRadio.isSelected())
                         exportLog();
+                    
+                    else if(storageScriptRadio.isSelected())
+                        exportScript();
                 }
             }
         }
@@ -736,7 +744,7 @@ public class LayoutPanel extends JPanel
             {
                 nodeFactory.setLastID(0);
                 edgeFactory.setLastID(0);
-                currentGraph        =   (Graph) Storage.openObj(file);
+                currentGraph  =   (Graph) Storage.openObj(file);
                 ioPanel.currentStorageLabel.setText(file.getName());
                 
                 initCurrentNodes();
@@ -751,12 +759,21 @@ public class LayoutPanel extends JPanel
         
         private void importScript()
         {
-            
+            File file   =   getFile(true, "Graphi .gscript file", "gscript");
+            if(file != null)
+            {
+                screenPanel.graphPanel.gPlayback    =   (GraphPlayback) Storage.openObj(file);
+                ioPanel.currentStorageLabel.setText(file.getName());
+            }
         }
         
         private void exportScript()
         {
-            
+            File file   =   getFile(false, "Graphi .gscript file", "gscript");
+            if(file != null)
+            {
+                
+            }
         }
         
         private void initCurrentNodes()
