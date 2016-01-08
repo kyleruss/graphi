@@ -8,6 +8,7 @@ package com.graphi.display;
 
 import cern.colt.matrix.impl.SparseDoubleMatrix2D;
 import com.graphi.io.Storage;
+import com.graphi.sim.GraphPlayback;
 import com.graphi.util.Edge;
 import com.graphi.sim.Network;
 import com.graphi.util.EdgeFactory;
@@ -220,6 +221,12 @@ public class LayoutPanel extends JPanel
         private JCheckBox viewerVLabelsCheck;
         private JCheckBox viewerELabelsCheck;
         private JButton viewerBGBtn, vertexBGBtn, edgeBGBtn;
+        
+        private JPanel playbackPanel;
+        private JButton recordBtn;
+        private boolean recording;
+        private JButton clearRecordingBtn;
+        private JButton displayBtn;
         
         public ControlPanel() 
         {
@@ -439,6 +446,25 @@ public class LayoutPanel extends JPanel
             JPanel viewerWrapperPanel   =   new JPanel(new BorderLayout());
             viewerWrapperPanel.add(viewerPanel);
             
+            playbackPanel       =   new JPanel(new MigLayout("fillx"));
+            recordBtn           =   new JButton("Rec");
+            clearRecordingBtn   =   new JButton("SRec");   
+            displayBtn          =   new JButton("Display");
+            recording           =   false;
+            
+            playbackPanel.setBorder(BorderFactory.createTitledBorder("Playback controls"));
+            
+            playbackPanel.add(recordBtn, "al right");
+            playbackPanel.add(clearRecordingBtn, "al center");
+            playbackPanel.add(displayBtn);
+            
+            recordBtn.addActionListener(this);
+            clearRecordingBtn.addActionListener(this);
+            displayBtn.addActionListener(this);
+            
+            JPanel pbWrapperPanel  =   new JPanel(new BorderLayout());
+            pbWrapperPanel.add(playbackPanel);
+            
             menu.exitItem.addActionListener(this);
             menu.miniItem.addActionListener(this);
             menu.maxItem.addActionListener(this);
@@ -474,6 +500,8 @@ public class LayoutPanel extends JPanel
             add(computeWrapperPanel);
             add(Box.createRigidArea(new Dimension(230, 30)));
             add(viewerWrapperPanel);
+            add(Box.createRigidArea(new Dimension(230, 30)));
+            add(pbWrapperPanel);
             
         }
         
@@ -1419,12 +1447,15 @@ public class LayoutPanel extends JPanel
             private final VisualizationViewer<Node, Edge> gViewer;
             private AggregateLayout<Node, Edge> gLayout;
             private EditingModalGraphMouse mouse;
+            private GraphPlayback gPlayback;
+            
             
             public GraphPanel()
             {
                 setLayout(new BorderLayout());
                 gLayout     =   new AggregateLayout(new FRLayout(currentGraph));
                 gViewer     =   new VisualizationViewer<>(gLayout);
+                gPlayback   =   new GraphPlayback(gViewer, gLayout);
                 
                 ScalingControl scaler   =   new CrossoverScalingControl();
                 scaler.scale(gViewer, 0.7f, gViewer.getCenter());
@@ -1442,6 +1473,8 @@ public class LayoutPanel extends JPanel
                 gViewer.addGraphMouseListener(this);
                 mouse.remove(mouse.getPopupEditingPlugin());
                 gViewer.setGraphMouse(mouse);
+                
+       
                 
             }
 

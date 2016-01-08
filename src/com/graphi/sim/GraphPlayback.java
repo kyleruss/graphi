@@ -13,6 +13,7 @@ import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import java.io.Serializable;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 public class GraphPlayback implements Iterator<Graph<Node, Edge>>, Serializable
@@ -23,11 +24,11 @@ public class GraphPlayback implements Iterator<Graph<Node, Edge>>, Serializable
     private int index;
     
     
-    public GraphPlayback(VisualizationViewer<Node, Edge> viewer, List<Graph<Node, Edge>> graphData, AggregateLayout<Node, Edge> layout)
+    public GraphPlayback(VisualizationViewer<Node, Edge> viewer, AggregateLayout<Node, Edge> layout)
     {
         this.viewer     =   viewer;
-        this.graphData  =   graphData;
         this.layout     =   layout;
+        graphData       =   new LinkedList<>();
         index           =   0;
     }
     
