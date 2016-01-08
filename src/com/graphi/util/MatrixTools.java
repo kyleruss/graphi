@@ -8,7 +8,6 @@ package com.graphi.util;
 
 import cern.colt.matrix.impl.SparseDoubleMatrix2D;
 import edu.uci.ics.jung.graph.Graph;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -176,6 +175,39 @@ public class MatrixTools
             v     =   multiplyMatrix(adjMatrix, v);
         
         return v;
+    }
+    
+    public static SparseDoubleMatrix2D createPageRankMatrix(Graph<Node, Edge> g)
+    {
+        int n                       =   g.getVertexCount();
+        final double c              =   0.15;
+        Collection<Node> vertices   =   g.getVertices();
+        SparseDoubleMatrix2D matrix =  new SparseDoubleMatrix2D(n, n);
+        int i = 0;
+        int j = 0;
+        
+        for(Node node : vertices)
+        {
+            Collection<Edge> outEdges   =   g.getOutEdges(node);
+            j = 0;
+            
+            for(Node outNode : vertices)
+            {
+                if(outEdges.isEmpty())
+                    matrix.setQuick(i, j, 1.0 / n);
+                
+                else if(g.findEdge(node, outNode) != null)
+                    matrix.setQuick(i, j, (1.0 - c) + (c / g.outDegree(node)));
+                else
+                    matrix.setQuick(i, j, (1.0 - c) / n);
+                
+                j++;
+            }
+            
+            i++;
+        }
+        
+        return matrix;
     }
     
     //Prints out the matrix
