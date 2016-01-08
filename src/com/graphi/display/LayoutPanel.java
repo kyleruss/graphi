@@ -117,7 +117,6 @@ public class LayoutPanel extends JPanel
     
     public LayoutPanel(MainMenu menu, JFrame frame)
     {
-        //setPreferredSize(new Dimension(950, 650));
         setPreferredSize(new Dimension((int)(Window.WIDTH * 0.7), (int) (Window.HEIGHT * 0.85)));
         setLayout(new BorderLayout());        
         
@@ -231,12 +230,12 @@ public class LayoutPanel extends JPanel
         {
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             setBorder(BorderFactory.createEmptyBorder(15, 0, 3, 8));
-            setPreferredSize(new Dimension(230, 1200));
+            setPreferredSize(new Dimension(230, 1400));
             
             ioPanel         =   new IOPanel();            
             modePanel       =   new JPanel();
             simPanel        =   new JPanel(new MigLayout("fillx"));
-            modePanel.setPreferredSize(new Dimension(230, 65));
+            modePanel.setPreferredSize(new Dimension(230, 100));
             modePanel.setBorder(BorderFactory.createTitledBorder("Mode controls"));
             simPanel.setBorder(BorderFactory.createTitledBorder("Simulation controls"));
   
@@ -305,7 +304,6 @@ public class LayoutPanel extends JPanel
             simPanel.add(genPanel, "wrap, span 2, al center");
             simPanel.add(resetGeneratorBtn, "al right");
             simPanel.add(executeGeneratorBtn, "");
-            //simPanel.add(simMigPanel);
             
             JPanel simWrapperPanel   =   new JPanel(new BorderLayout());
             simWrapperPanel.add(simPanel);
@@ -365,7 +363,7 @@ public class LayoutPanel extends JPanel
             
             clusterEdgeRemoveSpinner    =   new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
             clusterTransformCheck       =   new JCheckBox("Transform graph");
-            clusterEdgeRemoveSpinner.setPreferredSize(new Dimension(50, 20));
+            clusterEdgeRemoveSpinner.setPreferredSize(new Dimension(50, 25));
             
             JPanel clusterEdgesPanel        =   wrapComponents(null, new JLabel("Delete edges"), clusterEdgeRemoveSpinner);
             clusterPanel.setLayout(new MigLayout());
@@ -438,15 +436,15 @@ public class LayoutPanel extends JPanel
             viewerPanel.add(viewerVLabelsCheck, "wrap, span 2, al center");
             viewerPanel.add(viewerELabelsCheck, "wrap, span 2, al center");
             viewerPanel.add(new JLabel("Vertex background"), "al right");
-            viewerPanel.add(vertexBGBtn, "wrap, al center");
+            viewerPanel.add(vertexBGBtn, "wrap");
             viewerPanel.add(new JLabel("Edge background"), "al right");
-            viewerPanel.add(edgeBGBtn, "wrap, al center");
+            viewerPanel.add(edgeBGBtn, "wrap");
             viewerPanel.add(new JLabel("Viewer background"), "al right");
-            viewerPanel.add(viewerBGBtn, "wrap, al center");
+            viewerPanel.add(viewerBGBtn, "wrap");
             
             JPanel viewerWrapperPanel   =   new JPanel(new BorderLayout());
             viewerWrapperPanel.add(viewerPanel);
-
+            
             menu.exitItem.addActionListener(this);
             menu.miniItem.addActionListener(this);
             menu.maxItem.addActionListener(this);
@@ -973,6 +971,7 @@ public class LayoutPanel extends JPanel
                 ArrayList<Node> vertices   =   new ArrayList<>(graph.getVertices());
                 Collections.sort(vertices, (Node n1, Node n2) -> Integer.compare(n1.getID(), n2.getID()));
                 
+                nodeFactory.setLastID(0);
                 currentNodes.clear();
                 SwingUtilities.invokeLater(() -> 
                 {
@@ -996,6 +995,7 @@ public class LayoutPanel extends JPanel
                 ArrayList<Edge> edges  =   new ArrayList<>(graph.getEdges());
                 Collections.sort(edges, (Edge e1, Edge e2) -> Integer.compare(e1.getID(), e2.getID())); 
                 
+                //edgeFactory.setLastID(0);
                 currentEdges.clear();
                 
                 SwingUtilities.invokeLater(() ->
@@ -1599,7 +1599,8 @@ public class LayoutPanel extends JPanel
                     graphPanel.gViewer.getRenderContext().setVertexShapeTransformer(new CentralityTransformer(centralNodes, 3));
                     graphPanel.gViewer.repaint();
                 }
-            }
+            } 
+            
             
             private void reloadGraph()
             {

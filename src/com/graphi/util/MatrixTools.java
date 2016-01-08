@@ -144,7 +144,7 @@ public class MatrixTools
         SparseDoubleMatrix2D v          =   new SparseDoubleMatrix2D(1, n);
         SparseDoubleMatrix2D u;
         
-        v.assign(1.0 / n);
+        v.assign(1.0);
         
         v   =   transpose(v);
         b   =   transpose(b);
@@ -156,7 +156,7 @@ public class MatrixTools
             double div  =   u.getQuick(0, 0);
             v           =   (isRowVector(u))? divRowVector(u, div) : divColVector(u, div);
         }
-
+        
         return normalizeVector(v);
     }
     
@@ -197,7 +197,11 @@ public class MatrixTools
         int index                       =   0;
         
         for(Node vertex : vertices)
-            nodeScores.put(vertex, v.getQuick(0, index));
+        {
+            double val = v.get(isRowVector(v)? index : 0, isRowVector(v)? 0 : index);
+            nodeScores.put(vertex, val);
+            index++;
+        }
         
         return nodeScores;
     }
