@@ -391,7 +391,6 @@ public class LayoutPanel extends JPanel
             centralityOptions       =   new ButtonGroup();
             centralityMorphCheck    =   new JCheckBox("Transform graph");
             centralityTypeBox.addItem("Eigenvector");
-            centralityTypeBox.addItem("PageRank");
             centralityTypeBox.addItem("Closeness");
             centralityTypeBox.addItem("Betweenness");
             centralityTypeBox.addActionListener(this);
@@ -1547,19 +1546,14 @@ public class LayoutPanel extends JPanel
                         break;
                         
                     case 1: 
-                        centrality  =   MatrixTools.getScores(MatrixTools.pageRankPI(matrix), currentGraph);
-                        prefix      =   "PageRank";
-                        break;
-                        
-                   /* case 2: 
-                        centrality  =   new ClosenessCentrality(currentGraph, new WeightTransformer()); 
+                        centrality  =   MatrixTools.getScores(new ClosenessCentrality(currentGraph, new WeightTransformer()), currentGraph);
                         prefix      =   "Closeness";
                         break;
                         
-                    case 3: 
-                        centrality  =   new BetweennessCentrality(currentGraph, new WeightTransformer()); 
+                    case 2: 
+                        centrality  =   MatrixTools.getScores(new BetweennessCentrality(currentGraph, new WeightTransformer()), currentGraph);
                         prefix      =   "Betweenness";
-                        break; */
+                        break; 
                         
                     default: return;
                 }

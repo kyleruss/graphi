@@ -7,6 +7,7 @@
 package com.graphi.util;
 
 import cern.colt.matrix.impl.SparseDoubleMatrix2D;
+import edu.uci.ics.jung.algorithms.scoring.VertexScorer;
 import edu.uci.ics.jung.graph.Graph;
 import java.util.Collection;
 import java.util.HashMap;
@@ -163,16 +164,20 @@ public class MatrixTools
     //Where each entry corresponds to the page ranks of input adjMatrix
     public static SparseDoubleMatrix2D pageRankPI(SparseDoubleMatrix2D adjMatrix)
     {
-        final int LIMIT             =   20;
+        final int LIMIT             =   5;
         int n                       =   adjMatrix.rows();
         SparseDoubleMatrix2D v      =   new SparseDoubleMatrix2D(1, n);
         adjMatrix                   =   transpose(adjMatrix);
         
         v.assign(1.0 / n);
-        v = transpose(v);
+        //v = transpose(v);
+        System.out.println(v);
         
         for(int i = 0; i < LIMIT; i++)
+        {
             v     =   multiplyMatrix(adjMatrix, v);
+            System.out.println(v);
+        }
         
         return v;
     }
@@ -236,5 +241,16 @@ public class MatrixTools
         }
         
         return nodeScores;
+    }
+    
+    public static Map<Node, Double> getScores(VertexScorer<Node, Double> scorer, Graph<Node, Edge> g)
+    {
+        Collection<Node> vertices   =   g.getVertices();
+        Map<Node, Double> scores    =   new HashMap<>();
+        
+        for(Node node : vertices)
+            scores.put(node, scorer.getVertexScore(node));
+        
+        return scores;
     }
 }
