@@ -419,8 +419,7 @@ public class LayoutPanel extends JPanel
             CardLayout clusterInnerLayout   =   (CardLayout) computeInnerPanel.getLayout();
             clusterInnerLayout.show(computeInnerPanel, CLUSTER_PANEL_CARD);
             
-            viewerPanel             =   new JPanel();
-            JPanel innerViewerPanel =   new JPanel(new MigLayout());
+            viewerPanel             =   new JPanel(new MigLayout("fillx"));
             viewerVLabelsCheck      =   new JCheckBox("Vertex labels");
             viewerELabelsCheck      =   new JCheckBox("Edge labels");
             viewerBGBtn             =   new JButton("Choose");
@@ -435,17 +434,18 @@ public class LayoutPanel extends JPanel
             
             viewerPanel.setBorder(BorderFactory.createTitledBorder("Viewer controls"));
             viewerPanel.setPreferredSize(new Dimension(500, 200));
-            innerViewerPanel.setBackground(PRESET_BG);
             
-            innerViewerPanel.add(viewerVLabelsCheck, "wrap, span 2");
-            innerViewerPanel.add(viewerELabelsCheck, "wrap, span 2");
-            innerViewerPanel.add(new JLabel("Vertex background"));
-            innerViewerPanel.add(vertexBGBtn, "wrap");
-            innerViewerPanel.add(new JLabel("Edge background"));
-            innerViewerPanel.add(edgeBGBtn, "wrap");
-            innerViewerPanel.add(new JLabel("Viewer background"));
-            innerViewerPanel.add(viewerBGBtn, "wrap");
-            viewerPanel.add(innerViewerPanel);
+            viewerPanel.add(viewerVLabelsCheck, "wrap, span 2, al center");
+            viewerPanel.add(viewerELabelsCheck, "wrap, span 2, al center");
+            viewerPanel.add(new JLabel("Vertex background"), "al right");
+            viewerPanel.add(vertexBGBtn, "wrap, al center");
+            viewerPanel.add(new JLabel("Edge background"), "al right");
+            viewerPanel.add(edgeBGBtn, "wrap, al center");
+            viewerPanel.add(new JLabel("Viewer background"), "al right");
+            viewerPanel.add(viewerBGBtn, "wrap, al center");
+            
+            JPanel viewerWrapperPanel   =   new JPanel(new BorderLayout());
+            viewerWrapperPanel.add(viewerPanel);
 
             menu.exitItem.addActionListener(this);
             menu.miniItem.addActionListener(this);
@@ -481,7 +481,7 @@ public class LayoutPanel extends JPanel
             add(Box.createRigidArea(new Dimension(230, 30)));
             add(computeWrapperPanel);
             add(Box.createRigidArea(new Dimension(230, 30)));
-            add(viewerPanel);
+            add(viewerWrapperPanel);
             
         }
         
