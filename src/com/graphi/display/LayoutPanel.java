@@ -78,6 +78,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
@@ -457,8 +458,7 @@ public class LayoutPanel extends JPanel
             pbAdding            =   false;
             recording           =   false;
             
-            playbackPanel.setBorder(BorderFactory.createTitledBorder("Playback controls"));
-            
+            playbackPanel.setBorder(BorderFactory.createTitledBorder("Script controls"));
             playbackPanel.add(recordBtn, "al right");
             playbackPanel.add(clearRecordingBtn, "al center");
             playbackPanel.add(displayCtrlsBtn, "wrap");
@@ -495,7 +495,6 @@ public class LayoutPanel extends JPanel
             menu.editEdgeItem.addActionListener(this);
             menu.removeEdgeItem.addActionListener(this);
             menu.aboutItem.addActionListener(this);
-            
             
             
             add(modePanel);
@@ -1463,6 +1462,8 @@ public class LayoutPanel extends JPanel
             
             private JPanel pbControls;
             private JButton pbPlay, pbStop;
+            private JSlider pbProgress;
+            private JSpinner pbProgressSpeed;
             
             public GraphPanel()
             {
@@ -1487,16 +1488,23 @@ public class LayoutPanel extends JPanel
                 mouse.remove(mouse.getPopupEditingPlugin());
                 gViewer.setGraphMouse(mouse);
                 
-                pbControls  =   new JPanel();
-                pbPlay      =   new JButton("Play");
-                pbStop      =   new JButton("Stop");
+                pbControls      =   new JPanel(new MigLayout("fillx"));
+                pbPlay          =   new JButton("Play");
+                pbStop          =   new JButton("Stop");
+                pbProgress      =   new JSlider();
+                pbProgressSpeed =   new JSpinner();
                 pbControls.setVisible(true);
                 
-                pbControls.add(pbPlay);
-                pbControls.add(pbStop);
+                pbControls.add(pbProgress, "al center, span 4, wrap");
+                pbControls.add(pbPlay, "al right");
+                pbControls.add(pbStop, "");
+                pbControls.add(new JLabel("Speed"), "al right");
+                pbControls.add(pbProgressSpeed, "");
+                JPanel pbControlsWrapper    =   new JPanel(new BorderLayout());
+                pbControlsWrapper.add(pbControls);
                 
                 add(gViewer, BorderLayout.CENTER);
-                add(pbControls, BorderLayout.SOUTH);
+                add(pbControlsWrapper, BorderLayout.SOUTH);
             }
 
             @Override
