@@ -54,7 +54,8 @@
 		<sourceDirectory>src</sourceDirectory>
 		<resources>
 			<resource>
-				<directory>resources</directory>
+				<directory>${basedir}/resources</directory>
+				<targetPath>${basedir}/target/resources</targetPath>
 			</resource>
 		</resources>
     </build>

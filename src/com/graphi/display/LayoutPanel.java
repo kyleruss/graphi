@@ -107,6 +107,9 @@ public class LayoutPanel extends JPanel
     
     private BufferedImage addIcon, removeIcon, colourIcon;
     private BufferedImage clipIcon, openIcon, saveIcon;
+    private BufferedImage editBlackIcon, pointerIcon, moveIcon;
+    private BufferedImage moveSelectedIcon, editSelectedIcon, pointerSelectedIcon;
+    private BufferedImage graphIcon, tableIcon;
     
     public static final Color TRANSPARENT   =   new Color(255, 255, 255, 0);
     public static final Color PRESET_BG     =   new Color(200, 200, 200);
@@ -186,12 +189,20 @@ public class LayoutPanel extends JPanel
     {
         try
         {
-            addIcon     =   ImageIO.read(new File("resources/images/addSmallIcon.png"));
-            removeIcon  =   ImageIO.read(new File("resources/images/removeSmallIcon.png"));   
-            colourIcon  =   ImageIO.read(new File("resources/images/color_icon.png"));   
-            clipIcon    =   ImageIO.read(new File("resources/images/clipboard.png"));  
-            saveIcon    =   ImageIO.read(new File("resources/images/new_file.png"));
-            openIcon    =   ImageIO.read(new File("resources/images/open_icon.png"));
+            addIcon             =   ImageIO.read(new File("resources/images/addSmallIcon.png"));
+            removeIcon          =   ImageIO.read(new File("resources/images/removeSmallIcon.png"));   
+            colourIcon          =   ImageIO.read(new File("resources/images/color_icon.png"));   
+            clipIcon            =   ImageIO.read(new File("resources/images/clipboard.png"));  
+            saveIcon            =   ImageIO.read(new File("resources/images/new_file.png"));
+            openIcon            =   ImageIO.read(new File("resources/images/open_icon.png"));
+            editBlackIcon       =   ImageIO.read(new File("resources/images/editblack.png"));
+            pointerIcon         =   ImageIO.read(new File("resources/images/pointer.png"));
+            moveIcon            =   ImageIO.read(new File("resources/images/move.png"));
+            moveSelectedIcon    =   ImageIO.read(new File("resources/images/move_selected.png"));
+            editSelectedIcon    =   ImageIO.read(new File("resources/images/editblack_selected.png"));
+            pointerSelectedIcon =   ImageIO.read(new File("resources/images/pointer_selected.png"));
+            graphIcon           =   ImageIO.read(new File("resources/images/graph.png"));
+            tableIcon           =   ImageIO.read(new File("resources/images/table.png"));
         }
         
         catch(IOException e)
@@ -274,6 +285,14 @@ public class LayoutPanel extends JPanel
             editCheck       =   new JRadioButton("Edit");
             selectCheck     =   new JRadioButton("Select");
             moveCheck       =   new JRadioButton("Move");
+            
+            editCheck.setIcon(new ImageIcon(editBlackIcon));
+            selectCheck.setIcon(new ImageIcon(pointerIcon));
+            moveCheck.setIcon(new ImageIcon(moveIcon));
+            
+            moveCheck.setSelectedIcon(new ImageIcon(moveSelectedIcon));
+            editCheck.setSelectedIcon(new ImageIcon(editSelectedIcon));
+            selectCheck.setSelectedIcon(new ImageIcon(pointerSelectedIcon));
             
             editCheck.addActionListener(this);
             selectCheck.addActionListener(this);
@@ -1017,7 +1036,9 @@ public class LayoutPanel extends JPanel
             JLabel dataLabel    =   new JLabel("Data", JLabel.CENTER);
             JLabel outLabel     =   new JLabel("Output", JLabel.CENTER);
             
+            dispLabel.setIcon(new ImageIcon(graphIcon));
             outLabel.setIcon(new ImageIcon(clipIcon));
+            dataLabel.setIcon(new ImageIcon(tableIcon));
             
             tabPane.setTabComponentAt(0, dispLabel);
             tabPane.setTabComponentAt(1, dataLabel);
