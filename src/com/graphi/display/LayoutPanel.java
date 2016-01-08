@@ -226,7 +226,7 @@ public class LayoutPanel extends JPanel
         private JButton recordBtn;
         private boolean recording;
         private JButton clearRecordingBtn;
-        private JButton displayBtn;
+        private JButton displayCtrlsBtn;
         
         public ControlPanel() 
         {
@@ -449,18 +449,18 @@ public class LayoutPanel extends JPanel
             playbackPanel       =   new JPanel(new MigLayout("fillx"));
             recordBtn           =   new JButton("Rec");
             clearRecordingBtn   =   new JButton("SRec");   
-            displayBtn          =   new JButton("Display");
+            displayCtrlsBtn     =   new JButton("Display");
             recording           =   false;
             
             playbackPanel.setBorder(BorderFactory.createTitledBorder("Playback controls"));
             
             playbackPanel.add(recordBtn, "al right");
             playbackPanel.add(clearRecordingBtn, "al center");
-            playbackPanel.add(displayBtn);
+            playbackPanel.add(displayCtrlsBtn);
             
             recordBtn.addActionListener(this);
             clearRecordingBtn.addActionListener(this);
-            displayBtn.addActionListener(this);
+            displayCtrlsBtn.addActionListener(this);
             
             JPanel pbWrapperPanel  =   new JPanel(new BorderLayout());
             pbWrapperPanel.add(playbackPanel);
@@ -922,6 +922,9 @@ public class LayoutPanel extends JPanel
             
             else if(src == menu.removeEdgeItem)
                 screenPanel.dataPanel.removeEdge();
+            
+            else if(src == displayCtrlsBtn)
+                screenPanel.graphPanel.pbControls.setVisible(!screenPanel.graphPanel.pbControls.isVisible());
         }
     }
     
@@ -1449,6 +1452,8 @@ public class LayoutPanel extends JPanel
             private EditingModalGraphMouse mouse;
             private GraphPlayback gPlayback;
             
+            private JPanel pbControls;
+            private JButton pbPlay, pbStop;
             
             public GraphPanel()
             {
@@ -1466,7 +1471,6 @@ public class LayoutPanel extends JPanel
                 gViewer.getRenderContext().setEdgeDrawPaintTransformer(new ObjectFillTransformer(gViewer.getPickedEdgeState()));
                 gViewer.getPickedVertexState().addItemListener(this);
                 gViewer.getPickedEdgeState().addItemListener(this);
-                add(gViewer);
                 
                 mouse       =   new EditingModalGraphMouse(gViewer.getRenderContext(), nodeFactory, edgeFactory);
                 mouse.setMode(ModalGraphMouse.Mode.PICKING);
@@ -1474,8 +1478,16 @@ public class LayoutPanel extends JPanel
                 mouse.remove(mouse.getPopupEditingPlugin());
                 gViewer.setGraphMouse(mouse);
                 
-       
+                pbControls  =   new JPanel();
+                pbPlay      =   new JButton("Play");
+                pbStop      =   new JButton("Stop");
+                pbControls.setVisible(false);
                 
+                pbControls.add(pbPlay);
+                pbControls.add(pbStop);
+                
+                add(gViewer, BorderLayout.CENTER);
+                add(pbControls, BorderLayout.SOUTH);
             }
 
             @Override
