@@ -1,8 +1,8 @@
-//================================
-//  KYLE RUSSELL
-//  13831056
-//  ADA Assignment 2
-//================================
+//=========================================
+//  Kyle Russell
+//  AUT University 2015
+//  https://github.com/denkers/graphi
+//=========================================
 
 package com.graphi.util;
 
@@ -158,61 +158,6 @@ public class MatrixTools
         }
         
         return normalizeVector(v);
-    }
-    
-    //Returns the stationary vector
-    //Where each entry corresponds to the page ranks of input adjMatrix
-    public static SparseDoubleMatrix2D pageRankPI(SparseDoubleMatrix2D adjMatrix)
-    {
-        final int LIMIT             =   5;
-        int n                       =   adjMatrix.rows();
-        SparseDoubleMatrix2D v      =   new SparseDoubleMatrix2D(1, n);
-        adjMatrix                   =   transpose(adjMatrix);
-        
-        v.assign(1.0 / n);
-        //v = transpose(v);
-        System.out.println(v);
-        
-        for(int i = 0; i < LIMIT; i++)
-        {
-            v     =   multiplyMatrix(adjMatrix, v);
-            System.out.println(v);
-        }
-        
-        return v;
-    }
-    
-    public static SparseDoubleMatrix2D createPageRankMatrix(Graph<Node, Edge> g)
-    {
-        int n                       =   g.getVertexCount();
-        final double c              =   0.15;
-        Collection<Node> vertices   =   g.getVertices();
-        SparseDoubleMatrix2D matrix =  new SparseDoubleMatrix2D(n, n);
-        int i = 0;
-        int j = 0;
-        
-        for(Node node : vertices)
-        {
-            Collection<Edge> outEdges   =   g.getOutEdges(node);
-            j = 0;
-            
-            for(Node outNode : vertices)
-            {
-                if(outEdges.isEmpty())
-                    matrix.setQuick(i, j, 1.0 / n);
-                
-                else if(g.findEdge(node, outNode) != null)
-                    matrix.setQuick(i, j, (1.0 - c) + (c / g.outDegree(node)));
-                else
-                    matrix.setQuick(i, j, (1.0 - c) / n);
-                
-                j++;
-            }
-            
-            i++;
-        }
-        
-        return matrix;
     }
     
     //Prints out the matrix
