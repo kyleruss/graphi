@@ -49,7 +49,9 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.AbstractMap.SimpleEntry;
@@ -63,10 +65,12 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Set;
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
@@ -101,6 +105,9 @@ public class LayoutPanel extends JPanel
     private final JSplitPane splitPane;
     private final JScrollPane controlScroll;
     
+    private BufferedImage addIcon, removeIcon, colourIcon;
+    private BufferedImage clipIcon, openIcon, saveIcon;
+    
     public static final Color TRANSPARENT   =   new Color(255, 255, 255, 0);
     public static final Color PRESET_BG     =   new Color(200, 200, 200);
     private Graph<Node, Edge> currentGraph;
@@ -116,6 +123,7 @@ public class LayoutPanel extends JPanel
     {
         setPreferredSize(new Dimension((int)(Window.WIDTH * 0.7), (int) (Window.HEIGHT * 0.85)));
         setLayout(new BorderLayout());        
+        initResources();
         
         this.menu           =   menu;
         this.frame          =   frame;
@@ -172,6 +180,24 @@ public class LayoutPanel extends JPanel
             panel.add(component);
         
         return panel;
+    }
+    
+    private void initResources()
+    {
+        try
+        {
+            addIcon     =   ImageIO.read(new File("resources/images/addSmallIcon.png"));
+            removeIcon  =   ImageIO.read(new File("resources/images/removeSmallIcon.png"));   
+            colourIcon  =   ImageIO.read(new File("resources/images/color_icon.png"));   
+            clipIcon    =   ImageIO.read(new File("resources/images/clipboard.png"));  
+            saveIcon    =   ImageIO.read(new File("resources/images/new_file.png"));
+            openIcon    =   ImageIO.read(new File("resources/images/open_icon.png"));
+        }
+        
+        catch(IOException e)
+        {
+            JOptionPane.showMessageDialog(null, "Failed to load resources: " + e.getMessage());
+        }
     }
     
     //--------------------------------------
@@ -327,6 +353,9 @@ public class LayoutPanel extends JPanel
             gObjAddBtn.setBackground(Color.WHITE);
             gObjEditBtn.setBackground(Color.WHITE);
             gObjRemoveBtn.setBackground(Color.WHITE);
+            gObjAddBtn.setIcon(new ImageIcon(addIcon));
+            gObjRemoveBtn.setIcon(new ImageIcon(removeIcon));
+            
             selectedLabel.setFont(new Font("Arial", Font.BOLD, 12));
             
             gObjAddBtn.addActionListener(this);
@@ -427,12 +456,17 @@ public class LayoutPanel extends JPanel
             viewerBGBtn             =   new JButton("Choose");
             vertexBGBtn             =   new JButton("Choose");
             edgeBGBtn               =   new JButton("Choose");
+
+            viewerBGBtn.setIcon(new ImageIcon(colourIcon));
+            vertexBGBtn.setIcon(new ImageIcon(colourIcon));
+            edgeBGBtn.setIcon(new ImageIcon(colourIcon));
             
             viewerBGBtn.addActionListener(this);
             vertexBGBtn.addActionListener(this);
             edgeBGBtn.addActionListener(this);
             viewerVLabelsCheck.addActionListener(this);
             viewerELabelsCheck.addActionListener(this);
+            
             
             viewerPanel.setBorder(BorderFactory.createTitledBorder("Viewer controls"));
             viewerPanel.setPreferredSize(new Dimension(500, 200));
@@ -641,6 +675,9 @@ public class LayoutPanel extends JPanel
                 storageGraphRadio       =   new JRadioButton("Graph");
                 storageLogRadio         =   new JRadioButton("Log");
                 storageScriptRadio      =   new JRadioButton("Script");
+                
+                importBtn.setIcon(new ImageIcon(openIcon));
+                exportBtn.setIcon(new ImageIcon(saveIcon));
                 
                 storageGroup.add(storageGraphRadio);
                 storageGroup.add(storageLogRadio);
@@ -972,9 +1009,21 @@ public class LayoutPanel extends JPanel
             outputPanel =   new OutputPanel();
             
             
-            tabPane.addTab("Display", graphPanel);
-            tabPane.addTab("Data", dataPanel);
-            tabPane.addTab("Output", outputPanel);
+            tabPane.addTab("", graphPanel);
+            tabPane.addTab("", dataPanel);
+            tabPane.addTab("", outputPanel);
+            
+            JLabel dispLabel    =   new JLabel("Display", JLabel.CENTER);
+            JLabel dataLabel    =   new JLabel("Data", JLabel.CENTER);
+            JLabel outLabel     =   new JLabel("Output", JLabel.CENTER);
+            
+            outLabel.setIcon(new ImageIcon(clipIcon));
+            
+            tabPane.setTabComponentAt(0, dispLabel);
+            tabPane.setTabComponentAt(1, dataLabel);
+            tabPane.setTabComponentAt(2, outLabel);
+            
+            
             add(tabPane);
         }
         
