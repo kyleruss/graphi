@@ -10,6 +10,7 @@ import com.graphi.util.Edge;
 import com.graphi.util.Node;
 import edu.uci.ics.jung.algorithms.layout.AggregateLayout;
 import edu.uci.ics.jung.graph.Graph;
+import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import java.io.Serializable;
 import java.util.Iterator;
@@ -30,6 +31,11 @@ public class GraphPlayback implements Iterator<Graph<Node, Edge>>, Serializable
         this.layout     =   layout;
         graphData       =   new LinkedList<>();
         index           =   0;
+    }
+    
+    public void add()
+    {
+        graphData.add(new SparseMultigraph<>());
     }
     
     public void add(Graph<Node, Edge> graph)
@@ -62,6 +68,27 @@ public class GraphPlayback implements Iterator<Graph<Node, Edge>>, Serializable
     public boolean hasPrevious()
     {
         return index > 0;
+    }
+    
+    public Graph<Node, Edge> start()
+    {
+        index = 0;
+        return graphData.get(0);
+    }
+    
+    public Graph<Node, Edge> end()
+    {
+        index = graphData.size() - 1;
+        
+        if(index >= 0)
+            return graphData.get(index);
+        else
+            return null;
+    }
+    
+    public Graph<Node, Edge> current()
+    {
+        return graphData.get(index);
     }
     
     @Override

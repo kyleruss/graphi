@@ -227,6 +227,8 @@ public class LayoutPanel extends JPanel
         private boolean recording;
         private JButton clearRecordingBtn;
         private JButton displayCtrlsBtn;
+        private JButton addGraphBtn, delGraphBtn;
+        private boolean pbAdding;
         
         public ControlPanel() 
         {
@@ -450,17 +452,24 @@ public class LayoutPanel extends JPanel
             recordBtn           =   new JButton("Rec");
             clearRecordingBtn   =   new JButton("SRec");   
             displayCtrlsBtn     =   new JButton("Display");
+            addGraphBtn         =   new JButton("Add");
+            delGraphBtn         =   new JButton("Remove");
+            pbAdding            =   false;
             recording           =   false;
             
             playbackPanel.setBorder(BorderFactory.createTitledBorder("Playback controls"));
             
             playbackPanel.add(recordBtn, "al right");
             playbackPanel.add(clearRecordingBtn, "al center");
-            playbackPanel.add(displayCtrlsBtn);
+            playbackPanel.add(displayCtrlsBtn, "wrap");
+            playbackPanel.add(addGraphBtn, "al right");
+            playbackPanel.add(delGraphBtn, "span 2");
             
             recordBtn.addActionListener(this);
             clearRecordingBtn.addActionListener(this);
             displayCtrlsBtn.addActionListener(this);
+            addGraphBtn.addActionListener(this);
+            delGraphBtn.addActionListener(this);
             
             JPanel pbWrapperPanel  =   new JPanel(new BorderLayout());
             pbWrapperPanel.add(playbackPanel);
@@ -1481,7 +1490,7 @@ public class LayoutPanel extends JPanel
                 pbControls  =   new JPanel();
                 pbPlay      =   new JButton("Play");
                 pbStop      =   new JButton("Stop");
-                pbControls.setVisible(false);
+                pbControls.setVisible(true);
                 
                 pbControls.add(pbPlay);
                 pbControls.add(pbStop);
