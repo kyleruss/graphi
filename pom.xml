@@ -51,6 +51,11 @@
     </dependencies>
     
     <build>
-        <sourceDirectory>src</sourceDirectory>
+		<sourceDirectory>src</sourceDirectory>
+		<resources>
+			<resource>
+				<directory>resources</directory>
+			</resource>
+		</resources>
     </build>
 </project>

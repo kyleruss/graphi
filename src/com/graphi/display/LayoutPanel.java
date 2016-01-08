@@ -7,8 +7,6 @@
 package com.graphi.display;
 
 import cern.colt.matrix.impl.SparseDoubleMatrix2D;
-import static com.graphi.display.Window.HEIGHT;
-import static com.graphi.display.Window.WIDTH;
 import com.graphi.io.Storage;
 import com.graphi.util.Edge;
 import com.graphi.sim.Network;
@@ -26,9 +24,6 @@ import edu.uci.ics.jung.algorithms.layout.FRLayout;
 import edu.uci.ics.jung.algorithms.matrix.GraphMatrixOperations;
 import edu.uci.ics.jung.algorithms.scoring.BetweennessCentrality;
 import edu.uci.ics.jung.algorithms.scoring.ClosenessCentrality;
-import edu.uci.ics.jung.algorithms.scoring.EigenvectorCentrality;
-import edu.uci.ics.jung.algorithms.scoring.PageRank;
-import edu.uci.ics.jung.algorithms.scoring.VertexScorer;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
@@ -597,7 +592,7 @@ public class LayoutPanel extends JPanel
             private JButton exportBtn, importBtn;
             private JLabel currentStorageLabel;
             private ButtonGroup storageGroup;
-            private JRadioButton storageGraphRadio, storageLogRadio;
+            private JRadioButton storageGraphRadio, storageLogRadio, storageScriptRadio;
             
             public IOPanel()
             {
@@ -609,6 +604,8 @@ public class LayoutPanel extends JPanel
                 storageGroup            =   new ButtonGroup();
                 storageGraphRadio       =   new JRadioButton("Graph");
                 storageLogRadio         =   new JRadioButton("Log");
+                storageScriptRadio      =   new JRadioButton("Script");
+                
                 storageGroup.add(storageGraphRadio);
                 storageGroup.add(storageLogRadio);
                 importBtn.addActionListener(this);
@@ -712,6 +709,16 @@ public class LayoutPanel extends JPanel
                 screenPanel.dataPanel.loadNodes(currentGraph);
                 screenPanel.dataPanel.loadEdges(currentGraph);
             }
+        }
+        
+        private void importScript()
+        {
+            
+        }
+        
+        private void exportScript()
+        {
+            
         }
         
         private void initCurrentNodes()
