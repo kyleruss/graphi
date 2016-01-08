@@ -771,9 +771,7 @@ public class LayoutPanel extends JPanel
         {
             File file   =   getFile(false, "Graphi .gscript file", "gscript");
             if(file != null)
-            {
-                
-            }
+                Storage.saveObj(screenPanel.graphPanel.gPlayback, file);
         }
         
         private void initCurrentNodes()
