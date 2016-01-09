@@ -57,6 +57,17 @@ public class GraphUtilities
         } 
     }
     
+    public static void copyGraph(Graph<Node, Edge> source, Graph<Node, Edge> dest)
+    {
+        Collection<Node> nodes  =   source.getVertices();
+        for(Node node : nodes)
+            dest.addVertex(node);
+        
+        Collection<Edge> edges  =   source.getEdges();
+        for(Edge edge : edges)
+            dest.addEdge(edge, source.getIncidentVertices(edge));
+    }
+    
     public static int degreeSum(Graph<Node, Edge> graph)
     {
         Collection<Node> vertices   =   graph.getVertices();

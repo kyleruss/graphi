@@ -20,6 +20,7 @@ import com.graphi.util.NodeFactory;
 import com.graphi.util.ObjectFillTransformer;
 import com.graphi.util.VertexLabelTransformer;
 import com.graphi.util.WeightTransformer;
+import de.javasoft.swing.DateComboBox;
 import edu.uci.ics.jung.algorithms.layout.AggregateLayout;
 import edu.uci.ics.jung.algorithms.layout.FRLayout;
 import edu.uci.ics.jung.algorithms.matrix.GraphMatrixOperations;
@@ -64,7 +65,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.Properties;
 import java.util.Set;
+import javafx.scene.control.DatePicker;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -95,8 +98,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.DefaultFormatter;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.collections15.Transformer;
+import org.jdesktop.swingx.JXDatePicker;
 
 public class LayoutPanel extends JPanel
 {
@@ -109,7 +114,8 @@ public class LayoutPanel extends JPanel
     private BufferedImage clipIcon, openIcon, saveIcon;
     private BufferedImage editBlackIcon, pointerIcon, moveIcon;
     private BufferedImage moveSelectedIcon, editSelectedIcon, pointerSelectedIcon;
-    private BufferedImage graphIcon, tableIcon;
+    private BufferedImage graphIcon, tableIcon, resetIcon, executeIcon;
+    private BufferedImage editIcon;
     
     public static final Color TRANSPARENT   =   new Color(255, 255, 255, 0);
     public static final Color PRESET_BG     =   new Color(200, 200, 200);
@@ -203,6 +209,9 @@ public class LayoutPanel extends JPanel
             pointerSelectedIcon =   ImageIO.read(new File("resources/images/pointer_selected.png"));
             graphIcon           =   ImageIO.read(new File("resources/images/graph.png"));
             tableIcon           =   ImageIO.read(new File("resources/images/table.png"));
+            executeIcon         =   ImageIO.read(new File("resources/images/execute.png"));
+            resetIcon           =   ImageIO.read(new File("resources/images/reset.png"));
+            editIcon            =   ImageIO.read(new File("resources/images/edit.png"));
         }
         
         catch(IOException e)
@@ -318,6 +327,9 @@ public class LayoutPanel extends JPanel
             resetGeneratorBtn.setBackground(Color.WHITE);
             executeGeneratorBtn.setBackground(Color.WHITE);
             
+            resetGeneratorBtn.setIcon(new ImageIcon(resetIcon));
+            executeGeneratorBtn.setIcon(new ImageIcon(executeIcon));
+            
             genPanel    =   new JPanel(new CardLayout());
             baGenPanel  =   new JPanel(new MigLayout());
             klGenPanel  =   new JPanel(new MigLayout());
@@ -374,6 +386,7 @@ public class LayoutPanel extends JPanel
             gObjRemoveBtn.setBackground(Color.WHITE);
             gObjAddBtn.setIcon(new ImageIcon(addIcon));
             gObjRemoveBtn.setIcon(new ImageIcon(removeIcon));
+            gObjEditBtn.setIcon(new ImageIcon(editIcon));
             
             selectedLabel.setFont(new Font("Arial", Font.BOLD, 12));
             
@@ -409,6 +422,7 @@ public class LayoutPanel extends JPanel
             spathPanel.setBackground(TRANSPARENT);
             computeBtn.setBackground(Color.WHITE);
             computeBtn.addActionListener(this);
+            computeBtn.setIcon(new ImageIcon(executeIcon));
             
             computeBox.addItem("Clusters");
             computeBox.addItem("Centrality");
@@ -564,6 +578,11 @@ public class LayoutPanel extends JPanel
             add(Box.createRigidArea(new Dimension(230, 30)));
             add(pbWrapperPanel);
             
+        }
+        
+        private void addRecordedGraph()
+        {
+            GraphUtilities.copyGraph(currentGraph, screenPanel.graphPanel.gPlayback.add());
         }
         
         private void updateSelectedComponents()
@@ -1538,17 +1557,27 @@ public class LayoutPanel extends JPanel
         //--------------------------------------
         //  GRAPH PANEL
         //--------------------------------------
-        private class GraphPanel extends JPanel implements ItemListener, GraphMouseListener
+        private class GraphPanel extends JPanel implements ItemListener, GraphMouseListener, ActionListener
         {
+            private final String RECORD_CARD    =   "rec";
+            private final String PLAYBACK_CARD  =   "pb";
+            
             private final VisualizationViewer<Node, Edge> gViewer;
             private AggregateLayout<Node, Edge> gLayout;
             private EditingModalGraphMouse mouse;
             private GraphPlayback gPlayback;
-            
+            private JPanel gpControlsWrapper;
+
             private JPanel pbControls;
             private JButton pbPlay, pbStop;
             private JSlider pbProgress;
             private JSpinner pbProgressSpeed;
+            
+            private JPanel gpRecControls;
+            private JButton gpRecAddBtn;
+            private JButton gpRecUndoBtn;
+            private JButton gpRecClearBtn;
+            
             
             public GraphPanel()
             {
@@ -1578,7 +1607,6 @@ public class LayoutPanel extends JPanel
                 pbStop          =   new JButton("Stop");
                 pbProgress      =   new JSlider();
                 pbProgressSpeed =   new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
-                pbControls.setVisible(true);
                 
                 JPanel pbInnerWrapper   =   new JPanel();
                 pbInnerWrapper.add(pbPlay);
@@ -1592,8 +1620,29 @@ public class LayoutPanel extends JPanel
                 JPanel pbControlsWrapper    =   new JPanel(new BorderLayout());
                 pbControlsWrapper.add(pbControls);
                 
+                
+                gpRecControls   =   new JPanel(new MigLayout("fillx"));
+                gpRecAddBtn     =   new JButton("Add entry");
+                gpRecUndoBtn    =   new JButton("Undo entry");
+                
+                DateComboBox datePicker = new DateComboBox();
+                JPanel gpRecInnerWrapper    =   new JPanel();
+                gpRecInnerWrapper.add(gpRecAddBtn);
+                gpRecInnerWrapper.add(gpRecUndoBtn);
+                gpRecInnerWrapper.add(datePicker);
+                gpRecControls.add(gpRecInnerWrapper, "al center");
+                
+                JPanel gpRecWrapper =   new JPanel(new BorderLayout());
+                gpRecWrapper.add(gpRecControls);
+                
+                gpControlsWrapper   =   new JPanel(new CardLayout());
+                gpControlsWrapper.add(gpRecWrapper, RECORD_CARD);
+                gpControlsWrapper.add(pbControlsWrapper, PLAYBACK_CARD);
+                
+                gpControlsWrapper.setVisible(true);
+                
                 add(gViewer, BorderLayout.CENTER);
-                add(pbControlsWrapper, BorderLayout.SOUTH);
+                add(gpControlsWrapper, BorderLayout.SOUTH);
             }
 
             @Override
@@ -1610,6 +1659,12 @@ public class LayoutPanel extends JPanel
                     dataPanel.loadNodes(currentGraph);
                     dataPanel.loadEdges(currentGraph);
                 }
+            }
+
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                
             }
             
             

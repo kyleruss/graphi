@@ -33,9 +33,11 @@ public class GraphPlayback implements Iterator<Graph<Node, Edge>>, Serializable
         index           =   0;
     }
     
-    public void add()
+    public Graph<Node, Edge> add()
     {
-        graphData.add(new SparseMultigraph<>());
+        Graph<Node, Edge> graph =   new SparseMultigraph<>();
+        graphData.add(graph);
+        return graph;
     }
     
     public void add(Graph<Node, Edge> graph)
