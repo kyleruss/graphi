@@ -1575,8 +1575,9 @@ public class LayoutPanel extends JPanel
             
             private JPanel gpRecControls;
             private JButton gpRecAddBtn;
-            private JButton gpRecUndoBtn;
             private JButton gpRecClearBtn;
+            private JTextField gpRecEntryName;
+            private DateComboBox gpRecDatePicker;
             
             
             public GraphPanel()
@@ -1623,13 +1624,17 @@ public class LayoutPanel extends JPanel
                 
                 gpRecControls   =   new JPanel(new MigLayout("fillx"));
                 gpRecAddBtn     =   new JButton("Add entry");
-                gpRecUndoBtn    =   new JButton("Undo entry");
+                gpRecDatePicker =   new DateComboBox();
+                gpRecEntryName  =   new JTextField();
+                gpRecEntryName.setPreferredSize(new Dimension(120, 20));
                 
-                DateComboBox datePicker = new DateComboBox();
-                JPanel gpRecInnerWrapper    =   new JPanel();
+                JPanel gpRecInnerWrapper    =   new JPanel(new MigLayout());
                 gpRecInnerWrapper.add(gpRecAddBtn);
-                gpRecInnerWrapper.add(gpRecUndoBtn);
-                gpRecInnerWrapper.add(datePicker);
+                gpRecInnerWrapper.add(new JLabel("Entry date"));
+                gpRecInnerWrapper.add(gpRecDatePicker, "wrap");
+                gpRecInnerWrapper.add(new JLabel("Entry name (optional)"));
+                gpRecInnerWrapper.add(gpRecEntryName, "span 2");
+                
                 gpRecControls.add(gpRecInnerWrapper, "al center");
                 
                 JPanel gpRecWrapper =   new JPanel(new BorderLayout());
