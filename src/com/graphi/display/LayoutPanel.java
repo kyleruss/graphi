@@ -1561,6 +1561,7 @@ public class LayoutPanel extends JPanel
             private JButton pbPlay, pbStop;
             private JSlider pbProgress;
             private JSpinner pbProgressSpeed;
+            private JLabel pbName, pbDate;
             
             private JPanel gpRecControls;
             private JButton gpRecSaveBtn;
@@ -1598,6 +1599,11 @@ public class LayoutPanel extends JPanel
                 pbStop          =   new JButton("Stop");
                 pbProgress      =   new JSlider();
                 pbProgressSpeed =   new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
+                pbName          =   new JLabel("N/A");
+                pbDate          =   new JLabel("N/A");
+                
+                pbName.setFont(new Font("Arial", Font.BOLD, 12));
+                pbDate.setFont(new Font("Arial", Font.BOLD, 12));
                 
                 JPanel pbInnerWrapper   =   new JPanel();
                 pbInnerWrapper.add(pbPlay);
@@ -1605,8 +1611,15 @@ public class LayoutPanel extends JPanel
                 pbInnerWrapper.add(new JLabel("Speed"));
                 pbInnerWrapper.add(pbProgressSpeed);
                 
+                JPanel pbInfoWrapper    =   new JPanel();
+                pbInfoWrapper.add(new JLabel("Name: "));
+                pbInfoWrapper.add(pbName);
+                pbInfoWrapper.add(new JLabel("Timestamp: "));
+                pbInfoWrapper.add(pbDate);
+                
                 pbControls.add(pbProgress, "al center, wrap");
-                pbControls.add(pbInnerWrapper, "al center");
+                pbControls.add(pbInnerWrapper, "al center, wrap");
+                pbControls.add(pbInfoWrapper, "al center");
                 
                 JPanel pbControlsWrapper    =   new JPanel(new BorderLayout());
                 pbControlsWrapper.add(pbControls);
@@ -1639,9 +1652,10 @@ public class LayoutPanel extends JPanel
                 gpRecWrapper.add(gpRecControls);
                 
                 gpControlsWrapper   =   new JPanel(new CardLayout());
-                gpControlsWrapper.add(gpRecWrapper, RECORD_CARD);
                 gpControlsWrapper.add(pbControlsWrapper, PLAYBACK_CARD);
+                gpControlsWrapper.add(gpRecWrapper, RECORD_CARD);
                 gpControlsWrapper.setVisible(true);
+                
                 
                 gpRecSaveBtn.addActionListener(this);
                 gpRecRemoveBtn.addActionListener(this);
