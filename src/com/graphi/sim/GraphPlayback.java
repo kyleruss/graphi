@@ -98,12 +98,12 @@ public class GraphPlayback implements Iterator<PlaybackEntry>, Serializable
         return entries.get(index--);
     }
     
-    public void setGraphData(List<PlaybackEntry>  entries)
+    public void setEntries(List<PlaybackEntry>  entries)
     {
         this.entries  =   entries;
     }
     
-    public List<PlaybackEntry> getGraphData()
+    public List<PlaybackEntry> getEntries()
     {
         return entries;
     }

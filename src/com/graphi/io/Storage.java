@@ -31,7 +31,7 @@ public class Storage
         
         catch(IOException e)
         {
-            JOptionPane.showMessageDialog(null, "[Error] Failed to save graph: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "[Error] Failed to save file: " + e.getMessage());
         }
     }
     
@@ -44,7 +44,7 @@ public class Storage
         
         catch(Exception e)
         {
-            JOptionPane.showMessageDialog(null, "[Error] Failed to open graph");
+            JOptionPane.showMessageDialog(null, "[Error] Failed to open file");
             return null;
         }
     }

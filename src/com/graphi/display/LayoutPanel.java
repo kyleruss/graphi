@@ -830,6 +830,7 @@ public class LayoutPanel extends JPanel
                 screenPanel.graphPanel.gPlayback    =   (GraphPlayback) Storage.openObj(file);
                 ioPanel.currentStorageLabel.setText(file.getName());
                 activeScriptLabel.setText(file.getName());
+                screenPanel.graphPanel.addPlaybackEntries();
                 
             }
         }
@@ -1679,6 +1680,18 @@ public class LayoutPanel extends JPanel
                 add(gpControlsWrapper, BorderLayout.SOUTH);
             }
             
+            private void addPlaybackEntries()
+            {
+                gpRecEntries.removeAllItems();
+                gpRecEntries.addItem("-- New entry --");
+                List<PlaybackEntry> entries =   gPlayback.getEntries();
+                
+                for(PlaybackEntry entry : entries)
+                    gpRecEntries.addItem(entry);
+                
+                gpRecEntries.setSelectedIndex(0);
+            }
+            
             private void changePlaybackPanel(String card)
             {
                 CardLayout cLayout  =   (CardLayout) gpControlsWrapper.getLayout();
@@ -1706,6 +1719,7 @@ public class LayoutPanel extends JPanel
                 pbProgress.setMaximum(gPlayback.getSize());
                 PB_TIMER.setRepeats(true);
                 PB_TIMER.start();
+                PB_TIMER.setDelay(pbSpeed);
             }
             
             private void stopPlayback()
@@ -1750,10 +1764,13 @@ public class LayoutPanel extends JPanel
                if(selectedIndex != 0)
                {
                    PlaybackEntry entry  =   (PlaybackEntry) gpRecEntries.getSelectedItem();
-                   gpRecEntryName.setText(entry.getName());
-                   gpRecDatePicker.setDate(entry.getDate());
-                   currentGraph =   GraphUtilities.copyNewGraph(entry.getGraph());
-                   reloadGraph();
+                   if(entry != null)
+                   {
+                        gpRecEntryName.setText(entry.getName());
+                        gpRecDatePicker.setDate(entry.getDate());
+                        currentGraph =   GraphUtilities.copyNewGraph(entry.getGraph());
+                        reloadGraph();
+                   }
                }
                
                else
