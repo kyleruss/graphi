@@ -270,12 +270,10 @@ public class LayoutPanel extends JPanel
         private JButton viewerBGBtn, vertexBGBtn, edgeBGBtn;
         
         private JPanel playbackPanel;
-        private JButton recordBtn;
+        private JButton recordCtrlsBtn;
         private boolean recording;
-        private JButton clearRecordingBtn;
         private JButton displayCtrlsBtn;
-        private JButton addGraphBtn, delGraphBtn;
-        private boolean pbAdding;
+        private JLabel activeScriptLabel;
         
         public ControlPanel() 
         {
@@ -517,26 +515,20 @@ public class LayoutPanel extends JPanel
             viewerWrapperPanel.add(viewerPanel);
             
             playbackPanel       =   new JPanel(new MigLayout("fillx"));
-            recordBtn           =   new JButton("Rec");
-            clearRecordingBtn   =   new JButton("SRec");   
-            displayCtrlsBtn     =   new JButton("Display");
-            addGraphBtn         =   new JButton("Add");
-            delGraphBtn         =   new JButton("Remove");
-            pbAdding            =   false;
+            activeScriptLabel   =   new JLabel("None");
+            recordCtrlsBtn      =   new JButton("Record controls");
+            displayCtrlsBtn     =   new JButton("Playback controls");
             recording           =   false;
             
+            activeScriptLabel.setFont(new Font("Arial", Font.BOLD, 12));
             playbackPanel.setBorder(BorderFactory.createTitledBorder("Script controls"));
-            playbackPanel.add(recordBtn, "al right");
-            playbackPanel.add(clearRecordingBtn, "al center");
-            playbackPanel.add(displayCtrlsBtn, "wrap");
-            playbackPanel.add(addGraphBtn, "al right");
-            playbackPanel.add(delGraphBtn, "span 2");
+            playbackPanel.add(new JLabel("Active script: "), "al right");
+            playbackPanel.add(activeScriptLabel, "wrap");
+            playbackPanel.add(recordCtrlsBtn, "al right");
+            playbackPanel.add(displayCtrlsBtn, "");
             
-            recordBtn.addActionListener(this);
-            clearRecordingBtn.addActionListener(this);
+            recordCtrlsBtn.addActionListener(this);
             displayCtrlsBtn.addActionListener(this);
-            addGraphBtn.addActionListener(this);
-            delGraphBtn.addActionListener(this);
             
             JPanel pbWrapperPanel  =   new JPanel(new BorderLayout());
             pbWrapperPanel.add(playbackPanel);
@@ -1627,6 +1619,7 @@ public class LayoutPanel extends JPanel
                 gpRecDatePicker =   new DateComboBox();
                 gpRecEntryName  =   new JTextField();
                 gpRecEntryName.setPreferredSize(new Dimension(120, 20));
+                gpRecAddBtn.setIcon(new ImageIcon(addIcon));
                 
                 JPanel gpRecInnerWrapper    =   new JPanel(new MigLayout());
                 gpRecInnerWrapper.add(gpRecAddBtn);
@@ -1643,8 +1636,9 @@ public class LayoutPanel extends JPanel
                 gpControlsWrapper   =   new JPanel(new CardLayout());
                 gpControlsWrapper.add(gpRecWrapper, RECORD_CARD);
                 gpControlsWrapper.add(pbControlsWrapper, PLAYBACK_CARD);
-                
                 gpControlsWrapper.setVisible(true);
+                
+                gpRecAddBtn.addActionListener(this);
                 
                 add(gViewer, BorderLayout.CENTER);
                 add(gpControlsWrapper, BorderLayout.SOUTH);
