@@ -7,19 +7,21 @@
 package com.graphi.sim;
 
 import com.graphi.util.Edge;
+import com.graphi.util.GraphUtilities;
 import com.graphi.util.Node;
 import edu.uci.ics.jung.algorithms.layout.AggregateLayout;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class GraphPlayback implements Iterator<Graph<Node, Edge>>, Serializable
+public class GraphPlayback implements Iterator<PlaybackEntry>, Serializable
 {
-    private List<Graph<Node, Edge>> graphData;
+    private List<PlaybackEntry> entries;
     private VisualizationViewer<Node, Edge> viewer;
     private AggregateLayout<Node, Edge> layout;
     private int index;
@@ -29,42 +31,35 @@ public class GraphPlayback implements Iterator<Graph<Node, Edge>>, Serializable
     {
         this.viewer     =   viewer;
         this.layout     =   layout;
-        graphData       =   new LinkedList<>();
+        entries         =   new LinkedList<>();
         index           =   0;
     }
     
-    public Graph<Node, Edge> add()
+    public void add(PlaybackEntry entry)
     {
-        Graph<Node, Edge> graph =   new SparseMultigraph<>();
-        graphData.add(graph);
-        return graph;
+        entries.add(entry);
     }
     
-    public void add(Graph<Node, Edge> graph)
+    public void add(PlaybackEntry entry, int i)
     {
-        graphData.add(graph);
-    }
-    
-    public void  add(Graph<Node, Edge> graph, int i)
-    {
-        graphData.add(i, graph);
+        entries.add(i, entry);
     }
     
     @Override
     public void remove()
     {
-        graphData.remove(index);
+        entries.remove(index);
     }
     
     public void remove(int i)
     {
-        graphData.remove(i);
+        entries.remove(i);
     }
     
     @Override
     public boolean hasNext()
     {
-        return index < graphData.size();
+        return index < entries.size();
     }
     
     public boolean hasPrevious()
@@ -72,47 +67,47 @@ public class GraphPlayback implements Iterator<Graph<Node, Edge>>, Serializable
         return index > 0;
     }
     
-    public Graph<Node, Edge> start()
+    public PlaybackEntry start()
     {
         index = 0;
-        return graphData.get(0);
+        return entries.get(0);
     }
     
-    public Graph<Node, Edge> end()
+    public PlaybackEntry end()
     {
-        index = graphData.size() - 1;
+        index = entries.size() - 1;
         
         if(index >= 0)
-            return graphData.get(index);
+            return entries.get(index);
         else
             return null;
     }
     
-    public Graph<Node, Edge> current()
+    public PlaybackEntry current()
     {
-        return graphData.get(index);
+        return entries.get(index);
     }
     
     @Override
-    public Graph<Node, Edge> next()
+    public PlaybackEntry next()
     {
         if(!hasNext()) return null;
-        return graphData.get(index++);
+        return entries.get(index++);
     }
     
-    public Graph<Node, Edge> previous()
+    public PlaybackEntry previous()
     {
         if(!hasPrevious()) return null;
-        return graphData.get(index--);
+        return entries.get(index--);
     }
     
     public void display()
     {
-        Graph<Node, Edge> current   =   graphData.get(index);
+        PlaybackEntry current   =   entries.get(index);
         
         if(current != null)
         {
-            layout.setGraph(current);
+            layout.setGraph(current.getGraph());
             viewer.repaint();
         }
     }
@@ -128,14 +123,14 @@ public class GraphPlayback implements Iterator<Graph<Node, Edge>>, Serializable
         this.viewer =   viewer;
     }
     
-    public void setGraphData(List<Graph<Node, Edge>>  graphData)
+    public void setGraphData(List<PlaybackEntry>  entries)
     {
-        this.graphData  =   graphData;
+        this.entries  =   entries;
     }
     
-    public List<Graph<Node, Edge>> getGraphData()
+    public List<PlaybackEntry> getGraphData()
     {
-        return graphData;
+        return entries;
     }
     
     public VisualizationViewer<Node, Edge> getViewer()
