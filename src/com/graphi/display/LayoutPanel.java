@@ -829,6 +829,8 @@ public class LayoutPanel extends JPanel
             {
                 screenPanel.graphPanel.gPlayback    =   (GraphPlayback) Storage.openObj(file);
                 ioPanel.currentStorageLabel.setText(file.getName());
+                activeScriptLabel.setText(file.getName());
+                
             }
         }
         

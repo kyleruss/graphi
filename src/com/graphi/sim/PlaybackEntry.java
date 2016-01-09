@@ -9,9 +9,10 @@ package com.graphi.sim;
 import com.graphi.util.Edge;
 import com.graphi.util.Node;
 import edu.uci.ics.jung.graph.Graph;
+import java.io.Serializable;
 import java.util.Date;
 
-public class PlaybackEntry implements Comparable<PlaybackEntry>
+public class PlaybackEntry implements Comparable<PlaybackEntry>, Serializable
 {
     private Graph<Node, Edge> graph;
     private Date date;
