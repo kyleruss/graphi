@@ -11,7 +11,7 @@ import com.graphi.util.Node;
 import edu.uci.ics.jung.graph.Graph;
 import java.util.Date;
 
-public class PlaybackEntry
+public class PlaybackEntry implements Comparable<PlaybackEntry>
 {
     private final Graph<Node, Edge> graph;
     private Date date;
@@ -52,5 +52,18 @@ public class PlaybackEntry
     public void setName(String name)
     {
         this.name   =   name;
+    }
+    
+    
+    @Override
+    public String toString()
+    {
+        return name;
+    }
+
+    @Override
+    public int compareTo(PlaybackEntry other)
+    {
+        return this.date.compareTo(other.getDate());
     }
 }

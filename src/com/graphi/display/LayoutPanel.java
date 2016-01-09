@@ -1621,7 +1621,6 @@ public class LayoutPanel extends JPanel
                 gpRecEntryName.setPreferredSize(new Dimension(120, 20));
                 gpRecSaveBtn.setIcon(new ImageIcon(addIcon));
                 gpRecRemoveBtn.setIcon(new ImageIcon(removeIcon));
-                
                 gpRecEntries.addItem("-- New entry --");
                 
                 JPanel gpRecInnerWrapper    =   new JPanel(new MigLayout());
