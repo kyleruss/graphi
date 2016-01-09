@@ -6,10 +6,6 @@
 
 package com.graphi.sim;
 
-import com.graphi.util.Edge;
-import com.graphi.util.Node;
-import edu.uci.ics.jung.algorithms.layout.AggregateLayout;
-import edu.uci.ics.jung.visualization.VisualizationViewer;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -18,15 +14,10 @@ import java.util.List;
 public class GraphPlayback implements Iterator<PlaybackEntry>, Serializable
 {
     private List<PlaybackEntry> entries;
-    private VisualizationViewer<Node, Edge> viewer;
-    private AggregateLayout<Node, Edge> layout;
     private int index;
     
-    
-    public GraphPlayback(VisualizationViewer<Node, Edge> viewer, AggregateLayout<Node, Edge> layout)
+    public GraphPlayback()
     {
-        this.viewer     =   viewer;
-        this.layout     =   layout;
         entries         =   new LinkedList<>();
         index           =   0;
     }
@@ -102,31 +93,6 @@ public class GraphPlayback implements Iterator<PlaybackEntry>, Serializable
         return entries.get(index--);
     }
     
-    public void display(PlaybackEntry entry)
-    {
-        if(entry != null)
-        {
-            layout.setGraph(entry.getGraph());
-            viewer.repaint();
-        }
-    }
-    
-    public void display()
-    {
-        display(entries.get(index));
-    }
-    
-    public void display(int i)
-    {
-        index = i;
-        display();
-    }
-    
-    public void setViewer(VisualizationViewer<Node, Edge> viewer)
-    {
-        this.viewer =   viewer;
-    }
-    
     public void setGraphData(List<PlaybackEntry>  entries)
     {
         this.entries  =   entries;
@@ -135,20 +101,5 @@ public class GraphPlayback implements Iterator<PlaybackEntry>, Serializable
     public List<PlaybackEntry> getGraphData()
     {
         return entries;
-    }
-    
-    public VisualizationViewer<Node, Edge> getViewer()
-    {
-        return viewer;
-    }
-    
-    public AggregateLayout<Node, Edge> getLayout()
-    {
-        return layout;
-    }
-    
-    public void setLayout(AggregateLayout<Node, Edge> layout)
-    {
-        this.layout =   layout;
     }
 }

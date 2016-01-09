@@ -57,6 +57,13 @@ public class GraphUtilities
         } 
     }
     
+    public static Graph<Node, Edge> copyNewGraph(Graph<Node, Edge> source)
+    {
+        Graph<Node, Edge> dest  =   new SparseMultigraph<>();
+        copyGraph(source, dest);
+        return dest;
+    }
+    
     public static void copyGraph(Graph<Node, Edge> source, Graph<Node, Edge> dest)
     {
         Collection<Node> nodes  =   source.getVertices();

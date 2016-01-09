@@ -1575,7 +1575,7 @@ public class LayoutPanel extends JPanel
                 setLayout(new BorderLayout());
                 gLayout     =   new AggregateLayout(new FRLayout(currentGraph));
                 gViewer     =   new VisualizationViewer<>(gLayout);
-                gPlayback   =   new GraphPlayback(gViewer, gLayout);
+                gPlayback   =   new GraphPlayback();
                 
                 ScalingControl scaler   =   new CrossoverScalingControl();
                 scaler.scale(gViewer, 0.7f, gViewer.getCenter());
@@ -1654,20 +1654,32 @@ public class LayoutPanel extends JPanel
             private void addRecordedGraph()
             {
                 PlaybackEntry entry;
-                Graph<Node, Edge> graph   =   new SparseMultigraph<>();
-                GraphUtilities.copyGraph(currentGraph, graph);
+                int selectedIndex   =   gpRecEntries.getSelectedIndex();
+                if(selectedIndex == 0)
+                {
+                    Graph<Node, Edge> graph   =   new SparseMultigraph<>();
+                    GraphUtilities.copyGraph(currentGraph, graph);
 
-                Date date       =   gpRecDatePicker.getDate();
-                String name     =   gpRecEntryName.getText();
+                    Date date       =   gpRecDatePicker.getDate();
+                    String name     =   gpRecEntryName.getText();
 
-                if(name.equals(""))
-                    entry   =   new PlaybackEntry(graph, date);
+                    if(name.equals(""))
+                        entry   =   new PlaybackEntry(graph, date);
+                    else
+                        entry   =   new PlaybackEntry(graph, date, name);
+
+                    gPlayback.add(entry);
+                    gpRecEntries.addItem(entry);
+                    gpRecEntryName.setText("");
+                }
+                
                 else
-                    entry   =   new PlaybackEntry(graph, date, name);
-
-                gPlayback.add(entry);
-                gpRecEntries.addItem(entry);
-                gpRecEntryName.setText("");
+                {
+                    entry   =   (PlaybackEntry) gpRecEntries.getSelectedItem();
+                    entry.setName(gpRecEntryName.getText());
+                    entry.setDate(gpRecDatePicker.getDate());
+                    entry.setGraph(GraphUtilities.copyNewGraph(currentGraph));
+                }
             }
             
             private void displayRecordedGraph()
@@ -1678,7 +1690,8 @@ public class LayoutPanel extends JPanel
                    PlaybackEntry entry  =   (PlaybackEntry) gpRecEntries.getSelectedItem();
                    gpRecEntryName.setText(entry.getName());
                    gpRecDatePicker.setDate(entry.getDate());
-                   gPlayback.display(entry);
+                   currentGraph =   GraphUtilities.copyNewGraph(entry.getGraph());
+                   reloadGraph();
                }
                
                else

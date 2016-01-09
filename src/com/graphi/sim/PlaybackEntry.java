@@ -13,7 +13,7 @@ import java.util.Date;
 
 public class PlaybackEntry implements Comparable<PlaybackEntry>
 {
-    private final Graph<Node, Edge> graph;
+    private Graph<Node, Edge> graph;
     private Date date;
     private String name;
     
@@ -42,6 +42,11 @@ public class PlaybackEntry implements Comparable<PlaybackEntry>
     public String getName()
     {
         return name;
+    }
+    
+    public void setGraph(Graph<Node, Edge> graph)
+    {
+        this.graph  =   graph;
     }
     
     public void setDate(Date date)
