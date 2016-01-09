@@ -97,6 +97,7 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.border.Border;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
@@ -1562,6 +1563,8 @@ public class LayoutPanel extends JPanel
             private JSlider pbProgress;
             private JSpinner pbProgressSpeed;
             private JLabel pbName, pbDate;
+            private boolean pbPlaying;
+            private int pbSpeed;
             
             private JPanel gpRecControls;
             private JButton gpRecSaveBtn;
@@ -1601,6 +1604,11 @@ public class LayoutPanel extends JPanel
                 pbProgressSpeed =   new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
                 pbName          =   new JLabel("N/A");
                 pbDate          =   new JLabel("N/A");
+                pbSpeed         =   500;
+                pbPlaying       =   false;
+                
+                pbPlay.addActionListener(this);
+                pbStop.addActionListener(this);
                 
                 pbName.setFont(new Font("Arial", Font.BOLD, 12));
                 pbDate.setFont(new Font("Arial", Font.BOLD, 12));
@@ -1611,9 +1619,9 @@ public class LayoutPanel extends JPanel
                 pbInnerWrapper.add(new JLabel("Speed"));
                 pbInnerWrapper.add(pbProgressSpeed);
                 
-                JPanel pbInfoWrapper    =   new JPanel();
+                JPanel pbInfoWrapper    =   new JPanel(new MigLayout());
                 pbInfoWrapper.add(new JLabel("Name: "));
-                pbInfoWrapper.add(pbName);
+                pbInfoWrapper.add(pbName, "wrap");
                 pbInfoWrapper.add(new JLabel("Timestamp: "));
                 pbInfoWrapper.add(pbDate);
                 
@@ -1663,6 +1671,32 @@ public class LayoutPanel extends JPanel
                 
                 add(gViewer, BorderLayout.CENTER);
                 add(gpControlsWrapper, BorderLayout.SOUTH);
+            }
+            
+            private final Timer PB_TIMER =   new Timer(pbSpeed, (ActionEvent e) -> 
+            {
+                if(gPlayback.hasNext())
+                {
+                    PlaybackEntry entry =   gPlayback.next();
+                    pbName.setText(entry.getName());
+                    pbDate.setText(entry.getDate().toString());
+
+                    currentGraph =   GraphUtilities.copyNewGraph(entry.getGraph());
+                    reloadGraph();
+                }
+            });
+            
+            private void startPlayback()
+            {
+                pbProgress.setMinimum(1);
+                pbProgress.setMaximum(gPlayback.getSize());
+                PB_TIMER.setRepeats(true);
+                PB_TIMER.start();
+            }
+            
+            private void stopPlayback()
+            {
+                PB_TIMER.stop();
             }
             
             private void addRecordedGraph()

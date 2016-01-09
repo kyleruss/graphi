@@ -22,6 +22,11 @@ public class GraphPlayback implements Iterator<PlaybackEntry>, Serializable
         index           =   0;
     }
     
+    public int getSize()
+    {
+        return entries.size();
+    }
+    
     public void add(PlaybackEntry entry)
     {
         entries.add(entry);
@@ -101,5 +106,15 @@ public class GraphPlayback implements Iterator<PlaybackEntry>, Serializable
     public List<PlaybackEntry> getGraphData()
     {
         return entries;
+    }
+    
+    public int getIndex()
+    {
+        return index;
+    }
+    
+    public void setIndex(int index)
+    {
+        this.index  =   index;
     }
 }
