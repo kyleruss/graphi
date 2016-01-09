@@ -66,4 +66,22 @@ public class PlaybackEntry implements Comparable<PlaybackEntry>
     {
         return this.date.compareTo(other.getDate());
     }
+    
+    @Override
+    public boolean equals(Object other)
+    {
+        if(other instanceof PlaybackEntry)
+        {
+            PlaybackEntry entry =   (PlaybackEntry) other;
+            return this.name.equalsIgnoreCase(entry.getName()) && this.getGraph().equals(entry.getGraph());
+        }
+        
+        else return false;
+    }
+    
+    @Override
+    public int hashCode()
+    {
+        return name.hashCode() + graph.hashCode();
+    }
 }
