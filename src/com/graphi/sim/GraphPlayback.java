@@ -7,14 +7,10 @@
 package com.graphi.sim;
 
 import com.graphi.util.Edge;
-import com.graphi.util.GraphUtilities;
 import com.graphi.util.Node;
 import edu.uci.ics.jung.algorithms.layout.AggregateLayout;
-import edu.uci.ics.jung.graph.Graph;
-import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;

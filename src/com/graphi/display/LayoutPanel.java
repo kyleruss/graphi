@@ -11,6 +11,7 @@ import com.graphi.io.Storage;
 import com.graphi.sim.GraphPlayback;
 import com.graphi.util.Edge;
 import com.graphi.sim.Network;
+import com.graphi.sim.PlaybackEntry;
 import com.graphi.util.EdgeFactory;
 import com.graphi.util.EdgeLabelTransformer;
 import com.graphi.util.GraphUtilities;
@@ -570,11 +571,6 @@ public class LayoutPanel extends JPanel
             add(Box.createRigidArea(new Dimension(230, 30)));
             add(pbWrapperPanel);
             
-        }
-        
-        private void addRecordedGraph()
-        {
-            GraphUtilities.copyGraph(currentGraph, screenPanel.graphPanel.gPlayback.add());
         }
         
         private void updateSelectedComponents()
@@ -1566,10 +1562,11 @@ public class LayoutPanel extends JPanel
             private JSpinner pbProgressSpeed;
             
             private JPanel gpRecControls;
-            private JButton gpRecAddBtn;
-            private JButton gpRecClearBtn;
+            private JButton gpRecSaveBtn;
+            private JButton gpRecRemoveBtn;
             private JTextField gpRecEntryName;
             private DateComboBox gpRecDatePicker;
+            private JComboBox gpRecEntries;
             
             
             public GraphPanel()
@@ -1615,19 +1612,27 @@ public class LayoutPanel extends JPanel
                 
                 
                 gpRecControls   =   new JPanel(new MigLayout("fillx"));
-                gpRecAddBtn     =   new JButton("Add entry");
+                gpRecSaveBtn    =   new JButton("Save entry");
+                gpRecRemoveBtn  =   new JButton("Remove entry");
                 gpRecDatePicker =   new DateComboBox();
                 gpRecEntryName  =   new JTextField();
+                gpRecEntries    =   new JComboBox();
+                gpRecEntries.setPreferredSize(new Dimension(120, 20));
                 gpRecEntryName.setPreferredSize(new Dimension(120, 20));
-                gpRecAddBtn.setIcon(new ImageIcon(addIcon));
+                gpRecSaveBtn.setIcon(new ImageIcon(addIcon));
+                gpRecRemoveBtn.setIcon(new ImageIcon(removeIcon));
+                
+                gpRecEntries.addItem("-- New entry --");
                 
                 JPanel gpRecInnerWrapper    =   new JPanel(new MigLayout());
-                gpRecInnerWrapper.add(gpRecAddBtn);
+                gpRecInnerWrapper.add(gpRecSaveBtn);
+                gpRecInnerWrapper.add(gpRecRemoveBtn);
+                gpRecInnerWrapper.add(new JLabel("Entries"));
+                gpRecInnerWrapper.add(gpRecEntries, "wrap");
                 gpRecInnerWrapper.add(new JLabel("Entry date"));
                 gpRecInnerWrapper.add(gpRecDatePicker, "wrap");
                 gpRecInnerWrapper.add(new JLabel("Entry name (optional)"));
                 gpRecInnerWrapper.add(gpRecEntryName, "span 2");
-                
                 gpRecControls.add(gpRecInnerWrapper, "al center");
                 
                 JPanel gpRecWrapper =   new JPanel(new BorderLayout());
@@ -1638,10 +1643,29 @@ public class LayoutPanel extends JPanel
                 gpControlsWrapper.add(pbControlsWrapper, PLAYBACK_CARD);
                 gpControlsWrapper.setVisible(true);
                 
-                gpRecAddBtn.addActionListener(this);
+                gpRecSaveBtn.addActionListener(this);
+                gpRecRemoveBtn.addActionListener(this);
                 
                 add(gViewer, BorderLayout.CENTER);
                 add(gpControlsWrapper, BorderLayout.SOUTH);
+            }
+            
+            private void addRecordedGraph()
+            {
+                PlaybackEntry entry;
+                Graph<Node, Edge> graph   =   new SparseMultigraph<>();
+                GraphUtilities.copyGraph(currentGraph, graph);
+
+                Date date       =   gpRecDatePicker.getDate();
+                String name     =   gpRecEntryName.getText();
+
+                if(name.equals(""))
+                    entry   =   new PlaybackEntry(graph, date);
+                else
+                    entry   =   new PlaybackEntry(graph, date, name);
+
+                gPlayback.add(entry);
+                gpRecEntryName.setText("");
             }
 
             @Override
@@ -1663,7 +1687,10 @@ public class LayoutPanel extends JPanel
             @Override
             public void actionPerformed(ActionEvent e)
             {
+                Object src  =   e.getSource();
                 
+                if(src == gpRecSaveBtn)
+                    addRecordedGraph();
             }
             
             
