@@ -1012,7 +1012,10 @@ public class LayoutPanel extends JPanel
                 screenPanel.dataPanel.removeEdge();
             
             else if(src == displayCtrlsBtn)
-                screenPanel.graphPanel.pbControls.setVisible(!screenPanel.graphPanel.pbControls.isVisible());
+                screenPanel.graphPanel.changePlaybackPanel(screenPanel.graphPanel.PLAYBACK_CARD);
+            
+            else if(src == recordCtrlsBtn)
+                screenPanel.graphPanel.changePlaybackPanel(screenPanel.graphPanel.RECORD_CARD);
         }
     }
     
@@ -1606,6 +1609,8 @@ public class LayoutPanel extends JPanel
                 pbDate          =   new JLabel("N/A");
                 pbSpeed         =   500;
                 pbPlaying       =   false;
+               
+                pbProgress.setPaintTicks(true);
                 
                 pbPlay.addActionListener(this);
                 pbStop.addActionListener(this);
@@ -1662,8 +1667,7 @@ public class LayoutPanel extends JPanel
                 gpControlsWrapper   =   new JPanel(new CardLayout());
                 gpControlsWrapper.add(pbControlsWrapper, PLAYBACK_CARD);
                 gpControlsWrapper.add(gpRecWrapper, RECORD_CARD);
-                gpControlsWrapper.setVisible(true);
-                
+                gpControlsWrapper.setVisible(false);
                 
                 gpRecSaveBtn.addActionListener(this);
                 gpRecRemoveBtn.addActionListener(this);
@@ -1673,6 +1677,13 @@ public class LayoutPanel extends JPanel
                 add(gpControlsWrapper, BorderLayout.SOUTH);
             }
             
+            private void changePlaybackPanel(String card)
+            {
+                CardLayout cLayout  =   (CardLayout) gpControlsWrapper.getLayout();
+                cLayout.show(gpControlsWrapper, card);
+                gpControlsWrapper.setVisible(true);
+            }
+            
             private final Timer PB_TIMER =   new Timer(pbSpeed, (ActionEvent e) -> 
             {
                 if(gPlayback.hasNext())
@@ -1680,6 +1691,7 @@ public class LayoutPanel extends JPanel
                     PlaybackEntry entry =   gPlayback.next();
                     pbName.setText(entry.getName());
                     pbDate.setText(entry.getDate().toString());
+                    pbProgress.setValue(gPlayback.getIndex() + 1);
 
                     currentGraph =   GraphUtilities.copyNewGraph(entry.getGraph());
                     reloadGraph();
@@ -1792,6 +1804,12 @@ public class LayoutPanel extends JPanel
                 
                 else if(src == gpRecEntries)
                     displayRecordedGraph();
+                
+                else if(src == pbPlay)
+                    startPlayback();
+                
+                else if(src == pbStop)
+                    stopPlayback();
             }
             
             
