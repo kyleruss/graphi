@@ -47,6 +47,11 @@ public class GraphPlayback implements Iterator<PlaybackEntry>, Serializable
         entries.remove(index);
     }
     
+    public void remove(PlaybackEntry entry)
+    {
+        entries.remove(entry);
+    }
+    
     public void remove(int i)
     {
         entries.remove(i);
@@ -97,15 +102,18 @@ public class GraphPlayback implements Iterator<PlaybackEntry>, Serializable
         return entries.get(index--);
     }
     
-    public void display()
+    public void display(PlaybackEntry entry)
     {
-        PlaybackEntry current   =   entries.get(index);
-        
-        if(current != null)
+        if(entry != null)
         {
-            layout.setGraph(current.getGraph());
+            layout.setGraph(entry.getGraph());
             viewer.repaint();
         }
+    }
+    
+    public void display()
+    {
+        display(entries.get(index));
     }
     
     public void display(int i)

@@ -74,6 +74,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -1644,6 +1645,7 @@ public class LayoutPanel extends JPanel
                 
                 gpRecSaveBtn.addActionListener(this);
                 gpRecRemoveBtn.addActionListener(this);
+                gpRecEntries.addActionListener(this);
                 
                 add(gViewer, BorderLayout.CENTER);
                 add(gpControlsWrapper, BorderLayout.SOUTH);
@@ -1664,7 +1666,40 @@ public class LayoutPanel extends JPanel
                     entry   =   new PlaybackEntry(graph, date, name);
 
                 gPlayback.add(entry);
+                gpRecEntries.addItem(entry);
                 gpRecEntryName.setText("");
+            }
+            
+            private void displayRecordedGraph()
+            {
+               int selectedIndex    =   gpRecEntries.getSelectedIndex();
+               if(selectedIndex != 0)
+               {
+                   PlaybackEntry entry  =   (PlaybackEntry) gpRecEntries.getSelectedItem();
+                   gpRecEntryName.setText(entry.getName());
+                   gpRecDatePicker.setDate(entry.getDate());
+                   gPlayback.display(entry);
+               }
+               
+               else
+               {
+                   gpRecEntryName.setText("");
+                   gpRecDatePicker.setDate(new Date());
+               }
+            }
+            
+            private void removeRecordedGraph()
+            {
+                int selectedIndex   =   gpRecEntries.getSelectedIndex();
+                if(selectedIndex != 0)
+                {
+                    PlaybackEntry entry =   (PlaybackEntry) gpRecEntries.getSelectedItem();
+                    gPlayback.remove(entry);
+                    gpRecEntries.removeItemAt(selectedIndex);
+                    gpRecEntries.setSelectedIndex(0);
+                    gpRecEntryName.setText("");
+                    gpRecDatePicker.setDate(new Date());
+                }
             }
 
             @Override
@@ -1690,6 +1725,12 @@ public class LayoutPanel extends JPanel
                 
                 if(src == gpRecSaveBtn)
                     addRecordedGraph();
+                
+                else if(src == gpRecRemoveBtn)
+                    removeRecordedGraph();
+                
+                else if(src == gpRecEntries)
+                    displayRecordedGraph();
             }
             
             
