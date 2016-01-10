@@ -66,15 +66,12 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.PriorityQueue;
-import java.util.Properties;
 import java.util.Set;
-import javafx.scene.control.DatePicker;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -103,10 +100,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.text.DefaultFormatter;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.collections15.Transformer;
-import org.jdesktop.swingx.JXDatePicker;
 
 public class LayoutPanel extends JPanel
 {
@@ -120,7 +115,7 @@ public class LayoutPanel extends JPanel
     private BufferedImage editBlackIcon, pointerIcon, moveIcon;
     private BufferedImage moveSelectedIcon, editSelectedIcon, pointerSelectedIcon;
     private BufferedImage graphIcon, tableIcon, resetIcon, executeIcon;
-    private BufferedImage editIcon;
+    private BufferedImage editIcon, playIcon, stopIcon, recordIcon;
     
     public static final Color TRANSPARENT   =   new Color(255, 255, 255, 0);
     public static final Color PRESET_BG     =   new Color(200, 200, 200);
@@ -217,6 +212,9 @@ public class LayoutPanel extends JPanel
             executeIcon         =   ImageIO.read(new File("resources/images/execute.png"));
             resetIcon           =   ImageIO.read(new File("resources/images/reset.png"));
             editIcon            =   ImageIO.read(new File("resources/images/edit.png"));
+            playIcon            =   ImageIO.read(new File("resources/images/play.png"));
+            stopIcon            =   ImageIO.read(new File("resources/images/stop.png"));
+            recordIcon          =   ImageIO.read(new File("resources/images/record.png"));
         }
         
         catch(IOException e)
@@ -524,6 +522,9 @@ public class LayoutPanel extends JPanel
             recordCtrlsBtn      =   new JButton("Record controls");
             displayCtrlsBtn     =   new JButton("Playback controls");
             recording           =   false;
+
+            recordCtrlsBtn.setIcon(new ImageIcon(recordIcon));
+            displayCtrlsBtn.setIcon(new ImageIcon(playIcon));
             
             activeScriptLabel.setFont(new Font("Arial", Font.BOLD, 12));
             playbackPanel.setBorder(BorderFactory.createTitledBorder("Script controls"));
@@ -1568,7 +1569,7 @@ public class LayoutPanel extends JPanel
             private JPanel gpControlsWrapper;
 
             private JPanel pbControls;
-            private JButton pbPlay, pbStop;
+            private JButton pbToggle;
             private JSlider pbProgress;
             private JSpinner pbProgressSpeed;
             private JLabel pbName, pbDate;
@@ -1606,14 +1607,14 @@ public class LayoutPanel extends JPanel
                 gViewer.setGraphMouse(mouse);
                 
                 pbControls      =   new JPanel(new MigLayout("fillx"));
-                pbPlay          =   new JButton("Play");
-                pbStop          =   new JButton("Stop");
+                pbToggle        =   new JButton("Play");
                 pbProgress      =   new JSlider();
                 pbProgressSpeed =   new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
                 pbName          =   new JLabel("N/A");
                 pbDate          =   new JLabel("N/A");
                 pbPlaying       =   false;
                 
+                pbToggle.setIcon(new ImageIcon(playIcon));
                 pbProgress.addChangeListener(this);
                 pbProgressSpeed.addChangeListener(this);
 
@@ -1623,15 +1624,13 @@ public class LayoutPanel extends JPanel
                 pbProgress.setMinimum(0);
                 pbProgress.setPaintTrack(true);
                 
-                pbPlay.addActionListener(this);
-                pbStop.addActionListener(this);
+                pbToggle.addActionListener(this);
                 
                 pbName.setFont(new Font("Arial", Font.BOLD, 12));
                 pbDate.setFont(new Font("Arial", Font.BOLD, 12));
                 
                 JPanel pbInnerWrapper   =   new JPanel();
-                pbInnerWrapper.add(pbPlay);
-                pbInnerWrapper.add(pbStop);
+                pbInnerWrapper.add(pbToggle);
                 pbInnerWrapper.add(new JLabel("Speed"));
                 pbInnerWrapper.add(pbProgressSpeed);
                 
@@ -1719,6 +1718,8 @@ public class LayoutPanel extends JPanel
             {
                 if(gPlayback.hasNext())
                     pbProgress.setValue(pbProgress.getValue() + 1);
+                else
+                    togglePlayback();
             });
             
             private void startPlayback()
@@ -1770,6 +1771,25 @@ public class LayoutPanel extends JPanel
                     entry.setName(gpRecEntryName.getText());
                     entry.setDate(gpRecDatePicker.getDate());
                     entry.setGraph(GraphUtilities.copyNewGraph(currentGraph));
+                }
+            }
+            
+            private void togglePlayback()
+            {
+                if(pbPlaying)
+                {
+                    pbPlaying = false;
+                    pbToggle.setIcon(new ImageIcon(playIcon));
+                    pbToggle.setText("Play");
+                    stopPlayback();
+                }
+                
+                else
+                {
+                    pbPlaying = true;
+                    pbToggle.setIcon(new ImageIcon(stopIcon));
+                    pbToggle.setText("Stop");
+                    startPlayback();
                 }
             }
             
@@ -1839,11 +1859,8 @@ public class LayoutPanel extends JPanel
                 else if(src == gpRecEntries)
                     displayRecordedGraph();
                 
-                else if(src == pbPlay)
-                    startPlayback();
-                
-                else if(src == pbStop)
-                    stopPlayback();
+                else if(src == pbToggle)
+                    togglePlayback();
             }
 
             @Override
@@ -1856,7 +1873,6 @@ public class LayoutPanel extends JPanel
                 
                 else if(src == pbProgress)
                 {
-                    System.out.println(pbProgress.getValue());
                     int index   =   pbProgress.getValue();
                     gPlayback.setIndex(index);
                     PlaybackEntry entry =   gPlayback.current();

@@ -56,7 +56,7 @@ public class GraphPlayback implements Iterator<PlaybackEntry>, Serializable
     @Override
     public boolean hasNext()
     {
-        return index < entries.size();
+        return index < entries.size() - 1;
     }
     
     public boolean hasPrevious()
