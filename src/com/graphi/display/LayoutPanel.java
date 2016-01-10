@@ -1614,11 +1614,13 @@ public class LayoutPanel extends JPanel
                 pbDate          =   new JLabel("N/A");
                 pbPlaying       =   false;
                 
+                pbProgress.addChangeListener(this);
                 pbProgressSpeed.addChangeListener(this);
 
                 pbProgressSpeed.setValue(INITIAL_DELAY);
                 pbProgress.setPaintTicks(true);
                 pbProgress.setValue(0);
+                pbProgress.setMinimum(0);
                 pbProgress.setPaintTrack(true);
                 
                 pbPlay.addActionListener(this);
@@ -1702,27 +1704,27 @@ public class LayoutPanel extends JPanel
             {
                 CardLayout cLayout  =   (CardLayout) gpControlsWrapper.getLayout();
                 cLayout.show(gpControlsWrapper, card);
+                
+                if(card.equals(PLAYBACK_CARD))
+                {
+                    pbProgress.setMinimum(0);
+                    pbProgress.setValue(0);
+                    pbProgress.setMaximum(gPlayback.getSize() - 1); 
+                }
+                
                 gpControlsWrapper.setVisible(true);
             }
             
             private final Timer PB_TIMER =   new Timer(INITIAL_DELAY, (ActionEvent e) -> 
             {
                 if(gPlayback.hasNext())
-                {
-                    PlaybackEntry entry =   gPlayback.next();
-                    pbName.setText(entry.getName());
-                    pbDate.setText(entry.getDate().toString());
-                    pbProgress.setValue(gPlayback.getIndex());
-
-                    currentGraph =   GraphUtilities.copyNewGraph(entry.getGraph());
-                    reloadGraph();
-                }
+                    pbProgress.setValue(pbProgress.getValue() + 1);
             });
             
             private void startPlayback()
             {
                 pbProgress.setMinimum(0);
-                pbProgress.setMaximum(gPlayback.getSize());
+                pbProgress.setMaximum(gPlayback.getSize() - 1);
                 
                 if(pbProgress.getValue() == pbProgress.getMaximum())
                 {
@@ -1847,7 +1849,27 @@ public class LayoutPanel extends JPanel
             @Override
             public void stateChanged(ChangeEvent e) 
             {
-                PB_TIMER.setDelay((int) pbProgressSpeed.getValue());
+                Object src  =   e.getSource();
+                
+                if(src == pbProgressSpeed)
+                    PB_TIMER.setDelay((int) pbProgressSpeed.getValue());
+                
+                else if(src == pbProgress)
+                {
+                    System.out.println(pbProgress.getValue());
+                    int index   =   pbProgress.getValue();
+                    gPlayback.setIndex(index);
+                    PlaybackEntry entry =   gPlayback.current();
+                    
+                    if(entry != null)
+                    {
+                        pbName.setText(entry.getName());
+                        pbDate.setText(entry.getDate().toString());
+
+                        currentGraph =   GraphUtilities.copyNewGraph(entry.getGraph());
+                        reloadGraph();
+                    }
+                }
             }
             
             

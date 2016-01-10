@@ -82,6 +82,7 @@ public class GraphPlayback implements Iterator<PlaybackEntry>, Serializable
     
     public PlaybackEntry current()
     {
+        if(entries.isEmpty()) return null;
         return entries.get(index);
     }
     
@@ -115,6 +116,7 @@ public class GraphPlayback implements Iterator<PlaybackEntry>, Serializable
     
     public void setIndex(int index)
     {
-        this.index  =   index;
+        if(index >= 0 && index < entries.size())
+            this.index  =   index;
     }
 }
