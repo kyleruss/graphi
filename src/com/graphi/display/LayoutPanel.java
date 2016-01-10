@@ -99,6 +99,8 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.border.Border;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.DefaultFormatter;
@@ -1553,10 +1555,11 @@ public class LayoutPanel extends JPanel
         //--------------------------------------
         //  GRAPH PANEL
         //--------------------------------------
-        private class GraphPanel extends JPanel implements ItemListener, GraphMouseListener, ActionListener
+        private class GraphPanel extends JPanel implements ItemListener, GraphMouseListener, ActionListener, ChangeListener
         {
             private final String RECORD_CARD    =   "rec";
             private final String PLAYBACK_CARD  =   "pb";
+            private final int INITIAL_DELAY     =   500;
             
             private final VisualizationViewer<Node, Edge> gViewer;
             private AggregateLayout<Node, Edge> gLayout;
@@ -1570,7 +1573,6 @@ public class LayoutPanel extends JPanel
             private JSpinner pbProgressSpeed;
             private JLabel pbName, pbDate;
             private boolean pbPlaying;
-            private int pbSpeed;
             
             private JPanel gpRecControls;
             private JButton gpRecSaveBtn;
@@ -1610,10 +1612,14 @@ public class LayoutPanel extends JPanel
                 pbProgressSpeed =   new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
                 pbName          =   new JLabel("N/A");
                 pbDate          =   new JLabel("N/A");
-                pbSpeed         =   500;
                 pbPlaying       =   false;
-               
+                
+                pbProgressSpeed.addChangeListener(this);
+
+                pbProgressSpeed.setValue(INITIAL_DELAY);
                 pbProgress.setPaintTicks(true);
+                pbProgress.setValue(0);
+                pbProgress.setPaintTrack(true);
                 
                 pbPlay.addActionListener(this);
                 pbStop.addActionListener(this);
@@ -1699,14 +1705,14 @@ public class LayoutPanel extends JPanel
                 gpControlsWrapper.setVisible(true);
             }
             
-            private final Timer PB_TIMER =   new Timer(pbSpeed, (ActionEvent e) -> 
+            private final Timer PB_TIMER =   new Timer(INITIAL_DELAY, (ActionEvent e) -> 
             {
                 if(gPlayback.hasNext())
                 {
                     PlaybackEntry entry =   gPlayback.next();
                     pbName.setText(entry.getName());
                     pbDate.setText(entry.getDate().toString());
-                    pbProgress.setValue(gPlayback.getIndex() + 1);
+                    pbProgress.setValue(gPlayback.getIndex());
 
                     currentGraph =   GraphUtilities.copyNewGraph(entry.getGraph());
                     reloadGraph();
@@ -1715,11 +1721,18 @@ public class LayoutPanel extends JPanel
             
             private void startPlayback()
             {
-                pbProgress.setMinimum(1);
+                pbProgress.setMinimum(0);
                 pbProgress.setMaximum(gPlayback.getSize());
+                
+                if(pbProgress.getValue() == pbProgress.getMaximum())
+                {
+                    gPlayback.setIndex(0);
+                    pbProgress.setValue(0);
+                }
+                    
                 PB_TIMER.setRepeats(true);
                 PB_TIMER.start();
-                PB_TIMER.setDelay(pbSpeed);
+                PB_TIMER.setDelay((int) pbProgressSpeed.getValue());
             }
             
             private void stopPlayback()
@@ -1829,6 +1842,12 @@ public class LayoutPanel extends JPanel
                 
                 else if(src == pbStop)
                     stopPlayback();
+            }
+
+            @Override
+            public void stateChanged(ChangeEvent e) 
+            {
+                PB_TIMER.setDelay((int) pbProgressSpeed.getValue());
             }
             
             
