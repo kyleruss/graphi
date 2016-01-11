@@ -115,7 +115,7 @@ public class LayoutPanel extends JPanel
     private BufferedImage editBlackIcon, pointerIcon, moveIcon;
     private BufferedImage moveSelectedIcon, editSelectedIcon, pointerSelectedIcon;
     private BufferedImage graphIcon, tableIcon, resetIcon, executeIcon;
-    private BufferedImage editIcon, playIcon, stopIcon, recordIcon;
+    private BufferedImage editIcon, playIcon, stopIcon, recordIcon, closeIcon;
     
     public static final Color TRANSPARENT   =   new Color(255, 255, 255, 0);
     public static final Color PRESET_BG     =   new Color(200, 200, 200);
@@ -215,6 +215,7 @@ public class LayoutPanel extends JPanel
             playIcon            =   ImageIO.read(new File("resources/images/play.png"));
             stopIcon            =   ImageIO.read(new File("resources/images/stop.png"));
             recordIcon          =   ImageIO.read(new File("resources/images/record.png"));
+            closeIcon           =   ImageIO.read(new File("resources/images/close.png"));
         }
         
         catch(IOException e)
@@ -1568,6 +1569,8 @@ public class LayoutPanel extends JPanel
             private EditingModalGraphMouse mouse;
             private GraphPlayback gPlayback;
             private JPanel gpControlsWrapper;
+            private JPanel gpControlsPanel;
+            private JButton gpCtrlsClose;
 
             private JPanel pbControls;
             private JButton pbToggle;
@@ -1582,7 +1585,6 @@ public class LayoutPanel extends JPanel
             private JTextField gpRecEntryName;
             private DateComboBox gpRecDatePicker;
             private JComboBox gpRecEntries;
-            
             
             public GraphPanel()
             {
@@ -1678,14 +1680,24 @@ public class LayoutPanel extends JPanel
                 gpControlsWrapper   =   new JPanel(new CardLayout());
                 gpControlsWrapper.add(pbControlsWrapper, PLAYBACK_CARD);
                 gpControlsWrapper.add(gpRecWrapper, RECORD_CARD);
-                gpControlsWrapper.setVisible(false);
+                
+                gpControlsPanel             =   new JPanel(new BorderLayout());
+                gpCtrlsClose                =   new JButton("Close");
+                JPanel gpControlsExitPanel  =   new JPanel();
+                gpCtrlsClose.setIcon(new ImageIcon(closeIcon));
+                
+                gpControlsExitPanel.add(gpCtrlsClose);
+                gpControlsPanel.add(gpControlsWrapper, BorderLayout.CENTER);
+                gpControlsPanel.add(gpControlsExitPanel, BorderLayout.EAST);
+                gpControlsPanel.setVisible(false);
                 
                 gpRecSaveBtn.addActionListener(this);
                 gpRecRemoveBtn.addActionListener(this);
                 gpRecEntries.addActionListener(this);
+                gpCtrlsClose.addActionListener(this);
                 
                 add(gViewer, BorderLayout.CENTER);
-                add(gpControlsWrapper, BorderLayout.SOUTH);
+                add(gpControlsPanel, BorderLayout.SOUTH);
             }
             
             private void addPlaybackEntries()
@@ -1712,7 +1724,7 @@ public class LayoutPanel extends JPanel
                     pbProgress.setMaximum(gPlayback.getSize() - 1); 
                 }
                 
-                gpControlsWrapper.setVisible(true);
+                gpControlsPanel.setVisible(true);
             }
             
             private final Timer PB_TIMER =   new Timer(INITIAL_DELAY, (ActionEvent e) -> 
@@ -1862,6 +1874,9 @@ public class LayoutPanel extends JPanel
                 
                 else if(src == pbToggle)
                     togglePlayback();
+                
+                else if(src == gpCtrlsClose)
+                    gpControlsPanel.setVisible(false);
             }
 
             @Override
