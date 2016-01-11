@@ -10,6 +10,7 @@ import com.graphi.util.Edge;
 import com.graphi.util.Node;
 import edu.uci.ics.jung.graph.Graph;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class PlaybackEntry implements Comparable<PlaybackEntry>, Serializable
@@ -20,14 +21,18 @@ public class PlaybackEntry implements Comparable<PlaybackEntry>, Serializable
     
     public PlaybackEntry(Graph<Node, Edge> graph, Date date)
     {
-        this(graph, date, date.toString());
+        this(graph, date, null);
     }
     
     public PlaybackEntry(Graph<Node, Edge> graph, Date date, String name)
     {
         this.graph  =   graph;
         this.date   =   date;
-        this.name   =   name;
+        
+        if(name != null)
+            this.name   =   name;
+        else
+            this.name   =   getDateFormatted();
     }
     
     public Graph<Node, Edge> getGraph()
@@ -38,6 +43,12 @@ public class PlaybackEntry implements Comparable<PlaybackEntry>, Serializable
     public Date getDate()
     {
         return date;
+    }
+    
+    public String getDateFormatted()
+    {
+        SimpleDateFormat formatter =   new SimpleDateFormat("dd-MM-yyyy");
+        return formatter.format(date);
     }
     
     public String getName()

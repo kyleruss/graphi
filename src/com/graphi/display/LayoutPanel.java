@@ -282,7 +282,7 @@ public class LayoutPanel extends JPanel
         {
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             setBorder(BorderFactory.createEmptyBorder(15, 0, 3, 8));
-            setPreferredSize(new Dimension(230, 1400));
+            setPreferredSize(new Dimension(230, 1650));
             
             ioPanel         =   new IOPanel();            
             modePanel       =   new JPanel();
@@ -444,7 +444,8 @@ public class LayoutPanel extends JPanel
             spathToField    =   new JTextField();
             spathFromField.setPreferredSize(new Dimension(50, 20));
             spathToField.setPreferredSize(new Dimension(50, 20));
-            JLabel tLabel = new JLabel("To ID");
+            
+            JLabel tLabel           =   new JLabel("To ID");
             JPanel spathFromPanel   =   wrapComponents(null, new JLabel("From ID"), spathFromField);
             JPanel spathToPanel     =   wrapComponents(null, tLabel, spathToField);
             JPanel spathWrapper     =   new JPanel(new MigLayout()); 
@@ -530,8 +531,8 @@ public class LayoutPanel extends JPanel
             playbackPanel.setBorder(BorderFactory.createTitledBorder("Script controls"));
             playbackPanel.add(new JLabel("Active script: "), "al right");
             playbackPanel.add(activeScriptLabel, "wrap");
-            playbackPanel.add(recordCtrlsBtn, "al right");
-            playbackPanel.add(displayCtrlsBtn, "");
+            playbackPanel.add(recordCtrlsBtn, "span 2, al center, wrap");
+            playbackPanel.add(displayCtrlsBtn, "span 2, al center");
             
             recordCtrlsBtn.addActionListener(this);
             displayCtrlsBtn.addActionListener(this);
@@ -1609,7 +1610,7 @@ public class LayoutPanel extends JPanel
                 pbControls      =   new JPanel(new MigLayout("fillx"));
                 pbToggle        =   new JButton("Play");
                 pbProgress      =   new JSlider();
-                pbProgressSpeed =   new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
+                pbProgressSpeed =   new JSpinner(new SpinnerNumberModel(0, 0, 10000, 1));
                 pbName          =   new JLabel("N/A");
                 pbDate          =   new JLabel("N/A");
                 pbPlaying       =   false;
@@ -1880,7 +1881,7 @@ public class LayoutPanel extends JPanel
                     if(entry != null)
                     {
                         pbName.setText(entry.getName());
-                        pbDate.setText(entry.getDate().toString());
+                        pbDate.setText(entry.getDateFormatted());
 
                         currentGraph =   GraphUtilities.copyNewGraph(entry.getGraph());
                         reloadGraph();
