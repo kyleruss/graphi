@@ -121,6 +121,7 @@ public class Network
             for(Node neighbour : neighbours)
             {
                 double p    =   getITProbability(graph, node, neighbour);
+                
                 if(p >= P)
                 {
                     Edge edge   =   edgeFactory.create();
