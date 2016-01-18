@@ -247,6 +247,7 @@ public class LayoutPanel extends JPanel
         private JPanel genPanel, baGenPanel, klGenPanel;
         private JSpinner latticeSpinner, clusteringSpinner;
         private JSpinner initialNSpinner, addNSpinner;
+        private JCheckBox simTiesCheck;
         
         private IOPanel ioPanel;
         private JPanel editPanel;
@@ -318,6 +319,7 @@ public class LayoutPanel extends JPanel
             selectCheck.setSelected(true);
             
             genAlgorithmsBox        =   new JComboBox();
+            simTiesCheck            =   new JCheckBox("Interpersonal ties");
             genAlgorithmsBox.addItem("Kleinberg");
             genAlgorithmsBox.addItem("Barabasi-Albert");
             genAlgorithmsBox.addActionListener(this);
@@ -366,6 +368,7 @@ public class LayoutPanel extends JPanel
             simPanel.add(new JLabel("Generator"), "al right");
             simPanel.add(genAlgorithmsBox, "wrap");
             simPanel.add(genPanel, "wrap, span 2, al center");
+            simPanel.add(simTiesCheck, "wrap, span 2, al center");
             simPanel.add(resetGeneratorBtn, "al right");
             simPanel.add(executeGeneratorBtn, "");
             
