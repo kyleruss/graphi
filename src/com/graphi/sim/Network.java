@@ -12,6 +12,7 @@ import com.graphi.util.Node;
 import edu.uci.ics.jung.algorithms.generators.random.KleinbergSmallWorldGenerator;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
+import edu.uci.ics.jung.graph.util.EdgeType;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -110,6 +111,22 @@ public class Network
     
     public static void simulateInterpersonalTies(Graph<Node, Edge> graph, Factory<Edge> edgeFactory)
     {
+        Collection<Node> nodes  =   graph.getVertices();
+        final double P          =   0.5;
         
+        for(Node node: nodes)
+        {
+            Collection<Node> neighbours = graph.getNeighbors(node);
+            
+            for(Node neighbour : neighbours)
+            {
+                double p    =   getITProbability(graph, node, neighbour);
+                if(p >= P)
+                {
+                    Edge edge   =   edgeFactory.create();
+                    graph.addEdge(edge, node, neighbour, EdgeType.DIRECTED);
+                }
+            }
+        }
     }
 }
