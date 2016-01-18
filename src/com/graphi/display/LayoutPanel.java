@@ -627,6 +627,9 @@ public class LayoutPanel extends JPanel
                 case 1: showBASim(); break;
             }
             
+            if(simTiesCheck.isSelected())
+                Network.simulateInterpersonalTies(currentGraph, edgeFactory);
+                
             screenPanel.graphPanel.reloadGraph();
         }
         
