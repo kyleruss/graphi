@@ -14,6 +14,7 @@ import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.PriorityQueue;
 import java.util.Random;
 import org.apache.commons.collections15.Factory;
@@ -88,5 +89,27 @@ public class Network
             graph.addEdge(edgeFactory.create(), vertices.get(i - 1), vertices.get(i));
         
         return graph;
+    }
+    
+    public static double getITProbability(Graph<Node, Edge> graph, Node from, Node to)
+    {
+        if(!graph.isNeighbor(from, to)) return 0.0;
+        
+        int n                       =   0;
+        int degree                  =   graph.degree(from);
+        Collection<Node> neighbours =   graph.getNeighbors(from);
+        
+        for(Node neighbour : neighbours)
+        {
+            if(!neighbour.equals(to) && graph.isNeighbor(neighbour, to))
+                n++;
+        }
+        
+        return n / (degree * 1.0);
+    }
+    
+    public static void simulateInterpersonalTies(Graph<Node, Edge> graph, Factory<Edge> edgeFactory)
+    {
+        
     }
 }
