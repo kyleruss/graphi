@@ -658,14 +658,14 @@ public class LayoutPanel extends JPanel
         {
             int latticeSize =   (int) latticeSpinner.getValue();
             int clusterExp  =   (int) clusteringSpinner.getValue();
-            currentGraph    =   Network.generateKleinberg(latticeSize, clusterExp, new NodeFactory(), new EdgeFactory());
+            currentGraph    =   Network.generateKleinberg(latticeSize, clusterExp, nodeFactory, edgeFactory);
         }
         
         private void showBASim()
         {
             int m           =   (int) initialNSpinner.getValue();
             int n           =   (int) addNSpinner.getValue();
-            currentGraph    =   Network.generateBerbasiAlbert(new NodeFactory(), new EdgeFactory(), n, m);
+            currentGraph    =   Network.generateBerbasiAlbert(nodeFactory, edgeFactory, n, m);
         }
         
         private void showVertexBGChange()
