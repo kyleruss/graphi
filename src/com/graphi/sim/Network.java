@@ -109,10 +109,9 @@ public class Network
         return n / (degree * 1.0);
     }
     
-    public static void simulateInterpersonalTies(Graph<Node, Edge> graph, Factory<Edge> edgeFactory)
+    public static void simulateInterpersonalTies(Graph<Node, Edge> graph, Factory<Edge> edgeFactory, double P)
     {
         Collection<Node> nodes  =   graph.getVertices();
-        final double P          =   0.5;
         
         for(Node node: nodes)
         {

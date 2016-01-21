@@ -248,6 +248,8 @@ public class LayoutPanel extends JPanel
         private JSpinner latticeSpinner, clusteringSpinner;
         private JSpinner initialNSpinner, addNSpinner;
         private JCheckBox simTiesCheck;
+        private JSpinner simTiesPSpinner;
+        private JLabel simTiesPLabel;
         
         private IOPanel ioPanel;
         private JPanel editPanel;
@@ -320,14 +322,23 @@ public class LayoutPanel extends JPanel
             
             genAlgorithmsBox        =   new JComboBox();
             simTiesCheck            =   new JCheckBox("Interpersonal ties");
+            simTiesPLabel           =   new JLabel("P");
+            simTiesPSpinner         =   new JSpinner(new SpinnerNumberModel(0.5, 0.0, 1.0, 0.1));
+            simTiesPSpinner.setPreferredSize(new Dimension(50, 25));
+            simTiesPLabel.setVisible(false);
+            simTiesPSpinner.setVisible(false);
+            
             genAlgorithmsBox.addItem("Kleinberg");
             genAlgorithmsBox.addItem("Barabasi-Albert");
             genAlgorithmsBox.addActionListener(this);
             
             resetGeneratorBtn           =   new JButton("Reset");
             executeGeneratorBtn         =   new JButton("Generate");
+            
             executeGeneratorBtn.addActionListener(this);
             resetGeneratorBtn.addActionListener(this);
+            simTiesCheck.addActionListener(this);
+            
             resetGeneratorBtn.setBackground(Color.WHITE);
             executeGeneratorBtn.setBackground(Color.WHITE);
             
@@ -368,7 +379,9 @@ public class LayoutPanel extends JPanel
             simPanel.add(new JLabel("Generator"), "al right");
             simPanel.add(genAlgorithmsBox, "wrap");
             simPanel.add(genPanel, "wrap, span 2, al center");
-            simPanel.add(simTiesCheck, "wrap, span 2, al center");
+            simPanel.add(simTiesCheck, "al center, span 2, wrap");
+            simPanel.add(simTiesPLabel, "al right");
+            simPanel.add(simTiesPSpinner, "wrap");
             simPanel.add(resetGeneratorBtn, "al right");
             simPanel.add(executeGeneratorBtn, "");
             
@@ -628,7 +641,7 @@ public class LayoutPanel extends JPanel
             }
             
             if(simTiesCheck.isSelected())
-                Network.simulateInterpersonalTies(currentGraph, edgeFactory);
+                Network.simulateInterpersonalTies(currentGraph, edgeFactory, (double) simTiesPSpinner.getValue());
                 
             screenPanel.graphPanel.reloadGraph();
         }
@@ -1030,6 +1043,12 @@ public class LayoutPanel extends JPanel
             
             else if(src == recordCtrlsBtn)
                 screenPanel.graphPanel.changePlaybackPanel(screenPanel.graphPanel.RECORD_CARD);
+            
+            else if(src == simTiesCheck)
+            {
+                simTiesPSpinner.setVisible(!simTiesPSpinner.isVisible());
+                simTiesPLabel.setVisible(!simTiesPLabel.isVisible());
+            }
         }
     }
     
