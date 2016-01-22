@@ -10,8 +10,10 @@ import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -73,6 +75,37 @@ public class AdjMatrixParser
     
     public static void exportGraph(Graph<Node, Edge> graph, File file, boolean directed)
     {
+        String output       =   "";
+        List<Node> nodes    =   new ArrayList<>(graph.getVertices());
+        int n               =   nodes.size();
         
+        for(int row = 0; row < n; row++)
+        {
+            Node source                 =   nodes.get(row);
+            Collection<Node> neighbours =   graph.getNeighbors(source);
+            
+            for(int col = 0; col < n; col++)
+            {
+                Node dest       =   nodes.get(col);
+                if(neighbours.contains(dest))
+                    output      +=  "1";
+                else
+                    output      +=  "0";
+                
+                output          +=  (col < n - 1)? " " : "";
+            }
+            
+            output += "\n";
+        }
+        
+        try(BufferedWriter writer   =   new BufferedWriter(new FileWriter(file)))
+        {
+            writer.write(output);
+        }
+        
+        catch(IOException e)
+        {
+            JOptionPane.showMessageDialog(null, "[Error] Failed to write file");
+        }
     }
 }
