@@ -821,14 +821,15 @@ public class LayoutPanel extends JPanel
         
         private void exportGraph()
         {
-            File file   =   getFile(false, "Graphi .graph file", "graph", "txt", "xml", "gml");
+            File file   =   getFile(false, "Graphi .graph, adjacency matrix .txt, .graphML, .gml", "graph", "txt", "xml", "gml");
             if(file != null && currentGraph != null)
                 Storage.saveObj(currentGraph, file);
         }
         
         private void importGraph()
         {
-            File file   =   getFile(true, "Graphi .graph file", "graph", "txt", "xml", "gml");
+            File file   =   getFile(true, "Graphi .graph, adjacency matrix .txt, .graphML, .gml file", "graph", "txt", "xml", "gml");
+            
             if(file != null)
             {
                 nodeFactory.setLastID(0);
