@@ -2076,6 +2076,10 @@ public class LayoutPanel extends JPanel
             
             private void reloadGraph()
             {
+                gViewer.getPickedVertexState().clear();
+                gViewer.getPickedEdgeState().clear();
+                selectedItems = null;
+                
                 gLayout.removeAll();
                 gLayout.setGraph(currentGraph);
                 gViewer.repaint();
