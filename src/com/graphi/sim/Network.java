@@ -36,7 +36,10 @@ public class Network
     
     public static Graph<Node, Edge> generateBerbasiAlbert(Factory<Node> nodeFactory, Factory<Edge> edgeFactory, int n, int m)
     {
-        Graph<Node, Edge> graph                 =   generateConnectedGraph(nodeFactory, edgeFactory, m);
+        if(nodeFactory == null) nodeFactory         =   () -> new Node();
+        if(edgeFactory == null) edgeFactory         =   () -> new Edge();
+        
+        Graph<Node, Edge> graph                     =   generateConnectedGraph(nodeFactory, edgeFactory, m);
         
         
         for(int i = 0; i < n; i++)
