@@ -4,8 +4,10 @@
 //  https://github.com/denkers/graphi
 //=========================================
 
-package com.graphi.util;
+package com.graphi.io;
 
+import com.graphi.util.Edge;
+import com.graphi.util.Node;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
@@ -17,7 +19,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import javax.swing.JOptionPane;
 import org.apache.commons.collections15.Factory;
