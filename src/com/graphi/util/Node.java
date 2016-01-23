@@ -21,6 +21,11 @@ public class Node implements Serializable, GraphObject
         this(0, "");
     }
     
+    public Node(int id)
+    {
+        this(id, "");
+    }
+    
     public Node(int id, String name)
     {
         this(id, name, Color.GREEN);
