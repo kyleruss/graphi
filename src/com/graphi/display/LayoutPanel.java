@@ -102,6 +102,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.collections15.Transformer;
+import org.apache.commons.io.FilenameUtils;
 
 public class LayoutPanel extends JPanel
 {
@@ -178,6 +179,12 @@ public class LayoutPanel extends JPanel
             jfc.showSaveDialog(null);
         
         return jfc.getSelectedFile();
+    }
+    
+    private String getFileExtension(File file)
+    {
+        if(file == null) return "";
+        return FilenameUtils.getExtension(file.getPath());
     }
 
     public static JPanel wrapComponents(Border border, Component... components)
@@ -821,14 +828,17 @@ public class LayoutPanel extends JPanel
         
         private void exportGraph()
         {
-            File file   =   getFile(false, "Graphi .graph, adjacency matrix .txt, .graphML, .gml", "graph", "txt", "xml", "gml");
+            File file           =   getFile(false, "Graphi .graph, adjacency matrix .txt, .graphML, .gml", "graph", "txt", "xml", "gml");
+            String extension    =   getFileExtension(file);
+            
             if(file != null && currentGraph != null)
                 Storage.saveObj(currentGraph, file);
         }
         
         private void importGraph()
         {
-            File file   =   getFile(true, "Graphi .graph, adjacency matrix .txt, .graphML, .gml file", "graph", "txt", "xml", "gml");
+            File file           =   getFile(true, "Graphi .graph, adjacency matrix .txt, .graphML, .gml file", "graph", "txt", "xml", "gml");
+            String extension    =   getFileExtension(file);   
             
             if(file != null)
             {
