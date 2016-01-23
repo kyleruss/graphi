@@ -7,6 +7,8 @@
 package com.graphi.display;
 
 import cern.colt.matrix.impl.SparseDoubleMatrix2D;
+import com.graphi.io.AdjMatrixParser;
+import com.graphi.io.GMLParser;
 import com.graphi.io.Storage;
 import com.graphi.sim.GraphPlayback;
 import com.graphi.util.Edge;
@@ -832,7 +834,16 @@ public class LayoutPanel extends JPanel
             String extension    =   getFileExtension(file);
             
             if(file != null && currentGraph != null)
-                Storage.saveObj(currentGraph, file);
+            {
+                if(extension.equalsIgnoreCase("graph"))
+                    Storage.saveObj(currentGraph, file);
+                
+                else if(extension.equalsIgnoreCase("txt"))
+                    AdjMatrixParser.exportGraph(currentGraph, file, false);
+                
+                else if(extension.equalsIgnoreCase("gml"))
+                    GMLParser.exportGraph(currentGraph, file, false);
+            }
         }
         
         private void importGraph()
@@ -844,7 +855,17 @@ public class LayoutPanel extends JPanel
             {
                 nodeFactory.setLastID(0);
                 edgeFactory.setLastID(0);
-                currentGraph  =   (Graph) Storage.openObj(file);
+                
+                if(extension.equalsIgnoreCase("graph"))
+                    currentGraph    =   (Graph) Storage.openObj(file);
+                
+                else if(extension.equalsIgnoreCase("txt"))
+                    currentGraph    =   AdjMatrixParser.importGraph(file, false, nodeFactory, edgeFactory);
+                
+                else if(extension.equalsIgnoreCase("gml"))
+                    currentGraph    =   GMLParser.importGraph(file, nodeFactory, edgeFactory);
+                
+                
                 ioPanel.currentStorageLabel.setText(file.getName());
                 
                 initCurrentNodes();
