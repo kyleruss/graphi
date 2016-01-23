@@ -79,11 +79,19 @@ public class GMLParser
             while(nodes.find())
             {
                 String nodeGroup        =   nodes.group();
-                int nodeId              =   Integer.parseInt(getDocumentObjProperty(nodeGroup, "id"));
+                int nodeID              =   Integer.parseInt(getDocumentObjProperty(nodeGroup, "id"));
                 String name             =   getDocumentObjProperty(nodeGroup, "label");
                 
-                Node node               =   new Node(nodeId, name);
+                Node node               =   new Node(nodeID, name);
                 graph.addVertex(node);
+            }
+            
+            Matcher edges       =   getDocumentObj(document, "edge");
+            while(edges.find())
+            {
+                String edgeGroup    =   edges.group();
+                int sourceID        =   Integer.parseInt(getDocumentObjProperty(edgeGroup, "source"));
+                int targetID        =   Integer.parseInt(getDocumentObjProperty(edgeGroup, "target"));
             }
         }
         
