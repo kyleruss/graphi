@@ -830,7 +830,7 @@ public class LayoutPanel extends JPanel
         
         private void exportGraph()
         {
-            File file           =   getFile(false, "Graphi .graph, adjacency matrix .txt, .graphML, .gml", "graph", "txt", "xml", "gml");
+            File file           =   getFile(false, "Graphi .graph, adjacency matrix .txt, .gml", "graph", "txt", "gml");
             String extension    =   getFileExtension(file);
             
             if(file != null && currentGraph != null)
@@ -848,7 +848,7 @@ public class LayoutPanel extends JPanel
         
         private void importGraph()
         {
-            File file           =   getFile(true, "Graphi .graph, adjacency matrix .txt, .graphML, .gml file", "graph", "txt", "xml", "gml");
+            File file           =   getFile(true, "Graphi .graph, adjacency matrix .txt, .gml file", "graph", "txt", "gml");
             String extension    =   getFileExtension(file);   
             
             if(file != null)
