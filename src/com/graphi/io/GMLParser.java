@@ -10,8 +10,10 @@ import com.graphi.util.Edge;
 import com.graphi.util.Node;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
@@ -50,6 +52,30 @@ public class GMLParser
     public static Graph<Node, Edge> importGraph(File file, Factory<Node> nodeFactory, Factory<Edge> edgeFactory)
     {
         Graph<Node, Edge> graph =   new SparseMultigraph<>();
+        String document         =   "";
+        
+        try(BufferedReader reader   =   new BufferedReader(new FileReader(file)))
+        {
+            String line;
+            while((line     =   reader.readLine()) != null)
+                document    +=  line + "\n";
+        }
+        
+        catch(IOException e)
+        {
+            JOptionPane.showMessageDialog(null, "[Error] Failed to read file");
+            return graph;
+        }
+        
+        Matcher graphObj =   getDocumentObj(document, "graph");
+        
+        if(graphObj.find())
+        {
+            String graphGroup   =   graphObj.group();
+            String dirStr       =   getDocumentObjProperty(graphGroup, "directed");
+            boolean directed    =   (dirStr != null && dirStr.equals("1"));
+        }
+        
         return graph;
     }
     
