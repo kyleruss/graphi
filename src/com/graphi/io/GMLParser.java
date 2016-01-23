@@ -74,6 +74,17 @@ public class GMLParser
             String graphGroup   =   graphObj.group();
             String dirStr       =   getDocumentObjProperty(graphGroup, "directed");
             boolean directed    =   (dirStr != null && dirStr.equals("1"));
+            
+            Matcher nodes       =   getDocumentObj(document, "node");
+            while(nodes.find())
+            {
+                String nodeGroup        =   nodes.group();
+                int nodeId              =   Integer.parseInt(getDocumentObjProperty(nodeGroup, "id"));
+                String name             =   getDocumentObjProperty(nodeGroup, "label");
+                
+                Node node               =   new Node(nodeId, name);
+                graph.addVertex(node);
+            }
         }
         
         return graph;
