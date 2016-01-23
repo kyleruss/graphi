@@ -10,6 +10,7 @@ import com.graphi.util.Edge;
 import com.graphi.util.Node;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
+import edu.uci.ics.jung.graph.util.EdgeType;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -17,6 +18,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
@@ -73,9 +76,11 @@ public class GMLParser
         {
             String graphGroup   =   graphObj.group();
             String dirStr       =   getDocumentObjProperty(graphGroup, "directed");
-            boolean directed    =   (dirStr != null && dirStr.equals("1"));
+            EdgeType edgeType   =   (dirStr != null && dirStr.equals("1"))? EdgeType.DIRECTED : EdgeType.UNDIRECTED;
             
-            Matcher nodes       =   getDocumentObj(document, "node");
+            Matcher nodes               =   getDocumentObj(document, "node");
+            Map<Integer, Node> nodeMap  =   new HashMap<>();   
+            
             while(nodes.find())
             {
                 String nodeGroup        =   nodes.group();
@@ -84,14 +89,26 @@ public class GMLParser
                 
                 Node node               =   new Node(nodeID, name);
                 graph.addVertex(node);
+                nodeMap.put(nodeID, node);
             }
             
             Matcher edges       =   getDocumentObj(document, "edge");
             while(edges.find())
             {
                 String edgeGroup    =   edges.group();
+                int edgeID          =   Integer.parseInt(getDocumentObjProperty(edgeGroup, "id"));
                 int sourceID        =   Integer.parseInt(getDocumentObjProperty(edgeGroup, "source"));
                 int targetID        =   Integer.parseInt(getDocumentObjProperty(edgeGroup, "target"));
+                double weight       =   Double.parseDouble(getDocumentObjProperty(edgeGroup, "weight"));
+                
+                Node sourceNode     =   nodeMap.get(sourceID);
+                Node targetNode     =   nodeMap.get(targetID);
+                
+                if(sourceNode != null && targetNode != null)
+                {
+                    Edge edge       =   new Edge(edgeID, weight, edgeType);
+                    graph.addEdge(edge, sourceNode, targetNode, edgeType);
+                }
             }
         }
         
