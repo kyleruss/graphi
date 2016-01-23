@@ -15,12 +15,38 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import org.apache.commons.collections15.Factory;
 
 
 public class GMLParser 
 {
+    private static Matcher getDocumentObj(String doc, String objName)
+    {
+        Pattern p = Pattern.compile(objName + " \\[\n([^\\]]*)\\]", Pattern.MULTILINE);
+        Matcher m = p.matcher(doc);
+        
+        return m;
+    }
+    
+    private static String getDocumentObjProperty(String docObj, String property)
+    {
+        Pattern p = Pattern.compile(property + "\\s+(\\w+)");
+        Matcher m = p.matcher(docObj);
+        
+        if(m.find())
+        {
+            String[] group    =   m.group().split("\\s+");
+            
+            if(group.length > 1) return group[1];
+            else return null;
+        }
+        
+        else return null;
+    }
+    
     public static Graph<Node, Edge> importGraph(File file, Factory<Node> nodeFactory, Factory<Edge> edgeFactory)
     {
         Graph<Node, Edge> graph =   new SparseMultigraph<>();
