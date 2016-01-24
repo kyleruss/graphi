@@ -24,8 +24,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
-import org.apache.commons.collections15.Factory;
-
 
 public class GMLParser 
 {
@@ -85,42 +83,64 @@ public class GMLParser
             while(nodes.find())
             {
                 String nodeGroup        =   nodes.group();
-                int nodeID              =   Integer.parseInt(getDocumentObjProperty(nodeGroup, "id"));
-                String name             =   getDocumentObjProperty(nodeGroup, "label");
                 
-                Node node               =   nodeFactory.create();
-                node.setID(nodeID);
-                node.setName(name);
+                try
+                {
+                    int nodeID              =   Integer.parseInt(getDocumentObjProperty(nodeGroup, "id"));
+                    String name             =   getDocumentObjProperty(nodeGroup, "label");
+
+                    Node node               =   nodeFactory.create();
+                    node.setID(nodeID);
+                    node.setName(name);
+
+                    if(nodeFactory.getLastID() < nodeID)
+                        nodeFactory.setLastID(nodeID);
+
+                    graph.addVertex(node);
+                    nodeMap.put(nodeID, node);
+                }
                 
-                if(nodeFactory.getLastID() < nodeID)
-                    nodeFactory.setLastID(nodeID);
-                
-                graph.addVertex(node);
-                nodeMap.put(nodeID, node);
+                catch(NumberFormatException e)
+                {
+                    System.out.println(nodeGroup);
+                }
             }
             
             Matcher edges       =   getDocumentObj(document, "edge");
             while(edges.find())
             {
                 String edgeGroup    =   edges.group();
-                int edgeID          =   Integer.parseInt(getDocumentObjProperty(edgeGroup, "id"));
-                int sourceID        =   Integer.parseInt(getDocumentObjProperty(edgeGroup, "source"));
-                int targetID        =   Integer.parseInt(getDocumentObjProperty(edgeGroup, "target"));
-                double weight       =   Double.parseDouble(getDocumentObjProperty(edgeGroup, "weight"));
                 
-                Node sourceNode     =   nodeMap.get(sourceID);
-                Node targetNode     =   nodeMap.get(targetID);
-                
-                if(sourceNode != null && targetNode != null)
+                try
                 {
-                    Edge edge       =   edgeFactory.create();
-                    edge.setID(edgeID);
-                    edge.setWeight(weight);
-                    
-                    if(edgeFactory.getLastID() < edgeID)
-                        edgeFactory.setLastID(edgeID);
-                    
-                    graph.addEdge(edge, sourceNode, targetNode, edgeType);
+                    String idProperty   =   getDocumentObjProperty(edgeGroup, "id");
+                    String wProperty    =   getDocumentObjProperty(edgeGroup, "weight");
+                    int edgeID          =   (idProperty != null)? Integer.parseInt(idProperty) : 0;
+                    int sourceID        =   Integer.parseInt(getDocumentObjProperty(edgeGroup, "source"));
+                    int targetID        =   Integer.parseInt(getDocumentObjProperty(edgeGroup, "target"));
+                    double weight       =   (wProperty != null)? Double.parseDouble(getDocumentObjProperty(edgeGroup, "weight")) : 0.0;
+
+                    Node sourceNode     =   nodeMap.get(sourceID);
+                    Node targetNode     =   nodeMap.get(targetID);
+
+                    if(sourceNode != null && targetNode != null)
+                    {
+                        Edge edge       =   edgeFactory.create();
+                        edge.setWeight(weight);
+
+                        if(edgeFactory.getLastID() < edgeID)
+                        {
+                            edgeFactory.setLastID(edgeID);
+                            edge.setID(edgeID);
+                        }
+
+                        graph.addEdge(edge, sourceNode, targetNode, edgeType);
+                    }
+                }
+                
+                catch(NumberFormatException e)
+                {
+                    System.out.println(edgeGroup);
                 }
             }
         }
