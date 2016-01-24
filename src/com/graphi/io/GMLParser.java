@@ -7,6 +7,7 @@
 package com.graphi.io;
 
 import com.graphi.util.Edge;
+import com.graphi.util.GraphObjFactory;
 import com.graphi.util.Node;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
@@ -52,7 +53,7 @@ public class GMLParser
         else return null;
     }
     
-    public static Graph<Node, Edge> importGraph(File file, Factory<Node> nodeFactory, Factory<Edge> edgeFactory)
+    public static Graph<Node, Edge> importGraph(File file, GraphObjFactory<Node> nodeFactory, GraphObjFactory<Edge> edgeFactory)
     {
         Graph<Node, Edge> graph =   new SparseMultigraph<>();
         String document         =   "";
@@ -87,7 +88,13 @@ public class GMLParser
                 int nodeID              =   Integer.parseInt(getDocumentObjProperty(nodeGroup, "id"));
                 String name             =   getDocumentObjProperty(nodeGroup, "label");
                 
-                Node node               =   new Node(nodeID, name);
+                Node node               =   nodeFactory.create();
+                node.setID(nodeID);
+                node.setName(name);
+                
+                if(nodeFactory.getLastID() < nodeID)
+                    nodeFactory.setLastID(nodeID);
+                
                 graph.addVertex(node);
                 nodeMap.put(nodeID, node);
             }
@@ -106,7 +113,13 @@ public class GMLParser
                 
                 if(sourceNode != null && targetNode != null)
                 {
-                    Edge edge       =   new Edge(edgeID, weight, edgeType);
+                    Edge edge       =   edgeFactory.create();
+                    edge.setID(edgeID);
+                    edge.setWeight(weight);
+                    
+                    if(edgeFactory.getLastID() < edgeID)
+                        edgeFactory.setLastID(edgeID);
+                    
                     graph.addEdge(edge, sourceNode, targetNode, edgeType);
                 }
             }
