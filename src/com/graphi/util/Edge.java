@@ -25,6 +25,11 @@ public class Edge implements Serializable, GraphObject
         this(0, 0.0, EdgeType.UNDIRECTED);
     }
     
+    public Edge(int id, EdgeType edgeType)
+    {
+        this(id, 0.0, edgeType);
+    }
+    
     public Edge(int id, double weight, EdgeType edgeType)
     {
         this.id         =   id;        
