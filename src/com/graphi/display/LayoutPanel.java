@@ -860,7 +860,10 @@ public class LayoutPanel extends JPanel
                     currentGraph    =   (Graph) Storage.openObj(file);
                 
                 else if(extension.equalsIgnoreCase("txt"))
-                    currentGraph    =   AdjMatrixParser.importGraph(file, false, nodeFactory, edgeFactory);
+                {
+                    int option      =   JOptionPane.showConfirmDialog(null, "Directed Graph? [Y/N]", "Graph type", JOptionPane.YES_NO_OPTION);
+                    currentGraph    =   AdjMatrixParser.importGraph(file, option == JOptionPane.YES_OPTION, nodeFactory, edgeFactory);
+                }
                 
                 else if(extension.equalsIgnoreCase("gml"))
                     currentGraph    =   GMLParser.importGraph(file, nodeFactory, edgeFactory);
