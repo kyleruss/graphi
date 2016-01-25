@@ -16,6 +16,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 import javax.swing.JOptionPane;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
@@ -31,6 +34,22 @@ public class GraphMLParser
         {
             GraphMLReader gReader   =   new GraphMLReader();
             gReader.load(reader, graph);
+            
+            Map<Node, String> nodeIDs                       =   gReader.getVertexIDs();
+            Iterator<Entry<Node, String>> nodeIDIterator    =   nodeIDs.entrySet().iterator();
+            while(nodeIDIterator.hasNext())
+            {
+                Entry<Node, String> entry   =   nodeIDIterator.next();
+                entry.getKey().setID(Integer.parseInt(entry.getValue()));
+            }
+            
+            Map<Edge, String> edgeIDs                       =   gReader.getEdgeIDs();
+            Iterator<Entry<Edge, String>> edgeIDIterator    =   edgeIDs.entrySet().iterator();
+            while(edgeIDIterator.hasNext())
+            {
+                Entry<Edge, String> entry   =   edgeIDIterator.next();
+                entry.getKey().setID(Integer.parseInt(entry.getValue()));
+            }
         }
         
         catch(IOException | ParserConfigurationException | SAXException e)
