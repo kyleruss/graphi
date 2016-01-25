@@ -9,6 +9,7 @@ package com.graphi.display;
 import cern.colt.matrix.impl.SparseDoubleMatrix2D;
 import com.graphi.io.AdjMatrixParser;
 import com.graphi.io.GMLParser;
+import com.graphi.io.GraphMLParser;
 import com.graphi.io.Storage;
 import com.graphi.sim.GraphPlayback;
 import com.graphi.util.Edge;
@@ -30,6 +31,7 @@ import edu.uci.ics.jung.algorithms.matrix.GraphMatrixOperations;
 import edu.uci.ics.jung.algorithms.scoring.BetweennessCentrality;
 import edu.uci.ics.jung.algorithms.scoring.ClosenessCentrality;
 import edu.uci.ics.jung.graph.Graph;
+import edu.uci.ics.jung.graph.Hypergraph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
@@ -122,7 +124,7 @@ public class LayoutPanel extends JPanel
     
     public static final Color TRANSPARENT   =   new Color(255, 255, 255, 0);
     public static final Color PRESET_BG     =   new Color(200, 200, 200);
-    private Graph<Node, Edge> currentGraph;
+    private HyperGraph<Node, Edge> currentGraph;
     private final Map<Integer, Node> currentNodes;
     private final Map<Integer, Edge> currentEdges;
     private NodeFactory nodeFactory;
@@ -870,6 +872,7 @@ public class LayoutPanel extends JPanel
                 
                 else if(extension.equalsIgnoreCase("xml"))
                 {
+                    currentGraph    =   GraphMLParser.importGraph(file);
                 }
                 
                 

@@ -10,6 +10,7 @@ import com.graphi.util.Edge;
 import com.graphi.util.GraphObjFactory;
 import com.graphi.util.Node;
 import edu.uci.ics.jung.graph.Graph;
+import edu.uci.ics.jung.graph.Hypergraph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import edu.uci.ics.jung.io.graphml.GraphMLReader2;
