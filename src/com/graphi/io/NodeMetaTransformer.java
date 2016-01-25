@@ -8,7 +8,6 @@ import org.apache.commons.collections15.Transformer;
 
 public class NodeMetaTransformer implements Transformer<NodeMetadata, Node>
 {
-
     @Override
     public Node transform(NodeMetadata i)
     {
