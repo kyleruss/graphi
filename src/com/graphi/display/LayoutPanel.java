@@ -845,6 +845,9 @@ public class LayoutPanel extends JPanel
                 
                 else if(extension.equalsIgnoreCase("gml"))
                     GMLParser.exportGraph(currentGraph, file, false);
+                
+                else if(extension.equalsIgnoreCase("xml"))
+                    GraphMLParser.exportGraph(file, currentGraph);
             }
         }
         

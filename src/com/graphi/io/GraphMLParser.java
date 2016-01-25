@@ -7,9 +7,7 @@
 package com.graphi.io;
 
 import com.graphi.util.Edge;
-import com.graphi.util.EdgeFactory;
 import com.graphi.util.Node;
-import com.graphi.util.NodeFactory;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.io.GraphMLReader;
@@ -48,7 +46,7 @@ public class GraphMLParser
         return graph;
     }
     
-    public void exportGraph(File file, Graph<Node, Edge> graph)
+    public static void exportGraph(File file, Graph<Node, Edge> graph)
     {
         try(BufferedWriter writer   =   new BufferedWriter(new FileWriter(file)))
         {
@@ -61,7 +59,7 @@ public class GraphMLParser
         
         catch(IOException e)
         {
-            JOptionPane.showMessageDialog(null, "[Error] Failed to read file");
+            JOptionPane.showMessageDialog(null, "[Error] Failed to write file");
         }
     }
 }
