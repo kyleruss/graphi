@@ -868,6 +868,10 @@ public class LayoutPanel extends JPanel
                 else if(extension.equalsIgnoreCase("gml"))
                     currentGraph    =   GMLParser.importGraph(file, nodeFactory, edgeFactory);
                 
+                else if(extension.equalsIgnoreCase("xml"))
+                {
+                }
+                
                 
                 ioPanel.currentStorageLabel.setText(file.getName());
                 
