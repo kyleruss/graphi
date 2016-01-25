@@ -12,6 +12,7 @@ import com.graphi.util.Node;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
+import edu.uci.ics.jung.io.graphml.GraphMLReader2;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
