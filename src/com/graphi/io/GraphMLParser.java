@@ -65,6 +65,9 @@ public class GraphMLParser
         try(BufferedWriter writer   =   new BufferedWriter(new FileWriter(file)))
         {
             GraphMLWriter gWriter   =   new GraphMLWriter();
+            gWriter.setEdgeIDs(new EdgeIDTransformer());
+            gWriter.setVertexIDs(new NodeIDTransformer());
+            
             gWriter.save(graph, writer);
         }
         

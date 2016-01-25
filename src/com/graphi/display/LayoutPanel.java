@@ -124,7 +124,7 @@ public class LayoutPanel extends JPanel
     
     public static final Color TRANSPARENT   =   new Color(255, 255, 255, 0);
     public static final Color PRESET_BG     =   new Color(200, 200, 200);
-    private HyperGraph<Node, Edge> currentGraph;
+    private Graph<Node, Edge> currentGraph;
     private final Map<Integer, Node> currentNodes;
     private final Map<Integer, Edge> currentEdges;
     private NodeFactory nodeFactory;
