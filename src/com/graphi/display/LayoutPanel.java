@@ -726,10 +726,12 @@ public class LayoutPanel extends JPanel
             private JLabel currentStorageLabel;
             private ButtonGroup storageGroup;
             private JRadioButton storageGraphRadio, storageLogRadio, storageScriptRadio;
+            private JCheckBox directedCheck;
+            private JPanel directedCheckWrapper;
             
             public IOPanel()
             {
-                setLayout(new GridLayout(3, 1));
+                setLayout(new GridLayout(4, 1));
                 setBorder(BorderFactory.createTitledBorder("I/O Controls"));
                 currentStorageLabel     =   new JLabel("None");
                 importBtn               =   new JButton("Import");
@@ -738,6 +740,7 @@ public class LayoutPanel extends JPanel
                 storageGraphRadio       =   new JRadioButton("Graph");
                 storageLogRadio         =   new JRadioButton("Log");
                 storageScriptRadio      =   new JRadioButton("Script");
+                directedCheck           =   new JCheckBox("Directed");
                 
                 importBtn.setIcon(new ImageIcon(openIcon));
                 exportBtn.setIcon(new ImageIcon(saveIcon));
@@ -745,11 +748,14 @@ public class LayoutPanel extends JPanel
                 storageGroup.add(storageGraphRadio);
                 storageGroup.add(storageLogRadio);
                 storageGroup.add(storageScriptRadio);
+                
+                
                 importBtn.addActionListener(this);
                 exportBtn.addActionListener(this);
                 storageGraphRadio.addActionListener(this);
                 storageLogRadio.addActionListener(this);
                 storageScriptRadio.addActionListener(this);
+                
                 importBtn.setBackground(Color.WHITE);
                 exportBtn.setBackground(Color.WHITE);
                 storageGraphRadio.setSelected(true);
@@ -757,11 +763,16 @@ public class LayoutPanel extends JPanel
                 JPanel storageBtnWrapper    =   wrapComponents(null, importBtn, exportBtn);
                 JPanel currentGraphWrapper  =   wrapComponents(null, new JLabel("Active: "), currentStorageLabel);
                 JPanel storageOptsWrapper   =   wrapComponents(null, storageGraphRadio, storageLogRadio, storageScriptRadio);
+                directedCheckWrapper        =   wrapComponents(null, directedCheck);
+                
                 storageBtnWrapper.setBackground(PRESET_BG);
                 currentGraphWrapper.setBackground(PRESET_BG);
                 storageOptsWrapper.setBackground(PRESET_BG);
+                directedCheckWrapper.setBackground(PRESET_BG);
+                
                 add(currentGraphWrapper);
                 add(storageOptsWrapper);
+                add(directedCheckWrapper);
                 add(storageBtnWrapper);
                 currentStorageLabel.setFont(new Font("Arial", Font.BOLD, 12));
             }
@@ -794,6 +805,9 @@ public class LayoutPanel extends JPanel
                     else if(storageScriptRadio.isSelected())
                         exportScript();
                 }
+                
+                else if(src == storageGraphRadio || src == storageLogRadio || src == storageScriptRadio)
+                    directedCheckWrapper.setVisible(storageGraphRadio.isSelected());
             }
         }
         
@@ -841,10 +855,10 @@ public class LayoutPanel extends JPanel
                     Storage.saveObj(currentGraph, file);
                 
                 else if(extension.equalsIgnoreCase("txt"))
-                    AdjMatrixParser.exportGraph(currentGraph, file, false);
+                    AdjMatrixParser.exportGraph(currentGraph, file, ioPanel.directedCheck.isSelected());
                 
                 else if(extension.equalsIgnoreCase("gml"))
-                    GMLParser.exportGraph(currentGraph, file, false);
+                    GMLParser.exportGraph(currentGraph, file, ioPanel.directedCheck.isSelected());
                 
                 else if(extension.equalsIgnoreCase("xml"))
                     GraphMLParser.exportGraph(file, currentGraph);
@@ -865,10 +879,7 @@ public class LayoutPanel extends JPanel
                     currentGraph    =   (Graph) Storage.openObj(file);
                 
                 else if(extension.equalsIgnoreCase("txt"))
-                {
-                    int option      =   JOptionPane.showConfirmDialog(null, "Directed Graph? [Y/N]", "Graph type", JOptionPane.YES_NO_OPTION);
-                    currentGraph    =   AdjMatrixParser.importGraph(file, option == JOptionPane.YES_OPTION, nodeFactory, edgeFactory);
-                }
+                    currentGraph    =   AdjMatrixParser.importGraph(file, ioPanel.directedCheck.isSelected(), nodeFactory, edgeFactory);
                 
                 else if(extension.equalsIgnoreCase("gml"))
                     currentGraph    =   GMLParser.importGraph(file, nodeFactory, edgeFactory);
@@ -1445,16 +1456,23 @@ public class LayoutPanel extends JPanel
                 editPanel.weightSpinner.setValue(editEdge.getWeight());
                 editPanel.edgeTypeBox.setSelectedIndex(editEdge.getEdgeType() == EdgeType.UNDIRECTED? 0 : 1);
 
-                editPanel.fromSpinner.setEnabled(false);
-                editPanel.toSpinner.setEnabled(false);
                 editPanel.idSpinner.setEnabled(false);
                 editPanel.autoCheck.setVisible(false);
-
+                
                 int option  =   JOptionPane.showConfirmDialog(null, editPanel, "Edit edge", JOptionPane.OK_CANCEL_OPTION);
                 if(option == JOptionPane.OK_OPTION)
                 {
                     editEdge.setWeight((double) editPanel.weightSpinner.getValue());
                     editEdge.setEdgeType(editPanel.edgeTypeBox.getSelectedIndex() == 0? EdgeType.UNDIRECTED : EdgeType.DIRECTED);
+                    
+                    Node from   =   currentNodes.get(Integer.parseInt(editPanel.fromSpinner.getValue().toString()));
+                    Node to     =   currentNodes.get(Integer.parseInt(editPanel.toSpinner.getValue().toString()));
+                    editEdge.setSourceNode(from);
+                    editEdge.setDestNode(to);
+                    
+                    currentGraph.removeEdge(editEdge);
+                    currentGraph.addEdge(editEdge, from, to, editEdge.getEdgeType());
+                    
                     loadEdges(currentGraph);
                     graphPanel.gViewer.repaint();
                 }
