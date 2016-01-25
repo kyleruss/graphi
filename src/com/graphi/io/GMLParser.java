@@ -22,6 +22,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -170,9 +171,24 @@ public class GMLParser
         Collection<Edge> edges  =   graph.getEdges();
         for(Edge edge : edges)
         {
+            Node n1, n2;
+            
+            if(graph.getEdgeType(edge) == EdgeType.DIRECTED)
+            {
+                n1  =   graph.getSource(edge);
+                n2  =   graph.getDest(edge);
+            }
+            
+            else
+            {
+                Iterator<Node> iNodeIter =   graph.getIncidentVertices(edge).iterator();
+                n1  =   iNodeIter.next();
+                n2  =   iNodeIter.next();
+            }
+            
             output  +=  "edge [\n";
-            output  +=  "source " + graph.getSource(edge).getID() + "\n";
-            output  +=  "target " + graph.getDest(edge).getID() + "\n";
+            output  +=  "source " + n1.getID() + "\n";
+            output  +=  "target " + n2.getID() + "\n";
             output  +=  "weight " + edge.getWeight() + "\n]\n";
         }
         
