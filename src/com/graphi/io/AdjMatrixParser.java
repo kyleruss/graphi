@@ -54,7 +54,7 @@ public class AdjMatrixParser
                 {
                     Node dest   =   nodes.get(col);
                     
-                    if(edges[col].equals("1") || edges[col].equalsIgnoreCase("true"))
+                    if(edges[col].equals("1") && !(graph.isNeighbor(source, dest) && !directed))
                     {
                         Edge edge   =   edgeFactory.create();
                         graph.addEdge(edge, source, dest, edgeType);
