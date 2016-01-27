@@ -125,12 +125,6 @@ public class LayoutPanel extends JPanel
     public static final Color TRANSPARENT   =   new Color(255, 255, 255, 0);
     public static final Color PRESET_BG     =   new Color(200, 200, 200);
     protected GraphData data;
-    /*protected Graph<Node, Edge> currentGraph;
-    protected final Map<Integer, Node> data.getNodes();
-    protected final Map<Integer, Edge> data.getEdges();
-    protected NodeFactory data.getNodeFactory();
-    protected EdgeFactory data.getEdgeFactory();
-    protected Object[] data.getSelectedItems(); */
     protected MainMenu menu;
     protected JFrame frame; 
     
@@ -142,11 +136,7 @@ public class LayoutPanel extends JPanel
         
         this.menu           =   menu;
         this.frame          =   frame;
-        /*data.getNodeFactory()         =   new NodeFactory();
-        data.getEdgeFactory()         =   new EdgeFactory();
-        currentGraph        =   new SparseMultigraph<>();
-        data.getNodes()        =   new HashMap<>();
-        data.getEdges()        =   new HashMap<>(); */
+        data                =   new GraphData();
         controlPanel        =   new ControlPanel();
         screenPanel         =   new ScreenPanel();
         splitPane           =   new JSplitPane();
