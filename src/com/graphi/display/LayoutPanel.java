@@ -31,7 +31,6 @@ import edu.uci.ics.jung.algorithms.matrix.GraphMatrixOperations;
 import edu.uci.ics.jung.algorithms.scoring.BetweennessCentrality;
 import edu.uci.ics.jung.algorithms.scoring.ClosenessCentrality;
 import edu.uci.ics.jung.graph.Graph;
-import edu.uci.ics.jung.graph.Hypergraph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
@@ -110,28 +109,28 @@ import org.apache.commons.io.FilenameUtils;
 
 public class LayoutPanel extends JPanel
 {
-    private final ControlPanel controlPanel;
-    private final ScreenPanel screenPanel;
-    private final JSplitPane splitPane;
-    private final JScrollPane controlScroll;
+    protected final ControlPanel controlPanel;
+    protected final ScreenPanel screenPanel;
+    protected final JSplitPane splitPane;
+    protected final JScrollPane controlScroll;
     
-    private BufferedImage addIcon, removeIcon, colourIcon;
-    private BufferedImage clipIcon, openIcon, saveIcon;
-    private BufferedImage editBlackIcon, pointerIcon, moveIcon;
-    private BufferedImage moveSelectedIcon, editSelectedIcon, pointerSelectedIcon;
-    private BufferedImage graphIcon, tableIcon, resetIcon, executeIcon;
-    private BufferedImage editIcon, playIcon, stopIcon, recordIcon, closeIcon;
+    protected BufferedImage addIcon, removeIcon, colourIcon;
+    protected BufferedImage clipIcon, openIcon, saveIcon;
+    protected BufferedImage editBlackIcon, pointerIcon, moveIcon;
+    protected BufferedImage moveSelectedIcon, editSelectedIcon, pointerSelectedIcon;
+    protected BufferedImage graphIcon, tableIcon, resetIcon, executeIcon;
+    protected BufferedImage editIcon, playIcon, stopIcon, recordIcon, closeIcon;
     
     public static final Color TRANSPARENT   =   new Color(255, 255, 255, 0);
     public static final Color PRESET_BG     =   new Color(200, 200, 200);
-    private Graph<Node, Edge> currentGraph;
-    private final Map<Integer, Node> currentNodes;
-    private final Map<Integer, Edge> currentEdges;
-    private NodeFactory nodeFactory;
-    private EdgeFactory edgeFactory;
-    private Object[] selectedItems;
-    private MainMenu menu;
-    private JFrame frame;
+    protected Graph<Node, Edge> currentGraph;
+    protected final Map<Integer, Node> currentNodes;
+    protected final Map<Integer, Edge> currentEdges;
+    protected NodeFactory nodeFactory;
+    protected EdgeFactory edgeFactory;
+    protected Object[] selectedItems;
+    protected MainMenu menu;
+    protected JFrame frame;
     
     public LayoutPanel(MainMenu menu, JFrame frame)
     {
@@ -158,7 +157,7 @@ public class LayoutPanel extends JPanel
         add(splitPane, BorderLayout.CENTER);
     }
     
-    private void sendToOutput(String output)
+    protected void sendToOutput(String output)
     {
         SimpleDateFormat sdf    =   new SimpleDateFormat("K:MM a dd.MM.yy");
         String date             =   sdf.format(new Date());
@@ -171,7 +170,7 @@ public class LayoutPanel extends JPanel
         });
     }
     
-    private File getFile(boolean open, String desc, String...extensions)
+    protected File getFile(boolean open, String desc, String...extensions)
     {
         JFileChooser jfc                =   new JFileChooser();
         FileNameExtensionFilter filter  =   new FileNameExtensionFilter(desc, extensions);
@@ -185,7 +184,7 @@ public class LayoutPanel extends JPanel
         return jfc.getSelectedFile();
     }
     
-    private String getFileExtension(File file)
+    protected String getFileExtension(File file)
     {
         if(file == null) return "";
         return FilenameUtils.getExtension(file.getPath());
@@ -202,7 +201,7 @@ public class LayoutPanel extends JPanel
         return panel;
     }
     
-    private void initResources()
+    protected void initResources()
     {
         try
         {
@@ -239,59 +238,59 @@ public class LayoutPanel extends JPanel
     //  CONTROL PANEL
     //--------------------------------------
     
-    private class ControlPanel extends JPanel implements ActionListener
+    protected class ControlPanel extends JPanel implements ActionListener
     {
-        private final String BA_PANEL_CARD          =   "ba_panel";
-        private final String KL_PANEL_CARD          =   "kl_panel";
+        protected final String BA_PANEL_CARD          =   "ba_panel";
+        protected final String KL_PANEL_CARD          =   "kl_panel";
         
-        private final String CLUSTER_PANEL_CARD     =   "cluster_panel";
-        private final String SPATH_PANEL_CARD       =   "spath_panel";
-        private final String CENTRALITY_PANEL_CARD  =   "centrality_panel";   
+        protected final String CLUSTER_PANEL_CARD     =   "cluster_panel";
+        protected final String SPATH_PANEL_CARD       =   "spath_panel";
+        protected final String CENTRALITY_PANEL_CARD  =   "centrality_panel";   
         
-        private JPanel dataControlPanel, outputControlPanel, displayControlPanel;
-        private JPanel modePanel;
-        private JPanel simPanel;
-        private JRadioButton editCheck, selectCheck, moveCheck;
-        private ButtonGroup modeGroup;
-        private JComboBox genAlgorithmsBox;
-        private JButton resetGeneratorBtn, executeGeneratorBtn;
-        private JPanel genPanel, baGenPanel, klGenPanel;
-        private JSpinner latticeSpinner, clusteringSpinner;
-        private JSpinner initialNSpinner, addNSpinner;
-        private JCheckBox simTiesCheck;
-        private JSpinner simTiesPSpinner;
-        private JLabel simTiesPLabel;
+        protected JPanel dataControlPanel, outputControlPanel, displayControlPanel;
+        protected JPanel modePanel;
+        protected JPanel simPanel;
+        protected JRadioButton editCheck, selectCheck, moveCheck;
+        protected ButtonGroup modeGroup;
+        protected JComboBox genAlgorithmsBox;
+        protected JButton resetGeneratorBtn, executeGeneratorBtn;
+        protected JPanel genPanel, baGenPanel, klGenPanel;
+        protected JSpinner latticeSpinner, clusteringSpinner;
+        protected JSpinner initialNSpinner, addNSpinner;
+        protected JCheckBox simTiesCheck;
+        protected JSpinner simTiesPSpinner;
+        protected JLabel simTiesPLabel;
         
-        private IOPanel ioPanel;
-        private JPanel editPanel;
-        private JLabel selectedLabel;
-        private JButton gObjAddBtn, gObjEditBtn, gObjRemoveBtn;
+        protected IOPanel ioPanel;
+        protected JPanel editPanel;
+        protected JLabel selectedLabel;
+        protected JButton gObjAddBtn, gObjEditBtn, gObjRemoveBtn;
         
-        private JPanel computePanel;
-        private JPanel computeInnerPanel;
-        private JPanel clusterPanel, spathPanel;
-        private JSpinner clusterEdgeRemoveSpinner;
-        private JCheckBox clusterTransformCheck;
-        private JComboBox computeBox;
-        private JTextField spathFromField, spathToField;
-        private JButton computeBtn;
-        private JPanel centralityPanel;
-        private JComboBox centralityTypeBox;
-        private ButtonGroup centralityOptions;
-        private JCheckBox centralityMorphCheck;
-        private ButtonGroup editObjGroup;
-        private JRadioButton editVertexRadio, editEdgeRadio;
+        protected JPanel computePanel;
+        protected JPanel computeInnerPanel;
+        protected JPanel clusterPanel, spathPanel;
+        protected JSpinner clusterEdgeRemoveSpinner;
+        protected JCheckBox clusterTransformCheck;
+        protected JComboBox computeBox;
+        protected JTextField spathFromField, spathToField;
+        protected JButton computeBtn;
+        protected JPanel centralityPanel;
+        protected JComboBox centralityTypeBox;
+        protected ButtonGroup centralityOptions;
+        protected JCheckBox centralityMorphCheck;
+        protected ButtonGroup editObjGroup;
+        protected JRadioButton editVertexRadio, editEdgeRadio;
         
-        private JPanel viewerPanel;
-        private JCheckBox viewerVLabelsCheck;
-        private JCheckBox viewerELabelsCheck;
-        private JButton viewerBGBtn, vertexBGBtn, edgeBGBtn;
+        protected JPanel viewerPanel;
+        protected JCheckBox viewerVLabelsCheck;
+        protected JCheckBox viewerELabelsCheck;
+        protected JButton viewerBGBtn, vertexBGBtn, edgeBGBtn;
         
-        private JPanel playbackPanel;
-        private JButton recordCtrlsBtn;
-        private boolean recording;
-        private JButton displayCtrlsBtn;
-        private JLabel activeScriptLabel;
+        protected JPanel playbackPanel;
+        protected JButton recordCtrlsBtn;
+        protected boolean recording;
+        protected JButton displayCtrlsBtn;
+        protected JLabel activeScriptLabel;
         
         public ControlPanel() 
         {
@@ -607,7 +606,7 @@ public class LayoutPanel extends JPanel
             
         }
         
-        private void updateSelectedComponents()
+        protected void updateSelectedComponents()
         {
             if(selectedItems == null || selectedItems.length == 0)
                 selectedLabel.setText("None");
@@ -628,7 +627,7 @@ public class LayoutPanel extends JPanel
             }
         }
         
-        private void computeExecute()
+        protected void computeExecute()
         {
             int selectedIndex   =   computeBox.getSelectedIndex();
             
@@ -639,7 +638,7 @@ public class LayoutPanel extends JPanel
             }
         }
         
-        private void showGeneratorSim()
+        protected void showGeneratorSim()
         {
             int genIndex    =   genAlgorithmsBox.getSelectedIndex();
             nodeFactory.setLastID(0);
@@ -657,7 +656,7 @@ public class LayoutPanel extends JPanel
             screenPanel.graphPanel.reloadGraph();
         }
         
-        private void showAbout()
+        protected void showAbout()
         {
             JLabel nameLabel    =   new JLabel("Kyle Russell 2015", SwingConstants.CENTER);
             JLabel locLabel     =   new JLabel("AUT University");
@@ -672,27 +671,27 @@ public class LayoutPanel extends JPanel
             JOptionPane.showMessageDialog(null, aboutPanel, "Graphi - Author", JOptionPane.INFORMATION_MESSAGE);
         }
         
-        private void resetSim()
+        protected void resetSim()
         {
             currentGraph    =   new SparseMultigraph();
             screenPanel.graphPanel.reloadGraph();
         }
         
-        private void showKleinbergSim()
+        protected void showKleinbergSim()
         {
             int latticeSize =   (int) latticeSpinner.getValue();
             int clusterExp  =   (int) clusteringSpinner.getValue();
             currentGraph    =   Network.generateKleinberg(latticeSize, clusterExp, nodeFactory, edgeFactory);
         }
         
-        private void showBASim()
+        protected void showBASim()
         {
             int m           =   (int) initialNSpinner.getValue();
             int n           =   (int) addNSpinner.getValue();
             currentGraph    =   Network.generateBerbasiAlbert(nodeFactory, edgeFactory, n, m);
         }
         
-        private void showVertexBGChange()
+        protected void showVertexBGChange()
         {
             Color selectedColour    =   JColorChooser.showDialog(null, "Choose vertex colour", Color.BLACK);
             
@@ -700,7 +699,7 @@ public class LayoutPanel extends JPanel
                 screenPanel.graphPanel.setVertexColour(selectedColour, null);
         }
         
-        private void showEdgeBGChange()
+        protected void showEdgeBGChange()
         {
             Color selectedColour    =   JColorChooser.showDialog(null, "Choose edge colour", Color.BLACK);
             
@@ -708,7 +707,7 @@ public class LayoutPanel extends JPanel
                 screenPanel.graphPanel.setEdgeColour(selectedColour, null);
         }
         
-        private void showViewerBGChange()
+        protected void showViewerBGChange()
         {
             Color selectedColour    =   JColorChooser.showDialog(null, "Choose viewer background colour", Color.WHITE);
             
@@ -720,14 +719,14 @@ public class LayoutPanel extends JPanel
         //  IO PANEL
         //--------------------------------------
         
-        private class IOPanel extends JPanel implements ActionListener
+        protected class IOPanel extends JPanel implements ActionListener
         {
-            private JButton exportBtn, importBtn;
-            private JLabel currentStorageLabel;
-            private ButtonGroup storageGroup;
-            private JRadioButton storageGraphRadio, storageLogRadio, storageScriptRadio;
-            private JCheckBox directedCheck;
-            private JPanel directedCheckWrapper;
+            protected JButton exportBtn, importBtn;
+            protected JLabel currentStorageLabel;
+            protected ButtonGroup storageGroup;
+            protected JRadioButton storageGraphRadio, storageLogRadio, storageScriptRadio;
+            protected JCheckBox directedCheck;
+            protected JPanel directedCheckWrapper;
             
             public IOPanel()
             {
@@ -811,7 +810,7 @@ public class LayoutPanel extends JPanel
             }
         }
         
-        private void showCurrentComputePanel()
+        protected void showCurrentComputePanel()
         {
             int selectedIndex   =   computeBox.getSelectedIndex();
             String card;
@@ -828,7 +827,7 @@ public class LayoutPanel extends JPanel
             clusterInnerLayout.show(computeInnerPanel, card);
         }
         
-        private void showSimPanel()
+        protected void showSimPanel()
         {
             int selectedIndex   =   genAlgorithmsBox.getSelectedIndex();
             String card;
@@ -844,7 +843,7 @@ public class LayoutPanel extends JPanel
             gLayout.show(genPanel, card);
         }
         
-        private void exportGraph()
+        protected void exportGraph()
         {
             File file           =   getFile(false, "Graphi .graph, adjacency matrix .txt, .gml, graphML .xml", "graph", "txt", "gml", "xml");
             String extension    =   getFileExtension(file);
@@ -865,7 +864,7 @@ public class LayoutPanel extends JPanel
             }
         }
         
-        private void importGraph()
+        protected void importGraph()
         {
             File file           =   getFile(true, "Graphi .graph, adjacency matrix .txt, .gml, graphML .xml", "graph", "txt", "gml", "xml");
             String extension    =   getFileExtension(file);   
@@ -900,7 +899,7 @@ public class LayoutPanel extends JPanel
             }
         }
         
-        private void importScript()
+        protected void importScript()
         {
             File file   =   getFile(true, "Graphi .gscript file", "gscript");
             if(file != null)
@@ -913,14 +912,14 @@ public class LayoutPanel extends JPanel
             }
         }
         
-        private void exportScript()
+        protected void exportScript()
         {
             File file   =   getFile(false, "Graphi .gscript file", "gscript");
             if(file != null)
                 Storage.saveObj(screenPanel.graphPanel.gPlayback, file);
         }
         
-        private void initCurrentNodes()
+        protected void initCurrentNodes()
         {
             if(currentGraph == null) return;
             
@@ -930,7 +929,7 @@ public class LayoutPanel extends JPanel
                 currentNodes.put(node.getID(), node);
         }
         
-        private void initCurrentEdges()
+        protected void initCurrentEdges()
         {
             if(currentGraph == null) return;
             
@@ -940,14 +939,14 @@ public class LayoutPanel extends JPanel
                 currentEdges.put(edge.getID(), edge);
         }
         
-        private void exportLog()
+        protected void exportLog()
         {
             File file   =   getFile(false, "Graphi .log file", "log");
             if(file != null)
                 Storage.saveOutputLog(screenPanel.outputPanel.outputArea.getText(), file);
         }
         
-        private void importLog()
+        protected void importLog()
         {
             File file   =   getFile(true, "Graphi .log file", "log");
             if(file != null)
@@ -1110,12 +1109,12 @@ public class LayoutPanel extends JPanel
     //  SCREEN PANEL
     //--------------------------------------
     
-    private class ScreenPanel extends JPanel
+    protected class ScreenPanel extends JPanel
     {
-        private final DataPanel dataPanel;
-        private final GraphPanel graphPanel;
-        private final OutputPanel outputPanel;
-        private final JTabbedPane tabPane;
+        protected final DataPanel dataPanel;
+        protected final GraphPanel graphPanel;
+        protected final OutputPanel outputPanel;
+        protected final JTabbedPane tabPane;
         
         public ScreenPanel()
         {            
@@ -1147,12 +1146,12 @@ public class LayoutPanel extends JPanel
             add(tabPane);
         }
         
-        private class DataPanel extends JPanel
+        protected class DataPanel extends JPanel
         {
-            private final JTable vertexTable, edgeTable;
-            private final DefaultTableModel vertexDataModel, edgeDataModel;
-            private final JTabbedPane dataTabPane;
-            private final JScrollPane vertexScroller, edgeScroller;
+            protected final JTable vertexTable, edgeTable;
+            protected final DefaultTableModel vertexDataModel, edgeDataModel;
+            protected final JTabbedPane dataTabPane;
+            protected final JScrollPane vertexScroller, edgeScroller;
             
             public DataPanel()
             {
@@ -1197,7 +1196,7 @@ public class LayoutPanel extends JPanel
                 add(dataTabPane);
             }
             
-            private void loadNodes(Graph graph)
+            protected void loadNodes(Graph graph)
             {
                 ArrayList<Node> vertices   =   new ArrayList<>(graph.getVertices());
                 Collections.sort(vertices, (Node n1, Node n2) -> Integer.compare(n1.getID(), n2.getID()));
@@ -1221,7 +1220,7 @@ public class LayoutPanel extends JPanel
                 });
             }
             
-            private void loadEdges(Graph graph)
+            protected void loadEdges(Graph graph)
             {
                 ArrayList<Edge> edges  =   new ArrayList<>(graph.getEdges());
                 Collections.sort(edges, (Edge e1, Edge e2) -> Integer.compare(e1.getID(), e2.getID())); 
@@ -1266,7 +1265,7 @@ public class LayoutPanel extends JPanel
                 });
             }
             
-            private void addVertex()
+            protected void addVertex()
             {
                 VertexAddPanel addPanel    =   new VertexAddPanel();
                 
@@ -1290,7 +1289,7 @@ public class LayoutPanel extends JPanel
                 }
             }
             
-            private void editVertex()
+            protected void editVertex()
             {
                 Node editNode;
                 Set<Node> selectedVertices      =   graphPanel.gViewer.getPickedVertexState().getPicked();
@@ -1332,7 +1331,7 @@ public class LayoutPanel extends JPanel
                 }
             }
             
-            private void removeVertices(Set<Node> vertices)
+            protected void removeVertices(Set<Node> vertices)
             {
                 if(vertices.isEmpty()) return;
                 
@@ -1346,7 +1345,7 @@ public class LayoutPanel extends JPanel
                 }
             }
             
-            private void removeVertex()
+            protected void removeVertex()
             {
                 Set<Node> pickedNodes    =   graphPanel.gViewer.getPickedVertexState().getPicked();
                 if(!pickedNodes.isEmpty())
@@ -1384,7 +1383,7 @@ public class LayoutPanel extends JPanel
                 }
             }
             
-            private void addEdge()
+            protected void addEdge()
             {
                 EdgeAddPanel addPanel   =   new EdgeAddPanel();
                 
@@ -1423,7 +1422,7 @@ public class LayoutPanel extends JPanel
                 }
             }
             
-            private void editEdge()
+            protected void editEdge()
             {
                 Edge editEdge;
                 Set<Edge> selectedEdges =   graphPanel.gViewer.getPickedEdgeState().getPicked();
@@ -1478,7 +1477,7 @@ public class LayoutPanel extends JPanel
                 }
             }
             
-            private void removeEdge()
+            protected void removeEdge()
             {
                 Set<Edge> selectedEdges =   graphPanel.gViewer.getPickedEdgeState().getPicked();
                 
@@ -1522,7 +1521,7 @@ public class LayoutPanel extends JPanel
                 graphPanel.gViewer.repaint();
             }
             
-            private int getDialogID(String message, Map collection)
+            protected int getDialogID(String message, Map collection)
             {
                 String idStr = JOptionPane.showInputDialog(message);
                 int id = -1;
@@ -1555,11 +1554,11 @@ public class LayoutPanel extends JPanel
             //  VERTEX ADD PANEL
             //--------------------------------------
             
-            private class VertexAddPanel extends JPanel implements ActionListener
+            protected class VertexAddPanel extends JPanel implements ActionListener
             {
-                private JSpinner idSpinner;
-                private JCheckBox autoCheck;
-                private JTextField nameField;
+                protected JSpinner idSpinner;
+                protected JCheckBox autoCheck;
+                protected JTextField nameField;
                 
                 public VertexAddPanel()
                 {
@@ -1593,11 +1592,11 @@ public class LayoutPanel extends JPanel
             //  EDGE ADD PANEL
             //--------------------------------------
             
-            private class EdgeAddPanel extends JPanel implements ActionListener
+            protected class EdgeAddPanel extends JPanel implements ActionListener
             {
-                private JSpinner idSpinner, fromSpinner, toSpinner, weightSpinner;
-                private JCheckBox autoCheck;
-                private JComboBox edgeTypeBox;
+                protected JSpinner idSpinner, fromSpinner, toSpinner, weightSpinner;
+                protected JCheckBox autoCheck;
+                protected JComboBox edgeTypeBox;
                 
                 public EdgeAddPanel()
                 {
@@ -1644,33 +1643,33 @@ public class LayoutPanel extends JPanel
         //--------------------------------------
         //  GRAPH PANEL
         //--------------------------------------
-        private class GraphPanel extends JPanel implements ItemListener, GraphMouseListener, ActionListener, ChangeListener
+        protected class GraphPanel extends JPanel implements ItemListener, GraphMouseListener, ActionListener, ChangeListener
         {
-            private final String RECORD_CARD    =   "rec";
-            private final String PLAYBACK_CARD  =   "pb";
-            private final int INITIAL_DELAY     =   500;
+            protected final String RECORD_CARD    =   "rec";
+            protected final String PLAYBACK_CARD  =   "pb";
+            protected final int INITIAL_DELAY     =   500;
             
-            private final VisualizationViewer<Node, Edge> gViewer;
-            private AggregateLayout<Node, Edge> gLayout;
-            private EditingModalGraphMouse mouse;
-            private GraphPlayback gPlayback;
-            private JPanel gpControlsWrapper;
-            private JPanel gpControlsPanel;
-            private JButton gpCtrlsClose;
+            protected final VisualizationViewer<Node, Edge> gViewer;
+            protected AggregateLayout<Node, Edge> gLayout;
+            protected EditingModalGraphMouse mouse;
+            protected GraphPlayback gPlayback;
+            protected JPanel gpControlsWrapper;
+            protected JPanel gpControlsPanel;
+            protected JButton gpCtrlsClose;
 
-            private JPanel pbControls;
-            private JButton pbToggle;
-            private JSlider pbProgress;
-            private JSpinner pbProgressSpeed;
-            private JLabel pbName, pbDate;
-            private boolean pbPlaying;
+            protected JPanel pbControls;
+            protected JButton pbToggle;
+            protected JSlider pbProgress;
+            protected JSpinner pbProgressSpeed;
+            protected JLabel pbName, pbDate;
+            protected boolean pbPlaying;
             
-            private JPanel gpRecControls;
-            private JButton gpRecSaveBtn;
-            private JButton gpRecRemoveBtn;
-            private JTextField gpRecEntryName;
-            private DateComboBox gpRecDatePicker;
-            private JComboBox gpRecEntries;
+            protected JPanel gpRecControls;
+            protected JButton gpRecSaveBtn;
+            protected JButton gpRecRemoveBtn;
+            protected JTextField gpRecEntryName;
+            protected DateComboBox gpRecDatePicker;
+            protected JComboBox gpRecEntries;
             
             public GraphPanel()
             {
@@ -1786,7 +1785,7 @@ public class LayoutPanel extends JPanel
                 add(gpControlsPanel, BorderLayout.SOUTH);
             }
             
-            private void addPlaybackEntries()
+            protected void addPlaybackEntries()
             {
                 gpRecEntries.removeAllItems();
                 gpRecEntries.addItem("-- New entry --");
@@ -1798,7 +1797,7 @@ public class LayoutPanel extends JPanel
                 gpRecEntries.setSelectedIndex(0);
             }
             
-            private void changePlaybackPanel(String card)
+            protected void changePlaybackPanel(String card)
             {
                 CardLayout cLayout  =   (CardLayout) gpControlsWrapper.getLayout();
                 cLayout.show(gpControlsWrapper, card);
@@ -1813,7 +1812,7 @@ public class LayoutPanel extends JPanel
                 gpControlsPanel.setVisible(true);
             }
             
-            private final Timer PB_TIMER =   new Timer(INITIAL_DELAY, (ActionEvent e) -> 
+            protected final Timer PB_TIMER =   new Timer(INITIAL_DELAY, (ActionEvent e) -> 
             {
                 if(gPlayback.hasNext())
                     pbProgress.setValue(pbProgress.getValue() + 1);
@@ -1821,7 +1820,7 @@ public class LayoutPanel extends JPanel
                     togglePlayback();
             });
             
-            private void startPlayback()
+            protected void startPlayback()
             {
                 pbProgress.setMinimum(0);
                 pbProgress.setMaximum(gPlayback.getSize() - 1);
@@ -1837,12 +1836,12 @@ public class LayoutPanel extends JPanel
                 PB_TIMER.setDelay((int) pbProgressSpeed.getValue());
             }
             
-            private void stopPlayback()
+            protected void stopPlayback()
             {
                 PB_TIMER.stop();
             }
             
-            private void addRecordedGraph()
+            protected void addRecordedGraph()
             {
                 PlaybackEntry entry;
                 int selectedIndex   =   gpRecEntries.getSelectedIndex();
@@ -1873,7 +1872,7 @@ public class LayoutPanel extends JPanel
                 }
             }
             
-            private void togglePlayback()
+            protected void togglePlayback()
             {
                 if(pbPlaying)
                 {
@@ -1892,7 +1891,7 @@ public class LayoutPanel extends JPanel
                 }
             }
             
-            private void displayRecordedGraph()
+            protected void displayRecordedGraph()
             {
                int selectedIndex    =   gpRecEntries.getSelectedIndex();
                if(selectedIndex != 0)
@@ -1914,7 +1913,7 @@ public class LayoutPanel extends JPanel
                }
             }
             
-            private void removeRecordedGraph()
+            protected void removeRecordedGraph()
             {
                 int selectedIndex   =   gpRecEntries.getSelectedIndex();
                 if(selectedIndex != 0)
@@ -1995,7 +1994,7 @@ public class LayoutPanel extends JPanel
             //  CENTRALITY TRANSFORMER
             //--------------------------------------
             
-            private class CentralityTransformer implements Transformer<Node, Shape>
+            protected class CentralityTransformer implements Transformer<Node, Shape>
             {
                 List<Node> centralNodes;
                 int numRanks;
@@ -2023,7 +2022,7 @@ public class LayoutPanel extends JPanel
                 }
             }
             
-            private void setVertexColour(Color colour, Collection<Node> vertices)
+            protected void setVertexColour(Color colour, Collection<Node> vertices)
             {
                 if(vertices == null)
                     vertices   =   currentGraph.getVertices();
@@ -2034,7 +2033,7 @@ public class LayoutPanel extends JPanel
                 gViewer.repaint();
             }
             
-            private void setEdgeColour(Color colour, Collection<Edge> edges)
+            protected void setEdgeColour(Color colour, Collection<Edge> edges)
             {
                 if(edges == null)
                     edges   =   currentGraph.getEdges();
@@ -2045,20 +2044,20 @@ public class LayoutPanel extends JPanel
                 gViewer.repaint();
             }
             
-            private void showVertexLabels(boolean show)
+            protected void showVertexLabels(boolean show)
             {
                 gViewer.getRenderContext().setVertexLabelTransformer(new VertexLabelTransformer(show));
                 gViewer.repaint();
             }
             
-            private void showEdgeLabels(boolean show)
+            protected void showEdgeLabels(boolean show)
             {
                 gViewer.getRenderContext().setEdgeLabelTransformer(new EdgeLabelTransformer(show));
                 gViewer.repaint();
             }
             
             
-            private void showCluster()
+            protected void showCluster()
             {
                 int numRemoved  =   (int) controlPanel.clusterEdgeRemoveSpinner.getValue();
                 boolean group   =   controlPanel.clusterTransformCheck.isSelected();
@@ -2066,7 +2065,7 @@ public class LayoutPanel extends JPanel
                 gViewer.repaint();
             }
             
-            private void showCentrality()
+            protected void showCentrality()
             {
                 Map<Node, Double> centrality;
                 if(currentGraph.getVertexCount() <= 1) return;
@@ -2134,7 +2133,7 @@ public class LayoutPanel extends JPanel
             } 
             
             
-            private void reloadGraph()
+            protected void reloadGraph()
             {
                 gViewer.getPickedVertexState().clear();
                 gViewer.getPickedEdgeState().clear();
@@ -2147,7 +2146,7 @@ public class LayoutPanel extends JPanel
                 dataPanel.loadEdges(currentGraph);
             }
             
-            private void resetGraph()
+            protected void resetGraph()
             {
                 currentGraph    =   new SparseMultigraph<>();
                 reloadGraph();
@@ -2168,9 +2167,9 @@ public class LayoutPanel extends JPanel
         //  OUTPUT PANEL
         //--------------------------------------
         
-        private class OutputPanel extends JPanel
+        protected class OutputPanel extends JPanel
         {
-            private JTextArea outputArea;
+            protected JTextArea outputArea;
             public OutputPanel()
             {
                 setLayout(new BorderLayout());
@@ -2184,7 +2183,7 @@ public class LayoutPanel extends JPanel
                 add(outputScroller);
             }
             
-            private void clearLog()
+            protected void clearLog()
             {
                 outputArea.setText("");
             }

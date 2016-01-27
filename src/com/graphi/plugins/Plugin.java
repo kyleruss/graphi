@@ -4,7 +4,7 @@
 //  https://github.com/denkers/graphi
 //=========================================
 
-package com.graphi.io;
+package com.graphi.plugins;
 
 public interface Plugin
 {
