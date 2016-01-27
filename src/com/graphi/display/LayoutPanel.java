@@ -17,6 +17,7 @@ import com.graphi.sim.Network;
 import com.graphi.sim.PlaybackEntry;
 import com.graphi.util.EdgeFactory;
 import com.graphi.util.EdgeLabelTransformer;
+import com.graphi.util.GraphData;
 import com.graphi.util.GraphUtilities;
 import com.graphi.util.MatrixTools;
 import com.graphi.util.Node;
@@ -123,14 +124,15 @@ public class LayoutPanel extends JPanel
     
     public static final Color TRANSPARENT   =   new Color(255, 255, 255, 0);
     public static final Color PRESET_BG     =   new Color(200, 200, 200);
-    protected Graph<Node, Edge> currentGraph;
-    protected final Map<Integer, Node> currentNodes;
-    protected final Map<Integer, Edge> currentEdges;
-    protected NodeFactory nodeFactory;
-    protected EdgeFactory edgeFactory;
-    protected Object[] selectedItems;
+    protected GraphData data;
+    /*protected Graph<Node, Edge> currentGraph;
+    protected final Map<Integer, Node> data.getNodes();
+    protected final Map<Integer, Edge> data.getEdges();
+    protected NodeFactory data.getNodeFactory();
+    protected EdgeFactory data.getEdgeFactory();
+    protected Object[] data.getSelectedItems(); */
     protected MainMenu menu;
-    protected JFrame frame;
+    protected JFrame frame; 
     
     public LayoutPanel(MainMenu menu, JFrame frame)
     {
@@ -140,11 +142,11 @@ public class LayoutPanel extends JPanel
         
         this.menu           =   menu;
         this.frame          =   frame;
-        nodeFactory         =   new NodeFactory();
-        edgeFactory         =   new EdgeFactory();
+        /*data.getNodeFactory()         =   new NodeFactory();
+        data.getEdgeFactory()         =   new EdgeFactory();
         currentGraph        =   new SparseMultigraph<>();
-        currentNodes        =   new HashMap<>();
-        currentEdges        =   new HashMap<>();
+        data.getNodes()        =   new HashMap<>();
+        data.getEdges()        =   new HashMap<>(); */
         controlPanel        =   new ControlPanel();
         screenPanel         =   new ScreenPanel();
         splitPane           =   new JSplitPane();
@@ -608,15 +610,15 @@ public class LayoutPanel extends JPanel
         
         protected void updateSelectedComponents()
         {
-            if(selectedItems == null || selectedItems.length == 0)
+            if(data.getSelectedItems() == null || data.getSelectedItems().length == 0)
                 selectedLabel.setText("None");
             else
             {
-                if(selectedItems.length > 1)
-                    selectedLabel.setText(selectedItems.length + " objects");
+                if(data.getSelectedItems().length > 1)
+                    selectedLabel.setText(data.getSelectedItems().length + " objects");
                 else
                 {
-                    Object selectedObj  =   selectedItems[0];
+                    Object selectedObj  =   data.getSelectedItems()[0];
                     if(selectedObj instanceof Node)
                         selectedLabel.setText("Node (ID=" + ((Node) selectedObj).getID() + ")");
                         
@@ -641,8 +643,8 @@ public class LayoutPanel extends JPanel
         protected void showGeneratorSim()
         {
             int genIndex    =   genAlgorithmsBox.getSelectedIndex();
-            nodeFactory.setLastID(0);
-            edgeFactory.setLastID(0);
+            data.getNodeFactory().setLastID(0);
+            data.getEdgeFactory().setLastID(0);
             
             switch(genIndex)
             {
@@ -651,7 +653,7 @@ public class LayoutPanel extends JPanel
             }
             
             if(simTiesCheck.isSelected())
-                Network.simulateInterpersonalTies(currentGraph, edgeFactory, (double) simTiesPSpinner.getValue());
+                Network.simulateInterpersonalTies(data.getGraph(), data.getEdgeFactory(), (double) simTiesPSpinner.getValue());
                 
             screenPanel.graphPanel.reloadGraph();
         }
@@ -673,7 +675,7 @@ public class LayoutPanel extends JPanel
         
         protected void resetSim()
         {
-            currentGraph    =   new SparseMultigraph();
+            data.setGraph(new SparseMultigraph());
             screenPanel.graphPanel.reloadGraph();
         }
         
@@ -681,14 +683,14 @@ public class LayoutPanel extends JPanel
         {
             int latticeSize =   (int) latticeSpinner.getValue();
             int clusterExp  =   (int) clusteringSpinner.getValue();
-            currentGraph    =   Network.generateKleinberg(latticeSize, clusterExp, nodeFactory, edgeFactory);
+            data.setGraph(Network.generateKleinberg(latticeSize, clusterExp, data.getNodeFactory(), data.getEdgeFactory()));
         }
         
         protected void showBASim()
         {
             int m           =   (int) initialNSpinner.getValue();
             int n           =   (int) addNSpinner.getValue();
-            currentGraph    =   Network.generateBerbasiAlbert(nodeFactory, edgeFactory, n, m);
+            data.setGraph(Network.generateBerbasiAlbert(data.getNodeFactory(), data.getEdgeFactory(), n, m));
         }
         
         protected void showVertexBGChange()
@@ -848,19 +850,19 @@ public class LayoutPanel extends JPanel
             File file           =   getFile(false, "Graphi .graph, adjacency matrix .txt, .gml, graphML .xml", "graph", "txt", "gml", "xml");
             String extension    =   getFileExtension(file);
             
-            if(file != null && currentGraph != null)
+            if(file != null && data.getGraph() != null)
             {
                 if(extension.equalsIgnoreCase("graph"))
-                    Storage.saveObj(currentGraph, file);
+                    Storage.saveObj(data.getGraph(), file);
                 
                 else if(extension.equalsIgnoreCase("txt"))
-                    AdjMatrixParser.exportGraph(currentGraph, file, ioPanel.directedCheck.isSelected());
+                    AdjMatrixParser.exportGraph(data.getGraph(), file, ioPanel.directedCheck.isSelected());
                 
                 else if(extension.equalsIgnoreCase("gml"))
-                    GMLParser.exportGraph(currentGraph, file, ioPanel.directedCheck.isSelected());
+                    GMLParser.exportGraph(data.getGraph(), file, ioPanel.directedCheck.isSelected());
                 
                 else if(extension.equalsIgnoreCase("xml"))
-                    GraphMLParser.exportGraph(file, currentGraph);
+                    GraphMLParser.exportGraph(file, data.getGraph());
             }
         }
         
@@ -871,20 +873,20 @@ public class LayoutPanel extends JPanel
             
             if(file != null)
             {
-                nodeFactory.setLastID(0);
-                edgeFactory.setLastID(0);
+                data.getNodeFactory().setLastID(0);
+                data.getEdgeFactory().setLastID(0);
                 
                 if(extension.equalsIgnoreCase("graph"))
-                    currentGraph    =   (Graph) Storage.openObj(file);
+                    data.setGraph((Graph) Storage.openObj(file));
                 
                 else if(extension.equalsIgnoreCase("txt"))
-                    currentGraph    =   AdjMatrixParser.importGraph(file, ioPanel.directedCheck.isSelected(), nodeFactory, edgeFactory);
+                    data.setGraph(AdjMatrixParser.importGraph(file, ioPanel.directedCheck.isSelected(), data.getNodeFactory(), data.getEdgeFactory()));
                 
                 else if(extension.equalsIgnoreCase("gml"))
-                    currentGraph    =   GMLParser.importGraph(file, nodeFactory, edgeFactory);
+                    data.setGraph(GMLParser.importGraph(file, data.getNodeFactory(), data.getEdgeFactory()));
                 
                 else if(extension.equalsIgnoreCase("xml"))
-                    currentGraph    =   GraphMLParser.importGraph(file, nodeFactory, edgeFactory);
+                    data.setGraph(GraphMLParser.importGraph(file, data.getNodeFactory(), data.getEdgeFactory()));
                 
                 
                 ioPanel.currentStorageLabel.setText(file.getName());
@@ -892,10 +894,10 @@ public class LayoutPanel extends JPanel
                 initCurrentNodes();
                 initCurrentEdges();
                 
-                screenPanel.graphPanel.gLayout.setGraph(currentGraph);
+                screenPanel.graphPanel.gLayout.setGraph(data.getGraph());
                 screenPanel.graphPanel.gViewer.repaint();
-                screenPanel.dataPanel.loadNodes(currentGraph);
-                screenPanel.dataPanel.loadEdges(currentGraph);
+                screenPanel.dataPanel.loadNodes(data.getGraph());
+                screenPanel.dataPanel.loadEdges(data.getGraph());
             }
         }
         
@@ -921,22 +923,23 @@ public class LayoutPanel extends JPanel
         
         protected void initCurrentNodes()
         {
-            if(currentGraph == null) return;
+            if(data.getGraph() == null) return;
             
-            currentNodes.clear();
-            Collection<Node> nodes  =   currentGraph.getVertices();
+            data.getNodes().clear();
+            Collection<Node> nodes  =   data.getGraph().getVertices();
             for(Node node : nodes)
-                currentNodes.put(node.getID(), node);
+                data.getNodes().put(node.getID(), node);
         }
         
         protected void initCurrentEdges()
         {
-            if(currentGraph == null) return;
+            if(data.getGraph() == null) return;
             
-            currentEdges.clear();
-            Collection<Edge> edges  =   currentGraph.getEdges();
+            data.getEdges().clear();
+            Collection<Edge> edges  =   data.getGraph().getEdges();
+            
             for(Edge edge : edges)
-                currentEdges.put(edge.getID(), edge);
+                data.getEdges().put(edge.getID(), edge);
         }
         
         protected void exportLog()
@@ -1201,8 +1204,8 @@ public class LayoutPanel extends JPanel
                 ArrayList<Node> vertices   =   new ArrayList<>(graph.getVertices());
                 Collections.sort(vertices, (Node n1, Node n2) -> Integer.compare(n1.getID(), n2.getID()));
                 
-                nodeFactory.setLastID(0);
-                currentNodes.clear();
+                data.getNodeFactory().setLastID(0);
+                data.getNodes().clear();
                 SwingUtilities.invokeLater(() -> 
                 {
                     vertexDataModel.setRowCount(0);
@@ -1211,11 +1214,11 @@ public class LayoutPanel extends JPanel
                         int vID         =   vertex.getID();
                         String vName    =   vertex.getName();
                         
-                        currentNodes.put(vID, vertex);
+                        data.getNodes().put(vID, vertex);
                         vertexDataModel.addRow(new Object[] { vID, vName });
                         
-                        if(vID > nodeFactory.getLastID())
-                            nodeFactory.setLastID(vID);
+                        if(vID > data.getNodeFactory().getLastID())
+                            data.getNodeFactory().setLastID(vID);
                     }
                 });
             }
@@ -1225,8 +1228,8 @@ public class LayoutPanel extends JPanel
                 ArrayList<Edge> edges  =   new ArrayList<>(graph.getEdges());
                 Collections.sort(edges, (Edge e1, Edge e2) -> Integer.compare(e1.getID(), e2.getID())); 
                 
-                //edgeFactory.setLastID(0);
-                currentEdges.clear();
+                //data.getEdgeFactory().setLastID(0);
+                data.getEdges().clear();
                 
                 SwingUtilities.invokeLater(() ->
                 {
@@ -1256,11 +1259,11 @@ public class LayoutPanel extends JPanel
                         else
                             n2_id   =   -1;
                         
-                        currentEdges.put(eID, edge);
+                        data.getEdges().put(eID, edge);
                         edgeDataModel.addRow(new Object[] { eID, n1_id, n2_id, weight, edgeType });
                         
-                        if(eID > edgeFactory.getLastID())
-                            edgeFactory.setLastID(eID);
+                        if(eID > data.getEdgeFactory().getLastID())
+                            data.getEdgeFactory().setLastID(eID);
                     }
                 });
             }
@@ -1274,7 +1277,7 @@ public class LayoutPanel extends JPanel
                 if(option == JOptionPane.OK_OPTION)
                 {
                     int id      =   (int) addPanel.idSpinner.getValue();
-                    if(currentNodes.containsKey(id))
+                    if(data.getNodes().containsKey(id))
                     {
                         JOptionPane.showMessageDialog(null, "Vertex already exists");
                         return;
@@ -1282,10 +1285,10 @@ public class LayoutPanel extends JPanel
                     
                     String name =   addPanel.nameField.getText();
                     Node node   =   new Node(id, name);
-                    currentGraph.addVertex(node);
+                    data.getGraph().addVertex(node);
                     graphPanel.gViewer.repaint();
-                    loadNodes(currentGraph);
-                    currentNodes.put(id, node);
+                    loadNodes(data.getGraph());
+                    data.getNodes().put(id, node);
                 }
             }
             
@@ -1302,15 +1305,15 @@ public class LayoutPanel extends JPanel
                     if(selectedRows.length == 1)
                     {
                         int id      =   (int) dataPanel.vertexDataModel.getValueAt(selectedRows[0], 0);
-                        editNode    =   currentNodes.get(id);   
+                        editNode    =   data.getNodes().get(id);   
                     }
                     
                     else
                     {
-                        int id      =   getDialogID("Enter vertex ID to edit", currentNodes);
+                        int id      =   getDialogID("Enter vertex ID to edit", data.getNodes());
 
                         if(id != -1)
-                            editNode    =   currentNodes.get(id);
+                            editNode    =   data.getNodes().get(id);
                         else
                             return;
                     }
@@ -1327,7 +1330,7 @@ public class LayoutPanel extends JPanel
                 {
                     editNode.setID((int) editPanel.idSpinner.getValue());
                     editNode.setName(editPanel.nameField.getText());
-                    loadNodes(currentGraph);
+                    loadNodes(data.getGraph());
                 }
             }
             
@@ -1338,10 +1341,10 @@ public class LayoutPanel extends JPanel
                 for(Node node : vertices)
                 {
                     int id  =   node.getID();
-                    currentNodes.remove(id);
-                    currentGraph.removeVertex(node);
+                    data.getNodes().remove(id);
+                    data.getGraph().removeVertex(node);
                     graphPanel.gViewer.repaint();
-                    loadNodes(currentGraph);
+                    loadNodes(data.getGraph());
                 }
             }
             
@@ -1360,7 +1363,7 @@ public class LayoutPanel extends JPanel
                         for(int row : selectedRows)
                         {
                             int id          =   (int) dataPanel.vertexDataModel.getValueAt(row, 0);
-                            Node current    =   currentNodes.get(id);
+                            Node current    =   data.getNodes().get(id);
                             
                             if(current != null)
                                 selectedNodes.add(current);
@@ -1371,12 +1374,12 @@ public class LayoutPanel extends JPanel
                     
                     else
                     {
-                        int id  =   getDialogID("Enter vertex ID to remove", currentNodes);
+                        int id  =   getDialogID("Enter vertex ID to remove", data.getNodes());
                         if(id != -1)
                         {
-                            Node removedNode    =   currentNodes.remove(id);
-                            currentGraph.removeVertex(removedNode);
-                            loadNodes(currentGraph);
+                            Node removedNode    =   data.getNodes().remove(id);
+                            data.getGraph().removeVertex(removedNode);
+                            loadNodes(data.getGraph());
                             graphPanel.gViewer.repaint();
                         }
                     }
@@ -1392,7 +1395,7 @@ public class LayoutPanel extends JPanel
                 if(option == JOptionPane.OK_OPTION)
                 {
                     int id  =   (int) addPanel.idSpinner.getValue();
-                    if(currentEdges.containsKey(id))
+                    if(data.getEdges().containsKey(id))
                     {
                         JOptionPane.showMessageDialog(null, "Edge ID already exists");
                         return;
@@ -1404,17 +1407,17 @@ public class LayoutPanel extends JPanel
                     int eType           =   addPanel.edgeTypeBox.getSelectedIndex();
                     EdgeType edgeType   =   (eType == 0)? EdgeType.UNDIRECTED : EdgeType.DIRECTED;
                     
-                    if(currentNodes.containsKey(fromID) && currentNodes.containsKey(toID))
+                    if(data.getNodes().containsKey(fromID) && data.getNodes().containsKey(toID))
                     {
                         Edge edge       =   new Edge(id, weight, edgeType);
-                        Node n1         =   currentNodes.get(fromID);
-                        Node n2         =   currentNodes.get(toID);
+                        Node n1         =   data.getNodes().get(fromID);
+                        Node n2         =   data.getNodes().get(toID);
                         edge.setSourceNode(n1);
                         edge.setDestNode(n2);
                         
-                        currentEdges.put(id, edge);
-                        currentGraph.addEdge(edge, n1, n2, edgeType);
-                        loadEdges(currentGraph);
+                        data.getEdges().put(id, edge);
+                        data.getGraph().addEdge(edge, n1, n2, edgeType);
+                        loadEdges(data.getGraph());
                         graphPanel.gViewer.repaint();
                     }
                     
@@ -1434,15 +1437,15 @@ public class LayoutPanel extends JPanel
                     if(selectedRows.length == 1)
                     {
                         int id      =   (int) dataPanel.edgeDataModel.getValueAt(selectedRows[0], 0);
-                        editEdge    =   currentEdges.get(id);
+                        editEdge    =   data.getEdges().get(id);
                     }
                     
                     else
                     {
-                        int id  =   getDialogID("Enter edge ID to edit", currentEdges);
+                        int id  =   getDialogID("Enter edge ID to edit", data.getEdges());
 
                         if(id != -1)
-                            editEdge    =   currentEdges.get(id);
+                            editEdge    =   data.getEdges().get(id);
                         else
                             return;
                     }
@@ -1464,15 +1467,15 @@ public class LayoutPanel extends JPanel
                     editEdge.setWeight((double) editPanel.weightSpinner.getValue());
                     editEdge.setEdgeType(editPanel.edgeTypeBox.getSelectedIndex() == 0? EdgeType.UNDIRECTED : EdgeType.DIRECTED);
                     
-                    Node from   =   currentNodes.get(Integer.parseInt(editPanel.fromSpinner.getValue().toString()));
-                    Node to     =   currentNodes.get(Integer.parseInt(editPanel.toSpinner.getValue().toString()));
+                    Node from   =   data.getNodes().get(Integer.parseInt(editPanel.fromSpinner.getValue().toString()));
+                    Node to     =   data.getNodes().get(Integer.parseInt(editPanel.toSpinner.getValue().toString()));
                     editEdge.setSourceNode(from);
                     editEdge.setDestNode(to);
                     
-                    currentGraph.removeEdge(editEdge);
-                    currentGraph.addEdge(editEdge, from, to, editEdge.getEdgeType());
+                    data.getGraph().removeEdge(editEdge);
+                    data.getGraph().addEdge(editEdge, from, to, editEdge.getEdgeType());
                     
-                    loadEdges(currentGraph);
+                    loadEdges(data.getGraph());
                     graphPanel.gViewer.repaint();
                 }
             }
@@ -1489,19 +1492,19 @@ public class LayoutPanel extends JPanel
                         for(int row : selectedRows)
                         {
                             int id          =   (int) dataPanel.edgeDataModel.getValueAt(row, 0);
-                            Edge current    =   currentEdges.remove(id);
-                            currentGraph.removeEdge(current);
+                            Edge current    =   data.getEdges().remove(id);
+                            data.getGraph().removeEdge(current);
                         }
                     }
                     
                     else
                     {
-                        int id  =   getDialogID("Enter edge ID to remove", currentEdges);
+                        int id  =   getDialogID("Enter edge ID to remove", data.getEdges());
 
                         if(id != -1)
                         {
-                            Edge removeEdge =   currentEdges.remove(id);
-                            currentGraph.removeEdge(removeEdge);
+                            Edge removeEdge =   data.getEdges().remove(id);
+                            data.getGraph().removeEdge(removeEdge);
                         }
 
                         else return;
@@ -1512,12 +1515,12 @@ public class LayoutPanel extends JPanel
                 {
                     for(Edge edge : selectedEdges)
                     {
-                        currentEdges.remove(edge.getID());
-                        currentGraph.removeEdge(edge);
+                        data.getEdges().remove(edge.getID());
+                        data.getGraph().removeEdge(edge);
                     }
                 }
                 
-                loadEdges(currentGraph);
+                loadEdges(data.getGraph());
                 graphPanel.gViewer.repaint();
             }
             
@@ -1568,7 +1571,7 @@ public class LayoutPanel extends JPanel
                     nameField      =   new JTextField();
                     
                     autoCheck.setSelected(true);
-                    idSpinner.setValue(nodeFactory.getLastID() + 1);
+                    idSpinner.setValue(data.getNodeFactory().getLastID() + 1);
                     idSpinner.setEnabled(false);
                     
                     add(new JLabel("ID "));
@@ -1611,7 +1614,7 @@ public class LayoutPanel extends JPanel
                     edgeTypeBox.addItem("Undirected");
                     edgeTypeBox.addItem("Directed");
                     
-                    idSpinner.setValue(edgeFactory.getLastID() + 1);
+                    idSpinner.setValue(data.getEdgeFactory().getLastID() + 1);
                     idSpinner.setEnabled(false);
                     autoCheck.setSelected(true);
                     autoCheck.addActionListener(this);
@@ -1674,7 +1677,7 @@ public class LayoutPanel extends JPanel
             public GraphPanel()
             {
                 setLayout(new BorderLayout());
-                gLayout     =   new AggregateLayout(new FRLayout(currentGraph));
+                gLayout     =   new AggregateLayout(new FRLayout(data.getGraph()));
                 gViewer     =   new VisualizationViewer<>(gLayout);
                 gPlayback   =   new GraphPlayback();
                 
@@ -1688,7 +1691,7 @@ public class LayoutPanel extends JPanel
                 gViewer.getPickedVertexState().addItemListener(this);
                 gViewer.getPickedEdgeState().addItemListener(this);
                 
-                mouse       =   new EditingModalGraphMouse(gViewer.getRenderContext(), nodeFactory, edgeFactory);
+                mouse       =   new EditingModalGraphMouse(gViewer.getRenderContext(), data.getNodeFactory(), data.getEdgeFactory());
                 mouse.setMode(ModalGraphMouse.Mode.PICKING);
                 gViewer.addGraphMouseListener(this);
                 mouse.remove(mouse.getPopupEditingPlugin());
@@ -1848,7 +1851,7 @@ public class LayoutPanel extends JPanel
                 if(selectedIndex == 0)
                 {
                     Graph<Node, Edge> graph   =   new SparseMultigraph<>();
-                    GraphUtilities.copyGraph(currentGraph, graph);
+                    GraphUtilities.copyGraph(data.getGraph(), graph);
 
                     Date date       =   gpRecDatePicker.getDate();
                     String name     =   gpRecEntryName.getText();
@@ -1868,7 +1871,7 @@ public class LayoutPanel extends JPanel
                     entry   =   (PlaybackEntry) gpRecEntries.getSelectedItem();
                     entry.setName(gpRecEntryName.getText());
                     entry.setDate(gpRecDatePicker.getDate());
-                    entry.setGraph(GraphUtilities.copyNewGraph(currentGraph));
+                    entry.setGraph(GraphUtilities.copyNewGraph(data.getGraph()));
                 }
             }
             
@@ -1901,7 +1904,7 @@ public class LayoutPanel extends JPanel
                    {
                         gpRecEntryName.setText(entry.getName());
                         gpRecDatePicker.setDate(entry.getDate());
-                        currentGraph =   GraphUtilities.copyNewGraph(entry.getGraph());
+                        data.setGraph(GraphUtilities.copyNewGraph(entry.getGraph()));
                         reloadGraph();
                    }
                }
@@ -1938,8 +1941,8 @@ public class LayoutPanel extends JPanel
             {
                 if(controlPanel.editCheck.isSelected())
                 {
-                    dataPanel.loadNodes(currentGraph);
-                    dataPanel.loadEdges(currentGraph);
+                    dataPanel.loadNodes(data.getGraph());
+                    dataPanel.loadEdges(data.getGraph());
                 }
             }
 
@@ -1983,7 +1986,7 @@ public class LayoutPanel extends JPanel
                         pbName.setText(entry.getName());
                         pbDate.setText(entry.getDateFormatted());
 
-                        currentGraph =   GraphUtilities.copyNewGraph(entry.getGraph());
+                        data.setGraph(GraphUtilities.copyNewGraph(entry.getGraph()));
                         reloadGraph();
                     }
                 }
@@ -2025,7 +2028,7 @@ public class LayoutPanel extends JPanel
             protected void setVertexColour(Color colour, Collection<Node> vertices)
             {
                 if(vertices == null)
-                    vertices   =   currentGraph.getVertices();
+                    vertices   =   data.getGraph().getVertices();
                 
                 for(Node vertex : vertices)
                     vertex.setFill(colour);
@@ -2036,7 +2039,7 @@ public class LayoutPanel extends JPanel
             protected void setEdgeColour(Color colour, Collection<Edge> edges)
             {
                 if(edges == null)
-                    edges   =   currentGraph.getEdges();
+                    edges   =   data.getGraph().getEdges();
                 
                 for(Edge edge : edges)
                     edge.setFill(colour);
@@ -2061,16 +2064,16 @@ public class LayoutPanel extends JPanel
             {
                 int numRemoved  =   (int) controlPanel.clusterEdgeRemoveSpinner.getValue();
                 boolean group   =   controlPanel.clusterTransformCheck.isSelected();
-                GraphUtilities.cluster(gLayout, currentGraph, numRemoved, group);
+                GraphUtilities.cluster(gLayout, data.getGraph(), numRemoved, group);
                 gViewer.repaint();
             }
             
             protected void showCentrality()
             {
                 Map<Node, Double> centrality;
-                if(currentGraph.getVertexCount() <= 1) return;
+                if(data.getGraph().getVertexCount() <= 1) return;
                 
-                SparseDoubleMatrix2D matrix =   GraphMatrixOperations.graphToSparseMatrix(currentGraph);
+                SparseDoubleMatrix2D matrix =   GraphMatrixOperations.graphToSparseMatrix(data.getGraph());
                 int selectedCentrality      =   controlPanel.centralityTypeBox.getSelectedIndex();
                 boolean transform           =   controlPanel.centralityMorphCheck.isSelected();
                 String prefix;
@@ -2078,17 +2081,17 @@ public class LayoutPanel extends JPanel
                 switch(selectedCentrality)
                 {
                     case 0: 
-                        centrality  =   MatrixTools.getScores(MatrixTools.powerIterationFull(matrix), currentGraph);
+                        centrality  =   MatrixTools.getScores(MatrixTools.powerIterationFull(matrix), data.getGraph());
                         prefix      =   "EigenVector";
                         break;
                         
                     case 1: 
-                        centrality  =   MatrixTools.getScores(new ClosenessCentrality(currentGraph, new WeightTransformer()), currentGraph);
+                        centrality  =   MatrixTools.getScores(new ClosenessCentrality(data.getGraph(), new WeightTransformer()), data.getGraph());
                         prefix      =   "Closeness";
                         break;
                         
                     case 2: 
-                        centrality  =   MatrixTools.getScores(new BetweennessCentrality(currentGraph, new WeightTransformer()), currentGraph);
+                        centrality  =   MatrixTools.getScores(new BetweennessCentrality(data.getGraph(), new WeightTransformer()), data.getGraph());
                         prefix      =   "Betweenness";
                         break; 
                         
@@ -2096,7 +2099,7 @@ public class LayoutPanel extends JPanel
                 }
                 
                 
-                Collection<Node> vertices     =   currentGraph.getVertices();
+                Collection<Node> vertices     =   data.getGraph().getVertices();
                 PriorityQueue<SimpleEntry<Node, Double>> scores = null;
                 
                 if(transform)
@@ -2137,18 +2140,18 @@ public class LayoutPanel extends JPanel
             {
                 gViewer.getPickedVertexState().clear();
                 gViewer.getPickedEdgeState().clear();
-                selectedItems = null;
+                data.setSelectedItems(null);
                 
                 gLayout.removeAll();
-                gLayout.setGraph(currentGraph);
+                gLayout.setGraph(data.getGraph());
                 gViewer.repaint();
-                dataPanel.loadNodes(currentGraph);
-                dataPanel.loadEdges(currentGraph);
+                dataPanel.loadNodes(data.getGraph());
+                dataPanel.loadEdges(data.getGraph());
             }
             
             protected void resetGraph()
             {
-                currentGraph    =   new SparseMultigraph<>();
+                data.setGraph(new SparseMultigraph<>());
                 reloadGraph();
             }
 
@@ -2157,7 +2160,7 @@ public class LayoutPanel extends JPanel
             {
                 if(controlPanel.selectCheck.isSelected())
                 {
-                    selectedItems   =   e.getItemSelectable().getSelectedObjects();
+                    data.setSelectedItems(e.getItemSelectable().getSelectedObjects());
                     controlPanel.updateSelectedComponents();
                 }
             }
