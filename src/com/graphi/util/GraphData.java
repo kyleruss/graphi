@@ -24,4 +24,44 @@ public class GraphData
         nodeFactory     =   new NodeFactory();
         edgeFactory     =   new EdgeFactory();
     }
+    
+    public Graph<Node, Edge> getGraph()
+    {
+        return graph;
+    }
+    
+    public Map<Integer, Node> getNodes()
+    {
+        return nodes;
+    }
+    
+    public Map<Integer, Edge> getEdges()
+    {
+        return edges;
+    }
+    
+    public NodeFactory getNodeFactory()
+    {
+        return nodeFactory;
+    }
+    
+    public EdgeFactory getEdgeFactory()
+    {
+        return edgeFactory;
+    }
+    
+    public Object[] getSelectedItems()
+    {
+        return selectedItems;
+    }
+ 
+    public void setSelectedItems(Object[] selectedItems)
+    {
+        this.selectedItems  =   selectedItems;
+    }
+    
+    public void setGraph(Graph<Node, Edge> graph)
+    {
+        this.graph  =   graph;
+    }
 }
