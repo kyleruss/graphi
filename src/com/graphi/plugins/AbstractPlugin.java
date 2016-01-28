@@ -6,8 +6,30 @@
 
 package com.graphi.plugins;
 
+import com.graphi.display.LayoutPanel;
 
-public class AbstractPlugin
+
+public class AbstractPlugin implements Plugin
 {
+    private String name;
+    private String description;
+    private LayoutPanel panel;
     
+    @Override
+    public String getPluginName() 
+    {
+        return name;
+    }
+
+    @Override
+    public String getPluginDescription()
+    {
+        return description;
+    }
+
+    @Override
+    public LayoutPanel load() 
+    {
+        return panel;
+    }
 }
