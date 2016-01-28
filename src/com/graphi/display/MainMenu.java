@@ -30,7 +30,7 @@ public class MainMenu extends JMenuBar
     protected final JMenuItem viewerBGItem, edgeBGItem, vertexBGItem;
     protected final JMenuItem addVertexItem, editVertexItem, removeVertexItem;
     protected final JMenuItem addEdgeItem, editEdgeItem, removeEdgeItem;
-    
+    protected final JMenuItem loadPluginItem, defaultPluginItem;
 
     public MainMenu()
     {
@@ -65,6 +65,8 @@ public class MainMenu extends JMenuBar
         addEdgeItem         =   new JMenuItem("Add");
         editEdgeItem        =   new JMenuItem("Edit");
         removeEdgeItem      =   new JMenuItem("Remove");
+        loadPluginItem      =   new JMenuItem("Load");
+        defaultPluginItem   =   new JMenuItem("Default");
         
         
         fileMenu.add(exitItem);
@@ -97,6 +99,9 @@ public class MainMenu extends JMenuBar
         viewMenu.add(eLabelsItem);
         
         helpMenu.add(aboutItem);
+        
+        pluginMenu.add(defaultPluginItem);
+        pluginMenu.add(loadPluginItem);
         
         add(fileMenu);
         add(graphMenu);
