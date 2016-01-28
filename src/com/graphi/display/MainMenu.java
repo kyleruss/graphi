@@ -19,6 +19,7 @@ public class MainMenu extends JMenuBar
     protected final JMenu loggingMenu;
     protected final JMenu vertexMenu, edgeMenu;
     protected final JMenu viewMenu;
+    protected final JMenu pluginMenu;
     
     protected final JMenuItem exitItem, miniItem, maxItem;
     protected final JMenuItem aboutItem;
@@ -41,6 +42,7 @@ public class MainMenu extends JMenuBar
         vertexMenu          =   new JMenu("Vertex");
         edgeMenu            =   new JMenu("Edge");
         viewMenu            =   new JMenu("View");
+        pluginMenu          =   new JMenu("Plugin");
         
         exitItem            =   new JMenuItem("Exit");
         miniItem            =   new JMenuItem("Minimize");
@@ -102,6 +104,6 @@ public class MainMenu extends JMenuBar
         add(viewMenu);
         add(optionsMenu);
         add(helpMenu);
-        
+        add(pluginMenu);
     }
 }
