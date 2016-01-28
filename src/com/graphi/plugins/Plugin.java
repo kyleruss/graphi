@@ -10,5 +10,7 @@ public interface Plugin
 {
     public String getPluginName();
     
+    public String getPluginDescription();
+    
     public void load();
 }

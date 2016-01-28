@@ -68,7 +68,6 @@ public class MainMenu extends JMenuBar
         loadPluginItem      =   new JMenuItem("Load");
         defaultPluginItem   =   new JMenuItem("Default");
         
-        
         fileMenu.add(exitItem);
         fileMenu.add(miniItem);
         fileMenu.add(maxItem);
