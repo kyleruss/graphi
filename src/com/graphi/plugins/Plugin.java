@@ -6,11 +6,13 @@
 
 package com.graphi.plugins;
 
+import com.graphi.display.LayoutPanel;
+
 public interface Plugin
 {
     public String getPluginName();
     
     public String getPluginDescription();
     
-    public void load();
+    public LayoutPanel load();
 }
