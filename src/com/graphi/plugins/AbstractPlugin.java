@@ -6,6 +6,8 @@
 
 package com.graphi.plugins;
 
-public class PluginManager
+
+public class AbstractPlugin
 {
+    
 }
