@@ -14,5 +14,5 @@ public interface Plugin
     
     public String getPluginDescription();
     
-    public LayoutPanel load();
+    public LayoutPanel getPanel();
 }

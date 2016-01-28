@@ -28,7 +28,7 @@ public class AbstractPlugin implements Plugin
     }
 
     @Override
-    public LayoutPanel load() 
+    public LayoutPanel getPanel() 
     {
         return panel;
     }
