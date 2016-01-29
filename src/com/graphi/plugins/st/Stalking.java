@@ -18,18 +18,16 @@ import java.util.Set;
 
 public class Stalking 
 {
-    private static final Random RANDOM;
-    private static final StalkingConfig CONFIG;
+    private final Random RANDOM  =   new Random();
+    private StalkingConfig config;
     
-    static
+    public Stalking()
     {
-        RANDOM  =   new Random();
-        CONFIG  =   getConfig();
+        
     }
     
-    public static void main(String[] args)
+    public void main(String[] args)
     {
-        StalkingConfig config   =   getConfig();
         PrintStream out         =   System.out;
         
         float[][][] gPoint      =   (float[][][]) StalkingUtils.getGPoint(StalkingUtils.COMPUTE_P1, false, config);
@@ -44,23 +42,28 @@ public class Stalking
         System.out.print("FINISHED!");
     }
     
-    private static StalkingConfig getConfig()
+    public StalkingConfig getConfig()
     {
-        StalkingConfig config   =   new StalkingConfig();
+        return config;
+    }
+    
+    private void createConfig()
+    {
+        StalkingConfig cfg   =   new StalkingConfig();
         
         System.out.println("Do you want to create from txt file/ 1--yes,2--Random");
         Scanner input = new Scanner(System.in);
 
-        config.setReadIO(input.nextInt() == 1);
+        cfg.setReadIO(input.nextInt() == 1);
 
-        if (config.isReadIO())
+        if (cfg.isReadIO())
         {
-             config.setMatrix(readTxtFile(Stalking.class.getClassLoader()
+             cfg.setMatrix(readTxtFile(Stalking.class.getClassLoader()
                      .getResource(".")
                      .getPath()
                      + "../mMatrix.txt"));
 
-             config.setNumNodes(config.getMatrix().length);
+             cfg.setNumNodes(cfg.getMatrix().length);
         } 
 
         else 
@@ -69,38 +72,38 @@ public class Stalking
             {
                 System.out.println("The RANDOM graph model: 1 (G(n,p)), 2 (Power Law)");
                 input = new Scanner(System.in);
-                config.setModel(input.nextInt());
+                cfg.setModel(input.nextInt());
             } 
 
-            while (config.getModel() == 0);
+            while (cfg.getModel() == 0);
 
             System.out.println("The number of nodes:");
             input = new Scanner(System.in);
-            config.setNumNodes(input.nextInt());
+            cfg.setNumNodes(input.nextInt());
 
             System.out.println("The total number of messages:");
             input = new Scanner(System.in);
-            config.setNumMessages(input.nextInt());
+            cfg.setNumMessages(input.nextInt());
 
             System.out.println("The max number of messages of a person:");
             input = new Scanner(System.in);
-            config.setMessageLimit(input.nextInt());
+            cfg.setMessageLimit(input.nextInt());
 
 
-            if (config.getModel() == 1) 
+            if (cfg.getModel() == 1) 
             {
                 System.out.println("The edge probability p = ");
                 input = new Scanner(System.in);
-                config.setEdgeProb(input.nextDouble());
-                config.setMatrix(generationGraphp());
+                cfg.setEdgeProb(input.nextDouble());
+                cfg.setMatrix(generationGraphp());
             } 
 
             else 
             {
                 System.out.println("The fixed number of edges m = ");
                 input = new Scanner(System.in);
-                config.setNumEdges(input.nextInt());
-                config.setMatrix(generationGraphPowerlaw());
+                cfg.setNumEdges(input.nextInt());
+                cfg.setMatrix(generationGraphPowerlaw());
             }
 
             System.out.println("Graph generated");
@@ -108,19 +111,19 @@ public class Stalking
 
         // Stalking
         System.out.println("who are you(only scanner the number):");
-        config.setStalkerIndex(input.nextInt() - 1);
+        cfg.setStalkerIndex(input.nextInt() - 1);
         System.out.println("who do you want to stalk(only input the number):");
-        config.setStalkingIndex(input.nextInt() - 1);
+        cfg.setStalkingIndex(input.nextInt() - 1);
 
 
-        String[] POINTS = new String[config.getNumNodes()];
-        for (int i = 0; i < config.getNumNodes(); i++)
+        String[] POINTS = new String[cfg.getNumNodes()];
+        for (int i = 0; i < cfg.getNumNodes(); i++)
                 POINTS[i] = "P" + (i + 1);
 
 
-        int[][] dist = new int[config.getNumNodes()][config.getNumNodes()];
-        for (int i = 0; i < config.getNumNodes(); i++) 
-                dist[i] = Dijsktra(config.getMatrix(), i);
+        int[][] dist = new int[cfg.getNumNodes()][cfg.getNumNodes()];
+        for (int i = 0; i < cfg.getNumNodes(); i++) 
+                dist[i] = Dijsktra(cfg.getMatrix(), i);
 
 
         try 
@@ -136,15 +139,15 @@ public class Stalking
         } 
 
         System.out.println("Start!");
-        System.out.println("Generate " + config.getNumNodes() + " nodes");
+        System.out.println("Generate " + cfg.getNumNodes() + " nodes");
         printDegree();
 
-        System.out.print("nodes[" + config.getNumNodes() + "]={");
-        String[] points = new String[config.getNumNodes()];
-        for (int pn = 0; pn < config.getNumNodes(); pn++) 
+        System.out.print("nodes[" + cfg.getNumNodes() + "]={");
+        String[] points = new String[cfg.getNumNodes()];
+        for (int pn = 0; pn < cfg.getNumNodes(); pn++) 
         {
             points[pn] = POINTS[pn];
-            if (pn < config.getNumNodes() - 1) 
+            if (pn < cfg.getNumNodes() - 1) 
                 System.out.print(points[pn] + " , ");
 
              else 
@@ -153,16 +156,14 @@ public class Stalking
 
         System.out.println(" }");
         printMatrix("");
-        
-        return config;
     }
 
     //calculate the stalking index according to the time
-    protected static float[][][] getG_1(float[][][] gPoint, float[][][] dPoint) 
+    protected  float[][][] getG_1(float[][][] gPoint, float[][][] dPoint) 
     {
         int num = gPoint[0].length;
 
-        for (int time = 1; time <= CONFIG.getTime(); time++)
+        for (int time = 1; time <= config.getTime(); time++)
         {
             System.out.println();
             System.out.println("Time " + time);
@@ -183,10 +184,10 @@ public class Stalking
         return gPoint;
     }
 
-    protected static float[][][] getG_2(float[][][] gPoint, float dPoint[][]) 
+    protected  float[][][] getG_2(float[][][] gPoint, float dPoint[][]) 
     {
         int num = gPoint[0].length;
-        for (int time = 1; time <= CONFIG.getTime(); time++) 
+        for (int time = 1; time <= config.getTime(); time++) 
         {
                 System.out.println();
                 for (int i = 0; i < num; i++) 
@@ -196,16 +197,16 @@ public class Stalking
         return gPoint;
     }
 
-    protected static float[][][] getG_dPoint(float[][][] gPoint, float[][][] dPoint)
+    protected  float[][][] getG_dPoint(float[][][] gPoint, float[][][] dPoint)
     {
         gPoint = dPoint;
         return gPoint;
     }
 
     //calculate the c_xy
-    protected static float[][] getDpoint_1(float[][] vectorArray) 
+    protected  float[][] getDpoint_1(float[][] vectorArray) 
     {
-        int num     =   CONFIG.getNumNodes();
+        int num     =   config.getNumNodes();
         float[][] d = new float[num][num];
         for (int i = 0; i < num; i++)
         {
@@ -217,9 +218,9 @@ public class Stalking
     }
 
     //calculate the c_xy/average c_y
-    protected static float[][] getDpoint_2(float[][] vectorArray) 
+    protected  float[][] getDpoint_2(float[][] vectorArray) 
     {
-        int num     =   CONFIG.getNumNodes();
+        int num     =   config.getNumNodes();
         float[][] d =   new float[num][num];
         float[] sum =   new float[num];
         
@@ -241,9 +242,9 @@ public class Stalking
     }
 
     //calculate the average c_y
-    protected static float[] getDpoint_3(float[][] vectorArray) 
+    protected  float[] getDpoint_3(float[][] vectorArray) 
     {
-        int num     =   CONFIG.getNumNodes();
+        int num     =   config.getNumNodes();
         float[] sum =   new float[num];
         for (int i = 0; i < num; i++)
         {
@@ -257,9 +258,9 @@ public class Stalking
     }
 
     //calculate the c_xy/average c_y -c_yx/ average c_x
-    protected static float[][] getDpoint_4(float[][] vectorArray) 
+    protected  float[][] getDpoint_4(float[][] vectorArray) 
     {
-        int num     =   CONFIG.getNumNodes();
+        int num     =   config.getNumNodes();
         float[][] d =   new float[num][num];
         float[] sum =   new float[num];
 
@@ -280,10 +281,10 @@ public class Stalking
         return d;
     }
 
-    protected static float[][] createNewMatrix1(float[][] weight)
+    protected  float[][] createNewMatrix1(float[][] weight)
     {
-        int num             =   CONFIG.getNumNodes();
-        float r             =   CONFIG.getR();
+        int num             =   config.getNumNodes();
+        float r             =   config.getR();
         float[][] vectorArray = new float[num][num];
         int[] degree;
         float[] distribution;
@@ -303,13 +304,13 @@ public class Stalking
             {
                 for (int j = 0; j < num; j++) 
                 {
-                    if (CONFIG.getMatrix()[i][j] == 1) 
+                    if (config.getMatrix()[i][j] == 1) 
                     {
                         degree[i]++;
                         totalWeight1[i] = totalWeight1[i] + weight[k][j] + 1;
                     }
 
-                    if (CONFIG.getMatrix()[i][j] == 0) 
+                    if (config.getMatrix()[i][j] == 0) 
                             totalWeight2[i] = totalWeight2[i] + weight[k][j];
                 }
 
@@ -321,13 +322,13 @@ public class Stalking
             {
                 for (int j = 0; j < num; j++)
                 {
-                    if (CONFIG.getMatrix()[i][j] == 0 && weight[k][j] == 0) 
+                    if (config.getMatrix()[i][j] == 0 && weight[k][j] == 0) 
                             subGraph[i][j] = 0;
 
-                    else if (CONFIG.getMatrix()[i][j] == 0) 
+                    else if (config.getMatrix()[i][j] == 0) 
                             subGraph[i][j] = (1 - distribution[i]) * weight[k][j] / totalWeight2[i];
 
-                    else if (CONFIG.getMatrix()[i][j] == 1)
+                    else if (config.getMatrix()[i][j] == 1)
                             subGraph[i][j] = distribution[i] * (weight[k][j] + 1) / totalWeight1[i];
                 }
             }
@@ -358,9 +359,9 @@ public class Stalking
         return vectorArray;
     }
 
-    protected static float[][] getWeight(int[][] post, int[][] retrieve)
+    protected  float[][] getWeight(int[][] post, int[][] retrieve)
     {
-        int num =   CONFIG.getNumNodes();
+        int num =   config.getNumNodes();
         float[][] weight = new float[num][num];
         for (int i = 0; i < num; i++)
         {
@@ -409,22 +410,22 @@ public class Stalking
         return weight;
     }
 
-    protected static int[][] generateRetrieve(int[][] post) 
+    protected  int[][] generateRetrieve(int[][] post) 
     {
         System.out.println(" Retrieve :");
-        int num             =   CONFIG.getNumNodes();
-        int[][] retrieve    =   new int[num][CONFIG.getMessageLimit()];
+        int num             =   config.getNumNodes();
+        int[][] retrieve    =   new int[num][config.getMessageLimit()];
 
         for (int i = 0; i < num; i++) 
         {
             System.out.print("Random Retrieve of P" + (i + 1) + " : ");
             List<Integer> retrieveMessageList = new ArrayList<Integer>();
             
-            for (int x = 1; x <= CONFIG.getNumMessages(); x++) 
+            for (int x = 1; x <= config.getNumMessages(); x++) 
                     retrieveMessageList.add(x);
             
 
-            for (int j = 0; j < CONFIG.getMessageLimit(); j++) 
+            for (int j = 0; j < config.getMessageLimit(); j++) 
             {
                 int index = (int) (Math.random() * retrieveMessageList.size());
                 Integer tmp = retrieveMessageList.get(index);
@@ -445,28 +446,28 @@ public class Stalking
         return retrieve;
     }
 
-    protected static int[][] generateStalkingRetrieve(int[][] post, int[] copyTime, int[][] retrieveRandom) 
+    protected  int[][] generateStalkingRetrieve(int[][] post, int[] copyTime, int[][] retrieveRandom) 
     {
-        int[][] retrieve    =   new int[CONFIG.getMatrix().length][CONFIG.getMessageLimit()];
-        int stalkedIndex        =   CONFIG.getStalkingIndex();
-        int stalkingIndex       =   CONFIG.getStalkerIndex();
+        int[][] retrieve    =   new int[config.getMatrix().length][config.getMessageLimit()];
+        int stalkedIndex        =   config.getStalkingIndex();
+        int stalkingIndex       =   config.getStalkerIndex();
         
-        for(int i =0; i < CONFIG.getMatrix().length; i++)
+        for(int i =0; i < config.getMatrix().length; i++)
         {
-            for (int j=0;j < CONFIG.getMessageLimit();j++)
+            for (int j=0;j < config.getMessageLimit();j++)
                 retrieve[i][j] = retrieveRandom[i][j];
             
         }
         
-        int[][] dist = new int[CONFIG.getMatrix().length][CONFIG.getMatrix().length];
-        for (int i = 0; i < CONFIG.getMatrix().length; i++) 
-                dist[i] = Dijsktra(CONFIG.getMatrix(), i);
+        int[][] dist = new int[config.getMatrix().length][config.getMatrix().length];
+        for (int i = 0; i < config.getMatrix().length; i++) 
+                dist[i] = Dijsktra(config.getMatrix(), i);
         
         System.out.println();
         System.out.println(" Stalking Retrieve :");
 
         List<List<Integer>> retrieveList = new ArrayList<>();
-        for (int i = 0; i <= CONFIG.getDistNum(); i++) 
+        for (int i = 0; i <= config.getDistNum(); i++) 
         {
                 List<Integer> retrieveListItem = new ArrayList<>();
                 retrieveList.add(retrieveListItem);
@@ -475,9 +476,9 @@ public class Stalking
         int lengthSum = 0;
         List<Integer> item;
         
-        for (int i = 0; i < CONFIG.getMatrix().length; i++) 
+        for (int i = 0; i < config.getMatrix().length; i++) 
         {
-            if (dist[i][stalkedIndex] <= CONFIG.getDistNum() )
+            if (dist[i][stalkedIndex] <= config.getDistNum() )
             {
                 item = retrieveList.get(dist[i][stalkedIndex]);
                 for (Integer tmp : post[i]) 
@@ -502,7 +503,7 @@ public class Stalking
             }
         }
 
-        for (int i = 0; i < CONFIG.getMessageLimit(); i++) 
+        for (int i = 0; i < config.getMessageLimit(); i++) 
         {
             int index = (int) (Math.random() * lengthSum);
             int[] retrieveLength = getRetrieveLength(retrieveList);
@@ -542,7 +543,7 @@ public class Stalking
         return retrieve;
     }
 
-    protected static int[] getRetrieveLength(List<List<Integer>> retrieveList) 
+    protected  int[] getRetrieveLength(List<List<Integer>> retrieveList) 
     {
         int[] retrieveLength = new int[retrieveList.size()];
         int i = 0;
@@ -555,25 +556,25 @@ public class Stalking
         return retrieveLength;
     }
 
-    protected static int[][] generationRetrievel(int num, int[][] post)
+    protected  int[][] generationRetrievel(int num, int[][] post)
     {
         boolean flag;
         flag = false;
-        int[][] retrieve = new int[num][CONFIG.getMessageLimit()];
+        int[][] retrieve = new int[num][config.getMessageLimit()];
 
         for (int i = 0; i < num; i++)
         {
             System.out.print("P" + (i + 1) + " : ");
-            int limit = Math.abs(RANDOM.nextInt()) % CONFIG.getMessageLimit() + 1;
+            int limit = Math.abs(RANDOM.nextInt()) % config.getMessageLimit() + 1;
 
-            for (int j = 0; j < CONFIG.getMessageLimit(); j++)
+            for (int j = 0; j < config.getMessageLimit(); j++)
             {
                 flag = false;
                 if (j < limit)
                 {
-                    int msgId = Math.abs(RANDOM.nextInt()) % CONFIG.getNumMessages() + 1;
+                    int msgId = Math.abs(RANDOM.nextInt()) % config.getNumMessages() + 1;
 
-                    for (int k = 0; k < CONFIG.getMessageLimit(); k++)
+                    for (int k = 0; k < config.getMessageLimit(); k++)
                     {
                         if (post[i][k] == msgId) 
                                 flag = true;
@@ -610,14 +611,14 @@ public class Stalking
         return retrieve;
     }
 
-    protected static int[][] generationStalkingRetrievel(int[][] post, double[] probability) 
+    protected  int[][] generationStalkingRetrievel(int[][] post, double[] probability) 
     {
-        int[][] retrieve = generationRetrievel(CONFIG.getMatrix().length, post);
+        int[][] retrieve = generationRetrievel(config.getMatrix().length, post);
         int[][] retrieveTmp;
-        int stalkedIndex    =   CONFIG.getStalkingIndex();
-        int stalkingIndex   =   CONFIG.getStalkerIndex();
+        int stalkedIndex    =   config.getStalkingIndex();
+        int stalkingIndex   =   config.getStalkerIndex();
         
-        int[] dist = Dijsktra(CONFIG.getMatrix(), stalkedIndex);
+        int[] dist = Dijsktra(config.getMatrix(), stalkedIndex);
         Set<Integer> retrieveSet = new HashSet<Integer>();
         
         for (int r = 0; r < post[stalkedIndex].length; r++)
@@ -629,7 +630,7 @@ public class Stalking
         
         for (int r = 0; r < dist.length; r++) 
         {
-            int distNum = CONFIG.getDistNum(); // retrieve///
+            int distNum = config.getDistNum(); // retrieve///
             if (dist[r] <= distNum && dist[r] > 0) 
             {
                 for (int p = 0; p < post[r].length; p++) 
@@ -647,10 +648,10 @@ public class Stalking
                 for (int j = 0; j < post[i].length; j++) 
                 {
                     double pro = Math.random();
-                    if (pro < probability[CONFIG.getDistNum() + 1]) 
+                    if (pro < probability[config.getDistNum() + 1]) 
                     {
                         pro = Math.random();
-                        if (pro < probability[CONFIG.getDistNum() + 1]) 
+                        if (pro < probability[config.getDistNum() + 1]) 
                                 retrieveSet.add(post[i][j]);
                     }
                 }
@@ -661,12 +662,12 @@ public class Stalking
         
         if (retrieve[0].length < retrieveSet.size()) 
         {
-            retrieveTmp = new int[CONFIG.getMatrix().length][retrieveSet.size()];
-            for (int i = 0; i < CONFIG.getMatrix().length; i++) 
+            retrieveTmp = new int[config.getMatrix().length][retrieveSet.size()];
+            for (int i = 0; i < config.getMatrix().length; i++) 
             {
                 for (int j = 0; j < retrieveSet.size(); j++)
                 {
-                    if (i < CONFIG.getMessageLimit() && j < CONFIG.getMessageLimit()) 
+                    if (i < config.getMessageLimit() && j < config.getMessageLimit()) 
                         retrieveTmp[i][j] = retrieve[i][j];
                     else 
                         retrieveTmp[i][j] = 0;
@@ -686,11 +687,11 @@ public class Stalking
         return retrieveTmp;
     }
 
-    protected static int[][] generationStalkingRetrievel2(int[][] post, double[] probability) 
+    protected  int[][] generationStalkingRetrievel2(int[][] post, double[] probability) 
     {
-        int[][] mMatrix     =   CONFIG.getMatrix();
-        int stalkedIndex    =   CONFIG.getStalkingIndex();
-        int stalkingIndex   =   CONFIG.getStalkerIndex();
+        int[][] mMatrix     =   config.getMatrix();
+        int stalkedIndex    =   config.getStalkingIndex();
+        int stalkingIndex   =   config.getStalkerIndex();
         
         int[][] retrieve = generationRetrievel(mMatrix.length, post);
         int[][] retrieveTmp;
@@ -712,7 +713,7 @@ public class Stalking
 
         for (int r = 0; r < mMatrix.length; r++) 
         {
-            if (dist[r][stalkedIndex] <= CONFIG.getDistNum() && dist[r][stalkedIndex] > 0) {
+            if (dist[r][stalkedIndex] <= config.getDistNum() && dist[r][stalkedIndex] > 0) {
                 for (int p = 0; p < post[r].length; p++) 
                 {
                     if (post[r][p] == 0) break;
@@ -728,10 +729,10 @@ public class Stalking
                 for (int j = 0; j < post[i].length; j++)
                 {
                     double pro = Math.random();
-                    if (pro < probability[CONFIG.getDistNum() + 1])
+                    if (pro < probability[config.getDistNum() + 1])
                     {
                         pro = Math.random();
-                        if (pro < probability[CONFIG.getDistNum() + 1]) 
+                        if (pro < probability[config.getDistNum() + 1]) 
                             retrieveSet.add(post[i][j]);
                     }
                 }
@@ -746,7 +747,7 @@ public class Stalking
             for (int i = 0; i < mMatrix.length; i++) {
                 for (int j = 0; j < retrieveSet.size(); j++) 
                 {
-                    if (j < CONFIG.getMessageLimit()) 
+                    if (j < config.getMessageLimit()) 
                         retrieveTmp[i][j] = retrieve[i][j];
                     
                     else 
@@ -777,11 +778,11 @@ public class Stalking
         return retrieveTmp;
     }
 
-    protected static int[][] generatePost(int time)
+    protected  int[][] generatePost(int time)
     {
-        int num     =   CONFIG.getNumNodes();
+        int num     =   config.getNumNodes();
         System.out.println(" POST :" + time);
-        int[][] post = new int[num][CONFIG.getMessageLimit()];
+        int[][] post = new int[num][config.getMessageLimit()];
 
 
         for (int i = 0; i < num; i++) 
@@ -789,10 +790,10 @@ public class Stalking
             System.out.print("Random Post of P" + (i + 1) + " : ");
             List<Integer> postMessageList = new ArrayList<>();
             
-            for (int x = 1; x <= CONFIG.getNumMessages(); x++) 
+            for (int x = 1; x <= config.getNumMessages(); x++) 
                 postMessageList.add(x);
             
-            for (int j = 0; j < CONFIG.getMessageLimit(); j++) 
+            for (int j = 0; j < config.getMessageLimit(); j++) 
             {
                 int index = (int) (Math.random() * postMessageList.size());
                 Integer tmp = postMessageList.get(index);
@@ -808,25 +809,25 @@ public class Stalking
         return post;
     }
 
-    protected static int[][] generationPost(String[] points, int time)
+    protected  int[][] generationPost(String[] points, int time)
     {
-        int num =   CONFIG.getNumNodes();
+        int num =   config.getNumNodes();
         boolean flag;
         System.out.println(" POST :" + time);
         flag = false;
-        int[][] post = new int[num][CONFIG.getMessageLimit()];
+        int[][] post = new int[num][config.getMessageLimit()];
         
         for (int i = 0; i < num; i++) 
         {
             System.out.print(points[i] + " : ");
-            int limit = Math.abs(RANDOM.nextInt()) % CONFIG.getMessageLimit() + 1;
+            int limit = Math.abs(RANDOM.nextInt()) % config.getMessageLimit() + 1;
 
-            for (int j = 0; j < CONFIG.getMessageLimit(); j++) 
+            for (int j = 0; j < config.getMessageLimit(); j++) 
             {
                 flag = false;
                 if (j < limit)
                 {
-                    int msgId = Math.abs(RANDOM.nextInt()) % CONFIG.getNumMessages() + 1;
+                    int msgId = Math.abs(RANDOM.nextInt()) % config.getNumMessages() + 1;
                     
                     for (int k = 0; k < j; k++) 
                     {
@@ -851,10 +852,10 @@ public class Stalking
         return post;
     }
 
-    protected static int[][] generationGraphPowerlaw() 
+    protected  int[][] generationGraphPowerlaw() 
     {
-        int num         =   CONFIG.getNumNodes();
-        int edgesToAdd  =   CONFIG.getNumEdges();
+        int num         =   config.getNumNodes();
+        int edgesToAdd  =   config.getNumEdges();
         int[][] mMatrix;
         
         System.out.println("Generate Directed Graph using the Barabasi-Albert model where edgesToAdd= " + edgesToAdd);
@@ -961,15 +962,15 @@ public class Stalking
     }
 
     // print out the indegrees of all nodes
-    protected static void printDegree()
+    protected  void printDegree()
     {
-        int num =   CONFIG.getNumNodes();
+        int num =   config.getNumNodes();
         int[] degrees = new int[num];
         for (int i = 0; i < num; i++) 
         {
             for (int j = 0; j < num; j++)
             {
-                if (CONFIG.getMatrix()[i][j] == 1)
+                if (config.getMatrix()[i][j] == 1)
                         degrees[j]++;
             }
         }
@@ -980,10 +981,10 @@ public class Stalking
         System.out.print("\n");
     }
 
-    protected static int[][] initialGraph()
+    protected  int[][] initialGraph()
     {
-        int n   =   CONFIG.getNumNodes();
-        int m   =   CONFIG.getNumEdges();
+        int n   =   config.getNumNodes();
+        int m   =   config.getNumEdges();
         int[][] mMatrix = new int[n][n];
 
         for (int x = 0; x < m; x++) 
@@ -1001,10 +1002,10 @@ public class Stalking
     }
 
     
-    protected static int[][] generationGraphp() 
+    protected  int[][] generationGraphp() 
     {
-        double p    =   CONFIG.getEdgeProb();
-        int num     =   CONFIG.getNumNodes();
+        double p    =   config.getEdgeProb();
+        int num     =   config.getNumNodes();
         int[][] mMatrix;
         
         System.out.println("Generate Directed Graph using the G(n,p) model where p= " + p);
@@ -1029,12 +1030,12 @@ public class Stalking
         return mMatrix;
     }
 
-    protected static void printMatrix(String name) 
+    protected  void printMatrix(String name) 
     {
         System.out.println();
         System.out.println(name + " : ");
         
-        int[][] matrix  =   CONFIG.getMatrix();
+        int[][] matrix  =   config.getMatrix();
         for (int i = 0; i < matrix.length; i++) 
         {
             for (int j = 0; j < matrix[i].length; j++)
@@ -1044,7 +1045,7 @@ public class Stalking
         }
     }
 
-    protected static void printVector(String name, float[] vector) 
+    protected  void printVector(String name, float[] vector) 
     {
         System.out.println();
         System.out.println(name + " : ");
@@ -1053,7 +1054,7 @@ public class Stalking
                 System.out.print(vector[i] + " ");
     }
 
-    protected static float[][] transposedMatrix(float[][] matrix) 
+    protected  float[][] transposedMatrix(float[][] matrix) 
     {
         float[][] transposedMatrix = new float[matrix[0].length][matrix.length];
         for (int i = 0; i < matrix[0].length; i++) 
@@ -1065,7 +1066,7 @@ public class Stalking
         return transposedMatrix;
     }
 
-    protected static float[] matrixXvector(float[][] matrix, float[] vector) 
+    protected  float[] matrixXvector(float[][] matrix, float[] vector) 
     {
         float[] c_point = new float[vector.length];
         for (int i = 0; i < vector.length; i++) 
@@ -1077,7 +1078,7 @@ public class Stalking
         return c_point;
     }
 
-    protected static void writeG(String fileName, float[][][] g)
+    protected  void writeG(String fileName, float[][][] g)
     {
         File file = new File(Stalking.class.getClassLoader().getResource(".").getPath() + "../" + fileName);
         System.out.println("Save g.txt to:" + file.getPath());
@@ -1111,7 +1112,7 @@ public class Stalking
         }
     }
 
-    protected static int[][] readTxtFile(String filePath)
+    protected  int[][] readTxtFile(String filePath)
     {
         List<String> tmpList = new ArrayList<>();
         String encoding = "UTF-8";
@@ -1146,12 +1147,12 @@ public class Stalking
         return mMatrix;
     }
 
-    protected static boolean isExistInPost(Integer retrieve, int[][] post)
+    protected  boolean isExistInPost(Integer retrieve, int[][] post)
     {
         return true;
     }
 
-    protected static int[] Dijsktra(int[][] mMatrix, int start) 
+    protected  int[] Dijsktra(int[][] mMatrix, int start) 
     {
         int INF = Integer.MAX_VALUE;
         int[][] weight = new int[mMatrix.length][mMatrix.length];
