@@ -32,9 +32,9 @@ public class Stalking
         StalkingConfig config   =   getConfig();
         PrintStream out         =   System.out;
         
-        float[][][] gPoint      =   (float[][][]) StalkingData.getGPoint(StalkingData.COMPUTE_P1, false, config);
-        float[][][] gPoint_2    =   (float[][][]) StalkingData.getGPoint(StalkingData.COMPUTE_P2, false, config);
-        float[][][] gPoint_3    =   (float[][][]) StalkingData.getGPoint(StalkingData.COMPUTE_P3, false, config);
+        float[][][] gPoint      =   (float[][][]) StalkingUtils.getGPoint(StalkingUtils.COMPUTE_P1, false, config);
+        float[][][] gPoint_2    =   (float[][][]) StalkingUtils.getGPoint(StalkingUtils.COMPUTE_P2, false, config);
+        float[][][] gPoint_3    =   (float[][][]) StalkingUtils.getGPoint(StalkingUtils.COMPUTE_P3, false, config);
 
         writeG("cxy.txt", gPoint);
         writeG("cxycy.txt", gPoint_2);
@@ -409,11 +409,11 @@ public class Stalking
         return weight;
     }
 
-    protected static Integer[][] generateRetrieve(Integer[][] post) 
+    protected static int[][] generateRetrieve(int[][] post) 
     {
         System.out.println(" Retrieve :");
-        int num                 =   CONFIG.getNumNodes();
-        Integer retrieve[][]    =   new Integer[num][CONFIG.getMessageLimit()];
+        int num             =   CONFIG.getNumNodes();
+        int[][] retrieve    =   new int[num][CONFIG.getMessageLimit()];
 
         for (int i = 0; i < num; i++) 
         {
@@ -445,16 +445,16 @@ public class Stalking
         return retrieve;
     }
 
-    protected static Integer[][] generateStalkingRetrieve(Integer[][] post, int[] copyTime, Integer [][] retrieveRandom) 
+    protected static int[][] generateStalkingRetrieve(int[][] post, int[] copyTime, int[][] retrieveRandom) 
     {
-        Integer[][] retrieve    =   new Integer [CONFIG.getMatrix().length][CONFIG.getMessageLimit()];
+        int[][] retrieve    =   new int[CONFIG.getMatrix().length][CONFIG.getMessageLimit()];
         int stalkedIndex        =   CONFIG.getStalkingIndex();
         int stalkingIndex       =   CONFIG.getStalkerIndex();
         
         for(int i =0; i < CONFIG.getMatrix().length; i++)
         {
             for (int j=0;j < CONFIG.getMessageLimit();j++)
-                retrieve[i][j]= new Integer(retrieveRandom[i][j]);
+                retrieve[i][j] = retrieveRandom[i][j];
             
         }
         
@@ -555,11 +555,11 @@ public class Stalking
         return retrieveLength;
     }
 
-    protected static Integer[][] generationRetrievel(int num, Integer[][] post)
+    protected static int[][] generationRetrievel(int num, int[][] post)
     {
         boolean flag;
         flag = false;
-        Integer retrieve[][] = new Integer[num][CONFIG.getMessageLimit()];
+        int[][] retrieve = new int[num][CONFIG.getMessageLimit()];
 
         for (int i = 0; i < num; i++)
         {
@@ -610,10 +610,10 @@ public class Stalking
         return retrieve;
     }
 
-    protected static Integer[][] generationStalkingRetrievel(Integer[][] post, double[] probability) 
+    protected static int[][] generationStalkingRetrievel(int[][] post, double[] probability) 
     {
-        Integer[][] retrieve = generationRetrievel(CONFIG.getMatrix().length, post);
-        Integer[][] retrieveTmp;
+        int[][] retrieve = generationRetrievel(CONFIG.getMatrix().length, post);
+        int[][] retrieveTmp;
         int stalkedIndex    =   CONFIG.getStalkingIndex();
         int stalkingIndex   =   CONFIG.getStalkerIndex();
         
@@ -634,7 +634,7 @@ public class Stalking
             {
                 for (int p = 0; p < post[r].length; p++) 
                 {
-                    if (post[r][p].equals(0)) break;
+                    if (post[r][p] == 0) break;
 
                     double pro = Math.random();
                     if (pro < probability[dist[r]]) 
@@ -661,7 +661,7 @@ public class Stalking
         
         if (retrieve[0].length < retrieveSet.size()) 
         {
-            retrieveTmp = new Integer[CONFIG.getMatrix().length][retrieveSet.size()];
+            retrieveTmp = new int[CONFIG.getMatrix().length][retrieveSet.size()];
             for (int i = 0; i < CONFIG.getMatrix().length; i++) 
             {
                 for (int j = 0; j < retrieveSet.size(); j++)
@@ -686,14 +686,14 @@ public class Stalking
         return retrieveTmp;
     }
 
-    protected static Integer[][] generationStalkingRetrievel2(Integer[][] post, double[] probability) 
+    protected static int[][] generationStalkingRetrievel2(int[][] post, double[] probability) 
     {
         int[][] mMatrix     =   CONFIG.getMatrix();
         int stalkedIndex    =   CONFIG.getStalkingIndex();
         int stalkingIndex   =   CONFIG.getStalkerIndex();
         
-        Integer[][] retrieve = generationRetrievel(mMatrix.length, post);
-        Integer[][] retrieveTmp;
+        int[][] retrieve = generationRetrievel(mMatrix.length, post);
+        int[][] retrieveTmp;
         int[][] dist = new int[mMatrix.length][mMatrix.length];
         
         for (int i = 0; i < mMatrix.length; i++) 
@@ -715,7 +715,7 @@ public class Stalking
             if (dist[r][stalkedIndex] <= CONFIG.getDistNum() && dist[r][stalkedIndex] > 0) {
                 for (int p = 0; p < post[r].length; p++) 
                 {
-                    if (post[r][p].equals(0)) break;
+                    if (post[r][p] == 0) break;
                     
                     double pro = Math.random();
                     if (pro < probability[dist[r][stalkedIndex]]) 
@@ -742,7 +742,7 @@ public class Stalking
 
         if (retrieve[0].length < retrieveSet.size()) 
         {
-            retrieveTmp = new Integer[mMatrix.length][retrieveSet.size()];
+            retrieveTmp = new int[mMatrix.length][retrieveSet.size()];
             for (int i = 0; i < mMatrix.length; i++) {
                 for (int j = 0; j < retrieveSet.size(); j++) 
                 {
@@ -777,11 +777,11 @@ public class Stalking
         return retrieveTmp;
     }
 
-    protected static Integer[][] generatePost(int time)
+    protected static int[][] generatePost(int time)
     {
         int num     =   CONFIG.getNumNodes();
         System.out.println(" POST :" + time);
-        Integer post[][] = new Integer[num][CONFIG.getMessageLimit()];
+        int[][] post = new int[num][CONFIG.getMessageLimit()];
 
 
         for (int i = 0; i < num; i++) 
@@ -808,13 +808,13 @@ public class Stalking
         return post;
     }
 
-    protected static Integer[][] generationPost(String[] points, int time)
+    protected static int[][] generationPost(String[] points, int time)
     {
         int num =   CONFIG.getNumNodes();
         boolean flag;
         System.out.println(" POST :" + time);
         flag = false;
-        Integer post[][] = new Integer[num][CONFIG.getMessageLimit()];
+        int[][] post = new int[num][CONFIG.getMessageLimit()];
         
         for (int i = 0; i < num; i++) 
         {
@@ -1146,7 +1146,7 @@ public class Stalking
         return mMatrix;
     }
 
-    protected static boolean isExistInPost(Integer retrieve, Integer[][] post)
+    protected static boolean isExistInPost(Integer retrieve, int[][] post)
     {
         return true;
     }

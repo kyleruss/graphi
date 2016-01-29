@@ -11,35 +11,34 @@ public class StalkingUtils
     {
         for(int time = 1; time < config.getTime(); time++)
         {
-            int[][] post             =   Stalking.generatePost(time);
-            int[] copyTime               =   { 1, 1, 1, 0, 0 };
+            int[][] post            =   Stalking.generatePost(time);
+            int[] copyTime          =   { 1, 1, 1, 0, 0 };
+            int[][] retrieve        =   Stalking.generateRetrieve(post);
             float[][] weight;
             float[][] vector;
-            int[][] retrieve;
 
             if(!stalking)
             {
-                retrieve    =   Stalking.generateRetrieve(post);   
                 weight      =   Stalking.getWeight(post, retrieve);
-                vector      =   Stalking.createNewMatrix1(config.getNumNodes(), config.getMatrix(), weight, config.getR());
+                vector      =   Stalking.createNewMatrix1(weight);
             }
 
             else
             {
-                retrieve    =   Stalking.generateStalkingRetrieve(config.getMatrix(), post, config.getStalkerIndex(), config.getStalkingIndex(), copyTime,retrieve);   
-                weight      =   Stalking.getWeight(config.getNumNodes(), post, retrieveStalking);
-                vector      =   Stalking.createNewMatrix1(config.getNumNodes(), config.getMatrix(), weight, config.getR());
+                retrieve    =   Stalking.generateStalkingRetrieve(post, copyTime, retrieve);   
+                weight      =   Stalking.getWeight(post, retrieve);
+                vector      =   Stalking.createNewMatrix1(weight);
             }
             
             switch(point)
             {
-                case COMPUTE_P1: ((float[][][]) obj)[time - 1]  =   Stalking.getDpoint_1(config.getNumNodes(), time, vector); break;
+                case COMPUTE_P1: ((float[][][]) obj)[time - 1]  =   Stalking.getDpoint_1(vector); break;
                     
-                case COMPUTE_P2: ((float[][][]) obj)[time - 1]  =   Stalking.getDpoint_2(config.getNumNodes(), time, vector); break;
+                case COMPUTE_P2: ((float[][][]) obj)[time - 1]  =   Stalking.getDpoint_2(vector); break;
                     
-                case COMPUTE_P3: ((float[][]) obj)[time - 1]    =   Stalking.getDpoint_3(config.getNumNodes(), vector); break;
+                case COMPUTE_P3: ((float[][]) obj)[time - 1]    =   Stalking.getDpoint_3(vector); break;
                     
-                case COMPUTE_P4: ((float[][][]) obj)[time - 1]  =   Stalking.getDpoint_4(config.getNumNodes(), time, vector); break;
+                case COMPUTE_P4: ((float[][][]) obj)[time - 1]  =   Stalking.getDpoint_4(vector); break;
             }
         }
     }
