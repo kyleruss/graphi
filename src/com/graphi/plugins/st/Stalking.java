@@ -3,7 +3,6 @@ package com.graphi.plugins.st;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,7 +12,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
 import java.util.Set;
 
 public class Stalking 
@@ -23,29 +21,12 @@ public class Stalking
     
     public Stalking()
     {
-        createConfig();
+        this(new StalkingConfig());
     }
     
     public Stalking(StalkingConfig config)
     {
         this.config     =   config;
-    }
-    
-    public static void main(String[] args)
-    {
-        PrintStream out         =   System.out;
-        Stalking stalking       =   new Stalking();
-        
-        float[][][] gPoint      =   (float[][][]) StalkingUtils.getGPoint(StalkingUtils.COMPUTE_P1, false, stalking);
-        float[][][] gPoint_2    =   (float[][][]) StalkingUtils.getGPoint(StalkingUtils.COMPUTE_P2, false, stalking);
-        float[][][] gPoint_3    =   (float[][][]) StalkingUtils.getGPoint(StalkingUtils.COMPUTE_P3, false, stalking);
-
-        stalking.writeG("cxy.txt", gPoint);
-        stalking.writeG("cxycy.txt", gPoint_2);
-        stalking.writeG("average.txt", gPoint_3);
-        
-        System.setOut(out);
-        System.out.print("FINISHED!");
     }
     
     public void setConfig(StalkingConfig config)
@@ -58,116 +39,6 @@ public class Stalking
         return config;
     }
     
-    private void createConfig()
-    {
-        config  =   new StalkingConfig();
-        
-        System.out.println("Do you want to create from txt file/ 1--yes,2--Random");
-        Scanner input = new Scanner(System.in);
-
-        config.setReadIO(input.nextInt() == 1);
-
-        if (config.isReadIO())
-        {
-             config.setMatrix(readTxtFile(Stalking.class.getClassLoader()
-                     .getResource(".")
-                     .getPath()
-                     + "../mMatrix.txt"));
-
-             config.setNumNodes(config.getMatrix().length);
-        } 
-
-        else 
-        {
-            do 
-            {
-                System.out.println("The RANDOM graph model: 1 (G(n,p)), 2 (Power Law)");
-                input = new Scanner(System.in);
-                config.setModel(input.nextInt());
-            } 
-
-            while (config.getModel() == 0);
-
-            System.out.println("The number of nodes:");
-            input = new Scanner(System.in);
-            config.setNumNodes(input.nextInt());
-
-            System.out.println("The total number of messages:");
-            input = new Scanner(System.in);
-            config.setNumMessages(input.nextInt());
-
-            System.out.println("The max number of messages of a person:");
-            input = new Scanner(System.in);
-            config.setMessageLimit(input.nextInt());
-
-
-            if (config.getModel() == 1) 
-            {
-                System.out.println("The edge probability p = ");
-                input = new Scanner(System.in);
-                config.setEdgeProb(input.nextDouble());
-                config.setMatrix(generationGraphp());
-            } 
-
-            else 
-            {
-                System.out.println("The fixed number of edges m = ");
-                input = new Scanner(System.in);
-                config.setNumEdges(input.nextInt());
-                config.setMatrix(generationGraphPowerlaw());
-            }
-
-            System.out.println("Graph generated");
-        }
-
-        // Stalking
-        System.out.println("who are you(only scanner the number):");
-        config.setStalkerIndex(input.nextInt() - 1);
-        System.out.println("who do you want to stalk(only input the number):");
-        config.setStalkingIndex(input.nextInt() - 1);
-
-
-        String[] POINTS = new String[config.getNumNodes()];
-        for (int i = 0; i < config.getNumNodes(); i++)
-                POINTS[i] = "P" + (i + 1);
-
-
-        int[][] dist = new int[config.getNumNodes()][config.getNumNodes()];
-        for (int i = 0; i < config.getNumNodes(); i++) 
-                dist[i] = Dijsktra(config.getMatrix(), i);
-
-
-        try 
-        {
-            System.setOut(new PrintStream(new FileOutputStream(Stalking.class
-                    .getClassLoader().getResource(".").getPath()
-                    + "log.txt")));
-        } 
-
-        catch (FileNotFoundException e) 
-        {
-            e.printStackTrace();
-        } 
-
-        System.out.println("Start!");
-        System.out.println("Generate " + config.getNumNodes() + " nodes");
-        printDegree();
-
-        System.out.print("nodes[" + config.getNumNodes() + "]={");
-        String[] points = new String[config.getNumNodes()];
-        for (int pn = 0; pn < config.getNumNodes(); pn++) 
-        {
-            points[pn] = POINTS[pn];
-            if (pn < config.getNumNodes() - 1) 
-                System.out.print(points[pn] + " , ");
-
-             else 
-                System.out.print(points[pn]);
-        }
-
-        System.out.println(" }");
-        printMatrix("");
-    }
 
     //calculate the stalking index according to the time
     protected  float[][][] getG_1(float[][][] gPoint, float[][][] dPoint) 
