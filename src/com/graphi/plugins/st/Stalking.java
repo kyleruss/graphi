@@ -23,23 +23,34 @@ public class Stalking
     
     public Stalking()
     {
-        
+        createConfig();
     }
     
-    public void main(String[] args)
+    public Stalking(StalkingConfig config)
+    {
+        this.config     =   config;
+    }
+    
+    public static void main(String[] args)
     {
         PrintStream out         =   System.out;
+        Stalking stalking       =   new Stalking();
         
-        float[][][] gPoint      =   (float[][][]) StalkingUtils.getGPoint(StalkingUtils.COMPUTE_P1, false, config);
-        float[][][] gPoint_2    =   (float[][][]) StalkingUtils.getGPoint(StalkingUtils.COMPUTE_P2, false, config);
-        float[][][] gPoint_3    =   (float[][][]) StalkingUtils.getGPoint(StalkingUtils.COMPUTE_P3, false, config);
+        float[][][] gPoint      =   (float[][][]) StalkingUtils.getGPoint(StalkingUtils.COMPUTE_P1, false, stalking);
+        float[][][] gPoint_2    =   (float[][][]) StalkingUtils.getGPoint(StalkingUtils.COMPUTE_P2, false, stalking);
+        float[][][] gPoint_3    =   (float[][][]) StalkingUtils.getGPoint(StalkingUtils.COMPUTE_P3, false, stalking);
 
-        writeG("cxy.txt", gPoint);
-        writeG("cxycy.txt", gPoint_2);
-        writeG("average.txt", gPoint_3);
+        stalking.writeG("cxy.txt", gPoint);
+        stalking.writeG("cxycy.txt", gPoint_2);
+        stalking.writeG("average.txt", gPoint_3);
         
         System.setOut(out);
         System.out.print("FINISHED!");
+    }
+    
+    public void setConfig(StalkingConfig config)
+    {
+        this.config =   config;
     }
     
     public StalkingConfig getConfig()
@@ -49,21 +60,21 @@ public class Stalking
     
     private void createConfig()
     {
-        StalkingConfig cfg   =   new StalkingConfig();
+        config  =   new StalkingConfig();
         
         System.out.println("Do you want to create from txt file/ 1--yes,2--Random");
         Scanner input = new Scanner(System.in);
 
-        cfg.setReadIO(input.nextInt() == 1);
+        config.setReadIO(input.nextInt() == 1);
 
-        if (cfg.isReadIO())
+        if (config.isReadIO())
         {
-             cfg.setMatrix(readTxtFile(Stalking.class.getClassLoader()
+             config.setMatrix(readTxtFile(Stalking.class.getClassLoader()
                      .getResource(".")
                      .getPath()
                      + "../mMatrix.txt"));
 
-             cfg.setNumNodes(cfg.getMatrix().length);
+             config.setNumNodes(config.getMatrix().length);
         } 
 
         else 
@@ -72,38 +83,38 @@ public class Stalking
             {
                 System.out.println("The RANDOM graph model: 1 (G(n,p)), 2 (Power Law)");
                 input = new Scanner(System.in);
-                cfg.setModel(input.nextInt());
+                config.setModel(input.nextInt());
             } 
 
-            while (cfg.getModel() == 0);
+            while (config.getModel() == 0);
 
             System.out.println("The number of nodes:");
             input = new Scanner(System.in);
-            cfg.setNumNodes(input.nextInt());
+            config.setNumNodes(input.nextInt());
 
             System.out.println("The total number of messages:");
             input = new Scanner(System.in);
-            cfg.setNumMessages(input.nextInt());
+            config.setNumMessages(input.nextInt());
 
             System.out.println("The max number of messages of a person:");
             input = new Scanner(System.in);
-            cfg.setMessageLimit(input.nextInt());
+            config.setMessageLimit(input.nextInt());
 
 
-            if (cfg.getModel() == 1) 
+            if (config.getModel() == 1) 
             {
                 System.out.println("The edge probability p = ");
                 input = new Scanner(System.in);
-                cfg.setEdgeProb(input.nextDouble());
-                cfg.setMatrix(generationGraphp());
+                config.setEdgeProb(input.nextDouble());
+                config.setMatrix(generationGraphp());
             } 
 
             else 
             {
                 System.out.println("The fixed number of edges m = ");
                 input = new Scanner(System.in);
-                cfg.setNumEdges(input.nextInt());
-                cfg.setMatrix(generationGraphPowerlaw());
+                config.setNumEdges(input.nextInt());
+                config.setMatrix(generationGraphPowerlaw());
             }
 
             System.out.println("Graph generated");
@@ -111,19 +122,19 @@ public class Stalking
 
         // Stalking
         System.out.println("who are you(only scanner the number):");
-        cfg.setStalkerIndex(input.nextInt() - 1);
+        config.setStalkerIndex(input.nextInt() - 1);
         System.out.println("who do you want to stalk(only input the number):");
-        cfg.setStalkingIndex(input.nextInt() - 1);
+        config.setStalkingIndex(input.nextInt() - 1);
 
 
-        String[] POINTS = new String[cfg.getNumNodes()];
-        for (int i = 0; i < cfg.getNumNodes(); i++)
+        String[] POINTS = new String[config.getNumNodes()];
+        for (int i = 0; i < config.getNumNodes(); i++)
                 POINTS[i] = "P" + (i + 1);
 
 
-        int[][] dist = new int[cfg.getNumNodes()][cfg.getNumNodes()];
-        for (int i = 0; i < cfg.getNumNodes(); i++) 
-                dist[i] = Dijsktra(cfg.getMatrix(), i);
+        int[][] dist = new int[config.getNumNodes()][config.getNumNodes()];
+        for (int i = 0; i < config.getNumNodes(); i++) 
+                dist[i] = Dijsktra(config.getMatrix(), i);
 
 
         try 
@@ -139,15 +150,15 @@ public class Stalking
         } 
 
         System.out.println("Start!");
-        System.out.println("Generate " + cfg.getNumNodes() + " nodes");
+        System.out.println("Generate " + config.getNumNodes() + " nodes");
         printDegree();
 
-        System.out.print("nodes[" + cfg.getNumNodes() + "]={");
-        String[] points = new String[cfg.getNumNodes()];
-        for (int pn = 0; pn < cfg.getNumNodes(); pn++) 
+        System.out.print("nodes[" + config.getNumNodes() + "]={");
+        String[] points = new String[config.getNumNodes()];
+        for (int pn = 0; pn < config.getNumNodes(); pn++) 
         {
             points[pn] = POINTS[pn];
-            if (pn < cfg.getNumNodes() - 1) 
+            if (pn < config.getNumNodes() - 1) 
                 System.out.print(points[pn] + " , ");
 
              else 
