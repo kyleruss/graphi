@@ -8,17 +8,24 @@ package com.graphi.plugins;
 
 import com.graphi.display.Window;
 import com.graphi.plugins.def.DefaultPlugin;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PluginManager
 {
     private AbstractPlugin activePlugin;
     private final Window window;
+    private Map<String, AbstractPlugin> plugins;
 
     public PluginManager(Window window)
     {
         this.window     =   window;
-        activePlugin    =   new DefaultPlugin();
-        activePlugin.attachPanel(window);
+        
+        AbstractPlugin defaultPlugin    =   new DefaultPlugin();
+        activatePlugin(defaultPlugin);
+        
+        plugins =   new HashMap<>();
+        plugins.put(activePlugin.getPluginName(), activePlugin);
     }
     
     public Window getWindow()
@@ -31,8 +38,17 @@ public class PluginManager
         return activePlugin;
     }
     
-    public void setActivePlugin(AbstractPlugin plugin)
+    public void activatePlugin(AbstractPlugin plugin)
     {
         this.activePlugin   =   plugin;
+        activePlugin.attachPanel(window);
+    }
+    
+    public void activePlugin(String pluginName)
+    {
+        AbstractPlugin plugin   =   plugins.get(pluginName);
+        
+        if(plugin != null)
+            activatePlugin(plugin);
     }
 }
