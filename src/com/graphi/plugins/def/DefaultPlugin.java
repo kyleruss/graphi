@@ -6,14 +6,20 @@
 
 package com.graphi.plugins.def;
 
-import com.graphi.display.LayoutPanel;
+import com.graphi.display.Window;
 import com.graphi.plugins.AbstractPlugin;
 
 
 public class DefaultPlugin extends AbstractPlugin
 {
-    public DefaultPlugin(String name, String description, LayoutPanel panel) 
+    public DefaultPlugin() 
     {
-        super(name, description, panel);
+        super("Default", "Default plugin");
+    }
+
+    @Override
+    public void attachPanel(Window window) 
+    {
+        panel  =   new DefaultLayout(window.getMenu(), window.getFrame());
     }
 }

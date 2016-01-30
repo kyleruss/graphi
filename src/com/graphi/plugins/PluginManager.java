@@ -6,6 +6,27 @@
 
 package com.graphi.plugins;
 
+import com.graphi.display.Window;
+import com.graphi.plugins.def.DefaultPlugin;
+
 public class PluginManager
 {
+    private AbstractPlugin activePlugin;
+    private final Window window;
+
+    public PluginManager(Window window)
+    {
+        this.window     =   window;
+        activePlugin    =   new DefaultPlugin();
+    }
+    
+    public AbstractPlugin getActivePlugin()
+    {
+        return activePlugin;
+    }
+    
+    public void setActivePlugin(AbstractPlugin plugin)
+    {
+        this.activePlugin   =   plugin;
+    }
 }

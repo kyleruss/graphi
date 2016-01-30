@@ -11,9 +11,9 @@ import com.graphi.display.Window;
 
 public abstract class AbstractPlugin implements Plugin
 {
-    private final String name;
-    private final String description;
-    private LayoutPanel panel;
+    protected final String name;
+    protected final String description;
+    protected LayoutPanel panel;
     
     public AbstractPlugin(String name, String description)
     {
