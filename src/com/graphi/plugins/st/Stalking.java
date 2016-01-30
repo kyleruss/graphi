@@ -249,9 +249,10 @@ public class Stalking
         {
             for (int j = 0; j < num; j++)
             {
-                int denominator = 0;// p+r
+                int denominator;
                 int numerator = 0;
-                Set<Integer> weightSet = new HashSet<Integer>();
+                
+                Set<Integer> weightSet = new HashSet<>();
                 
                 if (i == j) 
                     weight[i][j] = 0;
