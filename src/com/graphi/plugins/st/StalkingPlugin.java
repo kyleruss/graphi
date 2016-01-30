@@ -6,15 +6,22 @@
 
 package com.graphi.plugins.st;
 
-import com.graphi.display.LayoutPanel;
+import com.graphi.display.Window;
 import com.graphi.plugins.AbstractPlugin;
 
 
 public class StalkingPlugin extends AbstractPlugin
 {
-    public StalkingPlugin(String name, String description, LayoutPanel panel) 
+
+    public StalkingPlugin()
     {
-        super(name, description, panel);
+        super("Stalking", "Stalking plugin");
     }
-    
+
+    @Override
+    public void attachPanel(Window window) 
+    {
+        panel   =   new StalkingLayout(window.getMenu(), window.getFrame());
+    }
+
 }
