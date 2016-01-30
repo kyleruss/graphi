@@ -7,19 +7,21 @@
 package com.graphi.plugins;
 
 import com.graphi.display.LayoutPanel;
+import com.graphi.display.Window;
 
 public abstract class AbstractPlugin implements Plugin
 {
     private final String name;
     private final String description;
-    private final LayoutPanel panel;
+    private LayoutPanel panel;
     
-    public AbstractPlugin(String name, String description, LayoutPanel panel)
+    public AbstractPlugin(String name, String description)
     {
         this.name           =   name;
         this.description    =   description;
-        this.panel          =   panel;
     }
+    
+    public abstract void attachPanel(Window window);
     
     @Override
     public String getPluginName() 

@@ -41,6 +41,16 @@ public class Window
         initMenu();        
     }
     
+    public JFrame getFrame()
+    {
+        return frame;
+    }
+    
+    public MainMenu getMenu()
+    {
+        return menu;
+    }
+    
     
     private void initMenu()
     {
