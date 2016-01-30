@@ -7,13 +7,15 @@
 package com.graphi.plugins.def;
 
 import com.graphi.display.LayoutPanel;
-import com.graphi.plugins.AbstractPlugin;
+import com.graphi.display.MainMenu;
+import javax.swing.JFrame;
 
 
-public class DefaultPlugin extends AbstractPlugin
+public class DefaultLayout extends LayoutPanel
 {
-    public DefaultPlugin(String name, String description, LayoutPanel panel) 
+    public DefaultLayout(MainMenu menu, JFrame frame) 
     {
-        super(name, description, panel);
+        super(menu, frame);
     }
+    
 }
