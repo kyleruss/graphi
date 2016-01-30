@@ -146,6 +146,16 @@ public class LayoutPanel extends JPanel
         add(splitPane, BorderLayout.CENTER);
     }
     
+    public GraphData getGraphData()
+    {
+        return data;
+    }
+    
+    public void setGraphData(GraphData data)
+    {
+        this.data   =   data;
+    }
+    
     protected void sendToOutput(String output)
     {
         SimpleDateFormat sdf    =   new SimpleDateFormat("K:MM a dd.MM.yy");

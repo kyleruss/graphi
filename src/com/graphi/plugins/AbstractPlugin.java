@@ -45,5 +45,6 @@ public abstract class AbstractPlugin implements Plugin
     @Override
     public void passData(GraphData data)
     {
+        panel.setGraphData(data);
     }
 }

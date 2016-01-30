@@ -18,6 +18,12 @@ public class PluginManager
     {
         this.window     =   window;
         activePlugin    =   new DefaultPlugin();
+        activePlugin.attachPanel(window);
+    }
+    
+    public Window getWindow()
+    {
+        return window;
     }
     
     public AbstractPlugin getActivePlugin()
