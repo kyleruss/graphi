@@ -6,6 +6,7 @@
 
 package com.graphi.display;
 
+import com.graphi.plugins.PluginManager;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.JFrame;
@@ -16,9 +17,9 @@ public class Window
 {
     private final String WINDOW_TITLE   =   "Graphi - Kyle Russell 2015";
     
-    private final LayoutPanel layout;
     private final MainMenu menu;
     private final JFrame frame;
+    private final PluginManager pluginManager;
     public static final int WIDTH;
     public static final int HEIGHT;
     
@@ -33,12 +34,17 @@ public class Window
     {
         initLookAndFeel();
         
-        menu    =   new MainMenu();
-        frame   =   new JFrame(WINDOW_TITLE);
-        layout  =   new LayoutPanel(menu, frame);
+        menu            =   new MainMenu();
+        frame           =   new JFrame(WINDOW_TITLE);
+        pluginManager   =   new PluginManager(this);   
         
         initFrame();
         initMenu();        
+    }
+    
+    public PluginManager getPluginManager()
+    {
+        return pluginManager;
     }
     
     public JFrame getFrame()
@@ -73,7 +79,7 @@ public class Window
     
     private void initFrame()
     {
-        frame.getContentPane().add(layout);
+        frame.getContentPane().add(pluginManager.getActivePlugin().getPanel());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);     
         frame.pack();
         frame.setLocationRelativeTo(null);
