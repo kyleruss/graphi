@@ -47,4 +47,22 @@ public abstract class AbstractPlugin implements Plugin
     {
         panel.setGraphData(data);
     }
+    
+    @Override
+    public boolean equals(Object other)
+    {
+        if(other instanceof AbstractPlugin)
+        {
+            AbstractPlugin otherPlugin   =   (AbstractPlugin) other;
+            return this.getPluginName().equalsIgnoreCase(otherPlugin.getPluginName());
+        }
+        
+        else return false;
+    }
+    
+    @Override
+    public int hashCode()
+    {
+        return name.hashCode();
+    }
 }

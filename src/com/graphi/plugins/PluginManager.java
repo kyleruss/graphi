@@ -7,9 +7,10 @@
 package com.graphi.plugins;
 
 import com.graphi.display.Window;
-import com.graphi.plugins.def.DefaultPlugin;
+import com.graphi.plugins.st.StalkingPlugin;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.JFrame;
 
 public class PluginManager
 {
@@ -21,7 +22,7 @@ public class PluginManager
     {
         this.window     =   window;
         
-        AbstractPlugin defaultPlugin    =   new DefaultPlugin();
+        AbstractPlugin defaultPlugin    =   new StalkingPlugin();
         activatePlugin(defaultPlugin);
         
         plugins =   new HashMap<>();
@@ -38,10 +39,26 @@ public class PluginManager
         return activePlugin;
     }
     
+    public Map<String, AbstractPlugin> getPlugins()
+    {
+        return plugins;
+    }
+    
+    public void setPlugins(Map<String, AbstractPlugin> plugins)
+    {
+        this.plugins    =   plugins;
+    }
+    
     public void activatePlugin(AbstractPlugin plugin)
     {
-        this.activePlugin   =   plugin;
+        if(plugin == null) return;
+
+        activePlugin   =   plugin;
         activePlugin.attachPanel(window);
+        JFrame frame    =   window.getFrame();
+        frame.getContentPane().removeAll();
+        frame.add(activePlugin.getPanel());
+        frame.revalidate();
     }
     
     public void activePlugin(String pluginName)
