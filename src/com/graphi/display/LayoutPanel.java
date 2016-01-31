@@ -687,7 +687,7 @@ public class LayoutPanel extends JPanel
         {
             int m           =   (int) initialNSpinner.getValue();
             int n           =   (int) addNSpinner.getValue();
-            data.setGraph(Network.generateBerbasiAlbert(data.getNodeFactory(), data.getEdgeFactory(), n, m));
+            data.setGraph(Network.generateBerbasiAlbert(data.getNodeFactory(), data.getEdgeFactory(), n, m, false));
         }
         
         protected void showVertexBGChange()

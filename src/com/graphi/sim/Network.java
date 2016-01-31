@@ -34,7 +34,7 @@ public class Network
         return gen.create();
     }
     
-    public static Graph<Node, Edge> generateBerbasiAlbert(Factory<Node> nodeFactory, Factory<Edge> edgeFactory, int n, int m)
+    public static Graph<Node, Edge> generateBerbasiAlbert(Factory<Node> nodeFactory, Factory<Edge> edgeFactory, int n, int m, boolean directed)
     {
         if(nodeFactory == null) nodeFactory         =   () -> new Node();
         if(edgeFactory == null) edgeFactory         =   () -> new Edge();
@@ -57,7 +57,7 @@ public class Network
             {
                 int index   =   rGen.nextInt(vertices.size());
                 Node next   =   vertices.get(index);
-                int degree      =   graph.degree(next);
+                int degree      =   (directed)? graph.inDegree(next) : graph.degree(next);
                 int degreeSum   =   GraphUtilities.degreeSum(graph);
                 double p        =   degree / (degreeSum * 1.0);
 
@@ -76,7 +76,7 @@ public class Network
             graph.addVertex(current);
             
             while(!nextVerticies.isEmpty())
-                graph.addEdge(edgeFactory.create(), current, nextVerticies.poll().getKey());
+                graph.addEdge(edgeFactory.create(), current, nextVerticies.poll().getKey(), directed? EdgeType.DIRECTED : EdgeType.UNDIRECTED);
         }
         
         return graph;
