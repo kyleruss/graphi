@@ -79,7 +79,6 @@ public class Window
     
     private void initFrame()
     {
-        frame.getContentPane().add(pluginManager.getActivePlugin().getPanel());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);     
         frame.pack();
         frame.setLocationRelativeTo(null);

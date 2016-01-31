@@ -53,6 +53,9 @@ public class PluginManager
     {
         if(plugin == null) return;
 
+        if(activePlugin != null) 
+            plugin.passData(activePlugin.getData());
+        
         activePlugin   =   plugin;
         activePlugin.attachPanel(window);
         JFrame frame    =   window.getFrame();
