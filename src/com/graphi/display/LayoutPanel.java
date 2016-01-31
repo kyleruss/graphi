@@ -381,6 +381,8 @@ public class LayoutPanel extends JPanel
             randNumSpinner.setPreferredSize(new Dimension(50, 20));
             latticeSpinner.setOpaque(true);
             clusteringSpinner.setOpaque(true);
+            randNumSpinner.setOpaque(true);
+            randProbSpinner.setOpaque(true);
             
             randDirectedCheck   =   new JCheckBox("Directed");
             
