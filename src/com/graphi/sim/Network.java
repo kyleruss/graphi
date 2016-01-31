@@ -112,7 +112,7 @@ public class Network
                 {
                     double p    =   rGen.nextDouble() * 100;
                     
-                    if(p >= P)
+                    if(p >= P && !(!directed && graph.isNeighbor(other, node)))
                         graph.addEdge(edgeFactory.create(), node, other, directed? EdgeType.DIRECTED : EdgeType.UNDIRECTED);
                 }
             }

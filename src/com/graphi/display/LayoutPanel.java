@@ -241,6 +241,7 @@ public class LayoutPanel extends JPanel
     {
         protected final String BA_PANEL_CARD          =   "ba_panel";
         protected final String KL_PANEL_CARD          =   "kl_panel";
+        protected final String RA_PANEL_CARD          =   "ra_panel";
         
         protected final String CLUSTER_PANEL_CARD     =   "cluster_panel";
         protected final String SPATH_PANEL_CARD       =   "spath_panel";
@@ -253,10 +254,10 @@ public class LayoutPanel extends JPanel
         protected ButtonGroup modeGroup;
         protected JComboBox genAlgorithmsBox;
         protected JButton resetGeneratorBtn, executeGeneratorBtn;
-        protected JPanel genPanel, baGenPanel, klGenPanel;
+        protected JPanel genPanel, baGenPanel, klGenPanel, raGenPanel;
         protected JSpinner latticeSpinner, clusteringSpinner;
-        protected JSpinner initialNSpinner, addNSpinner;
-        protected JCheckBox simTiesCheck;
+        protected JSpinner initialNSpinner, addNSpinner, randProbSpinner, randNumSpinner;
+        protected JCheckBox simTiesCheck, randDirectedCheck;
         protected JSpinner simTiesPSpinner;
         protected JLabel simTiesPLabel;
         
@@ -339,6 +340,7 @@ public class LayoutPanel extends JPanel
             
             genAlgorithmsBox.addItem("Kleinberg");
             genAlgorithmsBox.addItem("Barabasi-Albert");
+            genAlgorithmsBox.addItem("Random");
             genAlgorithmsBox.addActionListener(this);
             
             resetGeneratorBtn           =   new JButton("Reset");
@@ -357,18 +359,30 @@ public class LayoutPanel extends JPanel
             genPanel    =   new JPanel(new CardLayout());
             baGenPanel  =   new JPanel(new MigLayout());
             klGenPanel  =   new JPanel(new MigLayout());
+            raGenPanel  =   new JPanel(new MigLayout());
+            
             genPanel.add(klGenPanel, KL_PANEL_CARD);
             genPanel.add(baGenPanel, BA_PANEL_CARD);
+            genPanel.add(raGenPanel, RA_PANEL_CARD);
+            
             genPanel.setBackground(TRANSPARENT);
             baGenPanel.setBackground(TRANSPARENT);
             klGenPanel.setBackground(TRANSPARENT);
+            raGenPanel.setBackground(TRANSPARENT);
             
             latticeSpinner      =   new JSpinner(new SpinnerNumberModel(15, 0, 100, 1));
-            clusteringSpinner   =   new JSpinner(new SpinnerNumberModel(2, 0, 10, 1));   
+            clusteringSpinner   =   new JSpinner(new SpinnerNumberModel(2, 0, 10, 1));
+            randProbSpinner     =   new JSpinner(new SpinnerNumberModel(0.5, 0.0, 1.0, 0.1));
+            randNumSpinner      =   new JSpinner(new SpinnerNumberModel(5, 1, 1000, 1));
+            
             latticeSpinner.setPreferredSize(new Dimension(50, 20));
             clusteringSpinner.setPreferredSize(new Dimension(50, 20));
+            randProbSpinner.setPreferredSize(new Dimension(50, 20));
+            randNumSpinner.setPreferredSize(new Dimension(50, 20));
             latticeSpinner.setOpaque(true);
             clusteringSpinner.setOpaque(true);
+            
+            randDirectedCheck   =   new JCheckBox("Directed");
             
             initialNSpinner     =   new JSpinner(new SpinnerNumberModel(2, 0, 1000, 1));
             addNSpinner         =   new JSpinner(new SpinnerNumberModel(100, 0, 1000, 1));
@@ -385,6 +399,10 @@ public class LayoutPanel extends JPanel
             klGenPanel.add(new JLabel("Clustering exp."));
             klGenPanel.add(clusteringSpinner);
             
+            raGenPanel.add(new JLabel("Edge probability"));
+            raGenPanel.add(randProbSpinner, "wrap");
+            raGenPanel.add(randDirectedCheck, "al center, span 2");
+            
             simPanel.add(new JLabel("Generator"), "al right");
             simPanel.add(genAlgorithmsBox, "wrap");
             simPanel.add(genPanel, "wrap, span 2, al center");
@@ -393,6 +411,7 @@ public class LayoutPanel extends JPanel
             simPanel.add(simTiesPSpinner, "wrap");
             simPanel.add(resetGeneratorBtn, "al right");
             simPanel.add(executeGeneratorBtn, "");
+            
             
             JPanel simWrapperPanel   =   new JPanel(new BorderLayout());
             simWrapperPanel.add(simPanel);
@@ -835,6 +854,7 @@ public class LayoutPanel extends JPanel
             {
                 case 0: card    =   KL_PANEL_CARD; break;
                 case 1: card    =   BA_PANEL_CARD; break;
+                case 2: card    =   RA_PANEL_CARD; break;
                 default: return;
             }
             
