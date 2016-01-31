@@ -368,7 +368,7 @@ public class LayoutPanel extends JPanel
             genPanel.setBackground(TRANSPARENT);
             baGenPanel.setBackground(TRANSPARENT);
             klGenPanel.setBackground(TRANSPARENT);
-            raGenPanel.setBackground(TRANSPARENT);
+            raGenPanel.setOpaque(false);
             
             latticeSpinner      =   new JSpinner(new SpinnerNumberModel(15, 0, 100, 1));
             clusteringSpinner   =   new JSpinner(new SpinnerNumberModel(2, 0, 10, 1));
@@ -385,6 +385,8 @@ public class LayoutPanel extends JPanel
             randProbSpinner.setOpaque(true);
             
             randDirectedCheck   =   new JCheckBox("Directed");
+            randDirectedCheck.setOpaque(true);
+            randDirectedCheck.setBackground(PRESET_BG);
             
             initialNSpinner     =   new JSpinner(new SpinnerNumberModel(2, 0, 1000, 1));
             addNSpinner         =   new JSpinner(new SpinnerNumberModel(100, 0, 1000, 1));
