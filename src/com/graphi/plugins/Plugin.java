@@ -18,4 +18,6 @@ public interface Plugin
     public LayoutPanel getPanel();
     
     public void passData(GraphData data);
+    
+    public GraphData getData();
 }

@@ -49,6 +49,12 @@ public abstract class AbstractPlugin implements Plugin
     }
     
     @Override
+    public GraphData getData()
+    {
+        return panel.getGraphData();
+    }
+    
+    @Override
     public boolean equals(Object other)
     {
         if(other instanceof AbstractPlugin)
