@@ -95,6 +95,32 @@ public class Network
         return graph;
     }
     
+    public static Graph<Node, Edge> generateRandomGraph(Factory<Node> nodeFactory, Factory<Edge> edgeFactory, int n, double P, boolean directed)
+    {
+        Graph<Node, Edge> graph =   new SparseMultigraph<>();
+        Random rGen             =   new Random();
+        
+        for(int i = 0; i < n; i++)
+            graph.addVertex(nodeFactory.create());
+        
+        Collection<Node> nodes  =   graph.getVertices();
+        for(Node node : nodes)
+        {
+            for(Node other : nodes)
+            {
+                if(!other.equals(node))
+                {
+                    double p    =   rGen.nextDouble() * 100;
+                    
+                    if(p >= P)
+                        graph.addEdge(edgeFactory.create(), node, other, directed? EdgeType.DIRECTED : EdgeType.UNDIRECTED);
+                }
+            }
+        }
+        
+        return graph;
+    }
+    
     public static double getITProbability(Graph<Node, Edge> graph, Node from, Node to)
     {
         if(!graph.isNeighbor(from, to)) return 0.0;
