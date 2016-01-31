@@ -257,7 +257,7 @@ public class LayoutPanel extends JPanel
         protected JPanel genPanel, baGenPanel, klGenPanel, raGenPanel;
         protected JSpinner latticeSpinner, clusteringSpinner;
         protected JSpinner initialNSpinner, addNSpinner, randProbSpinner, randNumSpinner;
-        protected JCheckBox simTiesCheck, randDirectedCheck;
+        protected JCheckBox simTiesCheck, randDirectedCheck, baDirectedCheck;
         protected JSpinner simTiesPSpinner;
         protected JLabel simTiesPLabel;
         
@@ -366,8 +366,8 @@ public class LayoutPanel extends JPanel
             genPanel.add(raGenPanel, RA_PANEL_CARD);
             
             genPanel.setBackground(TRANSPARENT);
-            baGenPanel.setBackground(TRANSPARENT);
             klGenPanel.setBackground(TRANSPARENT);
+            baGenPanel.setOpaque(false);
             raGenPanel.setOpaque(false);
             
             latticeSpinner      =   new JSpinner(new SpinnerNumberModel(15, 0, 100, 1));
@@ -385,8 +385,12 @@ public class LayoutPanel extends JPanel
             randProbSpinner.setOpaque(true);
             
             randDirectedCheck   =   new JCheckBox("Directed");
+            baDirectedCheck     =   new JCheckBox("Directed");
+            
             randDirectedCheck.setOpaque(true);
             randDirectedCheck.setBackground(PRESET_BG);
+            baDirectedCheck.setOpaque(true);
+            baDirectedCheck.setBackground(PRESET_BG);
             
             initialNSpinner     =   new JSpinner(new SpinnerNumberModel(2, 0, 1000, 1));
             addNSpinner         =   new JSpinner(new SpinnerNumberModel(100, 0, 1000, 1));
@@ -396,7 +400,8 @@ public class LayoutPanel extends JPanel
             baGenPanel.add(new JLabel("Initial nodes"));
             baGenPanel.add(initialNSpinner, "wrap");
             baGenPanel.add(new JLabel("Generated nodes"));
-            baGenPanel.add(addNSpinner);
+            baGenPanel.add(addNSpinner, "wrap");
+            baGenPanel.add(baDirectedCheck, "al center, span 2");
             
             klGenPanel.add(new JLabel("Lattice size"));
             klGenPanel.add(latticeSpinner, "wrap");
@@ -715,7 +720,7 @@ public class LayoutPanel extends JPanel
             int m           =   (int) initialNSpinner.getValue();
             int n           =   (int) addNSpinner.getValue();
             
-            data.setGraph(Network.generateBerbasiAlbert(data.getNodeFactory(), data.getEdgeFactory(), n, m, false));
+            data.setGraph(Network.generateBerbasiAlbert(data.getNodeFactory(), data.getEdgeFactory(), n, m, baDirectedCheck.isSelected()));
         }
         
         protected void showRASim()
