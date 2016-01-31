@@ -401,6 +401,8 @@ public class LayoutPanel extends JPanel
             
             raGenPanel.add(new JLabel("Edge probability"));
             raGenPanel.add(randProbSpinner, "wrap");
+            raGenPanel.add(new JLabel("No. vertices"));
+            raGenPanel.add(randNumSpinner, "wrap"); 
             raGenPanel.add(randDirectedCheck, "al center, span 2");
             
             simPanel.add(new JLabel("Generator"), "al right");
@@ -666,6 +668,7 @@ public class LayoutPanel extends JPanel
             {
                 case 0: showKleinbergSim(); break;
                 case 1: showBASim(); break;
+                case 2: showRASim(); break;
             }
             
             if(simTiesCheck.isSelected())
@@ -699,6 +702,7 @@ public class LayoutPanel extends JPanel
         {
             int latticeSize =   (int) latticeSpinner.getValue();
             int clusterExp  =   (int) clusteringSpinner.getValue();
+            
             data.setGraph(Network.generateKleinberg(latticeSize, clusterExp, data.getNodeFactory(), data.getEdgeFactory()));
         }
         
@@ -706,7 +710,17 @@ public class LayoutPanel extends JPanel
         {
             int m           =   (int) initialNSpinner.getValue();
             int n           =   (int) addNSpinner.getValue();
+            
             data.setGraph(Network.generateBerbasiAlbert(data.getNodeFactory(), data.getEdgeFactory(), n, m, false));
+        }
+        
+        protected void showRASim()
+        {
+            int n               =   (int) randNumSpinner.getValue();
+            double p            =   (double) randProbSpinner.getValue();
+            boolean directed    =   randDirectedCheck.isSelected();
+            
+            data.setGraph(Network.generateRandomGraph(data.getNodeFactory(), data.getEdgeFactory(), n, p, directed));
         }
         
         protected void showVertexBGChange()
