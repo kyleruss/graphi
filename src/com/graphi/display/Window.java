@@ -41,9 +41,6 @@ public class Window
         frame           =   new JFrame(WINDOW_TITLE);
         pluginManager   =   new PluginManager(this);   
        
-        AbstractPlugin plugin = pluginManager.getActivePlugin();
-        Storage.saveObj(plugin, new File("test123"));
-        
         initFrame();
         initMenu();        
     }
