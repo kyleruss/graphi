@@ -8,8 +8,15 @@ package com.graphi.plugins;
 
 import com.graphi.display.Window;
 import com.graphi.plugins.st.StalkingPlugin;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import javax.swing.JFrame;
 
 public class PluginManager
@@ -47,6 +54,44 @@ public class PluginManager
     public void setPlugins(Map<String, AbstractPlugin> plugins)
     {
         this.plugins    =   plugins;
+    }
+    
+    public Plugin fetchPlugin(File file)
+    {
+        try
+        {
+            URL url                         =   file.toURI().toURL();
+            URLClassLoader loader           =   new URLClassLoader(new URL[] { url }, this.getClass().getClassLoader());
+            JarFile jar                     =   new JarFile(url.getFile());
+            Enumeration<JarEntry> entries   =   jar.entries();
+
+            while(entries.hasMoreElements())
+            {
+                JarEntry entry  =   entries.nextElement();
+                String name = entry.getName();
+
+                if(name.endsWith(".class"))
+                {
+                    name                        =   name.replaceAll("/", ".").replace(".class", "");
+                    Class<?> loadedClass        =   loader.loadClass(name);
+                    Class<?>[] loadedInterfaces =   loadedClass.getInterfaces();
+                    
+                    for(Class<?> loadedInterface : loadedInterfaces)
+                    {
+                        if(loadedInterface.getSimpleName().equalsIgnoreCase("Plugin"))
+                            return (Plugin) loadedClass.newInstance();
+                    }
+                }
+            }
+            
+            return null;
+        }
+
+        catch(IOException | ClassNotFoundException | InstantiationException | IllegalAccessException e)
+        {
+            System.out.println("[Error] " + e.getMessage());
+            return null;
+        }
     }
     
     public void activatePlugin(AbstractPlugin plugin)
