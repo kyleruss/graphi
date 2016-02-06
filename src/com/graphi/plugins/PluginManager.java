@@ -20,9 +20,9 @@ import javax.swing.JFrame;
 
 public class PluginManager
 {
-    private AbstractPlugin activePlugin;
+    private Plugin activePlugin;
     private final Window window;
-    private Map<String, AbstractPlugin> plugins;
+    private Map<String, Plugin> plugins;
 
     public PluginManager(Window window)
     {
@@ -40,17 +40,17 @@ public class PluginManager
         return window;
     }
     
-    public AbstractPlugin getActivePlugin()
+    public Plugin getActivePlugin()
     {
         return activePlugin;
     }
     
-    public Map<String, AbstractPlugin> getPlugins()
+    public Map<String, Plugin> getPlugins()
     {
         return plugins;
     }
     
-    public void setPlugins(Map<String, AbstractPlugin> plugins)
+    public void setPlugins(Map<String, Plugin> plugins)
     {
         this.plugins    =   plugins;
     }
@@ -93,7 +93,7 @@ public class PluginManager
         }
     }
     
-    public void activatePlugin(AbstractPlugin plugin)
+    public void activatePlugin(Plugin plugin)
     {
         if(plugin == null) return;
 
@@ -102,6 +102,7 @@ public class PluginManager
         
         activePlugin   =   plugin;
         activePlugin.attachPanel(window);
+        
         JFrame frame    =   window.getFrame();
         frame.getContentPane().removeAll();
         frame.add(activePlugin.getPanel());
@@ -110,7 +111,7 @@ public class PluginManager
     
     public void activePlugin(String pluginName)
     {
-        AbstractPlugin plugin   =   plugins.get(pluginName);
+        Plugin plugin   =   plugins.get(pluginName);
         
         if(plugin != null)
             activatePlugin(plugin);

@@ -11,6 +11,7 @@ import com.graphi.io.AdjMatrixParser;
 import com.graphi.io.GMLParser;
 import com.graphi.io.GraphMLParser;
 import com.graphi.io.Storage;
+import com.graphi.plugins.Plugin;
 import com.graphi.sim.GraphPlayback;
 import com.graphi.util.Edge;
 import com.graphi.sim.Network;
@@ -889,8 +890,16 @@ public class LayoutPanel extends JPanel
         
         protected void importPlugin()
         {
-            File file   =   getFile(true, "Graphi .jar plugin", "jar");
+            File file       =   getFile(true, "Graphi .jar plugin", "jar");
+            Plugin plugin   =   window.getPluginManager().fetchPlugin(file);
             
+            if(plugin == null)
+                JOptionPane.showMessageDialog(null, "Failed to load plugin");
+            
+            else
+            {
+                
+            }
         }
         
         protected void exportGraph()

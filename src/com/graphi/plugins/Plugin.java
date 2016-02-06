@@ -7,6 +7,7 @@
 package com.graphi.plugins;
 
 import com.graphi.display.LayoutPanel;
+import com.graphi.display.Window;
 import com.graphi.util.GraphData;
 
 public interface Plugin
@@ -16,6 +17,8 @@ public interface Plugin
     public String getPluginDescription();
     
     public LayoutPanel getPanel();
+    
+    public void attachPanel(Window window);
     
     public void passData(GraphData data);
     
