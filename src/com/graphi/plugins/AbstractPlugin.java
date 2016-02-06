@@ -9,8 +9,9 @@ package com.graphi.plugins;
 import com.graphi.display.LayoutPanel;
 import com.graphi.display.Window;
 import com.graphi.util.GraphData;
+import java.io.Serializable;
 
-public abstract class AbstractPlugin implements Plugin
+public abstract class AbstractPlugin implements Plugin, Serializable
 {
     protected final String name;
     protected final String description;

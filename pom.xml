@@ -37,34 +37,35 @@
 	</dependency>
 	
 
-        <dependency>
-            <groupId>com.synthetica</groupId>
-            <artifactId>synthetica-bundle</artifactId>
-            <version>2.7.3</version>
-        </dependency>
-        <dependency>
-            <groupId>com.synthetica</groupId>
-            <artifactId>synthetica-aluoxide-bundle</artifactId>
-            <version>2.7.3</version>
-    </dependency>
-    
-    <dependency>
-	<groupId>com.miglayout</groupId>
-	<artifactId>miglayout</artifactId>
-	<version>3.7.4</version>
-    </dependency>
-
-
 	<dependency>
-		<groupId>com.syntheticaaddons</groupId>
-		<artifactId>syntheticaaddons-bundle</artifactId>
-		<version>1.10.0</version>
+		<groupId>com.synthetica</groupId>
+		<artifactId>syntheticalib</artifactId>
+		<version>1.0</version>
 	</dependency>
 
 	<dependency>
-		<groupId>com.syntheticaaddons</groupId>
-		<artifactId>syntheticaaddons-aluoxide</artifactId>
-		<version>1.10.0</version>
+		<groupId>com.synthetica</groupId>
+		<artifactId>syntheticaAluOxidelib</artifactId>
+		<version>1.0</version>
+    </dependency>
+    
+    <dependency>
+		<groupId>com.miglayout</groupId>
+		<artifactId>miglayout</artifactId>
+		<version>3.7.4</version>
+    </dependency>
+
+
+	<dependency>
+		<groupId>com.synthetica</groupId>
+		<artifactId>syntheticaAddonslib</artifactId>
+		<version>1.0</version>
+	</dependency>
+
+	<dependency>
+		<groupId>com.synthetica</groupId>
+		<artifactId>syntheticaAluOxideAddonlib</artifactId>
+		<version>1.0</version>
 	</dependency>
 
 	<dependency>
@@ -79,7 +80,15 @@
 		<version>2.0.1</version>
 	</dependency>
 
-    </dependencies>
+</dependencies>
+
+<repositories>
+	<repository>
+		<id>synthetica.local</id>
+		<name>synthetica-repo</name>
+		<url>file:${basedir}/synthetica-repo</url>
+	</repository>
+</repositories>
     
     <build>
 		<sourceDirectory>src</sourceDirectory>
