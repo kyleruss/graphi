@@ -4,12 +4,10 @@
 //  https://github.com/denkers/graphi
 //=========================================
 
-package com.graphi.plugins.def;
+package com.graphi.plugins;
 
 import com.graphi.display.LayoutPanel;
 import com.graphi.display.Window;
-import com.graphi.plugins.AbstractPlugin;
-
 
 public class DefaultPlugin extends AbstractPlugin
 {
@@ -21,6 +19,6 @@ public class DefaultPlugin extends AbstractPlugin
     @Override
     public void attachPanel(Window window) 
     {
-        panel  =   new LayoutPanel(window.getMenu(), window.getFrame());
+        panel  =   new LayoutPanel(window);
     }
 }

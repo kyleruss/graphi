@@ -124,15 +124,17 @@ public class LayoutPanel extends JPanel
     protected GraphData data;
     protected MainMenu menu;
     protected JFrame frame; 
+    protected Window window;
     
-    public LayoutPanel(MainMenu menu, JFrame frame)
+    public LayoutPanel(Window window)
     {
         setPreferredSize(new Dimension((int)(Window.WIDTH * 0.7), (int) (Window.HEIGHT * 0.85)));
         setLayout(new BorderLayout());        
         initResources();
         
-        this.menu           =   menu;
-        this.frame          =   frame;
+        this.window         =   window;
+        menu                =   window.getMenu();
+        frame               =   window.getFrame();
         data                =   new GraphData();
         controlPanel        =   new ControlPanel();
         screenPanel         =   new ScreenPanel();
@@ -885,6 +887,12 @@ public class LayoutPanel extends JPanel
             gLayout.show(genPanel, card);
         }
         
+        protected void importPlugin()
+        {
+            File file   =   getFile(true, "Graphi .jar plugin", "jar");
+            
+        }
+        
         protected void exportGraph()
         {
             File file           =   getFile(false, "Graphi .graph, adjacency matrix .txt, .gml, graphML .xml", "graph", "txt", "gml", "xml");
@@ -1268,7 +1276,6 @@ public class LayoutPanel extends JPanel
                 ArrayList<Edge> edges  =   new ArrayList<>(graph.getEdges());
                 Collections.sort(edges, (Edge e1, Edge e2) -> Integer.compare(e1.getID(), e2.getID())); 
                 
-                //data.getEdgeFactory().setLastID(0);
                 data.getEdges().clear();
                 
                 SwingUtilities.invokeLater(() ->
