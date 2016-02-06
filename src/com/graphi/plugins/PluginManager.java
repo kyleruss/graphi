@@ -7,7 +7,6 @@
 package com.graphi.plugins;
 
 import com.graphi.display.Window;
-import com.graphi.plugins.st.StalkingPlugin;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -29,7 +28,7 @@ public class PluginManager
     {
         this.window     =   window;
         
-        AbstractPlugin defaultPlugin    =   new StalkingPlugin();
+        AbstractPlugin defaultPlugin    =   new DefaultPlugin();
         activatePlugin(defaultPlugin);
         
         plugins =   new HashMap<>();
