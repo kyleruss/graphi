@@ -7,6 +7,7 @@
 package com.graphi.plugins;
 
 import com.graphi.display.Window;
+import com.graphi.util.GraphData;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -121,11 +122,14 @@ public final class PluginManager
     {
         if(plugin == null) return;
 
-        if(activePlugin != null) 
-            plugin.passData(activePlugin.getData());
+        GraphData data  =   null;
         
-        activePlugin   =   plugin;
+        if(activePlugin != null) 
+            data        =   activePlugin.getData();
+        
+        activePlugin    =   plugin;
         activePlugin.attachPanel(window);
+        if(data != null) activePlugin.passData(data);
         
         JFrame frame    =   window.getFrame();
         frame.getContentPane().removeAll();
@@ -137,7 +141,7 @@ public final class PluginManager
     {
         Plugin plugin   =   plugins.get(pluginName);
         
-        if(plugin != null)
+        if(plugin != null && !activePlugin.equals(plugin))
             activatePlugin(plugin);
     }
 }

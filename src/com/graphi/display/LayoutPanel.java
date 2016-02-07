@@ -120,7 +120,7 @@ public class LayoutPanel extends JPanel
     protected BufferedImage editBlackIcon, pointerIcon, moveIcon;
     protected BufferedImage moveSelectedIcon, editSelectedIcon, pointerSelectedIcon;
     protected BufferedImage graphIcon, tableIcon, resetIcon, executeIcon;
-    protected BufferedImage editIcon, playIcon, stopIcon, recordIcon, closeIcon;
+    protected BufferedImage editIcon, playIcon, stopIcon, recordIcon, closeIcon, tickIcon;
     
     public static final Color TRANSPARENT   =   new Color(255, 255, 255, 0);
     public static final Color PRESET_BG     =   new Color(200, 200, 200);
@@ -209,27 +209,29 @@ public class LayoutPanel extends JPanel
     {
         try
         {
-            addIcon             =   ImageIO.read(new File("resources/images/addSmallIcon.png"));
-            removeIcon          =   ImageIO.read(new File("resources/images/removeSmallIcon.png"));   
-            colourIcon          =   ImageIO.read(new File("resources/images/color_icon.png"));   
-            clipIcon            =   ImageIO.read(new File("resources/images/clipboard.png"));  
-            saveIcon            =   ImageIO.read(new File("resources/images/new_file.png"));
-            openIcon            =   ImageIO.read(new File("resources/images/open_icon.png"));
-            editBlackIcon       =   ImageIO.read(new File("resources/images/editblack.png"));
-            pointerIcon         =   ImageIO.read(new File("resources/images/pointer.png"));
-            moveIcon            =   ImageIO.read(new File("resources/images/move.png"));
-            moveSelectedIcon    =   ImageIO.read(new File("resources/images/move_selected.png"));
-            editSelectedIcon    =   ImageIO.read(new File("resources/images/editblack_selected.png"));
-            pointerSelectedIcon =   ImageIO.read(new File("resources/images/pointer_selected.png"));
-            graphIcon           =   ImageIO.read(new File("resources/images/graph.png"));
-            tableIcon           =   ImageIO.read(new File("resources/images/table.png"));
-            executeIcon         =   ImageIO.read(new File("resources/images/execute.png"));
-            resetIcon           =   ImageIO.read(new File("resources/images/reset.png"));
-            editIcon            =   ImageIO.read(new File("resources/images/edit.png"));
-            playIcon            =   ImageIO.read(new File("resources/images/play.png"));
-            stopIcon            =   ImageIO.read(new File("resources/images/stop.png"));
-            recordIcon          =   ImageIO.read(new File("resources/images/record.png"));
-            closeIcon           =   ImageIO.read(new File("resources/images/close.png"));
+            final String I_DIR  =   "resources/images/";
+            addIcon             =   ImageIO.read(new File(I_DIR + "addSmallIcon.png"));
+            removeIcon          =   ImageIO.read(new File(I_DIR + "removeSmallIcon.png"));   
+            colourIcon          =   ImageIO.read(new File(I_DIR + "color_icon.png"));   
+            clipIcon            =   ImageIO.read(new File(I_DIR + "clipboard.png"));  
+            saveIcon            =   ImageIO.read(new File(I_DIR + "new_file.png"));
+            openIcon            =   ImageIO.read(new File(I_DIR + "open_icon.png"));
+            editBlackIcon       =   ImageIO.read(new File(I_DIR + "editblack.png"));
+            pointerIcon         =   ImageIO.read(new File(I_DIR + "pointer.png"));
+            moveIcon            =   ImageIO.read(new File(I_DIR + "move.png"));
+            moveSelectedIcon    =   ImageIO.read(new File(I_DIR + "move_selected.png"));
+            editSelectedIcon    =   ImageIO.read(new File(I_DIR + "editblack_selected.png"));
+            pointerSelectedIcon =   ImageIO.read(new File(I_DIR + "pointer_selected.png"));
+            graphIcon           =   ImageIO.read(new File(I_DIR + "graph.png"));
+            tableIcon           =   ImageIO.read(new File(I_DIR + "table.png"));
+            executeIcon         =   ImageIO.read(new File(I_DIR + "execute.png"));
+            resetIcon           =   ImageIO.read(new File(I_DIR + "reset.png"));
+            editIcon            =   ImageIO.read(new File(I_DIR + "edit.png"));
+            playIcon            =   ImageIO.read(new File(I_DIR + "play.png"));
+            stopIcon            =   ImageIO.read(new File(I_DIR + "stop.png"));
+            recordIcon          =   ImageIO.read(new File(I_DIR + "record.png"));
+            closeIcon           =   ImageIO.read(new File(I_DIR + "close.png"));
+            tickIcon            =   ImageIO.read(new File(I_DIR + "tick.png"));
         }
         
         catch(IOException e)
@@ -253,6 +255,8 @@ public class LayoutPanel extends JPanel
         protected final String CENTRALITY_PANEL_CARD  =   "centrality_panel";   
         
         protected PluginMenuListener menuListener;
+        protected JMenuItem activePluginItem;
+        
         protected JPanel dataControlPanel, outputControlPanel, displayControlPanel;
         protected JPanel modePanel;
         protected JPanel simPanel;
@@ -625,8 +629,9 @@ public class LayoutPanel extends JPanel
             menu.removeEdgeItem.addActionListener(this);
             menu.aboutItem.addActionListener(this);
             menu.loadPluginItem.addActionListener(this);
-            menu.defaultPluginItem.addActionListener(menuListener);
             
+            menu.defaultPluginItem.addActionListener(menuListener);
+            setActivePluginItem(menu.defaultPluginItem);
             
             add(modePanel);
             add(Box.createRigidArea(new Dimension(230, 30)));
@@ -892,6 +897,15 @@ public class LayoutPanel extends JPanel
             
             CardLayout gLayout  =   (CardLayout) genPanel.getLayout();
             gLayout.show(genPanel, card);
+        }
+        
+        protected void setActivePluginItem(JMenuItem item)
+        {
+            if(activePluginItem != null)
+                activePluginItem.setIcon(null);
+            
+            activePluginItem    =   item;
+            activePluginItem.setIcon(new ImageIcon(tickIcon));
         }
         
         protected void importPlugin()
@@ -1192,6 +1206,8 @@ public class LayoutPanel extends JPanel
         {
             JMenuItem item      =   (JMenuItem) e.getSource();
             String pluginName   =   item.getText();
+            window.getPluginManager().activePlugin(pluginName);
+            controlPanel.setActivePluginItem(item);
         }
     }
     
