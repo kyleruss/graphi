@@ -18,7 +18,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import javax.swing.JFrame;
 
-public class PluginManager
+public final class PluginManager
 {
     private Plugin activePlugin;
     private final Window window;
@@ -32,7 +32,7 @@ public class PluginManager
         activatePlugin(defaultPlugin);
         
         plugins =   new HashMap<>();
-        plugins.put(activePlugin.getPluginName(), activePlugin);
+        addPlugin(activePlugin);
     }
     
     public Window getWindow()

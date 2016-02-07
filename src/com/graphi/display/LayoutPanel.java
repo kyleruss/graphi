@@ -252,6 +252,7 @@ public class LayoutPanel extends JPanel
         protected final String SPATH_PANEL_CARD       =   "spath_panel";
         protected final String CENTRALITY_PANEL_CARD  =   "centrality_panel";   
         
+        protected PluginMenuListener menuListener;
         protected JPanel dataControlPanel, outputControlPanel, displayControlPanel;
         protected JPanel modePanel;
         protected JPanel simPanel;
@@ -303,6 +304,7 @@ public class LayoutPanel extends JPanel
             setBorder(BorderFactory.createEmptyBorder(15, 0, 3, 8));
             setPreferredSize(new Dimension(230, 1650));
             
+            menuListener    =   new PluginMenuListener();
             ioPanel         =   new IOPanel();            
             modePanel       =   new JPanel();
             simPanel        =   new JPanel(new MigLayout("fillx"));
@@ -623,6 +625,7 @@ public class LayoutPanel extends JPanel
             menu.removeEdgeItem.addActionListener(this);
             menu.aboutItem.addActionListener(this);
             menu.loadPluginItem.addActionListener(this);
+            menu.defaultPluginItem.addActionListener(menuListener);
             
             
             add(modePanel);
@@ -908,7 +911,10 @@ public class LayoutPanel extends JPanel
                 else
                 {
                     pm.addPlugin(plugin);
-                    menu.pluginListMenu.add(new JMenuItem(plugin.getPluginName()));
+                    JMenuItem item  =   new JMenuItem(plugin.getPluginName());
+                    menu.pluginListMenu.add(item);
+                    menu.pluginListMenu.revalidate();
+                    item.addActionListener(menuListener);
                 }
             }
         }
@@ -1176,6 +1182,16 @@ public class LayoutPanel extends JPanel
                 simTiesPSpinner.setVisible(!simTiesPSpinner.isVisible());
                 simTiesPLabel.setVisible(!simTiesPLabel.isVisible());
             }
+        }
+    }
+    
+    protected class PluginMenuListener implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+            JMenuItem item      =   (JMenuItem) e.getSource();
+            String pluginName   =   item.getText();
         }
     }
     
