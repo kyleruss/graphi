@@ -50,6 +50,18 @@ public class PluginManager
         return plugins;
     }
     
+    public void addPlugin(Plugin plugin)
+    {
+        if(plugin != null)
+            plugins.put(plugin.getPluginName(), plugin);
+    }
+    
+    public boolean hasPlugin(Plugin plugin)
+    {
+        if(plugin == null) return false;
+        else return plugins.containsKey(plugin.getPluginName());
+    }
+    
     public void setPlugins(Map<String, Plugin> plugins)
     {
         this.plugins    =   plugins;
@@ -75,10 +87,22 @@ public class PluginManager
                     Class<?> loadedClass        =   loader.loadClass(name);
                     Class<?>[] loadedInterfaces =   loadedClass.getInterfaces();
                     
-                    for(Class<?> loadedInterface : loadedInterfaces)
+                    if(loadedInterfaces.length == 0)
                     {
-                        if(loadedInterface.getSimpleName().equalsIgnoreCase("Plugin"))
+                        Class<?> loadedSuper    =   loadedClass.getSuperclass();
+                        
+                        if(loadedSuper != null && loadedSuper.getName().equals(AbstractPlugin.class.getName()))
                             return (Plugin) loadedClass.newInstance();
+
+                    }
+                    
+                    else
+                    {
+                        for(Class<?> loadedInterface : loadedInterfaces)
+                        {
+                            if(loadedInterface.getName().equals(Plugin.class.getName()))
+                                return (Plugin) loadedClass.newInstance();
+                        }
                     }
                 }
             }

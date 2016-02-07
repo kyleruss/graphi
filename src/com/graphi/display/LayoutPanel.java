@@ -12,6 +12,7 @@ import com.graphi.io.GMLParser;
 import com.graphi.io.GraphMLParser;
 import com.graphi.io.Storage;
 import com.graphi.plugins.Plugin;
+import com.graphi.plugins.PluginManager;
 import com.graphi.sim.GraphPlayback;
 import com.graphi.util.Edge;
 import com.graphi.sim.Network;
@@ -82,6 +83,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -620,6 +622,7 @@ public class LayoutPanel extends JPanel
             menu.editEdgeItem.addActionListener(this);
             menu.removeEdgeItem.addActionListener(this);
             menu.aboutItem.addActionListener(this);
+            menu.loadPluginItem.addActionListener(this);
             
             
             add(modePanel);
@@ -890,15 +893,23 @@ public class LayoutPanel extends JPanel
         
         protected void importPlugin()
         {
-            File file       =   getFile(true, "Graphi .jar plugin", "jar");
-            Plugin plugin   =   window.getPluginManager().fetchPlugin(file);
+            File file           =   getFile(true, "Graphi .jar plugin", "jar");
+            PluginManager pm    =   window.getPluginManager();
+            Plugin plugin       =   pm.fetchPlugin(file);
             
             if(plugin == null)
                 JOptionPane.showMessageDialog(null, "Failed to load plugin");
             
             else
             {
+                if(pm.hasPlugin(plugin))
+                    JOptionPane.showMessageDialog(null, "Plugin is already loaded");
                 
+                else
+                {
+                    pm.addPlugin(plugin);
+                    menu.pluginListMenu.add(new JMenuItem(plugin.getPluginName()));
+                }
             }
         }
         
@@ -1150,6 +1161,9 @@ public class LayoutPanel extends JPanel
             
             else if(src == menu.removeEdgeItem)
                 screenPanel.dataPanel.removeEdge();
+            
+            else if(src == menu.loadPluginItem)
+                importPlugin();
             
             else if(src == displayCtrlsBtn)
                 screenPanel.graphPanel.changePlaybackPanel(screenPanel.graphPanel.PLAYBACK_CARD);

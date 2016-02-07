@@ -23,6 +23,7 @@ public abstract class AbstractPlugin implements Plugin, Serializable
         this.description    =   description;
     }
     
+    @Override
     public abstract void attachPanel(Window window);
     
     @Override
