@@ -902,7 +902,15 @@ public class LayoutPanel extends JPanel
         protected void setActivePluginItem(JMenuItem item)
         {
             if(activePluginItem != null)
+            {
+                if(activePluginItem == item)
+                {
+                    JOptionPane.showMessageDialog(null, "This plugin is already active");
+                    return;
+                }
+                
                 activePluginItem.setIcon(null);
+            }
             
             activePluginItem    =   item;
             activePluginItem.setIcon(new ImageIcon(tickIcon));
@@ -911,6 +919,8 @@ public class LayoutPanel extends JPanel
         protected void importPlugin()
         {
             File file           =   getFile(true, "Graphi .jar plugin", "jar");
+            if(file == null) return;
+            
             PluginManager pm    =   window.getPluginManager();
             Plugin plugin       =   pm.fetchPlugin(file);
             

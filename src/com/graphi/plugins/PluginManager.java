@@ -70,6 +70,8 @@ public final class PluginManager
     
     public Plugin fetchPlugin(File file)
     {
+        if(file == null) return null;
+        
         try
         {
             URL url                         =   file.toURI().toURL();
