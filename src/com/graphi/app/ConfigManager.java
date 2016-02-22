@@ -4,7 +4,7 @@
 //  https://github.com/denkers/graphi
 //=========================================
 
-package com.graphi.io;
+package com.graphi.app;
 
 import com.graphi.plugins.PluginConfig;
 import java.io.File;
@@ -17,12 +17,12 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 
-public class GlobalConfig 
+public class ConfigManager 
 {
     public static final String GLOBAL_CONF_FILE =   "config.xml";
     private PluginConfig pluginConfig;
     
-    public GlobalConfig()
+    public ConfigManager()
     {
         loadConfig();
     }
