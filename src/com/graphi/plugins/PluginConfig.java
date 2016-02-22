@@ -34,7 +34,7 @@ public class PluginConfig
     {
         try
         {
-            int defaultIndex        =   Integer.parseInt(doc.getElementsByTagName("defaultPlugin").item(0).getTextContent());
+            int defaultIndex        =   Integer.parseInt(doc.getElementsByTagName("defaultPluginIndex").item(0).getTextContent());
             NodeList loadPluginList =   doc.getElementsByTagName("pluginFile");
             List<String> paths      =   new ArrayList<>();
             
