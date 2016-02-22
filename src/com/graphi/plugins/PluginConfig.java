@@ -1,9 +1,15 @@
+//=========================================
+//  Kyle Russell
+//  AUT University 2015
+//  https://github.com/denkers/graphi
+//=========================================
 
 package com.graphi.plugins;
 
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
@@ -38,7 +44,7 @@ public class PluginConfig
             return new PluginConfig(defaultIndex, paths);
         }
         
-        catch(Exception e)
+        catch(DOMException | NumberFormatException e)
         {
             JOptionPane.showMessageDialog(null, "[Error] Failed to read plugin config");
             return null;
