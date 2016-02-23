@@ -30,24 +30,34 @@ public class PluginConfig
         this.loadedPluginPaths  =   loadedPluginPaths;
     }
     
-    public static PluginConfig parseDocumentConfig(Document doc)
+    private void parseDocumentConfig(Document doc)
     {
         try
         {
-            int defaultIndex        =   Integer.parseInt(doc.getElementsByTagName("defaultPluginIndex").item(0).getTextContent());
+            int pluginIndex         =   Integer.parseInt(doc.getElementsByTagName("defaultPluginIndex").item(0).getTextContent());
             NodeList loadPluginList =   doc.getElementsByTagName("pluginFile");
             List<String> paths      =   new ArrayList<>();
             
             for(int i = 0; i < loadPluginList.getLength(); i++)
                 paths.add(loadPluginList.item(i).getTextContent());
             
-            return new PluginConfig(defaultIndex, paths);
+            this.defaultIndex       =   pluginIndex;
+            this.loadedPluginPaths  =   paths;
         }
         
         catch(DOMException | NumberFormatException e)
         {
             JOptionPane.showMessageDialog(null, "[Error] Failed to read plugin config");
-            return null;
         }
+    }
+    
+    public int getDefaultPluginIndex()
+    {
+        return defaultIndex;
+    }
+    
+    public List<String> getLoadedPluginPaths()
+    {
+        return loadedPluginPaths;
     }
 }

@@ -13,6 +13,7 @@ import com.graphi.io.GMLParser;
 import com.graphi.io.GraphMLParser;
 import com.graphi.io.Storage;
 import com.graphi.plugins.Plugin;
+import com.graphi.plugins.PluginConfig;
 import com.graphi.plugins.PluginManager;
 import com.graphi.sim.GraphPlayback;
 import com.graphi.util.Edge;
@@ -917,9 +918,21 @@ public class LayoutPanel extends JPanel
             activePluginItem.setIcon(new ImageIcon(tickIcon));
         }
         
-        protected void importPlugin()
+        protected void loadConfigPlugins()
         {
-            File file           =   getFile(true, "Graphi .jar plugin", "jar");
+            PluginConfig config =   appManager.getConfigManager().getPluginConfig();
+            List<String> paths  =   config.getLoadedPluginPaths();
+            int defaultIndex    =   config.getDefaultPluginIndex();
+            
+            for(int i = 0; i < paths.size(); i++)
+            {
+                if(i != defaultIndex)
+                    loadPluginFile(new File(paths.get(i)));
+            }
+        }
+        
+        protected void loadPluginFile(File file)
+        {
             if(file == null) return;
             
             PluginManager pm    =   appManager.getPluginManager();
@@ -942,6 +955,12 @@ public class LayoutPanel extends JPanel
                     item.addActionListener(menuListener);
                 }
             }
+        }
+        
+        protected void importPlugin()
+        {
+            File file           =   getFile(true, "Graphi .jar plugin", "jar");
+            loadPluginFile(file);
         }
         
         protected void exportGraph()

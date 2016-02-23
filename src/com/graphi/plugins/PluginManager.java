@@ -7,7 +7,6 @@
 package com.graphi.plugins;
 
 import com.graphi.app.AppManager;
-import com.graphi.display.Window;
 import com.graphi.util.GraphData;
 import java.io.File;
 import java.io.IOException;
