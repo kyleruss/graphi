@@ -19,6 +19,7 @@ public final class Window
     private final JFrame frame;
     public static final int WIDTH;
     public static final int HEIGHT;
+    private static Window instance;
     
     static
     {
@@ -27,7 +28,7 @@ public final class Window
         HEIGHT          =   dim.height;
     }
     
-    public Window()
+    private Window()
     {
         initLookAndFeel();
         
@@ -75,14 +76,16 @@ public final class Window
         frame.setLocationRelativeTo(null);
     }
     
-    private void display()
+    public void display()
     {
         frame.setVisible(true);
     }
     
-    public static void main(String[] args)
+    public static Window getWindowInstance()
     {
-        Window window   =   new Window();
-        window.display();
+        if(instance == null)
+            instance = new Window();
+        
+        return instance;
     }
 }
