@@ -14,6 +14,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -28,12 +29,34 @@ public final class PluginManager
     public PluginManager(AppManager appManager)
     {
         this.appManager     =   appManager;
-        
-        AbstractPlugin defaultPlugin    =   new DefaultPlugin();
-        activatePlugin(defaultPlugin);
-        
         plugins =   new HashMap<>();
-        addPlugin(activePlugin);
+        initDefaultPlugin();
+    }
+    
+    private void initDefaultPlugin()
+    {
+        AbstractPlugin basePlugin       =   new DefaultPlugin();
+        addPlugin(basePlugin);
+        
+        Plugin defaultPlugin;
+        PluginConfig config             =   appManager.getConfigManager().getPluginConfig();
+        int defaultPluginIndex          =   config.getDefaultPluginIndex();
+        
+        if(defaultPluginIndex == -1)
+            defaultPlugin = basePlugin;
+        else
+        {
+            List<String> pluginPaths    =   config.getLoadedPluginPaths();
+            String defaultPluginPath    =   pluginPaths.get(defaultPluginIndex);
+            defaultPlugin               =   fetchPlugin(new File(defaultPluginPath));
+            
+            if(defaultPlugin == null)
+                defaultPlugin = basePlugin;
+            else
+                addPlugin(defaultPlugin);
+        }
+        
+        activatePlugin(defaultPlugin);
     }
     
     public AppManager getManager()

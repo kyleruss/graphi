@@ -151,6 +151,7 @@ public class LayoutPanel extends JPanel
         splitPane.setRightComponent(controlScroll); 
         splitPane.setResizeWeight(0.7);
         add(splitPane, BorderLayout.CENTER);
+        controlPanel.loadConfigPlugins();
     }
     
     public GraphData getGraphData()
