@@ -36,4 +36,15 @@ public final class AppManager
     {
         return window;
     }
+    
+    private void start()
+    {
+        window.display();
+    }
+    
+    public static void main(String[] args)
+    {
+        AppManager manager  =   new AppManager();
+        manager.start();
+    }
 }
