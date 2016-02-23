@@ -6,20 +6,17 @@
 
 package com.graphi.display;
 
-import com.graphi.plugins.PluginManager;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-public class Window
+public final class Window
 {
     private final String WINDOW_TITLE   =   "Graphi - Kyle Russell 2015";
-    
     private final MainMenu menu;
     private final JFrame frame;
-    private final PluginManager pluginManager;
     public static final int WIDTH;
     public static final int HEIGHT;
     
@@ -30,21 +27,15 @@ public class Window
         HEIGHT          =   dim.height;
     }
     
-    private Window()
+    public Window()
     {
         initLookAndFeel();
         
         menu            =   new MainMenu();
         frame           =   new JFrame(WINDOW_TITLE);
-        pluginManager   =   new PluginManager(this);   
        
         initFrame();
         initMenu();        
-    }
-    
-    public PluginManager getPluginManager()
-    {
-        return pluginManager;
     }
     
     public JFrame getFrame()

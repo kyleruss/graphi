@@ -6,17 +6,36 @@
 
 package com.graphi.app;
 
-public class AppManager 
+import com.graphi.display.Window;
+import com.graphi.plugins.PluginManager;
+
+public final class AppManager 
 {
-    private final ConfigManager config;
+    private final ConfigManager configManager;
+    private final PluginManager pluginManager;
+    private final Window window;
     
-    public AppManager()
+    private AppManager()
     {
-        config  =   new ConfigManager();
+        window          =   new Window();
+        configManager   =   new ConfigManager();
+        pluginManager   =   new PluginManager(window);   
     }
     
     public ConfigManager getConfigManager()
     {
-        return config;
+        return configManager;
     }
+    
+    public PluginManager getPluginManager()
+    {
+        return pluginManager;
+    }
+    
+    public Window getWindow()
+    {
+        return window;
+    }
+    
+    
 }
