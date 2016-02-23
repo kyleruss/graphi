@@ -6,6 +6,7 @@
 
 package com.graphi.plugins;
 
+import com.graphi.app.AppManager;
 import com.graphi.display.Window;
 import com.graphi.util.GraphData;
 import java.io.File;
@@ -22,12 +23,12 @@ import javax.swing.JFrame;
 public final class PluginManager
 {
     private Plugin activePlugin;
-    private final Window window;
+    private final AppManager appManager;
     private Map<String, Plugin> plugins;
 
-    public PluginManager(Window window)
+    public PluginManager(AppManager appManager)
     {
-        this.window     =   window;
+        this.appManager     =   appManager;
         
         AbstractPlugin defaultPlugin    =   new DefaultPlugin();
         activatePlugin(defaultPlugin);
@@ -36,9 +37,9 @@ public final class PluginManager
         addPlugin(activePlugin);
     }
     
-    public Window getWindow()
+    public AppManager getManager()
     {
-        return window;
+        return appManager;
     }
     
     public Plugin getActivePlugin()
@@ -130,10 +131,10 @@ public final class PluginManager
             data        =   activePlugin.getData();
         
         activePlugin    =   plugin;
-        activePlugin.attachPanel(window);
+        activePlugin.attachPanel(appManager);
         if(data != null) activePlugin.passData(data);
         
-        JFrame frame    =   window.getFrame();
+        JFrame frame    =   appManager.getWindow().getFrame();
         frame.getContentPane().removeAll();
         frame.add(activePlugin.getPanel());
         frame.revalidate();

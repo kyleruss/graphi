@@ -19,7 +19,7 @@ public final class AppManager
     {
         window          =   Window.getWindowInstance();
         configManager   =   new ConfigManager();
-        pluginManager   =   new PluginManager(window);   
+        pluginManager   =   new PluginManager(this);   
     }
     
     public ConfigManager getConfigManager()

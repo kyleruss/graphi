@@ -7,6 +7,7 @@
 package com.graphi.display;
 
 import cern.colt.matrix.impl.SparseDoubleMatrix2D;
+import com.graphi.app.AppManager;
 import com.graphi.io.AdjMatrixParser;
 import com.graphi.io.GMLParser;
 import com.graphi.io.GraphMLParser;
@@ -127,17 +128,17 @@ public class LayoutPanel extends JPanel
     protected GraphData data;
     protected MainMenu menu;
     protected JFrame frame; 
-    protected Window window;
+    protected AppManager appManager;
     
-    public LayoutPanel(Window window)
+    public LayoutPanel(AppManager appManager)
     {
         setPreferredSize(new Dimension((int)(Window.WIDTH * 0.7), (int) (Window.HEIGHT * 0.85)));
         setLayout(new BorderLayout());        
         initResources();
         
-        this.window         =   window;
-        menu                =   window.getMenu();
-        frame               =   window.getFrame();
+        this.appManager     =   appManager;
+        menu                =   appManager.getWindow().getMenu();
+        frame               =   appManager.getWindow().getFrame();
         data                =   new GraphData();
         controlPanel        =   new ControlPanel();
         screenPanel         =   new ScreenPanel();
@@ -921,7 +922,7 @@ public class LayoutPanel extends JPanel
             File file           =   getFile(true, "Graphi .jar plugin", "jar");
             if(file == null) return;
             
-            PluginManager pm    =   window.getPluginManager();
+            PluginManager pm    =   appManager.getPluginManager();
             Plugin plugin       =   pm.fetchPlugin(file);
             
             if(plugin == null)
@@ -1216,7 +1217,7 @@ public class LayoutPanel extends JPanel
         {
             JMenuItem item      =   (JMenuItem) e.getSource();
             String pluginName   =   item.getText();
-            window.getPluginManager().activePlugin(pluginName);
+            appManager.getPluginManager().activePlugin(pluginName);
             controlPanel.setActivePluginItem(item);
         }
     }

@@ -6,8 +6,8 @@
 
 package com.graphi.plugins;
 
+import com.graphi.app.AppManager;
 import com.graphi.display.LayoutPanel;
-import com.graphi.display.Window;
 import com.graphi.util.GraphData;
 import java.io.Serializable;
 
@@ -24,7 +24,7 @@ public abstract class AbstractPlugin implements Plugin, Serializable
     }
     
     @Override
-    public abstract void attachPanel(Window window);
+    public abstract void attachPanel(AppManager appManager);
     
     @Override
     public String getPluginName() 
