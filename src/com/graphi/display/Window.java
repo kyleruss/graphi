@@ -35,7 +35,6 @@ public final class Window
         menu            =   new MainMenu();
         frame           =   new JFrame(WINDOW_TITLE);
        
-        initFrame();
         initMenu();        
     }
     
@@ -69,15 +68,11 @@ public final class Window
         }
     }
     
-    private void initFrame()
+    public void initFrame()
     {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);     
         frame.pack();
         frame.setLocationRelativeTo(null);
-    }
-    
-    public void display()
-    {
         frame.setVisible(true);
     }
     

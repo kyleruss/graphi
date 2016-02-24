@@ -39,7 +39,7 @@ public final class AppManager
     
     private void start()
     {
-        window.display();
+        window.initFrame();
     }
     
     public static void main(String[] args)
