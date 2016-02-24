@@ -923,37 +923,39 @@ public class LayoutPanel extends JPanel
         {
             PluginConfig config =   appManager.getConfigManager().getPluginConfig();
             List<String> paths  =   config.getLoadedPluginPaths();
-            int defaultIndex    =   config.getDefaultPluginIndex();
             
             for(int i = 0; i < paths.size(); i++)
-            {
-                if(i != defaultIndex)
-                    loadPluginFile(new File(paths.get(i)));
-            }
+                loadPluginFile(new File(paths.get(i)));
         }
         
         protected void loadPluginFile(File file)
         {
             if(file == null) return;
             
-            PluginManager pm    =   appManager.getPluginManager();
-            Plugin plugin       =   pm.fetchPlugin(file);
+            PluginManager pm        =   appManager.getPluginManager();
+            Plugin plugin           =   pm.fetchPlugin(file);
+            String defaultPath      =   appManager.getConfigManager().getPluginConfig().getDefaultPluginPath();
+            boolean isDefaultPath   =   file.getPath().equals(defaultPath);
             
             if(plugin == null)
                 JOptionPane.showMessageDialog(null, "Failed to load plugin");
             
             else
             {
-                if(pm.hasPlugin(plugin))
+                if(pm.hasPlugin(plugin) && !isDefaultPath)
                     JOptionPane.showMessageDialog(null, "Plugin is already loaded");
                 
                 else
                 {
-                    pm.addPlugin(plugin);
                     JMenuItem item  =   new JMenuItem(plugin.getPluginName());
                     menu.pluginListMenu.add(item);
                     menu.pluginListMenu.revalidate();
                     item.addActionListener(menuListener);
+                    
+                    if(!isDefaultPath)
+                        pm.addPlugin(plugin);
+                    else
+                        setActivePluginItem(item);
                 }
             }
         }

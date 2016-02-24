@@ -19,7 +19,7 @@ import org.xml.sax.SAXException;
 
 public class ConfigManager 
 {
-    public static final String GLOBAL_CONF_FILE =   "config.xml";
+    public static final String GLOBAL_CONF_FILE =   "data/config.xml";
     private PluginConfig pluginConfig;
     
     public ConfigManager()

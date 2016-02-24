@@ -56,6 +56,14 @@ public class PluginConfig
         return defaultIndex;
     }
     
+    public String getDefaultPluginPath()
+    {
+        if(defaultIndex < 0 || defaultIndex > loadedPluginPaths.size())
+            return null;
+        else
+            return loadedPluginPaths.get(defaultIndex);
+    }
+    
     public List<String> getLoadedPluginPaths()
     {
         return loadedPluginPaths;
