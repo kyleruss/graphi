@@ -6,6 +6,7 @@
 
 package com.graphi.display;
 
+import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JMenu;
@@ -92,5 +93,11 @@ public class MainMenu extends JMenuBar
     public Map<String, JMenuItem> getMenuItems()
     {
         return menuItems;
+    }
+    
+    public void setMenuItemListener(ActionListener listener)
+    {
+        for(JMenuItem item : menuItems.values())
+            item.addActionListener(listener);
     }
 }

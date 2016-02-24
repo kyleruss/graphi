@@ -616,30 +616,7 @@ public class MainPanel extends JPanel
             JPanel pbWrapperPanel  =   new JPanel(new BorderLayout());
             pbWrapperPanel.add(playbackPanel);
             
-            menu.exitItem.addActionListener(this);
-            menu.miniItem.addActionListener(this);
-            menu.maxItem.addActionListener(this);
-            menu.importGraphItem.addActionListener(this);
-            menu.exportGraphItem.addActionListener(this);
-            menu.importLogItem.addActionListener(this);
-            menu.exportLogItem.addActionListener(this);
-            menu.vLabelsItem.addActionListener(this);
-            menu.eLabelsItem.addActionListener(this);
-            menu.viewerBGItem.addActionListener(this);
-            menu.edgeBGItem.addActionListener(this);
-            menu.vertexBGItem.addActionListener(this);
-            menu.clearLogItem.addActionListener(this);
-            menu.resetGraphItem.addActionListener(this);
-            menu.addVertexItem.addActionListener(this);
-            menu.editVertexItem.addActionListener(this);
-            menu.removeVertexItem.addActionListener(this);
-            menu.addEdgeItem.addActionListener(this);
-            menu.editEdgeItem.addActionListener(this);
-            menu.removeEdgeItem.addActionListener(this);
-            menu.aboutItem.addActionListener(this);
-            menu.loadPluginItem.addActionListener(this);
-            
-            menu.defaultPluginItem.addActionListener(menuListener);
+            menu.setMenuItemListener(this);
             setActivePluginItem(menu.defaultPluginItem);
             
             add(modePanel);
