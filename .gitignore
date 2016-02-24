@@ -4,3 +4,4 @@ nbactions.xml
 *.txt
 *.gml
 data/test
+*.swp
