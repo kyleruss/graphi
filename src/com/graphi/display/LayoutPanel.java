@@ -151,7 +151,6 @@ public class LayoutPanel extends JPanel
         splitPane.setRightComponent(controlScroll); 
         splitPane.setResizeWeight(0.7);
         add(splitPane, BorderLayout.CENTER);
-        controlPanel.loadConfigPlugins();
     }
     
     public GraphData getGraphData()
@@ -241,6 +240,11 @@ public class LayoutPanel extends JPanel
         {
             JOptionPane.showMessageDialog(null, "Failed to load resources: " + e.getMessage());
         }
+    }
+    
+    public void initConfigPlugins(PluginManager pm)
+    {
+        controlPanel.loadConfigPlugins(pm);
     }
     
     //--------------------------------------
@@ -919,20 +923,21 @@ public class LayoutPanel extends JPanel
             activePluginItem.setIcon(new ImageIcon(tickIcon));
         }
         
-        protected void loadConfigPlugins()
+        protected void loadConfigPlugins(PluginManager pm)
         {
             PluginConfig config =   appManager.getConfigManager().getPluginConfig();
             List<String> paths  =   config.getLoadedPluginPaths();
             
             for(int i = 0; i < paths.size(); i++)
-                loadPluginFile(new File(paths.get(i)));
+                loadPluginFile(new File(paths.get(i)), pm);
         }
         
-        protected void loadPluginFile(File file)
+        protected void loadPluginFile(File file, PluginManager pm)
         {
             if(file == null) return;
             
-            PluginManager pm        =   appManager.getPluginManager();
+            if(pm == null) pm       =   appManager.getPluginManager();
+            
             Plugin plugin           =   pm.fetchPlugin(file);
             String defaultPath      =   appManager.getConfigManager().getPluginConfig().getDefaultPluginPath();
             boolean isDefaultPath   =   file.getPath().equals(defaultPath);
@@ -963,7 +968,7 @@ public class LayoutPanel extends JPanel
         protected void importPlugin()
         {
             File file           =   getFile(true, "Graphi .jar plugin", "jar");
-            loadPluginFile(file);
+            loadPluginFile(file, null);
         }
         
         protected void exportGraph()

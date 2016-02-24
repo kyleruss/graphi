@@ -57,6 +57,7 @@ public final class PluginManager
         }
         
         activatePlugin(defaultPlugin);
+        defaultPlugin.getPanel().initConfigPlugins(this);
     }
     
     public AppManager getManager()
