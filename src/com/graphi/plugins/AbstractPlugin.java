@@ -7,7 +7,7 @@
 package com.graphi.plugins;
 
 import com.graphi.app.AppManager;
-import com.graphi.display.LayoutPanel;
+import com.graphi.display.layout.MainPanel;
 import com.graphi.util.GraphData;
 import java.io.Serializable;
 
@@ -15,7 +15,7 @@ public abstract class AbstractPlugin implements Plugin, Serializable
 {
     protected final String name;
     protected final String description;
-    protected LayoutPanel panel;
+    protected MainPanel panel;
     
     public AbstractPlugin(String name, String description)
     {
@@ -39,7 +39,7 @@ public abstract class AbstractPlugin implements Plugin, Serializable
     }
 
     @Override
-    public LayoutPanel getPanel() 
+    public MainPanel getPanel() 
     {
         return panel;
     }

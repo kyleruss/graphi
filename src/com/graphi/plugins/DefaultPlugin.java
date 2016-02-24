@@ -7,7 +7,7 @@
 package com.graphi.plugins;
 
 import com.graphi.app.AppManager;
-import com.graphi.display.LayoutPanel;
+import com.graphi.display.layout.MainPanel;
 import com.graphi.display.Window;
 
 public class DefaultPlugin extends AbstractPlugin
@@ -20,6 +20,6 @@ public class DefaultPlugin extends AbstractPlugin
     @Override
     public void attachPanel(AppManager appManager)
     {
-        panel  =   new LayoutPanel(appManager);
+        panel  =   new MainPanel(appManager);
     }
 }

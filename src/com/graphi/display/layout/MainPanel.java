@@ -4,10 +4,12 @@
 //  https://github.com/denkers/graphi
 //=========================================
 
-package com.graphi.display;
+package com.graphi.display.layout;
 
 import cern.colt.matrix.impl.SparseDoubleMatrix2D;
 import com.graphi.app.AppManager;
+import com.graphi.display.MainMenu;
+import com.graphi.display.Window;
 import com.graphi.io.AdjMatrixParser;
 import com.graphi.io.GMLParser;
 import com.graphi.io.GraphMLParser;
@@ -110,7 +112,7 @@ import net.miginfocom.swing.MigLayout;
 import org.apache.commons.collections15.Transformer;
 import org.apache.commons.io.FilenameUtils;
 
-public class LayoutPanel extends JPanel
+public class MainPanel extends JPanel
 {
     protected final ControlPanel controlPanel;
     protected final ScreenPanel screenPanel;
@@ -131,7 +133,7 @@ public class LayoutPanel extends JPanel
     protected JFrame frame; 
     protected AppManager appManager;
     
-    public LayoutPanel(AppManager appManager)
+    public MainPanel(AppManager appManager)
     {
         setPreferredSize(new Dimension((int)(Window.WIDTH * 0.7), (int) (Window.HEIGHT * 0.85)));
         setLayout(new BorderLayout());        
