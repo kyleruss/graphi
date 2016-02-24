@@ -24,7 +24,6 @@ public class MainMenu extends JMenuBar
     protected final JMenu viewMenu;
     protected final JMenu pluginMenu;
     protected final JMenu pluginListMenu;
-    
     protected Map<String, JMenuItem> menuItems;
 
     public MainMenu()
@@ -99,5 +98,56 @@ public class MainMenu extends JMenuBar
     {
         for(JMenuItem item : menuItems.values())
             item.addActionListener(listener);
+    }
+    
+    public JMenu getFileMenu() 
+    {
+        return fileMenu;
+    }
+
+    @Override
+    public JMenu getHelpMenu() 
+    {
+        return helpMenu;
+    }
+
+    public JMenu getOptionsMenu() 
+    {
+        return optionsMenu;
+    }
+
+    public JMenu getGraphMenu() 
+    {
+        return graphMenu;
+    }
+
+    public JMenu getLoggingMenu() 
+    {
+        return loggingMenu;
+    }
+
+    public JMenu getVertexMenu() 
+    {
+        return vertexMenu;
+    }
+
+    public JMenu getEdgeMenu() 
+    {
+        return edgeMenu;
+    }
+
+    public JMenu getViewMenu() 
+    {
+        return viewMenu;
+    }
+
+    public JMenu getPluginMenu() 
+    {
+        return pluginMenu;
+    }
+
+    public JMenu getPluginListMenu() 
+    {
+        return pluginListMenu;
     }
 }
