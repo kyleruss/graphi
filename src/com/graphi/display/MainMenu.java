@@ -6,6 +6,8 @@
 
 package com.graphi.display;
 
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -22,19 +24,11 @@ public class MainMenu extends JMenuBar
     protected final JMenu pluginMenu;
     protected final JMenu pluginListMenu;
     
-    protected final JMenuItem exitItem, miniItem, maxItem;
-    protected final JMenuItem aboutItem;
-    protected final JMenuItem importGraphItem, exportGraphItem;
-    protected final JMenuItem importLogItem, exportLogItem;
-    protected final JMenuItem vLabelsItem, eLabelsItem;
-    protected final JMenuItem clearLogItem, resetGraphItem;
-    protected final JMenuItem viewerBGItem, edgeBGItem, vertexBGItem;
-    protected final JMenuItem addVertexItem, editVertexItem, removeVertexItem;
-    protected final JMenuItem addEdgeItem, editEdgeItem, removeEdgeItem;
-    protected final JMenuItem loadPluginItem, defaultPluginItem;
+    protected Map<String, JMenuItem> menuItems;
 
     public MainMenu()
     {
+        menuItems           =   new HashMap<>();
         fileMenu            =   new JMenu("File");
         optionsMenu         =   new JMenu("Options");
         helpMenu            =   new JMenu("About");
@@ -46,65 +40,34 @@ public class MainMenu extends JMenuBar
         pluginMenu          =   new JMenu("Plugin");
         pluginListMenu      =   new JMenu("Plugins");
         
-        exitItem            =   new JMenuItem("Exit");
-        miniItem            =   new JMenuItem("Minimize");
-        maxItem             =   new JMenuItem("Maximize");
-        aboutItem           =   new JMenuItem("Author");
-        importGraphItem     =   new JMenuItem("Import Graph");
-        exportGraphItem     =   new JMenuItem("Export Graph");
-        importLogItem       =   new JMenuItem("Import Log");
-        exportLogItem       =   new JMenuItem("Export Log");
-        vLabelsItem         =   new JMenuItem("Vertex labels");
-        eLabelsItem         =   new JMenuItem("Eedge labels");
-        viewerBGItem        =   new JMenuItem("Change viewer background");
-        edgeBGItem          =   new JMenuItem("Change edge fill");
-        vertexBGItem        =   new JMenuItem("Change Vertex fill");
-        clearLogItem        =   new JMenuItem("Clear");
-        resetGraphItem      =   new JMenuItem("Reset");
-        addVertexItem       =   new JMenuItem("Add");
-        editVertexItem      =   new JMenuItem("Edit");
-        removeVertexItem    =   new JMenuItem("Remove");
-        addEdgeItem         =   new JMenuItem("Add");
-        editEdgeItem        =   new JMenuItem("Edit");
-        removeEdgeItem      =   new JMenuItem("Remove");
-        loadPluginItem      =   new JMenuItem("Load");
-        defaultPluginItem   =   new JMenuItem("Default");
-        
-        fileMenu.add(exitItem);
-        fileMenu.add(miniItem);
-        fileMenu.add(maxItem);
-        
-        optionsMenu.add(viewerBGItem);
-        optionsMenu.add(edgeBGItem);
-        optionsMenu.add(vertexBGItem);
-        
-        vertexMenu.add(addVertexItem);
-        vertexMenu.add(editVertexItem);
-        vertexMenu.add(removeVertexItem);
-        
-        edgeMenu.add(addEdgeItem);
-        edgeMenu.add(editEdgeItem);
-        edgeMenu.add(removeEdgeItem);
+        addMenuItem("exitItem", new JMenuItem("Exit"), fileMenu);
+        addMenuItem("miniItem", new JMenuItem("Minimize"), fileMenu);
+        addMenuItem("maxItem", new JMenuItem("Maximize"), fileMenu);
+        addMenuItem("aboutItem", new JMenuItem("Author"), helpMenu);
+        addMenuItem("importGraphItem", new JMenuItem("Import Graph"), graphMenu);
+        addMenuItem("exportGraphItem", new JMenuItem("Export Graph"), graphMenu);
+        addMenuItem("importLogItem", new JMenuItem("Import Log"), graphMenu);
+        addMenuItem("exportLogItem", new JMenuItem("Export Log"), graphMenu);
+        addMenuItem("vLabelsItem", new JMenuItem("Vertex labels"), viewMenu);
+        addMenuItem("eLabelsItem", new JMenuItem("Eedge labels"), viewMenu);
+        addMenuItem("viewerBGItem", new JMenuItem("Change viewer background"), optionsMenu);
+        addMenuItem("edgeBGItem", new JMenuItem("Change edge fill"), optionsMenu);
+        addMenuItem("vertexBGItem", new JMenuItem("Change Vertex fill"), optionsMenu);
+        addMenuItem("clearLogItem", new JMenuItem("Clear"), loggingMenu);
+        addMenuItem("resetGraphItem", new JMenuItem("Reset"), graphMenu);
+        addMenuItem("addVertexItem", new JMenuItem("Add"), vertexMenu);
+        addMenuItem("editVertexItem", new JMenuItem("Edit"), vertexMenu);
+        addMenuItem("removeVertexItem", new JMenuItem("Remove"), vertexMenu);
+        addMenuItem("addEdgeItem", new JMenuItem("Add"), edgeMenu);
+        addMenuItem("editEdgeItem", new JMenuItem("Edit"), edgeMenu);
+        addMenuItem("removeEdgeItem", new JMenuItem("Remove"), edgeMenu);
+        addMenuItem("loadPluginItem", new JMenuItem("Load"), pluginMenu);
+        addMenuItem("defaultPluginItem", new JMenuItem("Default"), pluginMenu);
         
         graphMenu.add(vertexMenu);
         graphMenu.add(edgeMenu);
-        graphMenu.add(resetGraphItem);
-        graphMenu.add(importGraphItem);
-        graphMenu.add(exportGraphItem);
-        
-        loggingMenu.add(clearLogItem);
-        loggingMenu.add(importLogItem);
-        loggingMenu.add(exportLogItem);
-        
-        viewMenu.add(vLabelsItem);
-        viewMenu.add(eLabelsItem);
-        
-        helpMenu.add(aboutItem);
-        
-        pluginListMenu.add(defaultPluginItem);
         pluginMenu.add(pluginListMenu);
         pluginMenu.addSeparator();
-        pluginMenu.add(loadPluginItem);
         
         add(fileMenu);
         add(graphMenu);
@@ -113,5 +76,21 @@ public class MainMenu extends JMenuBar
         add(optionsMenu);
         add(helpMenu);
         add(pluginMenu);
+    }
+    
+    public void addMenuItem(String name, JMenuItem item, JMenu menu)
+    {
+        menuItems.put(name, item);
+        menu.add(item);
+    }
+    
+    public JMenuItem getMenuItem(String name)
+    {
+        return menuItems.get(name);
+    }
+    
+    public Map<String, JMenuItem> getMenuItems()
+    {
+        return menuItems;
     }
 }
