@@ -124,7 +124,7 @@ public class MainPanel extends JPanel
     protected BufferedImage editBlackIcon, pointerIcon, moveIcon;
     protected BufferedImage moveSelectedIcon, editSelectedIcon, pointerSelectedIcon;
     protected BufferedImage graphIcon, tableIcon, resetIcon, executeIcon;
-    protected BufferedImage editIcon, playIcon, stopIcon, recordIcon, closeIcon, tickIcon;
+    protected BufferedImage editIcon, playIcon, stopIcon, recordIcon, closeIcon;
     
     public static final Color TRANSPARENT   =   new Color(255, 255, 255, 0);
     public static final Color PRESET_BG     =   new Color(200, 200, 200);
@@ -235,7 +235,6 @@ public class MainPanel extends JPanel
             stopIcon            =   ImageIO.read(new File(I_DIR + "stop.png"));
             recordIcon          =   ImageIO.read(new File(I_DIR + "record.png"));
             closeIcon           =   ImageIO.read(new File(I_DIR + "close.png"));
-            tickIcon            =   ImageIO.read(new File(I_DIR + "tick.png"));
         }
         
         catch(IOException e)
@@ -617,7 +616,7 @@ public class MainPanel extends JPanel
             pbWrapperPanel.add(playbackPanel);
             
             menu.setMenuItemListener(this);
-            setActivePluginItem(menu.getPluginListMenu().getPluginMenuItem("defaultPluginItem"));
+            menu.getPluginListMenu().setActivePluginItem(menu.getPluginListMenu().getPluginMenuItem("defaultPluginItem"));
             
             add(modePanel);
             add(Box.createRigidArea(new Dimension(230, 30)));
@@ -885,23 +884,6 @@ public class MainPanel extends JPanel
             gLayout.show(genPanel, card);
         }
         
-        protected void setActivePluginItem(JMenuItem item)
-        {
-            if(activePluginItem != null)
-            {
-                if(activePluginItem == item)
-                {
-                    JOptionPane.showMessageDialog(null, "This plugin is already active");
-                    return;
-                }
-                
-                activePluginItem.setIcon(null);
-            }
-            
-            activePluginItem    =   item;
-            activePluginItem.setIcon(new ImageIcon(tickIcon));
-        }
-        
         protected void loadConfigPlugins(PluginManager pm)
         {
             PluginConfig config =   appManager.getConfigManager().getPluginConfig();
@@ -938,7 +920,7 @@ public class MainPanel extends JPanel
                     if(!isDefaultPath)
                         pm.addPlugin(plugin);
                     else
-                        setActivePluginItem(item);
+                        menu.getPluginListMenu().setActivePluginItem(item);
                 }
             }
         }
@@ -1223,7 +1205,7 @@ public class MainPanel extends JPanel
             JMenuItem item      =   (JMenuItem) e.getSource();
             String pluginName   =   item.getText();
             appManager.getPluginManager().activePlugin(pluginName);
-            controlPanel.setActivePluginItem(item);
+            menu.getPluginListMenu().setActivePluginItem(item);
         }
     }
     
