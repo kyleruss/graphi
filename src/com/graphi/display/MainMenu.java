@@ -25,10 +25,12 @@ public class MainMenu extends JMenuBar
     protected final JMenu pluginMenu;
     protected final JMenu pluginListMenu;
     protected Map<String, JMenuItem> menuItems;
+    protected Map<String, JMenuItem> pluginMenuItems;
 
     public MainMenu()
     {
         menuItems           =   new HashMap<>();
+        pluginMenuItems     =   new HashMap<>();
         fileMenu            =   new JMenu("File");
         optionsMenu         =   new JMenu("Options");
         helpMenu            =   new JMenu("About");
@@ -84,14 +86,31 @@ public class MainMenu extends JMenuBar
         menu.add(item);
     }
     
+    public void addPluginMenuItem(String name, JMenuItem item)
+    {
+        pluginMenuItems.put(name, item);
+        pluginMenu.add(item);
+        pluginMenu.revalidate();
+    }
+    
     public JMenuItem getMenuItem(String name)
     {
         return menuItems.get(name);
     }
     
+    public JMenuItem getPluginMenuItem(String name)
+    {
+        return pluginMenuItems.get(name);
+    }
+    
     public Map<String, JMenuItem> getMenuItems()
     {
         return menuItems;
+    }
+    
+    public Map<String, JMenuItem> getPluginMenuItems()
+    {
+        return pluginMenuItems;
     }
     
     public void setMenuItemListener(ActionListener listener)
