@@ -617,7 +617,7 @@ public class MainPanel extends JPanel
             pbWrapperPanel.add(playbackPanel);
             
             menu.setMenuItemListener(this);
-            setActivePluginItem(menu.getMenuItem("defaultPluginItem"));
+            setActivePluginItem(menu.getPluginListMenu().getPluginMenuItem("defaultPluginItem"));
             
             add(modePanel);
             add(Box.createRigidArea(new Dimension(230, 30)));

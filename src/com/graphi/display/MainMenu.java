@@ -61,13 +61,12 @@ public class MainMenu extends JMenuBar
         addMenuItem("addEdgeItem", new JMenuItem("Add"), edgeMenu);
         addMenuItem("editEdgeItem", new JMenuItem("Edit"), edgeMenu);
         addMenuItem("removeEdgeItem", new JMenuItem("Remove"), edgeMenu);
-        addMenuItem("loadPluginItem", new JMenuItem("Load"), pluginMenu);
-        addMenuItem("defaultPluginItem", new JMenuItem("Default"), pluginMenu);
         
         graphMenu.add(vertexMenu);
         graphMenu.add(edgeMenu);
         pluginMenu.add(pluginsListMenu);
         pluginMenu.addSeparator();
+        addMenuItem("loadPluginItem", new JMenuItem("Load"), pluginMenu);
         
         add(fileMenu);
         add(graphMenu);

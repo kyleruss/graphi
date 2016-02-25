@@ -3,12 +3,12 @@
 	<!-- Configure default plugin & plugins loaded on startup -->
 	<pluginConfig>
 		<!-- startupPlugins index of default start up plugin (-1 for no plugins) -->
-		<defaultPluginIndex>0</defaultPluginIndex>
+		<defaultPluginIndex>-1</defaultPluginIndex>
 
 		<!-- Plugins to load on start up -->
 		<startupPlugins>
 			<!-- Example: <pluginFile>(path to graphi plugin file)</pluginFile> -->
-			<pluginFile>data/test/graphi-stalker.jar</pluginFile>
+			<!--<pluginFile>data/test/graphi-stalker.jar</pluginFile>-->
 		</startupPlugins>
 
 	</pluginConfig>

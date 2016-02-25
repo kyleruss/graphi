@@ -20,6 +20,7 @@ public class PluginsMenu extends JMenu
         super("Plugins");
         
         pluginMenuItems =   new HashMap<>();
+        addPluginMenuItem("defaultPluginItem", new JMenuItem("Default"));
     }
     
     public void addPluginMenuItem(String name, JMenuItem item)
