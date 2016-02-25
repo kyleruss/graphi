@@ -932,9 +932,8 @@ public class MainPanel extends JPanel
                 else
                 {
                     JMenuItem item  =   new JMenuItem(plugin.getPluginName());
-                    menu.pluginListMenu.add(item);
-                    menu.pluginListMenu.revalidate();
                     item.addActionListener(menuListener);
+                    menu.addPluginMenuItem(plugin.getPluginName(), item);
                     
                     if(!isDefaultPath)
                         pm.addPlugin(plugin);
@@ -1136,70 +1135,70 @@ public class MainPanel extends JPanel
             else if(src == viewerELabelsCheck)
                 screenPanel.graphPanel.showEdgeLabels(viewerELabelsCheck.isSelected());
             
-            else if(src == menu.aboutItem)
+            else if(src == menu.getMenuItem("aboutItem"))
                 showAbout();
             
-            else if(src == menu.exitItem)
+            else if(src == menu.getMenuItem("exitItem"))
                 System.exit(0);
             
-            else if(src == menu.miniItem)
+            else if(src == menu.getMenuItem("miniItem"))
                 frame.setState(JFrame.ICONIFIED);
             
-            else if(src == menu.maxItem)
+            else if(src == menu.getMenuItem("maxItem"))
                 frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
             
-            else if(src == menu.importGraphItem)
+            else if(src == menu.getMenuItem("importGraphItem"))
                 importGraph();
             
-            else if(src == menu.exportGraphItem)
+            else if(src == menu.getMenuItem("exportGraphItem"))
                 exportGraph();
             
-            else if(src == menu.importLogItem)
+            else if(src == menu.getMenuItem("importLogItem"))
                 importLog();
             
-            else if(src == menu.exportLogItem)
+            else if(src == menu.getMenuItem("exportLogItem"))
                 exportLog();
             
-            else if(src == menu.vLabelsItem)
+            else if(src == menu.getMenuItem("vLabelsItem"))
                 screenPanel.graphPanel.showVertexLabels(true);
             
-            else if(src == menu.eLabelsItem)
+            else if(src == menu.getMenuItem("eLabelsItem"))
                 screenPanel.graphPanel.showEdgeLabels(true);
             
-            else if(src == menu.viewerBGItem)
+            else if(src == menu.getMenuItem("viewerBGItem"))
                 showViewerBGChange();
             
-            else if(src == menu.edgeBGItem)
+            else if(src == menu.getMenuItem("edgeBGItem"))
                 showEdgeBGChange();
             
-            else if(src == menu.vertexBGItem)
+            else if(src == menu.getMenuItem("vertexBGItem"))
                 showVertexBGChange();
             
-            else if(src == menu.clearLogItem)
+            else if(src == menu.getMenuItem("clearLogItem"))
                 screenPanel.outputPanel.clearLog();
             
-            else if(src == menu.resetGraphItem)
+            else if(src == menu.getMenuItem("resetGraphItem"))
                 screenPanel.graphPanel.resetGraph();
             
-            else if(src == menu.addVertexItem)
+            else if(src == menu.getMenuItem("addVertexItem"))
                 screenPanel.dataPanel.addVertex();
             
-            else if(src == menu.editVertexItem)
+            else if(src == menu.getMenuItem("editVertexItem"))
                 screenPanel.dataPanel.editVertex();
             
-            else if(src == menu.removeVertexItem)
+            else if(src == menu.getMenuItem("removeVertexItem"))
                 screenPanel.dataPanel.removeVertex();
             
-            else if(src == menu.addEdgeItem)
+            else if(src == menu.getMenuItem("addEdgeItem"))
                 screenPanel.dataPanel.addEdge();
             
-            else if(src == menu.editEdgeItem)
+            else if(src == menu.getMenuItem("editEdgeItem"))
                 screenPanel.dataPanel.editEdge();
             
-            else if(src == menu.removeEdgeItem)
+            else if(src == menu.getMenuItem("removeEdgeItem"))
                 screenPanel.dataPanel.removeEdge();
             
-            else if(src == menu.loadPluginItem)
+            else if(src == menu.getMenuItem("loadPluginItem"))
                 importPlugin();
             
             else if(src == displayCtrlsBtn)
