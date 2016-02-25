@@ -23,14 +23,12 @@ public class MainMenu extends JMenuBar
     protected final JMenu vertexMenu, edgeMenu;
     protected final JMenu viewMenu;
     protected final JMenu pluginMenu;
-    protected final JMenu pluginListMenu;
     protected Map<String, JMenuItem> menuItems;
-    protected Map<String, JMenuItem> pluginMenuItems;
+    protected PluginsMenu pluginsListMenu;
 
     public MainMenu()
     {
         menuItems           =   new HashMap<>();
-        pluginMenuItems     =   new HashMap<>();
         fileMenu            =   new JMenu("File");
         optionsMenu         =   new JMenu("Options");
         helpMenu            =   new JMenu("About");
@@ -40,7 +38,7 @@ public class MainMenu extends JMenuBar
         edgeMenu            =   new JMenu("Edge");
         viewMenu            =   new JMenu("View");
         pluginMenu          =   new JMenu("Plugin");
-        pluginListMenu      =   new JMenu("Plugins");
+        pluginsListMenu     =   new PluginsMenu();
         
         addMenuItem("exitItem", new JMenuItem("Exit"), fileMenu);
         addMenuItem("miniItem", new JMenuItem("Minimize"), fileMenu);
@@ -68,7 +66,7 @@ public class MainMenu extends JMenuBar
         
         graphMenu.add(vertexMenu);
         graphMenu.add(edgeMenu);
-        pluginMenu.add(pluginListMenu);
+        pluginMenu.add(pluginsListMenu);
         pluginMenu.addSeparator();
         
         add(fileMenu);
@@ -86,31 +84,15 @@ public class MainMenu extends JMenuBar
         menu.add(item);
     }
     
-    public void addPluginMenuItem(String name, JMenuItem item)
-    {
-        pluginMenuItems.put(name, item);
-        pluginMenu.add(item);
-        pluginMenu.revalidate();
-    }
-    
     public JMenuItem getMenuItem(String name)
     {
         return menuItems.get(name);
     }
     
-    public JMenuItem getPluginMenuItem(String name)
-    {
-        return pluginMenuItems.get(name);
-    }
     
     public Map<String, JMenuItem> getMenuItems()
     {
         return menuItems;
-    }
-    
-    public Map<String, JMenuItem> getPluginMenuItems()
-    {
-        return pluginMenuItems;
     }
     
     public void setMenuItemListener(ActionListener listener)
@@ -165,8 +147,8 @@ public class MainMenu extends JMenuBar
         return pluginMenu;
     }
 
-    public JMenu getPluginListMenu() 
+    public PluginsMenu getPluginListMenu() 
     {
-        return pluginListMenu;
+        return pluginsListMenu;
     }
 }

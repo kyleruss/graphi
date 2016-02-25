@@ -933,7 +933,7 @@ public class MainPanel extends JPanel
                 {
                     JMenuItem item  =   new JMenuItem(plugin.getPluginName());
                     item.addActionListener(menuListener);
-                    menu.addPluginMenuItem(plugin.getPluginName(), item);
+                    menu.getPluginListMenu().addPluginMenuItem(plugin.getPluginName(), item);
                     
                     if(!isDefaultPath)
                         pm.addPlugin(plugin);
