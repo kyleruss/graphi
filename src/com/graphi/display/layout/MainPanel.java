@@ -2254,31 +2254,5 @@ public class MainPanel extends JPanel
                 }
             }
         }
-        
-        //--------------------------------------
-        //  OUTPUT PANEL
-        //--------------------------------------
-        
-        protected class OutputPanel extends JPanel
-        {
-            protected JTextArea outputArea;
-            public OutputPanel()
-            {
-                setLayout(new BorderLayout());
-                outputArea  =   new JTextArea("");
-                outputArea.setBackground(Color.WHITE);
-                outputArea.setEditable(false);
-                JScrollPane outputScroller  =   new JScrollPane(outputArea);
-                outputScroller.setPreferredSize(new Dimension(650, 565));
-                outputScroller.setBorder(null);
-                
-                add(outputScroller);
-            }
-            
-            protected void clearLog()
-            {
-                outputArea.setText("");
-            }
-        }
     }
 }
