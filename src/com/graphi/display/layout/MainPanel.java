@@ -8,6 +8,7 @@ package com.graphi.display.layout;
 
 import cern.colt.matrix.impl.SparseDoubleMatrix2D;
 import com.graphi.app.AppManager;
+import com.graphi.app.Consts;
 import com.graphi.display.MainMenu;
 import com.graphi.display.Window;
 import com.graphi.io.AdjMatrixParser;
@@ -135,7 +136,7 @@ public class MainPanel extends JPanel
     
     public MainPanel(AppManager appManager)
     {
-        setPreferredSize(new Dimension((int)(Window.WIDTH * 0.7), (int) (Window.HEIGHT * 0.85)));
+        setPreferredSize(new Dimension(Consts.WINDOW_WIDTH, Consts.WINDOW_HEIGHT));
         setLayout(new BorderLayout());        
         initResources();
         

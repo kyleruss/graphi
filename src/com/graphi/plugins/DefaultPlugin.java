@@ -8,7 +8,6 @@ package com.graphi.plugins;
 
 import com.graphi.app.AppManager;
 import com.graphi.display.layout.MainPanel;
-import com.graphi.display.Window;
 
 public class DefaultPlugin extends AbstractPlugin
 {

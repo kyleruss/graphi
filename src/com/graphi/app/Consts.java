@@ -6,7 +6,9 @@
 
 package com.graphi.app;
 
+import edu.uci.ics.jung.graph.util.EdgeType;
 import java.awt.Toolkit;
+import javafx.scene.paint.Color;
 
 
 public final class Consts 
@@ -21,16 +23,29 @@ public final class Consts
     public static final String DATA_DIR =   "data";
     public static final String TEST_DIR =   DATA_DIR + "/test";
     //-------------------------------------------------------------
+    
 
 
-    //-------------------------------------------------------------
+    //---------------------------------------------------------------------------------------------------------------
     //  APP SETTINGS
-    //-------------------------------------------------------------
+    //---------------------------------------------------------------------------------------------------------------
     public static final int DEFAULT_PB_DELAY    =   500;
     public static final int WINDOW_HEIGHT       =   (int) (Toolkit.getDefaultToolkit().getScreenSize().height * 0.85);
     public static final int WINDOW_WIDTH        =   (int) (Toolkit.getDefaultToolkit().getScreenSize().width * 0.7);
     public static final String WINDOW_TITLE     =   "Graphi - Kyle Russell 2015";
-    //-------------------------------------------------------------
+    //---------------------------------------------------------------------------------------------------------------
+    
+    
+    
+    //-----------------------------------------------------------------------
+    //  GRAPH DEFAULTS
+    //-----------------------------------------------------------------------
+    public static final EdgeType DEFAULT_EDGETYPE   =   EdgeType.UNDIRECTED;
+    public static final Color DEFAULT_NODE_COLOUR   =   Color.GREEN;
+    public static final Color DEFAULT_EDGE_COLOUR   =   Color.BLACK;
+    public static final Color SELECTED_OBJ_COLOUR   =   Color.RED;
+    //-----------------------------------------------------------------------
+    
     
     
     //------------------------------------------------------------------------
