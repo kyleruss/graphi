@@ -7,7 +7,6 @@
 package com.graphi.display.layout;
 
 import com.graphi.app.Consts;
-import static com.graphi.display.layout.MainPanel.wrapComponents;
 import com.graphi.io.AdjMatrixParser;
 import com.graphi.io.GMLParser;
 import com.graphi.io.GraphMLParser;
@@ -17,6 +16,7 @@ import com.graphi.plugins.PluginConfig;
 import com.graphi.plugins.PluginManager;
 import com.graphi.sim.GraphPlayback;
 import com.graphi.sim.Network;
+import com.graphi.util.ComponentUtils;
 import com.graphi.util.Edge;
 import com.graphi.util.Node;
 import edu.uci.ics.jung.graph.Graph;
@@ -271,9 +271,9 @@ public class ControlPanel extends JPanel implements ActionListener
         editObjGroup.add(editEdgeRadio);
         editVertexRadio.setSelected(true);
 
-        JPanel selectedPanel        =   wrapComponents(null, new JLabel("Selected: "), selectedLabel);
-        JPanel editObjPanel         =   wrapComponents(null, editVertexRadio, editEdgeRadio);
-        JPanel gObjOptsPanel        =   wrapComponents(null, gObjAddBtn, gObjEditBtn, gObjRemoveBtn);
+        JPanel selectedPanel        =   ComponentUtils.wrapComponents(null, new JLabel("Selected: "), selectedLabel);
+        JPanel editObjPanel         =   ComponentUtils.wrapComponents(null, editVertexRadio, editEdgeRadio);
+        JPanel gObjOptsPanel        =   ComponentUtils.wrapComponents(null, gObjAddBtn, gObjEditBtn, gObjRemoveBtn);
         selectedPanel.setBackground(Consts.PRESET_COL);
         gObjOptsPanel.setBackground(Consts.PRESET_COL);
         editObjPanel.setBackground(Consts.PRESET_COL);
@@ -305,7 +305,7 @@ public class ControlPanel extends JPanel implements ActionListener
         clusterTransformCheck       =   new JCheckBox("Transform graph");
         clusterEdgeRemoveSpinner.setPreferredSize(new Dimension(50, 25));
 
-        JPanel clusterEdgesPanel        =   wrapComponents(null, new JLabel("Delete edges"), clusterEdgeRemoveSpinner);
+        JPanel clusterEdgesPanel        =   ComponentUtils.wrapComponents(null, new JLabel("Delete edges"), clusterEdgeRemoveSpinner);
         clusterPanel.setLayout(new MigLayout());
         clusterPanel.add(clusterEdgesPanel, "wrap");
         clusterPanel.add(clusterTransformCheck);
@@ -318,8 +318,8 @@ public class ControlPanel extends JPanel implements ActionListener
         spathToField.setPreferredSize(new Dimension(50, 20));
 
         JLabel tLabel           =   new JLabel("To ID");
-        JPanel spathFromPanel   =   wrapComponents(null, new JLabel("From ID"), spathFromField);
-        JPanel spathToPanel     =   wrapComponents(null, tLabel, spathToField);
+        JPanel spathFromPanel   =   ComponentUtils.wrapComponents(null, new JLabel("From ID"), spathFromField);
+        JPanel spathToPanel     =   ComponentUtils.wrapComponents(null, tLabel, spathToField);
         JPanel spathWrapper     =   new JPanel(new MigLayout()); 
         spathWrapper.add(spathFromPanel, "wrap");
         spathWrapper.add(spathToPanel);
@@ -336,7 +336,7 @@ public class ControlPanel extends JPanel implements ActionListener
         centralityTypeBox.addItem("Betweenness");
         centralityTypeBox.addActionListener(this);
 
-        JPanel cenTypePanel     =   wrapComponents(null, new JLabel("Type"), centralityTypeBox);
+        JPanel cenTypePanel     =   ComponentUtils.wrapComponents(null, new JLabel("Type"), centralityTypeBox);
         centralityPanel.add(cenTypePanel, "wrap");
         centralityPanel.add(centralityMorphCheck);
         cenTypePanel.setBackground(Consts.PRESET_COL);
@@ -597,10 +597,10 @@ public class ControlPanel extends JPanel implements ActionListener
             exportBtn.setBackground(Color.WHITE);
             storageGraphRadio.setSelected(true);
 
-            JPanel storageBtnWrapper    =   wrapComponents(null, importBtn, exportBtn);
-            JPanel currentGraphWrapper  =   wrapComponents(null, new JLabel("Active: "), currentStorageLabel);
-            JPanel storageOptsWrapper   =   wrapComponents(null, storageGraphRadio, storageLogRadio, storageScriptRadio);
-            directedCheckWrapper        =   wrapComponents(null, directedCheck);
+            JPanel storageBtnWrapper    =   ComponentUtils.wrapComponents(null, importBtn, exportBtn);
+            JPanel currentGraphWrapper  =   ComponentUtils.wrapComponents(null, new JLabel("Active: "), currentStorageLabel);
+            JPanel storageOptsWrapper   =   ComponentUtils.wrapComponents(null, storageGraphRadio, storageLogRadio, storageScriptRadio);
+            directedCheckWrapper        =   ComponentUtils.wrapComponents(null, directedCheck);
 
             storageBtnWrapper.setBackground(Consts.PRESET_COL);
             currentGraphWrapper.setBackground(Consts.PRESET_COL);
@@ -725,14 +725,14 @@ public class ControlPanel extends JPanel implements ActionListener
 
     protected void importPlugin()
     {
-        File file           =   mainPanel.getFile(true, "Graphi .jar plugin", "jar");
+        File file           =   ComponentUtils.getFile(true, "Graphi .jar plugin", "jar");
         loadPluginFile(file, null);
     }
 
     protected void exportGraph()
     {
-        File file           =   mainPanel.getFile(false, "Graphi .graph, adjacency matrix .txt, .gml, graphML .xml", "graph", "txt", "gml", "xml");
-        String extension    =   mainPanel.getFileExtension(file);
+        File file           =   ComponentUtils.getFile(false, "Graphi .graph, adjacency matrix .txt, .gml, graphML .xml", "graph", "txt", "gml", "xml");
+        String extension    =   ComponentUtils.getFileExtension(file);
 
         if(file != null && mainPanel.data.getGraph() != null)
         {
@@ -752,8 +752,8 @@ public class ControlPanel extends JPanel implements ActionListener
 
     protected void importGraph()
     {
-        File file           =   mainPanel.getFile(true, "Graphi .graph, adjacency matrix .txt, .gml, graphML .xml", "graph", "txt", "gml", "xml");
-        String extension    =   mainPanel.getFileExtension(file);   
+        File file           =   ComponentUtils.getFile(true, "Graphi .graph, adjacency matrix .txt, .gml, graphML .xml", "graph", "txt", "gml", "xml");
+        String extension    =   ComponentUtils.getFileExtension(file);   
 
         if(file != null)
         {
@@ -787,7 +787,7 @@ public class ControlPanel extends JPanel implements ActionListener
 
     protected void importScript()
     {
-        File file   =   mainPanel.getFile(true, "Graphi .gscript file", "gscript");
+        File file   =   ComponentUtils.getFile(true, "Graphi .gscript file", "gscript");
         if(file != null)
         {
             mainPanel.screenPanel.graphPanel.gPlayback    =   (GraphPlayback) Storage.openObj(file);
@@ -800,7 +800,7 @@ public class ControlPanel extends JPanel implements ActionListener
 
     protected void exportScript()
     {
-        File file   =   mainPanel.getFile(false, "Graphi .gscript file", "gscript");
+        File file   =   ComponentUtils.getFile(false, "Graphi .gscript file", "gscript");
         if(file != null)
             Storage.saveObj(mainPanel.screenPanel.graphPanel.gPlayback, file);
     }
@@ -828,14 +828,14 @@ public class ControlPanel extends JPanel implements ActionListener
 
     protected void exportLog()
     {
-        File file   =   mainPanel.getFile(false, "Graphi .log file", "log");
+        File file   =   ComponentUtils.getFile(false, "Graphi .log file", "log");
         if(file != null)
             Storage.saveOutputLog(mainPanel.screenPanel.outputPanel.outputArea.getText(), file);
     }
 
     protected void importLog()
     {
-        File file   =   mainPanel.getFile(true, "Graphi .log file", "log");
+        File file   =   ComponentUtils.getFile(true, "Graphi .log file", "log");
         if(file != null)
         {
             ioPanel.currentStorageLabel.setText(file.getName());

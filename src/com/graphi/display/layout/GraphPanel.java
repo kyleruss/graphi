@@ -9,6 +9,7 @@ package com.graphi.display.layout;
 import cern.colt.matrix.impl.SparseDoubleMatrix2D;
 import com.graphi.sim.GraphPlayback;
 import com.graphi.sim.PlaybackEntry;
+import com.graphi.util.ComponentUtils;
 import com.graphi.util.Edge;
 import com.graphi.util.EdgeLabelTransformer;
 import com.graphi.util.GraphUtilities;
@@ -534,7 +535,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         {
             double score    =   centrality.get(node);
             String output   =   MessageFormat.format("({0}) Vertex: {1}, Score: {2}", prefix, node.getID(), score);
-            mainPanel.sendToOutput(output);
+            ComponentUtils.sendToOutput(output, mainPanel.screenPanel.outputPanel.outputArea);
 
             if(transform)
                 scores.add(new AbstractMap.SimpleEntry(node, score));
