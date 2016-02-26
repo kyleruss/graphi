@@ -6,9 +6,6 @@
 
 package com.graphi.io;
 
-import edu.uci.ics.jung.graph.Graph;
-import edu.uci.ics.jung.io.GraphMLReader;
-import edu.uci.ics.jung.io.graphml.GraphMLReader2;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
