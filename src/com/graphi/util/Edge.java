@@ -6,6 +6,7 @@
 
 package com.graphi.util;
 
+import com.graphi.app.Consts;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import java.awt.Color;
 import java.io.Serializable;
@@ -22,7 +23,7 @@ public class Edge implements Serializable, GraphObject
     
     public Edge()
     {
-        this(0, 0.0, EdgeType.UNDIRECTED);
+        this(0, 0.0, Consts.DEFAULT_EDGETYPE);
     }
     
     public Edge(int id, EdgeType edgeType)
@@ -34,7 +35,7 @@ public class Edge implements Serializable, GraphObject
     {
         this.id         =   id;        
         this.edgeType   =   edgeType;
-        fill            =   Color.BLACK;
+        fill            =   Consts.DEFAULT_EDGE_COLOUR;
         setWeight(weight);
     }
     

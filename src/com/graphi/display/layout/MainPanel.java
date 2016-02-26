@@ -10,7 +10,6 @@ import cern.colt.matrix.impl.SparseDoubleMatrix2D;
 import com.graphi.app.AppManager;
 import com.graphi.app.Consts;
 import com.graphi.display.MainMenu;
-import com.graphi.display.Window;
 import com.graphi.io.AdjMatrixParser;
 import com.graphi.io.GMLParser;
 import com.graphi.io.GraphMLParser;
@@ -127,8 +126,6 @@ public class MainPanel extends JPanel
     protected BufferedImage graphIcon, tableIcon, resetIcon, executeIcon;
     protected BufferedImage editIcon, playIcon, stopIcon, recordIcon, closeIcon;
     
-    public static final Color TRANSPARENT   =   new Color(255, 255, 255, 0);
-    public static final Color PRESET_BG     =   new Color(200, 200, 200);
     protected GraphData data;
     protected MainMenu menu;
     protected JFrame frame; 
@@ -152,7 +149,7 @@ public class MainPanel extends JPanel
         controlScroll.setBorder(null);
         splitPane.setLeftComponent(screenPanel);
         splitPane.setRightComponent(controlScroll); 
-        splitPane.setResizeWeight(0.7);
+        splitPane.setResizeWeight(Consts.MAIN_SPLIT_WG);
         add(splitPane, BorderLayout.CENTER);
     }
     
@@ -214,28 +211,27 @@ public class MainPanel extends JPanel
     {
         try
         {
-            final String I_DIR  =   "resources/images/";
-            addIcon             =   ImageIO.read(new File(I_DIR + "addSmallIcon.png"));
-            removeIcon          =   ImageIO.read(new File(I_DIR + "removeSmallIcon.png"));   
-            colourIcon          =   ImageIO.read(new File(I_DIR + "color_icon.png"));   
-            clipIcon            =   ImageIO.read(new File(I_DIR + "clipboard.png"));  
-            saveIcon            =   ImageIO.read(new File(I_DIR + "new_file.png"));
-            openIcon            =   ImageIO.read(new File(I_DIR + "open_icon.png"));
-            editBlackIcon       =   ImageIO.read(new File(I_DIR + "editblack.png"));
-            pointerIcon         =   ImageIO.read(new File(I_DIR + "pointer.png"));
-            moveIcon            =   ImageIO.read(new File(I_DIR + "move.png"));
-            moveSelectedIcon    =   ImageIO.read(new File(I_DIR + "move_selected.png"));
-            editSelectedIcon    =   ImageIO.read(new File(I_DIR + "editblack_selected.png"));
-            pointerSelectedIcon =   ImageIO.read(new File(I_DIR + "pointer_selected.png"));
-            graphIcon           =   ImageIO.read(new File(I_DIR + "graph.png"));
-            tableIcon           =   ImageIO.read(new File(I_DIR + "table.png"));
-            executeIcon         =   ImageIO.read(new File(I_DIR + "execute.png"));
-            resetIcon           =   ImageIO.read(new File(I_DIR + "reset.png"));
-            editIcon            =   ImageIO.read(new File(I_DIR + "edit.png"));
-            playIcon            =   ImageIO.read(new File(I_DIR + "play.png"));
-            stopIcon            =   ImageIO.read(new File(I_DIR + "stop.png"));
-            recordIcon          =   ImageIO.read(new File(I_DIR + "record.png"));
-            closeIcon           =   ImageIO.read(new File(I_DIR + "close.png"));
+            addIcon             =   ImageIO.read(new File(Consts.IMG_DIR + "addSmallIcon.png"));
+            removeIcon          =   ImageIO.read(new File(Consts.IMG_DIR + "removeSmallIcon.png"));   
+            colourIcon          =   ImageIO.read(new File(Consts.IMG_DIR + "color_icon.png"));   
+            clipIcon            =   ImageIO.read(new File(Consts.IMG_DIR + "clipboard.png"));  
+            saveIcon            =   ImageIO.read(new File(Consts.IMG_DIR + "new_file.png"));
+            openIcon            =   ImageIO.read(new File(Consts.IMG_DIR + "open_icon.png"));
+            editBlackIcon       =   ImageIO.read(new File(Consts.IMG_DIR + "editblack.png"));
+            pointerIcon         =   ImageIO.read(new File(Consts.IMG_DIR + "pointer.png"));
+            moveIcon            =   ImageIO.read(new File(Consts.IMG_DIR + "move.png"));
+            moveSelectedIcon    =   ImageIO.read(new File(Consts.IMG_DIR + "move_selected.png"));
+            editSelectedIcon    =   ImageIO.read(new File(Consts.IMG_DIR + "editblack_selected.png"));
+            pointerSelectedIcon =   ImageIO.read(new File(Consts.IMG_DIR + "pointer_selected.png"));
+            graphIcon           =   ImageIO.read(new File(Consts.IMG_DIR + "graph.png"));
+            tableIcon           =   ImageIO.read(new File(Consts.IMG_DIR + "table.png"));
+            executeIcon         =   ImageIO.read(new File(Consts.IMG_DIR + "execute.png"));
+            resetIcon           =   ImageIO.read(new File(Consts.IMG_DIR + "reset.png"));
+            editIcon            =   ImageIO.read(new File(Consts.IMG_DIR + "edit.png"));
+            playIcon            =   ImageIO.read(new File(Consts.IMG_DIR + "play.png"));
+            stopIcon            =   ImageIO.read(new File(Consts.IMG_DIR + "stop.png"));
+            recordIcon          =   ImageIO.read(new File(Consts.IMG_DIR + "record.png"));
+            closeIcon           =   ImageIO.read(new File(Consts.IMG_DIR + "close.png"));
         }
         
         catch(IOException e)
@@ -255,14 +251,6 @@ public class MainPanel extends JPanel
     
     protected class ControlPanel extends JPanel implements ActionListener
     {
-        protected final String BA_PANEL_CARD          =   "ba_panel";
-        protected final String KL_PANEL_CARD          =   "kl_panel";
-        protected final String RA_PANEL_CARD          =   "ra_panel";
-        
-        protected final String CLUSTER_PANEL_CARD     =   "cluster_panel";
-        protected final String SPATH_PANEL_CARD       =   "spath_panel";
-        protected final String CENTRALITY_PANEL_CARD  =   "centrality_panel";   
-        
         protected PluginMenuListener menuListener;
         protected JMenuItem activePluginItem;
         
@@ -381,12 +369,12 @@ public class MainPanel extends JPanel
             klGenPanel  =   new JPanel(new MigLayout());
             raGenPanel  =   new JPanel(new MigLayout());
             
-            genPanel.add(klGenPanel, KL_PANEL_CARD);
-            genPanel.add(baGenPanel, BA_PANEL_CARD);
-            genPanel.add(raGenPanel, RA_PANEL_CARD);
+            genPanel.add(klGenPanel, Consts.KL_PANEL_CARD);
+            genPanel.add(baGenPanel, Consts.BA_PANEL_CARD);
+            genPanel.add(raGenPanel, Consts.RA_PANEL_CARD);
             
-            genPanel.setBackground(TRANSPARENT);
-            klGenPanel.setBackground(TRANSPARENT);
+            genPanel.setBackground(Consts.TRANSPARENT_COL);
+            klGenPanel.setBackground(Consts.TRANSPARENT_COL);
             baGenPanel.setOpaque(false);
             raGenPanel.setOpaque(false);
             
@@ -408,9 +396,9 @@ public class MainPanel extends JPanel
             baDirectedCheck     =   new JCheckBox("Directed");
             
             randDirectedCheck.setOpaque(true);
-            randDirectedCheck.setBackground(PRESET_BG);
+            randDirectedCheck.setBackground(Consts.PRESET_COL);
             baDirectedCheck.setOpaque(true);
-            baDirectedCheck.setBackground(PRESET_BG);
+            baDirectedCheck.setBackground(Consts.PRESET_COL);
             
             initialNSpinner     =   new JSpinner(new SpinnerNumberModel(2, 0, 1000, 1));
             addNSpinner         =   new JSpinner(new SpinnerNumberModel(100, 0, 1000, 1));
@@ -449,7 +437,7 @@ public class MainPanel extends JPanel
             
             editPanel       =   new JPanel(new GridLayout(3, 1));
             editPanel.setBorder(BorderFactory.createTitledBorder("Graph object Controls"));
-            editPanel.setBackground(TRANSPARENT);
+            editPanel.setBackground(Consts.TRANSPARENT_COL);
             
             editObjGroup    =   new ButtonGroup();
             editVertexRadio =   new JRadioButton("Vertex");
@@ -478,9 +466,9 @@ public class MainPanel extends JPanel
             JPanel selectedPanel        =   wrapComponents(null, new JLabel("Selected: "), selectedLabel);
             JPanel editObjPanel         =   wrapComponents(null, editVertexRadio, editEdgeRadio);
             JPanel gObjOptsPanel        =   wrapComponents(null, gObjAddBtn, gObjEditBtn, gObjRemoveBtn);
-            selectedPanel.setBackground(PRESET_BG);
-            gObjOptsPanel.setBackground(PRESET_BG);
-            editObjPanel.setBackground(PRESET_BG);
+            selectedPanel.setBackground(Consts.PRESET_COL);
+            gObjOptsPanel.setBackground(Consts.PRESET_COL);
+            editObjPanel.setBackground(Consts.PRESET_COL);
 
             editPanel.add(selectedPanel);
             editPanel.add(editObjPanel);
@@ -496,7 +484,7 @@ public class MainPanel extends JPanel
             computePanel.setPreferredSize(new Dimension(230, 180));
             computePanel.setBorder(BorderFactory.createTitledBorder("Computation controls"));
             spathPanel.setLayout(new BoxLayout(spathPanel, BoxLayout.Y_AXIS));
-            spathPanel.setBackground(TRANSPARENT);
+            spathPanel.setBackground(Consts.TRANSPARENT_COL);
             computeBtn.setBackground(Color.WHITE);
             computeBtn.addActionListener(this);
             computeBtn.setIcon(new ImageIcon(executeIcon));
@@ -513,8 +501,8 @@ public class MainPanel extends JPanel
             clusterPanel.setLayout(new MigLayout());
             clusterPanel.add(clusterEdgesPanel, "wrap");
             clusterPanel.add(clusterTransformCheck);
-            clusterEdgesPanel.setBackground(PRESET_BG);
-            clusterPanel.setBackground(PRESET_BG);
+            clusterEdgesPanel.setBackground(Consts.PRESET_COL);
+            clusterPanel.setBackground(Consts.PRESET_COL);
             
             spathFromField  =   new JTextField();
             spathToField    =   new JTextField();
@@ -527,9 +515,9 @@ public class MainPanel extends JPanel
             JPanel spathWrapper     =   new JPanel(new MigLayout()); 
             spathWrapper.add(spathFromPanel, "wrap");
             spathWrapper.add(spathToPanel);
-            spathWrapper.setBackground(TRANSPARENT);
-            spathFromPanel.setBackground(TRANSPARENT);
-            spathToPanel.setBackground(TRANSPARENT);
+            spathWrapper.setBackground(Consts.TRANSPARENT_COL);
+            spathFromPanel.setBackground(Consts.TRANSPARENT_COL);
+            spathToPanel.setBackground(Consts.TRANSPARENT_COL);
             spathPanel.add(spathWrapper); 
             
             centralityTypeBox       =   new JComboBox();
@@ -543,12 +531,12 @@ public class MainPanel extends JPanel
             JPanel cenTypePanel     =   wrapComponents(null, new JLabel("Type"), centralityTypeBox);
             centralityPanel.add(cenTypePanel, "wrap");
             centralityPanel.add(centralityMorphCheck);
-            cenTypePanel.setBackground(PRESET_BG);
-            centralityPanel.setBackground(PRESET_BG);
+            cenTypePanel.setBackground(Consts.PRESET_COL);
+            centralityPanel.setBackground(Consts.PRESET_COL);
             
-            computeInnerPanel.add(clusterPanel, CLUSTER_PANEL_CARD);
-            computeInnerPanel.add(spathPanel, SPATH_PANEL_CARD);
-            computeInnerPanel.add(centralityPanel, CENTRALITY_PANEL_CARD);
+            computeInnerPanel.add(clusterPanel, Consts.CLUSTER_PANEL_CARD);
+            computeInnerPanel.add(spathPanel, Consts.SPATH_PANEL_CARD);
+            computeInnerPanel.add(centralityPanel, Consts.CENTRALITY_PANEL_CARD);
             
             computePanel.add(new JLabel("Compute "), "al right");
             computePanel.add(computeBox, "wrap");
@@ -559,7 +547,7 @@ public class MainPanel extends JPanel
             computeWrapperPanel.add(computePanel);
             
             CardLayout clusterInnerLayout   =   (CardLayout) computeInnerPanel.getLayout();
-            clusterInnerLayout.show(computeInnerPanel, CLUSTER_PANEL_CARD);
+            clusterInnerLayout.show(computeInnerPanel, Consts.CLUSTER_PANEL_CARD);
             
             viewerPanel             =   new JPanel(new MigLayout("fillx"));
             viewerVLabelsCheck      =   new JCheckBox("Vertex labels");
@@ -805,10 +793,10 @@ public class MainPanel extends JPanel
                 JPanel storageOptsWrapper   =   wrapComponents(null, storageGraphRadio, storageLogRadio, storageScriptRadio);
                 directedCheckWrapper        =   wrapComponents(null, directedCheck);
                 
-                storageBtnWrapper.setBackground(PRESET_BG);
-                currentGraphWrapper.setBackground(PRESET_BG);
-                storageOptsWrapper.setBackground(PRESET_BG);
-                directedCheckWrapper.setBackground(PRESET_BG);
+                storageBtnWrapper.setBackground(Consts.PRESET_COL);
+                currentGraphWrapper.setBackground(Consts.PRESET_COL);
+                storageOptsWrapper.setBackground(Consts.PRESET_COL);
+                directedCheckWrapper.setBackground(Consts.PRESET_COL);
                 
                 add(currentGraphWrapper);
                 add(storageOptsWrapper);
@@ -858,9 +846,9 @@ public class MainPanel extends JPanel
             
             switch(selectedIndex)
             {
-                case 0: card = CLUSTER_PANEL_CARD; break;
-                case 1: card = CENTRALITY_PANEL_CARD; break;
-                case 2: card = SPATH_PANEL_CARD; break;
+                case 0: card = Consts.CLUSTER_PANEL_CARD; break;
+                case 1: card = Consts.CENTRALITY_PANEL_CARD; break;
+                case 2: card = Consts.SPATH_PANEL_CARD; break;
                 default: return;
             }
             
@@ -875,9 +863,9 @@ public class MainPanel extends JPanel
             
             switch(selectedIndex)
             {
-                case 0: card    =   KL_PANEL_CARD; break;
-                case 1: card    =   BA_PANEL_CARD; break;
-                case 2: card    =   RA_PANEL_CARD; break;
+                case 0: card    =   Consts.KL_PANEL_CARD; break;
+                case 1: card    =   Consts.BA_PANEL_CARD; break;
+                case 2: card    =   Consts.RA_PANEL_CARD; break;
                 default: return;
             }
             

@@ -8,7 +8,7 @@ package com.graphi.app;
 
 import edu.uci.ics.jung.graph.util.EdgeType;
 import java.awt.Toolkit;
-import javafx.scene.paint.Color;
+import java.awt.Color;
 
 
 public final class Consts 
@@ -18,10 +18,10 @@ public final class Consts
     //-------------------------------------------------------------
     //  APP PATHS
     //-------------------------------------------------------------
-    public static final String RES_DIR  =   "resources";
-    public static final String IMG_DIR  =   RES_DIR + "/images";
-    public static final String DATA_DIR =   "data";
-    public static final String TEST_DIR =   DATA_DIR + "/test";
+    public static final String RES_DIR  =   "resources/";
+    public static final String IMG_DIR  =   RES_DIR + "images/";
+    public static final String DATA_DIR =   "data/";
+    public static final String TEST_DIR =   DATA_DIR + "test";
     //-------------------------------------------------------------
     
 
@@ -34,6 +34,16 @@ public final class Consts
     public static final int WINDOW_WIDTH        =   (int) (Toolkit.getDefaultToolkit().getScreenSize().width * 0.7);
     public static final String WINDOW_TITLE     =   "Graphi - Kyle Russell 2015";
     //---------------------------------------------------------------------------------------------------------------
+    
+    
+    
+    //-----------------------------------------------------------------------
+    //  LAYOUT CONSTS
+    //-----------------------------------------------------------------------
+    public static final Color TRANSPARENT_COL   =   new Color(255, 255, 255, 0);
+    public static final Color PRESET_COL        =   new Color(200, 200, 200);
+    public static final float MAIN_SPLIT_WG     =   0.7f;
+    //-----------------------------------------------------------------------
     
     
     

@@ -6,6 +6,7 @@
 
 package com.graphi.util;
 
+import com.graphi.app.Consts;
 import java.awt.Color;
 import java.io.Serializable;
 
@@ -28,7 +29,7 @@ public class Node implements Serializable, GraphObject
     
     public Node(int id, String name)
     {
-        this(id, name, Color.GREEN);
+        this(id, name, Consts.DEFAULT_NODE_COLOUR);
     }
     
     public Node(int id, String name, Color fill)
@@ -44,11 +45,13 @@ public class Node implements Serializable, GraphObject
         return name;
     }
     
+    @Override
     public Color getFill()
     {
         return fill;
     }
     
+    @Override
     public void setFill(Color fill)
     {
         this.fill  =   fill;
@@ -64,11 +67,13 @@ public class Node implements Serializable, GraphObject
         this.name   =   name;
     }
     
+    @Override
     public int getID()
     {
         return id;
     }
     
+    @Override
     public void setID(int id)
     {
         this.id =   id;
