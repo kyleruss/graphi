@@ -57,7 +57,7 @@ import net.miginfocom.swing.MigLayout;
 
 public class ControlPanel extends JPanel implements ActionListener
 {
-    protected MainPanel.PluginMenuListener menuListener;
+    protected PluginMenuListener menuListener;
     protected JMenuItem activePluginItem;
 
     protected JPanel dataControlPanel, outputControlPanel, displayControlPanel;
@@ -113,7 +113,7 @@ public class ControlPanel extends JPanel implements ActionListener
         setPreferredSize(new Dimension(230, 1650));
 
         this.mainPanel  =   mainPanel;
-        menuListener    =   new MainPanel.PluginMenuListener();
+        menuListener    =   new PluginMenuListener();
         ioPanel         =   new IOPanel();            
         modePanel       =   new JPanel();
         simPanel        =   new JPanel(new MigLayout("fillx"));
@@ -991,6 +991,19 @@ public class ControlPanel extends JPanel implements ActionListener
         {
             simTiesPSpinner.setVisible(!simTiesPSpinner.isVisible());
             simTiesPLabel.setVisible(!simTiesPLabel.isVisible());
+        }
+    }
+    
+            
+    protected class PluginMenuListener implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+            JMenuItem item      =   (JMenuItem) e.getSource();
+            String pluginName   =   item.getText();
+            mainPanel.appManager.getPluginManager().activePlugin(pluginName);
+            mainPanel.menu.getPluginListMenu().setActivePluginItem(item);
         }
     }
 }
