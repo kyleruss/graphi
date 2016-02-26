@@ -16,8 +16,8 @@ import javax.swing.JTabbedPane;
 public class ScreenPanel extends JPanel
 {
     protected MainPanel mainPanel;
-    protected final MainPanel.ScreenPanel.DataPanel dataPanel;
-    protected final MainPanel.ScreenPanel.GraphPanel graphPanel;
+    protected final DataPanel dataPanel;
+    protected final GraphPanel graphPanel;
     protected final OutputPanel outputPanel;
     protected final JTabbedPane tabPane;
 
@@ -28,8 +28,8 @@ public class ScreenPanel extends JPanel
         
         this.mainPanel      =   mainPanel;
         tabPane             =   new JTabbedPane();
-        dataPanel           =   new MainPanel.ScreenPanel.DataPanel();
-        graphPanel          =   new MainPanel.ScreenPanel.GraphPanel();
+        dataPanel           =   new DataPanel(mainPanel);
+        graphPanel          =   new GraphPanel(mainPanel);
         outputPanel         =   new OutputPanel();
 
 
