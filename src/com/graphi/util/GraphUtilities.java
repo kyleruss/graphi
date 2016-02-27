@@ -17,6 +17,7 @@ import java.awt.Dimension;
 import java.awt.geom.Point2D;
 import java.util.Collection;
 import java.util.Set;
+import javax.swing.JOptionPane;
 
 public class GraphUtilities 
 {
@@ -35,6 +36,12 @@ public class GraphUtilities
     
     public static void cluster(AggregateLayout layout, Graph graph, int numRemoved, boolean group)
     {
+        if(numRemoved > graph.getEdgeCount())
+        {
+            JOptionPane.showMessageDialog(null, "[Error] Insufficient edges");
+            return;
+        }
+        
         EdgeBetweennessClusterer clusterer = new EdgeBetweennessClusterer(numRemoved);
         Set<Set<Node>> clusterSet  = clusterer.transform(graph); 
 
