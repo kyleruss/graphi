@@ -12,32 +12,23 @@ import com.graphi.display.MainMenu;
 import com.graphi.plugins.PluginManager;
 import com.graphi.util.GraphData;
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import javax.imageio.ImageIO;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import org.apache.commons.io.FilenameUtils;
 
 public class MainPanel extends JPanel
 {
-    protected final ControlPanel controlPanel;
-    protected final ScreenPanel screenPanel;
-    protected final JSplitPane splitPane;
-    protected final JScrollPane controlScroll;
+    protected ControlPanel controlPanel;
+    protected ScreenPanel screenPanel;
+    protected JSplitPane splitPane;
+    protected JScrollPane controlScroll;
     
     protected BufferedImage addIcon, removeIcon, colourIcon;
     protected BufferedImage clipIcon, openIcon, saveIcon;
@@ -119,5 +110,30 @@ public class MainPanel extends JPanel
     public void initConfigPlugins(PluginManager pm)
     {
         controlPanel.loadConfigPlugins(pm);
+    }
+    
+    public ControlPanel getControlPanel() 
+    {
+        return controlPanel;
+    }
+
+    public ScreenPanel getScreenPanel() 
+    {
+        return screenPanel;
+    }
+
+    public GraphData getData()
+    {
+        return data;
+    }
+
+    public MainMenu getMenu()
+    {
+        return menu;
+    }
+
+    public AppManager getAppManager() 
+    {
+        return appManager;
     }
 }

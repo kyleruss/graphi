@@ -45,7 +45,7 @@ public class PluginConfig
             this.loadedPluginPaths  =   paths;
         }
         
-        catch(DOMException | NumberFormatException e)
+        catch(Exception e)
         {
             JOptionPane.showMessageDialog(null, "[Error] Failed to read plugin config");
         }
