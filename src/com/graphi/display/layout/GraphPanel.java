@@ -72,7 +72,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     protected final String RECORD_CARD    =   "rec";
     protected final String PLAYBACK_CARD  =   "pb";
     protected final int INITIAL_DELAY     =   500;
-
+    
     protected final VisualizationViewer<Node, Edge> gViewer;
     protected AggregateLayout<Node, Edge> gLayout;
     protected EditingModalGraphMouse mouse;
@@ -586,5 +586,25 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
             mainPanel.data.setSelectedItems(e.getItemSelectable().getSelectedObjects());
             mainPanel.controlPanel.updateSelectedComponents();
         }
+    }
+    
+    public VisualizationViewer<Node, Edge> getgViewer() 
+    {
+        return gViewer;
+    }
+
+    public AggregateLayout<Node, Edge> getgLayout() 
+    {
+        return gLayout;
+    }
+
+    public EditingModalGraphMouse getMouse()
+    {
+        return mouse;
+    }
+
+    public GraphPlayback getgPlayback()
+    {
+        return gPlayback;
     }
 }

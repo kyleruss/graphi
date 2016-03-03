@@ -52,4 +52,24 @@ public class ScreenPanel extends JPanel
 
         add(tabPane);
     }
+    
+    public MainPanel getMainPanel() 
+    {
+        return mainPanel;
+    }
+
+    public DataPanel getDataPanel() 
+    {
+        return dataPanel;
+    }
+
+    public GraphPanel getGraphPanel() 
+    {
+        return graphPanel;
+    }
+
+    public OutputPanel getOutputPanel() 
+    {
+        return outputPanel;
+    }
 }

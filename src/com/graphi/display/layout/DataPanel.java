@@ -38,6 +38,7 @@ import net.miginfocom.swing.MigLayout;
 
 public class DataPanel extends JPanel
 {
+
     protected final JTable vertexTable, edgeTable;
     protected final DefaultTableModel vertexDataModel, edgeDataModel;
     protected final JTabbedPane dataTabPane;
@@ -527,5 +528,24 @@ public class DataPanel extends JPanel
             if(src == autoCheck)
                 idSpinner.setEnabled(!autoCheck.isSelected());
         }
+    }
+    
+    public JTable getVertexTable() 
+    {
+        return vertexTable;
+    }
+
+    public JTable getEdgeTable() {
+        return edgeTable;
+    }
+
+    public DefaultTableModel getVertexDataModel() 
+    {
+        return vertexDataModel;
+    }
+
+    public DefaultTableModel getEdgeDataModel() 
+    {
+        return edgeDataModel;
     }
 }

@@ -17,6 +17,7 @@ import javax.swing.JTextArea;
 public class OutputPanel extends JPanel
 {
     protected JTextArea outputArea;
+    
     public OutputPanel()
     {
         setLayout(new BorderLayout());
@@ -33,5 +34,10 @@ public class OutputPanel extends JPanel
     protected void clearLog()
     {
         outputArea.setText("");
+    }
+    
+    public JTextArea getOutputArea()
+    {
+        return outputArea;
     }
 }
