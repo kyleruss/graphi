@@ -9,6 +9,7 @@ package com.graphi.display.layout;
 import cern.colt.matrix.impl.SparseDoubleMatrix2D;
 import com.graphi.sim.GraphPlayback;
 import com.graphi.sim.PlaybackEntry;
+import com.graphi.util.CentralityTransformer;
 import com.graphi.util.ComponentUtils;
 import com.graphi.util.Edge;
 import com.graphi.util.EdgeLabelTransformer;
@@ -412,39 +413,6 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
                 mainPanel.data.setGraph(GraphUtilities.copyNewGraph(entry.getGraph()));
                 reloadGraph();
             }
-        }
-    }
-
-
-    //--------------------------------------
-    //  CENTRALITY TRANSFORMER
-    //--------------------------------------
-
-    protected class CentralityTransformer implements Transformer<Node, Shape>
-    {
-        List<Node> centralNodes;
-        int numRanks;
-
-        public CentralityTransformer(List<Node> centralNodes, int numRanks)
-        {
-            this.centralNodes   =   centralNodes;
-            this.numRanks       =   numRanks;
-        }
-
-        @Override
-        public Shape transform(Node node) 
-        {
-
-            for(int i = 0; i < numRanks; i++)
-            {
-                if(node.equals(centralNodes.get(i)))
-                {
-                    int size    =   20 + ((numRanks - i) * 10);
-                    return new Ellipse2D.Double(-10, -10, size, size);
-                }
-            }
-
-            return new Ellipse2D.Double(-10, -10, 20, 20);
         }
     }
 
