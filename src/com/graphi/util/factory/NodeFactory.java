@@ -4,7 +4,9 @@
 //  https://github.com/denkers/graphi
 //=========================================
 
-package com.graphi.util;
+package com.graphi.util.factory;
+
+import com.graphi.util.Node;
 
 public class NodeFactory extends GraphObjFactory<Node>
 {

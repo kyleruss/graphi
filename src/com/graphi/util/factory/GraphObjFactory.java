@@ -4,7 +4,7 @@
 //  https://github.com/denkers/graphi
 //=========================================
 
-package com.graphi.util;
+package com.graphi.util.factory;
 
 import org.apache.commons.collections15.Factory;
 

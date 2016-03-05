@@ -1,6 +1,8 @@
 
 package com.graphi.util;
 
+import com.graphi.util.factory.EdgeFactory;
+import com.graphi.util.factory.NodeFactory;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import java.util.HashMap;

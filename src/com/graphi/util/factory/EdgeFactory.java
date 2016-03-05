@@ -4,8 +4,9 @@
 //  https://github.com/denkers/graphi
 //=========================================
 
-package com.graphi.util;
+package com.graphi.util.factory;
 
+import com.graphi.util.Edge;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import java.util.Random;
 
