@@ -4,8 +4,9 @@
 //  https://github.com/denkers/graphi
 //=========================================
 
-package com.graphi.util;
+package com.graphi.util.transformer;
 
+import com.graphi.util.Edge;
 import java.text.DecimalFormat;
 import org.apache.commons.collections15.Transformer;
 

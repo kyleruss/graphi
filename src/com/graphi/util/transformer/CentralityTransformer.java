@@ -4,8 +4,9 @@
 //  https://github.com/denkers/graphi
 //=========================================
 
-package com.graphi.util;
+package com.graphi.util.transformer;
 
+import com.graphi.util.Node;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.util.List;

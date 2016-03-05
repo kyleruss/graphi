@@ -4,8 +4,9 @@
 //  https://github.com/denkers/graphi
 //=========================================
 
-package com.graphi.util;
+package com.graphi.util.transformer;
 
+import com.graphi.util.Node;
 import org.apache.commons.collections15.Transformer;
 
 public class VertexLabelTransformer implements Transformer<Node, String>

@@ -1,6 +1,7 @@
 
-package com.graphi.util;
+package com.graphi.util.transformer;
 
+import com.graphi.util.GraphObject;
 import edu.uci.ics.jung.visualization.picking.PickedInfo;
 import java.awt.Color;
 import java.awt.Paint;
