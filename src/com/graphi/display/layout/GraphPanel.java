@@ -38,7 +38,6 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -556,12 +555,12 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         }
     }
     
-    public VisualizationViewer<Node, Edge> getgViewer() 
+    public VisualizationViewer<Node, Edge> getGraphViewer() 
     {
         return gViewer;
     }
 
-    public AggregateLayout<Node, Edge> getgLayout() 
+    public AggregateLayout<Node, Edge> getGraphLayout() 
     {
         return gLayout;
     }
@@ -571,7 +570,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         return mouse;
     }
 
-    public GraphPlayback getgPlayback()
+    public GraphPlayback getGraphPlayback()
     {
         return gPlayback;
     }
