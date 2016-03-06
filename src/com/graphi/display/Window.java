@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+
 public final class Window
 {
     private final MainMenu menu;
@@ -47,7 +48,7 @@ public final class Window
     {
         try
         {
-            UIManager.setLookAndFeel("de.javasoft.plaf.synthetica.SyntheticaAluOxideLookAndFeel");
+            UIManager.setLookAndFeel(Consts.LNF_PACKAGE);
         } 
         
         catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e)

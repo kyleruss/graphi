@@ -33,6 +33,7 @@ public final class Consts
     public static final int WINDOW_HEIGHT       =   (int) (Toolkit.getDefaultToolkit().getScreenSize().height * 0.85);
     public static final int WINDOW_WIDTH        =   (int) (Toolkit.getDefaultToolkit().getScreenSize().width * 0.7);
     public static final String WINDOW_TITLE     =   "Graphi - Kyle Russell 2015";
+    public static final String LNF_PACKAGE      =   "de.javasoft.plaf.synthetica.SyntheticaAluOxideLookAndFeel";
     //---------------------------------------------------------------------------------------------------------------
     
     
