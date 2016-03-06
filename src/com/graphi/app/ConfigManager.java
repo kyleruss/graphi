@@ -19,7 +19,6 @@ import org.xml.sax.SAXException;
 
 public class ConfigManager 
 {
-    public static final String GLOBAL_CONF_FILE =   "data/config.xml";
     private PluginConfig pluginConfig;
     
     public ConfigManager()
@@ -31,7 +30,7 @@ public class ConfigManager
     {
         try
         {
-            File configFile             =   new File(GLOBAL_CONF_FILE);
+            File configFile             =   new File(Consts.GLOBAL_CONF_FILE);
             DocumentBuilder docBuilder  =   DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Document configDoc          =   docBuilder.parse(configFile);
             
