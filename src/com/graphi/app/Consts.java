@@ -10,7 +10,10 @@ import edu.uci.ics.jung.graph.util.EdgeType;
 import java.awt.Toolkit;
 import java.awt.Color;
 
-
+/**
+ * Contains all application wide constants 
+ * includes paths, settings, layout definitions, names and more
+ */
 public final class Consts 
 {
     private Consts() {}

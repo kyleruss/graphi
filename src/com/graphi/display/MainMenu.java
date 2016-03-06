@@ -13,6 +13,10 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+/**
+ * The default menu bar attached to Window.frame
+ * 
+ */
 public class MainMenu extends JMenuBar
 {
     protected final JMenu fileMenu;
@@ -40,6 +44,12 @@ public class MainMenu extends JMenuBar
         pluginMenu          =   new JMenu("Plugin");
         pluginsListMenu     =   new PluginsMenu();
         
+        //----------------------------------------------------------------------
+        //  ADD MENU ITEMS
+        //----------------------------------------------------------------------
+        //- Menu items are stored in the menuItems map for later indexing
+        //- Use getMenuItem for access to an item
+        
         addMenuItem("exitItem", new JMenuItem("Exit"), fileMenu);
         addMenuItem("miniItem", new JMenuItem("Minimize"), fileMenu);
         addMenuItem("maxItem", new JMenuItem("Maximize"), fileMenu);
@@ -61,6 +71,7 @@ public class MainMenu extends JMenuBar
         addMenuItem("addEdgeItem", new JMenuItem("Add"), edgeMenu);
         addMenuItem("editEdgeItem", new JMenuItem("Edit"), edgeMenu);
         addMenuItem("removeEdgeItem", new JMenuItem("Remove"), edgeMenu);
+        //----------------------------------------------------------------------
         
         graphMenu.add(vertexMenu);
         graphMenu.add(edgeMenu);
@@ -77,27 +88,52 @@ public class MainMenu extends JMenuBar
         add(pluginMenu);
     }
     
+    /**
+     * Adds a menu item to a menu and to the menuItems map 
+     * @param name The key name used when added to the menuItems map
+     * @param item the item to add
+     * @param menu the menu to add the item to
+     */
     public void addMenuItem(String name, JMenuItem item, JMenu menu)
     {
         menuItems.put(name, item);
         menu.add(item);
     }
     
+    /**
+     * @param name The key name in the menu items map that was used to initialy add the item
+     * @return The menu item for the given key name
+     */
     public JMenuItem getMenuItem(String name)
     {
         return menuItems.get(name);
     }
     
-    
+    /**
+     * @return The menu items map
+     * keys are the name param used when calling addMenuItem
+     */
     public Map<String, JMenuItem> getMenuItems()
     {
         return menuItems;
     }
     
+    /**
+     * Sets the ActionListener for all added menu items
+     * @param listener An ActionListener instance 
+     */
     public void setMenuItemListener(ActionListener listener)
     {
         for(JMenuItem item : menuItems.values())
             item.addActionListener(listener);
+    }
+    
+    /**
+     * @return the PluginListMenu sub menu 
+     */
+    public PluginsMenu getPluginListMenu() 
+    {
+        return pluginsListMenu;
     }
     
     public JMenu getFileMenu() 
@@ -144,10 +180,5 @@ public class MainMenu extends JMenuBar
     public JMenu getPluginMenu() 
     {
         return pluginMenu;
-    }
-
-    public PluginsMenu getPluginListMenu() 
-    {
-        return pluginsListMenu;
     }
 }
