@@ -16,6 +16,10 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+/**
+ * Manages the active configs in the application
+ * Handles importing of the app configs
+ */
 
 public class ConfigManager 
 {
@@ -26,6 +30,10 @@ public class ConfigManager
         loadConfig();
     }
     
+    /**
+    * Imports global config file
+    * Initializes all app configs from the global config
+    */
     private void loadConfig()
     {
         try
@@ -43,6 +51,10 @@ public class ConfigManager
         }
     }
     
+    /**
+    * @return The applications plugin config
+    * contains default plugin, startup plugins configs etc.
+    */
     public PluginConfig getPluginConfig()
     {
         return pluginConfig;
