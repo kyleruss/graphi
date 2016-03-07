@@ -7,6 +7,7 @@
 package com.graphi.display.layout;
 
 import com.graphi.app.Consts;
+import com.graphi.display.layout.util.PluginMenuListener;
 import com.graphi.io.AdjMatrixParser;
 import com.graphi.io.GMLParser;
 import com.graphi.io.GraphMLParser;
@@ -113,7 +114,7 @@ public class ControlPanel extends JPanel implements ActionListener
         setPreferredSize(new Dimension(230, 1650));
 
         this.mainPanel  =   mainPanel;
-        menuListener    =   new PluginMenuListener();
+        menuListener    =   new PluginMenuListener(mainPanel.menu.getPluginListMenu(), mainPanel.appManager.getPluginManager());
         ioPanel         =   new IOPanel();            
         modePanel       =   new JPanel();
         simPanel        =   new JPanel(new MigLayout("fillx"));
@@ -991,19 +992,6 @@ public class ControlPanel extends JPanel implements ActionListener
         {
             simTiesPSpinner.setVisible(!simTiesPSpinner.isVisible());
             simTiesPLabel.setVisible(!simTiesPLabel.isVisible());
-        }
-    }
-    
-            
-    protected class PluginMenuListener implements ActionListener
-    {
-        @Override
-        public void actionPerformed(ActionEvent e)
-        {
-            JMenuItem item      =   (JMenuItem) e.getSource();
-            String pluginName   =   item.getText();
-            mainPanel.appManager.getPluginManager().activePlugin(pluginName);
-            mainPanel.menu.getPluginListMenu().setActivePluginItem(item);
         }
     }
 }
