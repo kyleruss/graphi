@@ -23,9 +23,21 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import org.apache.commons.collections15.Factory;
 
-
+/**
+ * Utility class for importing Graph objects from files containing adjacency matrix
+ * Can also export a Graph object's adjacency matrix to file 
+ */
 public class AdjMatrixParser
 {
+    /**
+     * Reads an adjacency matrix from file and creates and returns its Graph object
+     * Files must only contain the adjacency matrix with simple formatting
+     * @param file The file to read the graph adjacency matrix from
+     * @param directed A boolean for whether the imported graph has directed edges; false for undirected
+     * @param nodeFactory A factory to create vertices/nodes from. Files do not contain any additional info e.g id's/names of nodes
+     * @param edgeFactory A factory for creating edges 
+     * @return The Graph object created from the adjacency matrix read
+     */
     public static Graph<Node, Edge> importGraph(File file, boolean directed, Factory<Node> nodeFactory, Factory<Edge>  edgeFactory)
     {
         Graph<Node, Edge> graph =   new SparseMultigraph<>();
@@ -74,6 +86,12 @@ public class AdjMatrixParser
         return graph;
     }
     
+    /**
+     * Creates an adjacency matrix from a Graph object and exports it to a file
+     * @param graph The Graph object that will transformed to a adjacency matrix and exported
+     * @param file The file to export to
+     * @param directed A boolean as to whether the edges in the adjacency matrix are directed
+     */
     public static void exportGraph(Graph<Node, Edge> graph, File file, boolean directed)
     {
         String output       =   "";
