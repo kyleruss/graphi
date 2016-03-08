@@ -13,8 +13,12 @@ import edu.uci.ics.jung.graph.util.EdgeType;
 import java.util.Iterator;
 import org.apache.commons.collections15.Transformer;
 
+/**
+ * A transformer for transforming an Edge into a GML formatted edge
+ */
 public class GMLEdgeTransformer implements Transformer<Edge, String>
 {
+    //The parent Graph who holds Edge's passed in transform
     private Graph<Node, Edge> graph;
     
     public GMLEdgeTransformer(Graph<Node, Edge> graph)
@@ -22,6 +26,11 @@ public class GMLEdgeTransformer implements Transformer<Edge, String>
         this.graph  =   graph;
     }
     
+    /**
+     * Transforms an edge into a GML edge String
+     * @param edge The edge to be transformed
+     * @return A GML formatted String of the Edge
+     */
     @Override
     public String transform(Edge edge)
     {
