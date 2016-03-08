@@ -26,8 +26,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
+/**
+ * A Graph Modelling Language (GML) parser
+ * @see <a href="https://en.wikipedia.org/wiki/Graph_Modelling_Language">GML Wiki</a>
+ * Handles importing/exporting of Graph objects from GML documents
+ */
 public class GMLParser 
 {
+    /**
+     * Takes a GML document & returns the inner object under objName header
+     * @param doc The document to filter
+     * @param objName The inner object header name
+     * @return The filtered inner document 
+     */
     private static Matcher getDocumentObj(String doc, String objName)
     {
         Pattern p = Pattern.compile(objName + " \\[\n([^\\]]*)\\]", Pattern.MULTILINE);
@@ -36,6 +47,12 @@ public class GMLParser
         return m;
     }
     
+    /**
+     * Extracts a property from a GML document
+     * @param docObj The GML document which contains the desired property
+     * @param property The property name
+     * @return The property string value; returns the first property if more than one value found
+     */
     private static String getDocumentObjProperty(String docObj, String property)
     {
         Pattern p = Pattern.compile(property + "\\s+(\\w+)");
@@ -52,6 +69,14 @@ public class GMLParser
         else return null;
     }
     
+    /**
+     * Creates & returns a Graph object a parsed GML document
+     * Note: Only ID properties are preserved in standard GML 
+     * @param file The GML file to import
+     * @param nodeFactory A factory to create nodes from GML formatted nodes
+     * @param edgeFactory A factory to create edges from GML formatted edges
+     * @return 
+     */
     public static Graph<Node, Edge> importGraph(File file, GraphObjFactory<Node> nodeFactory, GraphObjFactory<Edge> edgeFactory)
     {
         Graph<Node, Edge> graph =   new SparseMultigraph<>();
@@ -149,6 +174,12 @@ public class GMLParser
         return graph;
     }
     
+    /**
+     * Creates a GML document from a Graph object to export to file
+     * @param graph The Graph to export
+     * @param file The File to export to
+     * @param directed A boolean for whether the exported Graph is directed (adds a GML property)
+     */
     public static void exportGraph(Graph<Node, Edge> graph, File file, boolean directed)
     {
         String output   =   "";
