@@ -30,6 +30,7 @@ public class GMLEdgeTransformer implements Transformer<Edge, String>
      * Transforms an edge into a GML edge String
      * @param edge The edge to be transformed
      * @return A GML formatted String of the Edge
+     * @see <a href="https://en.wikipedia.org/wiki/Graph_Modelling_Language">GML Wiki</a>
      */
     @Override
     public String transform(Edge edge)
