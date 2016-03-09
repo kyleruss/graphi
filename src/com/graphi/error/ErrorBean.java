@@ -2,10 +2,11 @@
 package com.graphi.error;
 
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.Date;
 
 
-public class ErrorBean implements Serializable
+public class ErrorBean implements Serializable, Comparable<ErrorBean>
 {
     private Date errorTime;
     private Exception exception;
@@ -51,5 +52,18 @@ public class ErrorBean implements Serializable
     public void setMessage(String message) 
     {
         this.message = message;
+    }
+    
+    @Override
+    public String toString()
+    {
+        String output    =   MessageFormat.format("Error time: {0}\nError message: {1}\nError: {2}", errorTime, message, exception.getMessage());
+        return output;
+    }
+
+    @Override
+    public int compareTo(ErrorBean other) 
+    {
+        return this.errorTime.compareTo(other.getErrorTime());
     }
 }
