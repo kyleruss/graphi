@@ -5,13 +5,18 @@ import java.io.Serializable;
 import java.util.Date;
 
 
-public class ErrorStub implements Serializable
+public class ErrorBean implements Serializable
 {
     private Date errorTime;
     private Exception exception;
     private String message;
     
-    public ErrorStub(Date errorTime, Exception exception, String message)
+    public ErrorBean()
+    {
+        this(new Date(), null, "");
+    }
+    
+    public ErrorBean(Date errorTime, Exception exception, String message)
     {
         this.errorTime  =   errorTime;
         this.exception  =   exception;

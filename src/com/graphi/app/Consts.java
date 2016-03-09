@@ -26,6 +26,7 @@ public final class Consts
     public static final String DATA_DIR         =   "data/";
     public static final String TEST_DIR         =   DATA_DIR + "test";
     public static final String GLOBAL_CONF_FILE =   "data/config.xml";
+    public static final String ERROR_DUMP_DIR   =   DATA_DIR + "error/";
     //-------------------------------------------------------------------
     
 
@@ -38,6 +39,7 @@ public final class Consts
     public static final int WINDOW_WIDTH        =   (int) (Toolkit.getDefaultToolkit().getScreenSize().width * 0.7);
     public static final String WINDOW_TITLE     =   "Graphi - Kyle Russell 2015";
     public static final String LNF_PACKAGE      =   "de.javasoft.plaf.synthetica.SyntheticaAluOxideLookAndFeel";
+    public static final boolean DEBUG_MODE      =   false;
     //---------------------------------------------------------------------------------------------------------------
     
     
