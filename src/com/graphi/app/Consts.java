@@ -80,7 +80,4 @@ public final class Consts
     public static final String SPATH_PANEL_CARD       =   "spath_panel";
     public static final String CENTRALITY_PANEL_CARD  =   "centrality_panel";
     //------------------------------------------------------------------------
-    
-    
-    
 }

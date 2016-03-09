@@ -23,9 +23,20 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.collections15.Factory;
 import org.xml.sax.SAXException;
 
-
+/**
+ * A utility class for parsing GraphML 
+ * @see <a href="http://graphml.graphdrawing.org/">GraphML home</a>
+ * Handles importing/exporting GraphML/Graph
+ */
 public class GraphMLParser
 {
+    /**
+     * Parses a GraphML file and creates & returns a Graph object from the parsed GraphML
+     * @param file The GraphML file
+     * @param nodeFactory A factory used to create nodes for each node found in the GraphML
+     * @param edgeFactory Created edges used for each edge in GraphML
+     * @return A Graph created from the parsed GraphML file
+     */
     public static Graph<Node, Edge> importGraph(File file, Factory<Node> nodeFactory, Factory<Edge> edgeFactory)
     {
         Graph<Node, Edge> graph     =   new SparseMultigraph<>();
@@ -44,6 +55,11 @@ public class GraphMLParser
         return graph;
     }
     
+    /**
+     * Creates a GraphML document from the passed Graph and exports it to file
+     * @param file The file to save the GraphML to
+     * @param graph The Graph to parse as GraphML and export 
+     */
     public static void exportGraph(File file, Graph<Node, Edge> graph)
     {
         try(BufferedWriter writer   =   new BufferedWriter(new FileWriter(file)))
