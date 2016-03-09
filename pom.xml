@@ -94,11 +94,6 @@
 		<sourceDirectory>src</sourceDirectory>
 		<resources>
 			<resource>
-				<directory>${basedir}/resources</directory>
-				<targetPath>${basedir}/target/resources</targetPath>
-			</resource>
-			
-			<resource>
 				<directory>${basedir}/data</directory>
 				<targetPath>${basedir}/target/data</targetPath>
 			</resource>

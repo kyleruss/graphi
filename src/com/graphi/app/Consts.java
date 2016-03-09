@@ -21,11 +21,11 @@ public final class Consts
     //-------------------------------------------------------------------
     //  APP PATHS
     //-------------------------------------------------------------------
-    public static final String RES_DIR          =   "resources/";
-    public static final String IMG_DIR          =   RES_DIR + "images/";
     public static final String DATA_DIR         =   "data/";
+    public static final String RES_DIR          =   DATA_DIR + "resources/";
+    public static final String IMG_DIR          =   RES_DIR + "images/";
     public static final String TEST_DIR         =   DATA_DIR + "test";
-    public static final String GLOBAL_CONF_FILE =   "data/config.xml";
+    public static final String GLOBAL_CONF_FILE =   DATA_DIR + "config.xml";
     public static final String ERROR_DUMP_DIR   =   DATA_DIR + "error/";
     //-------------------------------------------------------------------
     

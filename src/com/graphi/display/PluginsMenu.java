@@ -6,6 +6,7 @@
 
 package com.graphi.display;
 
+import com.graphi.app.Consts;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -41,7 +42,7 @@ public class PluginsMenu extends JMenu
         pluginMenuItems =   new HashMap<>();
         addPluginMenuItem("defaultPluginItem", new JMenuItem("Default"));
         
-        try { activeTickIcon  =   ImageIO.read(new File("resources/images/tick.png")); }
+        try { activeTickIcon  =   ImageIO.read(new File(Consts.IMG_DIR + "tick.png")); }
         
         catch(IOException e)
         {
