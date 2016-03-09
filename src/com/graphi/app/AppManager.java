@@ -7,6 +7,7 @@
 package com.graphi.app;
 
 import com.graphi.display.Window;
+import com.graphi.error.ErrorManager;
 import com.graphi.plugins.PluginManager;
 
 
@@ -20,10 +21,12 @@ public final class AppManager
 {
     private final ConfigManager configManager; //Manages stored configs
     private final PluginManager pluginManager; //Manages loading & active plugins
+    private final ErrorManager errorManager; // Manages error messages & dumping
     private final Window window; //Handles display of the application
     
     private AppManager()
     {
+        errorManager    =   new ErrorManager();
         configManager   =   new ConfigManager();
         window          =   Window.getWindowInstance();
         pluginManager   =   new PluginManager(this);   
