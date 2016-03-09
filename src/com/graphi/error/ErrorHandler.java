@@ -6,7 +6,7 @@
 
 package com.graphi.error;
 
-public class ExceptionHandler 
+public class ErrorHandler 
 {
     
 }
