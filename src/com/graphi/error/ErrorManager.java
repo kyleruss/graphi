@@ -8,5 +8,10 @@ package com.graphi.error;
 
 public class ErrorManager
 {
+    private static ErrorDump errorDump;
     
+    public ErrorManager()
+    {
+        errorDump   =   ErrorDump.getLatestErrorDump();
+    }
 }

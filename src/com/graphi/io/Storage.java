@@ -56,7 +56,6 @@ public class Storage
         
         catch(Exception e)
         {
-            JOptionPane.showMessageDialog(null, "[Error] Failed to open file");
             return null;
         }
     }
