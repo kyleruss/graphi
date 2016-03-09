@@ -19,7 +19,6 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -104,7 +103,7 @@ public class MainPanel extends JPanel
         
         catch(IOException e)
         {
-            ErrorManager.GUIErrorMessage("Failed to load resources", true, e);
+            ErrorManager.GUIErrorMessage("Failed to load resources", true, e, null);
         }
     }
     

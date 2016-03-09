@@ -9,6 +9,7 @@ package com.graphi.app;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import java.awt.Toolkit;
 import java.awt.Color;
+import java.io.File;
 
 /**
  * Contains all application wide constants 
@@ -18,16 +19,17 @@ public final class Consts
 {
     private Consts() {}
     
-    //-------------------------------------------------------------------
+    //----------------------------------------------------------------------------------
     //  APP PATHS
-    //-------------------------------------------------------------------
-    public static final String DATA_DIR         =   "data/";
-    public static final String RES_DIR          =   DATA_DIR + "resources/";
-    public static final String IMG_DIR          =   RES_DIR + "images/";
+    //----------------------------------------------------------------------------------
+    public static final String SEPARATOR        =   File.separator;
+    public static final String DATA_DIR         =   "data" + SEPARATOR;
+    public static final String RES_DIR          =   DATA_DIR + "resources" + SEPARATOR;
+    public static final String IMG_DIR          =   RES_DIR + "images" + SEPARATOR;
     public static final String TEST_DIR         =   DATA_DIR + "test";
     public static final String GLOBAL_CONF_FILE =   DATA_DIR + "config.xml";
-    public static final String ERROR_DUMP_DIR   =   DATA_DIR + "error/";
-    //-------------------------------------------------------------------
+    public static final String ERROR_DUMP_DIR   =   DATA_DIR + "error" + SEPARATOR;
+    //----------------------------------------------------------------------------------
     
 
 

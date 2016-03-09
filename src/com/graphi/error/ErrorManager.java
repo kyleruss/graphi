@@ -19,29 +19,28 @@ public class ErrorManager
     {
         this.appManager =   appManager;
         errorDump       =   ErrorDump.getLatestErrorDump();
-        System.out.println(errorDump.getErrorBeans().get(0).getErrorTime());
     }
     
-    public static void GUIErrorMessage(String message, boolean logError, Exception e)
+    public static void GUIErrorMessage(String message, boolean logError, Exception e, Object errorData)
     {
         JOptionPane.showMessageDialog(null, message);
         
         if(logError)
-            logError(message, e);
+            logError(message, e, errorData);
     }
     
-    public static void CLIErrorMessage(String message, boolean logError, Exception e)
+    public static void CLIErrorMessage(String message, boolean logError, Exception e, Object errorData)
     {
         String prefix   =   "[Error] ";
         System.out.println(prefix + message);
         
         if(logError)
-            logError(message, e);
+            logError(message, e, errorData);
     }
     
-    public static void logError(String message, Exception e)
+    public static void logError(String message, Exception e, Object errorData)
     {
-         ErrorBean bean  =   new ErrorBean(new Date(), e, message);
+         ErrorBean bean  =   new ErrorBean(new Date(), e, message, errorData);
          errorDump.addErrorBean(bean);
          errorDump.saveErrorDumpInstance();
     }

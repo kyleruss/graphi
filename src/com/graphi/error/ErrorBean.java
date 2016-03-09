@@ -16,17 +16,19 @@ public class ErrorBean implements Serializable, Comparable<ErrorBean>
     private Date errorTime;
     private Exception exception;
     private String message;
+    private Object errorData;
     
     public ErrorBean()
     {
-        this(new Date(), null, "");
+        this(new Date(), null, "", null);
     }
     
-    public ErrorBean(Date errorTime, Exception exception, String message)
+    public ErrorBean(Date errorTime, Exception exception, String message, Object errorData)
     {
         this.errorTime  =   errorTime;
         this.exception  =   exception;
         this.message    =   message;
+        this.errorData  =   errorData;
     }
     
     public Date getErrorTime() 
@@ -57,6 +59,16 @@ public class ErrorBean implements Serializable, Comparable<ErrorBean>
     public void setMessage(String message) 
     {
         this.message = message;
+    }
+    
+    public Object getErrorData()
+    {
+        return errorData;
+    }
+    
+    public void setErrorData(Object errorData)
+    {
+        this.errorData  =   errorData;
     }
     
     @Override
