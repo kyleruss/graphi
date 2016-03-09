@@ -66,7 +66,7 @@ public class ErrorDump implements Serializable, Iterable<ErrorBean>
     
     private static String createFileName()
     {
-        SimpleDateFormat formatter =   new SimpleDateFormat("dd-mm-yy");
+        SimpleDateFormat formatter =   new SimpleDateFormat("dd-MM-yy");
         Date date   =   new Date();
         return NAME_PREFIX + formatter.format(date);
     }
@@ -87,7 +87,7 @@ public class ErrorDump implements Serializable, Iterable<ErrorBean>
         String fileName =   createFileName();
         File file       =   new File(Consts.ERROR_DUMP_DIR + fileName);
         ErrorDump dump  =   openErrorDump(file);
-        
+            
         return dump == null? new ErrorDump() : dump;
     }
     

@@ -5,3 +5,4 @@ nbactions.xml
 *.gml
 data/test
 *.swp
+data/error/ErrorDump*

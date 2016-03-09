@@ -26,7 +26,7 @@ public final class AppManager
     
     private AppManager()
     {
-        errorManager    =   new ErrorManager();
+        errorManager    =   new ErrorManager(this);
         configManager   =   new ConfigManager();
         window          =   Window.getWindowInstance();
         pluginManager   =   new PluginManager(this);   

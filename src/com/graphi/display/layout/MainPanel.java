@@ -9,6 +9,7 @@ package com.graphi.display.layout;
 import com.graphi.app.AppManager;
 import com.graphi.app.Consts;
 import com.graphi.display.MainMenu;
+import com.graphi.error.ErrorManager;
 import com.graphi.plugins.PluginManager;
 import com.graphi.util.GraphData;
 import java.awt.BorderLayout;
@@ -103,7 +104,7 @@ public class MainPanel extends JPanel
         
         catch(IOException e)
         {
-            JOptionPane.showMessageDialog(null, "Failed to load resources: " + e.getMessage());
+            ErrorManager.GUIErrorMessage("Failed to load resources", true, e);
         }
     }
     
