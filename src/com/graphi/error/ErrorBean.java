@@ -10,12 +10,23 @@ import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.Date;
 
-
+/**
+ * A bean to capture useful exception data
+ * Is the primary exception structure in Graphi
+ * Used primarily in the error module
+ */
 public class ErrorBean implements Serializable, Comparable<ErrorBean>
 {
+    //The time at which the exception occured
     private Date errorTime;
+    
+    //The Exception caused
     private Exception exception;
+    
+    //Additional message to help explain the exception
     private String message;
+    
+    //Additional data related to exception - Note: must be serialized
     private Object errorData;
     
     public ErrorBean()
@@ -71,6 +82,11 @@ public class ErrorBean implements Serializable, Comparable<ErrorBean>
         this.errorData  =   errorData;
     }
     
+    
+    /**
+     * Returns a summary of the exception
+     * @return The error time, user and exception messages
+     */
     @Override
     public String toString()
     {
@@ -78,6 +94,12 @@ public class ErrorBean implements Serializable, Comparable<ErrorBean>
         return output;
     }
 
+    /**
+     * ErrorBeans are compared by their times
+     * Compares two ErrorBeans error times
+     * @param other The other ErrorBean to compare to
+     * @return java.util.Date result comparison of the ErrorBean exception times
+     */
     @Override
     public int compareTo(ErrorBean other) 
     {
