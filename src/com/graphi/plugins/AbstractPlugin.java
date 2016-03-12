@@ -29,11 +29,14 @@ public abstract class AbstractPlugin implements Plugin, Serializable
     
     /**
      * Implementation should initialize the panel
-     * Plugins not using the default MainPanel should initialize their own panel
-     * @param appManager The parent AppManager
+     * Plugins not using the default MainPanel should override & initialize their own panel
+     * @param appManager The parent AppManager that is passed to the MainPanel constructor for attachment
      */
     @Override
-    public abstract void attachPanel(AppManager appManager);
+    public void attachPanel(AppManager appManager)
+    {
+        panel   =   new MainPanel(appManager);
+    }
     
     /**
      * @return The String name of the plugin
