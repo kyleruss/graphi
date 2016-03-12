@@ -11,6 +11,10 @@ import com.graphi.display.layout.MainPanel;
 import com.graphi.util.GraphData;
 import java.io.Serializable;
 
+/**
+ * A basic serializable, Plugin implementation 
+ * Maintains the plugin layout and details
+ */
 public abstract class AbstractPlugin implements Plugin, Serializable
 {
     protected final String name;
@@ -23,39 +27,67 @@ public abstract class AbstractPlugin implements Plugin, Serializable
         this.description    =   description;
     }
     
+    /**
+     * Implementation should initialize the panel
+     * Plugins not using the default MainPanel should initialize their own panel
+     * @param appManager The parent AppManager
+     */
     @Override
     public abstract void attachPanel(AppManager appManager);
     
+    /**
+     * @return The String name of the plugin
+     */
     @Override
     public String getPluginName() 
     {
         return name;
     }
 
+    /**
+     * @return The String description of the plugin 
+     */
     @Override
     public String getPluginDescription()
     {
         return description;
     }
 
+    /**
+     * @return The plugins layout panel; Can be null if bad attachPanel() implementation
+     */
     @Override
     public MainPanel getPanel() 
     {
         return panel;
     }
     
+    /**
+     * Sets the plugin's layout panel active GraphData
+     * Useful when switching plugins to pass data among plugins
+     * @param data 
+     */
     @Override
     public void passData(GraphData data)
     {
         panel.setGraphData(data);
     }
     
+    /**
+     * @return The plugin's active GraphData
+     */
     @Override
     public GraphData getData()
     {
         return panel.getGraphData();
     }
     
+    /**
+     * Tests if two plugins have the same name
+     * Plugin name's are not unique and can be the same for different vendors
+     * @param other The other plugin to comapre to
+     * @return True if the Plugin's are equal; false otherwise
+     */
     @Override
     public boolean equals(Object other)
     {
@@ -68,6 +100,9 @@ public abstract class AbstractPlugin implements Plugin, Serializable
         else return false;
     }
     
+    /**
+     * @return The plugin name's String hashcode
+     */
     @Override
     public int hashCode()
     {
