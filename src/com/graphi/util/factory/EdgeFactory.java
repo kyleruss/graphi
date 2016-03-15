@@ -10,6 +10,10 @@ import com.graphi.util.Edge;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import java.util.Random;
 
+/**
+ * A factory for creating Edge's
+ * Generates Edge's with random weight
+ */
 public class EdgeFactory extends GraphObjFactory<Edge>
 {
     private final Random RGEN =   new Random();
@@ -29,6 +33,10 @@ public class EdgeFactory extends GraphObjFactory<Edge>
         super(lastID, incAmount);
     }
     
+    /**
+     * Creates an Edge with auto id and random weight
+     * @return An Edge with random weight and auto/incremented ID
+     */
     @Override
     public Edge create() 
     {
