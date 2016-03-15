@@ -8,6 +8,9 @@ package com.graphi.util.factory;
 
 import com.graphi.util.Node;
 
+/**
+ * Factory that creates a Node with auto/incremented ID
+ */
 public class NodeFactory extends GraphObjFactory<Node>
 {
     public NodeFactory()
@@ -25,6 +28,9 @@ public class NodeFactory extends GraphObjFactory<Node>
         super(lastID, incAmount);
     }
     
+    /**
+     * @return A created Node with incremented ID
+     */
     @Override
     public Node create()
     {
