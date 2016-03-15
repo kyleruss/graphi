@@ -8,9 +8,18 @@ package com.graphi.util.factory;
 
 import org.apache.commons.collections15.Factory;
 
+/**
+ * An abstract factory for creating related graph objects (Edge, Node)
+ * Maintains a lastID pointer for incremental ID initialization
+ * Maintains a incAmount for the ID increase amount 
+ * @param <T> The graph object type
+ */
 public abstract class GraphObjFactory<T> implements Factory<T>
 {
+    //Pointer for incremental ID initialization
     protected int lastID;
+    
+    //The ID increase amount 
     protected int incAmount;
     
     public GraphObjFactory()
