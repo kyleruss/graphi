@@ -18,7 +18,7 @@ import com.graphi.util.MatrixTools;
 import com.graphi.util.Node;
 import com.graphi.util.transformer.ObjectFillTransformer;
 import com.graphi.util.transformer.VertexLabelTransformer;
-import com.graphi.util.WeightTransformer;
+import com.graphi.util.transformer.WeightTransformer;
 import de.javasoft.swing.DateComboBox;
 import edu.uci.ics.jung.algorithms.layout.AggregateLayout;
 import edu.uci.ics.jung.algorithms.layout.FRLayout;
