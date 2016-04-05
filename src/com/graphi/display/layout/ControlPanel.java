@@ -562,9 +562,8 @@ public class ControlPanel extends JPanel implements ActionListener
     {
         protected JButton exportBtn, importBtn;
         protected JLabel currentStorageLabel;
-        protected ButtonGroup storageGroup;
-        protected JRadioButton storageGraphRadio, storageLogRadio, storageScriptRadio;
         protected JCheckBox directedCheck;
+        protected JComboBox ioTypeBox;
         protected JPanel directedCheckWrapper;
 
         public IOPanel()
@@ -574,45 +573,94 @@ public class ControlPanel extends JPanel implements ActionListener
             currentStorageLabel     =   new JLabel("None");
             importBtn               =   new JButton("Import");
             exportBtn               =   new JButton("Export");
-            storageGroup            =   new ButtonGroup();
-            storageGraphRadio       =   new JRadioButton("Graph");
-            storageLogRadio         =   new JRadioButton("Log");
-            storageScriptRadio      =   new JRadioButton("Script");
+            ioTypeBox               =   new JComboBox();
             directedCheck           =   new JCheckBox("Directed");
 
             importBtn.setIcon(new ImageIcon(mainPanel.openIcon));
             exportBtn.setIcon(new ImageIcon(mainPanel.saveIcon));
 
-            storageGroup.add(storageGraphRadio);
-            storageGroup.add(storageLogRadio);
-            storageGroup.add(storageScriptRadio);
+            ioTypeBox.addItem("Graph");
+            ioTypeBox.addItem("Log");
+            ioTypeBox.addItem("Script");
+            ioTypeBox.addItem("Table");
+            ioTypeBox.setPreferredSize(new Dimension(150, 30));
 
-
+            ioTypeBox.addActionListener(this);
             importBtn.addActionListener(this);
             exportBtn.addActionListener(this);
-            storageGraphRadio.addActionListener(this);
-            storageLogRadio.addActionListener(this);
-            storageScriptRadio.addActionListener(this);
 
             importBtn.setBackground(Color.WHITE);
             exportBtn.setBackground(Color.WHITE);
-            storageGraphRadio.setSelected(true);
 
             JPanel storageBtnWrapper    =   ComponentUtils.wrapComponents(null, importBtn, exportBtn);
             JPanel currentGraphWrapper  =   ComponentUtils.wrapComponents(null, new JLabel("Active: "), currentStorageLabel);
-            JPanel storageOptsWrapper   =   ComponentUtils.wrapComponents(null, storageGraphRadio, storageLogRadio, storageScriptRadio);
+            JPanel ioTypeWrapper        =   ComponentUtils.wrapComponents(null, ioTypeBox);
             directedCheckWrapper        =   ComponentUtils.wrapComponents(null, directedCheck);
 
             storageBtnWrapper.setBackground(Consts.PRESET_COL);
             currentGraphWrapper.setBackground(Consts.PRESET_COL);
-            storageOptsWrapper.setBackground(Consts.PRESET_COL);
             directedCheckWrapper.setBackground(Consts.PRESET_COL);
+            ioTypeWrapper.setBackground(Consts.PRESET_COL);
 
             add(currentGraphWrapper);
-            add(storageOptsWrapper);
+            add(ioTypeWrapper);
             add(directedCheckWrapper);
             add(storageBtnWrapper);
             currentStorageLabel.setFont(new Font("Arial", Font.BOLD, 12));
+        }
+        
+        private void performImport()
+        {
+            int typeIndex   =   ioTypeBox.getSelectedIndex();
+            
+            switch (typeIndex) 
+            {
+                case 0:
+                    importGraph();
+                    break;
+                    
+                case 1:
+                    importLog();
+                    break;
+                    
+                case 2:
+                    importScript();
+                    break;
+                    
+                default:
+                    break;
+            }
+        }
+        
+        private void performExport()
+        {
+            int typeIndex = ioTypeBox.getSelectedIndex();
+            
+            switch(typeIndex)
+            {
+                case 0:
+                    exportGraph();
+                    break;
+                    
+                case 1:
+                    exportLog();
+                    break;
+                    
+                case 2:
+                    exportScript();
+                    break;
+                    
+                default:
+                    break;
+            }
+        }
+        
+        private void ioTypeChange()
+        {
+            int typeIndex   =   ioTypeBox.getSelectedIndex();
+            
+            importBtn.setEnabled(typeIndex != 3);
+            directedCheckWrapper.setVisible(typeIndex == 0);
         }
 
         @Override
@@ -621,31 +669,13 @@ public class ControlPanel extends JPanel implements ActionListener
             Object src  =   e.getSource();
 
             if(src == importBtn)
-            {
-                if(storageGraphRadio.isSelected())
-                    importGraph();
-
-                else if(storageLogRadio.isSelected())
-                    importLog();
-
-                else if(storageScriptRadio.isSelected())
-                    importScript();
-            }
+                performImport();
 
             else if(src == exportBtn)
-            {
-                if(storageGraphRadio.isSelected())
-                    exportGraph();
-
-                else if(storageLogRadio.isSelected())
-                    exportLog();
-
-                else if(storageScriptRadio.isSelected())
-                    exportScript();
-            }
-
-            else if(src == storageGraphRadio || src == storageLogRadio || src == storageScriptRadio)
-                directedCheckWrapper.setVisible(storageGraphRadio.isSelected());
+                performExport();
+            
+            else if(src == ioTypeBox)
+                ioTypeChange();
         }
     }
 

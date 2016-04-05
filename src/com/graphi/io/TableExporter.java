@@ -11,6 +11,17 @@ import javax.swing.table.DefaultTableModel;
 
 public class TableExporter 
 {
+    
+    public static void exportToCSV(JTable table, File file)
+    {
+        exportToDelimitedFormat(table, ",", file);
+    }
+    
+    public static void exportToTSV(JTable table, File file)
+    {
+        exportToDelimitedFormat(table, "\t", file);
+    }
+    
     public static void exportToDelimitedFormat(JTable table, String delimitor, File file)
     {
         String output               =   "";
