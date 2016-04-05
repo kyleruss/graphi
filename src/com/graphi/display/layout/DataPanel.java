@@ -39,10 +39,10 @@ import net.miginfocom.swing.MigLayout;
 public class DataPanel extends JPanel
 {
 
-    protected final JTable vertexTable, edgeTable;
-    protected final DefaultTableModel vertexDataModel, edgeDataModel;
+    protected JTable vertexTable, edgeTable, computeTable;
+    protected DefaultTableModel vertexDataModel, edgeDataModel, computationModel;
     protected final JTabbedPane dataTabPane;
-    protected final JScrollPane vertexScroller, edgeScroller;
+    protected final JScrollPane vertexScroller, edgeScroller, computeScroller;
     protected MainPanel mainPanel;
 
     public DataPanel(MainPanel mainPanel)
@@ -50,28 +50,11 @@ public class DataPanel extends JPanel
         setLayout(new BorderLayout());
         this.mainPanel      =   mainPanel;
         dataTabPane         =   new JTabbedPane();
-        vertexDataModel     =   new DefaultTableModel();
-        vertexTable         =   new JTable(vertexDataModel)
-        {
-            @Override
-            public boolean isCellEditable(int row, int col)
-            {
-                return false;
-            };
-        };
-
-        edgeDataModel       =   new DefaultTableModel();
-        edgeTable           =   new JTable(edgeDataModel)
-        {
-            @Override
-            public boolean isCellEditable(int row, int col)
-            {
-                return false;
-            }
-        };
+        initTables();
 
         vertexScroller      =   new JScrollPane(vertexTable);
         edgeScroller        =   new JScrollPane(edgeTable);
+        computeScroller     =   new JScrollPane(computeTable);
         vertexTable.setPreferredScrollableViewportSize(new Dimension(630, 500));
 
         vertexDataModel.addColumn("ID");
@@ -85,8 +68,21 @@ public class DataPanel extends JPanel
 
         dataTabPane.addTab("Vertex table", vertexScroller);
         dataTabPane.addTab("Edge table", edgeScroller);
+        dataTabPane.addTab("Computation table", computeScroller);
 
         add(dataTabPane);
+    }
+    
+    private void initTables()
+    {
+        vertexDataModel     =   new DefaultTableModel();
+        vertexTable         =   new ImmutableTable(vertexDataModel);
+
+        edgeDataModel       =   new DefaultTableModel();
+        edgeTable           =   new ImmutableTable(edgeDataModel);
+        
+        computationModel    =   new DefaultTableModel();
+        computeTable        =   new ImmutableTable(computationModel);
     }
 
     protected void loadNodes(Graph graph)
@@ -109,6 +105,7 @@ public class DataPanel extends JPanel
 
                 if(vID > mainPanel.data.getNodeFactory().getLastID())
                     mainPanel.data.getNodeFactory().setLastID(vID);
+                
             }
         });
     }
@@ -440,6 +437,20 @@ public class DataPanel extends JPanel
         }
 
         return id;
+    }
+    
+    private class ImmutableTable extends JTable
+    {
+        public ImmutableTable(DefaultTableModel model)
+        {
+            super(model);
+        }
+        
+        @Override
+        public boolean isCellEditable(int row, int col)
+        {
+            return false;
+        }
     }
     
      //--------------------------------------
