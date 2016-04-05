@@ -12,6 +12,7 @@ import com.graphi.io.AdjMatrixParser;
 import com.graphi.io.GMLParser;
 import com.graphi.io.GraphMLParser;
 import com.graphi.io.Storage;
+import com.graphi.io.TableExporter;
 import com.graphi.plugins.Plugin;
 import com.graphi.plugins.PluginConfig;
 import com.graphi.plugins.PluginManager;
@@ -50,6 +51,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
@@ -650,6 +652,10 @@ public class ControlPanel extends JPanel implements ActionListener
                     exportScript();
                     break;
                     
+                case 3:
+                    exportTable();
+                    break;
+                    
                 default:
                     break;
             }
@@ -834,6 +840,32 @@ public class ControlPanel extends JPanel implements ActionListener
         File file   =   ComponentUtils.getFile(false, "Graphi .gscript file", "gscript");
         if(file != null)
             Storage.saveObj(mainPanel.screenPanel.graphPanel.gPlayback, file);
+    }
+    
+    protected void exportTable()
+    {
+        File file   =   ComponentUtils.getFile(false, "CSV, TSV", "csv", "tsv");
+        if(file != null)
+        {
+            JTable table        =    null;
+            DataPanel dataPanel =   mainPanel.screenPanel.dataPanel;
+            int tableIndex      =   dataPanel.dataTabPane.getSelectedIndex();
+            
+            switch (tableIndex) 
+            {
+                case 0:
+                    table   =   dataPanel.vertexTable;
+                    break;
+                case 1:
+                    table   =   dataPanel.edgeTable;
+                    break;
+                case 2:
+                    table   =   dataPanel.computeTable;
+                    break;
+            }
+            
+            TableExporter.exportTable(table, file);
+        }
     }
 
     protected void initCurrentNodes()

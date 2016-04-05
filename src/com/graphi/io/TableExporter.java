@@ -8,9 +8,21 @@ import java.io.FileWriter;
 import java.io.IOException;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import org.apache.commons.io.FilenameUtils;
 
 public class TableExporter 
 {
+    public static void exportTable(JTable table, File file)
+    {
+        if(file == null) return;
+        
+        String extension    =   FilenameUtils.getExtension(file.getName());
+        if(extension.equalsIgnoreCase("csv"))
+            exportToCSV(table, file);
+        
+        else if(extension.equalsIgnoreCase("tsv"))
+            exportToTSV(table, file);
+    }
     
     public static void exportToCSV(JTable table, File file)
     {
