@@ -43,7 +43,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Ellipse2D;
 import java.text.MessageFormat;
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -65,9 +64,8 @@ import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import net.miginfocom.swing.MigLayout;
-import org.apache.commons.collections15.Transformer;
 
-public class GraphPanel extends JPanel implements ItemListener, GraphMouseListener, ActionListener, ChangeListener
+public class GraphPanel extends JPanel implements ItemListener, GraphMouseListener
 {
     protected final String RECORD_CARD    =   "rec";
     protected final String PLAYBACK_CARD  =   "pb";
@@ -78,8 +76,8 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     protected EditingModalGraphMouse mouse;
     protected GraphPlayback gPlayback;
     protected JPanel gpControlsWrapper;
-    protected JPanel gpControlsPanel;
     protected JButton gpCtrlsClose;
+    protected PlaybackControlPanel controlPanel;
 
     protected JPanel pbControls;
     protected JButton pbToggle;
@@ -119,96 +117,12 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         gViewer.addGraphMouseListener(this);
         mouse.remove(mouse.getPopupEditingPlugin());
         gViewer.setGraphMouse(mouse);
-
-        pbControls      =   new JPanel(new MigLayout("fillx"));
-        pbToggle        =   new JButton("Play");
-        pbProgress      =   new JSlider();
-        pbProgressSpeed =   new JSpinner(new SpinnerNumberModel(0, 0, 10000, 1));
-        pbName          =   new JLabel("N/A");
-        pbDate          =   new JLabel("N/A");
-        pbPlaying       =   false;
-
-        pbToggle.setIcon(new ImageIcon(mainPanel.playIcon));
-        pbProgress.addChangeListener(this);
-        pbProgressSpeed.addChangeListener(this);
-
-        pbProgressSpeed.setValue(INITIAL_DELAY);
-        pbProgress.setPaintTicks(true);
-        pbProgress.setValue(0);
-        pbProgress.setMinimum(0);
-        pbProgress.setPaintTrack(true);
-
-        pbToggle.addActionListener(this);
-
-        pbName.setFont(new Font("Arial", Font.BOLD, 12));
-        pbDate.setFont(new Font("Arial", Font.BOLD, 12));
-
-        JPanel pbInnerWrapper   =   new JPanel();
-        pbInnerWrapper.add(pbToggle);
-        pbInnerWrapper.add(new JLabel("Speed"));
-        pbInnerWrapper.add(pbProgressSpeed);
-
-        JPanel pbInfoWrapper    =   new JPanel(new MigLayout());
-        pbInfoWrapper.add(new JLabel("Name: "));
-        pbInfoWrapper.add(pbName, "wrap");
-        pbInfoWrapper.add(new JLabel("Timestamp: "));
-        pbInfoWrapper.add(pbDate);
-
-        pbControls.add(pbProgress, "al center, wrap");
-        pbControls.add(pbInnerWrapper, "al center, wrap");
-        pbControls.add(pbInfoWrapper, "al center");
-
-        JPanel pbControlsWrapper    =   new JPanel(new BorderLayout());
-        pbControlsWrapper.add(pbControls);
-
-
-        gpRecControls   =   new JPanel(new MigLayout("fillx"));
-        gpRecSaveBtn    =   new JButton("Save entry");
-        gpRecRemoveBtn  =   new JButton("Remove entry");
-        gpRecDatePicker =   new DateComboBox();
-        gpRecEntryName  =   new JTextField();
-        gpRecEntries    =   new JComboBox();
-        gpRecEntries.setPreferredSize(new Dimension(120, 20));
-        gpRecEntryName.setPreferredSize(new Dimension(120, 20));
-        gpRecSaveBtn.setIcon(new ImageIcon(mainPanel.addIcon));
-        gpRecRemoveBtn.setIcon(new ImageIcon(mainPanel.removeIcon));
-        gpRecEntries.addItem("-- New entry --");
-
-        JPanel gpRecInnerWrapper    =   new JPanel(new MigLayout());
-        gpRecInnerWrapper.add(gpRecSaveBtn);
-        gpRecInnerWrapper.add(gpRecRemoveBtn);
-        gpRecInnerWrapper.add(new JLabel("Entries"));
-        gpRecInnerWrapper.add(gpRecEntries, "wrap");
-        gpRecInnerWrapper.add(new JLabel("Entry date"));
-        gpRecInnerWrapper.add(gpRecDatePicker, "wrap");
-        gpRecInnerWrapper.add(new JLabel("Entry name (optional)"));
-        gpRecInnerWrapper.add(gpRecEntryName, "span 2");
-        gpRecControls.add(gpRecInnerWrapper, "al center");
-
-        JPanel gpRecWrapper =   new JPanel(new BorderLayout());
-        gpRecWrapper.add(gpRecControls);
-
-        gpControlsWrapper   =   new JPanel(new CardLayout());
-        gpControlsWrapper.add(pbControlsWrapper, PLAYBACK_CARD);
-        gpControlsWrapper.add(gpRecWrapper, RECORD_CARD);
-
-        gpControlsPanel             =   new JPanel(new BorderLayout());
-        gpCtrlsClose                =   new JButton("Close");
-        JPanel gpControlsExitPanel  =   new JPanel();
-        gpCtrlsClose.setIcon(new ImageIcon(mainPanel.closeIcon));
-
-        gpControlsExitPanel.add(gpCtrlsClose);
-        gpControlsPanel.add(gpControlsWrapper, BorderLayout.CENTER);
-        gpControlsPanel.add(gpControlsExitPanel, BorderLayout.EAST);
-        gpControlsPanel.setVisible(false);
-
-        gpRecSaveBtn.addActionListener(this);
-        gpRecRemoveBtn.addActionListener(this);
-        gpRecEntries.addActionListener(this);
-        gpCtrlsClose.addActionListener(this);
+        
+        controlPanel    =   new PlaybackControlPanel();
+        controlPanel.setVisible(false);
 
         add(gViewer, BorderLayout.CENTER);
-        add(gpControlsPanel, BorderLayout.SOUTH);
+        add(controlPanel, BorderLayout.SOUTH);
     }
 
     protected void addPlaybackEntries()
@@ -235,7 +149,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
             pbProgress.setMaximum(gPlayback.getSize() - 1); 
         }
 
-        gpControlsPanel.setVisible(true);
+        controlPanel.setVisible(true);
     }
 
     protected final Timer PB_TIMER =   new Timer(INITIAL_DELAY, (ActionEvent e) -> 
@@ -366,52 +280,6 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         {
             mainPanel.screenPanel.dataPanel.loadNodes(mainPanel.data.getGraph());
             mainPanel.screenPanel.dataPanel.loadEdges(mainPanel.data.getGraph());
-        }
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e)
-    {
-        Object src  =   e.getSource();
-
-        if(src == gpRecSaveBtn)
-            addRecordedGraph();
-
-        else if(src == gpRecRemoveBtn)
-            removeRecordedGraph();
-
-        else if(src == gpRecEntries)
-            displayRecordedGraph();
-
-        else if(src == pbToggle)
-            togglePlayback();
-
-        else if(src == gpCtrlsClose)
-            gpControlsPanel.setVisible(false);
-    }
-
-    @Override
-    public void stateChanged(ChangeEvent e) 
-    {
-        Object src  =   e.getSource();
-
-        if(src == pbProgressSpeed)
-            PB_TIMER.setDelay((int) pbProgressSpeed.getValue());
-
-        else if(src == pbProgress)
-        {
-            int index   =   pbProgress.getValue();
-            gPlayback.setIndex(index);
-            PlaybackEntry entry =   gPlayback.current();
-
-            if(entry != null)
-            {
-                pbName.setText(entry.getName());
-                pbDate.setText(entry.getDateFormatted());
-
-                mainPanel.data.setGraph(GraphUtilities.copyNewGraph(entry.getGraph()));
-                reloadGraph();
-            }
         }
     }
 
@@ -573,5 +441,143 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     public GraphPlayback getGraphPlayback()
     {
         return gPlayback;
+    }
+    
+    private class PlaybackControlPanel extends JPanel implements ActionListener, ChangeListener
+    {
+        public PlaybackControlPanel()
+        {
+            setLayout(new BorderLayout());
+            pbControls      =   new JPanel(new MigLayout("fillx"));
+            pbToggle        =   new JButton("Play");
+            pbProgress      =   new JSlider();
+            pbProgressSpeed =   new JSpinner(new SpinnerNumberModel(0, 0, 10000, 1));
+            pbName          =   new JLabel("N/A");
+            pbDate          =   new JLabel("N/A");
+            pbPlaying       =   false;
+
+            pbToggle.setIcon(new ImageIcon(mainPanel.playIcon));
+            pbProgress.addChangeListener(this);
+            pbProgressSpeed.addChangeListener(this);
+
+            pbProgressSpeed.setValue(INITIAL_DELAY);
+            pbProgress.setPaintTicks(true);
+            pbProgress.setValue(0);
+            pbProgress.setMinimum(0);
+            pbProgress.setPaintTrack(true);
+
+            pbToggle.addActionListener(this);
+
+            pbName.setFont(new Font("Arial", Font.BOLD, 12));
+            pbDate.setFont(new Font("Arial", Font.BOLD, 12));
+
+            JPanel pbInnerWrapper   =   new JPanel();
+            pbInnerWrapper.add(pbToggle);
+            pbInnerWrapper.add(new JLabel("Speed"));
+            pbInnerWrapper.add(pbProgressSpeed);
+
+            JPanel pbInfoWrapper    =   new JPanel(new MigLayout());
+            pbInfoWrapper.add(new JLabel("Name: "));
+            pbInfoWrapper.add(pbName, "wrap");
+            pbInfoWrapper.add(new JLabel("Timestamp: "));
+            pbInfoWrapper.add(pbDate);
+
+            pbControls.add(pbProgress, "al center, wrap");
+            pbControls.add(pbInnerWrapper, "al center, wrap");
+            pbControls.add(pbInfoWrapper, "al center");
+
+            JPanel pbControlsWrapper    =   new JPanel(new BorderLayout());
+            pbControlsWrapper.add(pbControls);
+
+
+            gpRecControls   =   new JPanel(new MigLayout("fillx"));
+            gpRecSaveBtn    =   new JButton("Save entry");
+            gpRecRemoveBtn  =   new JButton("Remove entry");
+            gpRecDatePicker =   new DateComboBox();
+            gpRecEntryName  =   new JTextField();
+            gpRecEntries    =   new JComboBox();
+            gpRecEntries.setPreferredSize(new Dimension(120, 20));
+            gpRecEntryName.setPreferredSize(new Dimension(120, 20));
+            gpRecSaveBtn.setIcon(new ImageIcon(mainPanel.addIcon));
+            gpRecRemoveBtn.setIcon(new ImageIcon(mainPanel.removeIcon));
+            gpRecEntries.addItem("-- New entry --");
+
+            JPanel gpRecInnerWrapper    =   new JPanel(new MigLayout());
+            gpRecInnerWrapper.add(gpRecSaveBtn);
+            gpRecInnerWrapper.add(gpRecRemoveBtn);
+            gpRecInnerWrapper.add(new JLabel("Entries"));
+            gpRecInnerWrapper.add(gpRecEntries, "wrap");
+            gpRecInnerWrapper.add(new JLabel("Entry date"));
+            gpRecInnerWrapper.add(gpRecDatePicker, "wrap");
+            gpRecInnerWrapper.add(new JLabel("Entry name (optional)"));
+            gpRecInnerWrapper.add(gpRecEntryName, "span 2");
+            gpRecControls.add(gpRecInnerWrapper, "al center");
+
+            JPanel gpRecWrapper =   new JPanel(new BorderLayout());
+            gpRecWrapper.add(gpRecControls);
+
+            gpControlsWrapper   =   new JPanel(new CardLayout());
+            gpControlsWrapper.add(pbControlsWrapper, PLAYBACK_CARD);
+            gpControlsWrapper.add(gpRecWrapper, RECORD_CARD);
+
+            gpCtrlsClose                =   new JButton("Close");
+            JPanel gpControlsExitPanel  =   new JPanel();
+            gpCtrlsClose.setIcon(new ImageIcon(mainPanel.closeIcon));
+
+            gpControlsExitPanel.add(gpCtrlsClose);
+            add(gpControlsWrapper, BorderLayout.CENTER);
+            add(gpControlsExitPanel, BorderLayout.EAST);
+
+            gpRecSaveBtn.addActionListener(this);
+            gpRecRemoveBtn.addActionListener(this);
+            gpRecEntries.addActionListener(this);
+            gpCtrlsClose.addActionListener(this);
+        }
+        
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+            Object src  =   e.getSource();
+
+            if(src == gpRecSaveBtn)
+                addRecordedGraph();
+
+            else if(src == gpRecRemoveBtn)
+                removeRecordedGraph();
+
+            else if(src == gpRecEntries)
+                displayRecordedGraph();
+
+            else if(src == pbToggle)
+                togglePlayback();
+
+            else if(src == gpCtrlsClose)
+                setVisible(false);
+        }
+        
+        @Override
+        public void stateChanged(ChangeEvent e) 
+        {
+            Object src  =   e.getSource();
+
+            if(src == pbProgressSpeed)
+                PB_TIMER.setDelay((int) pbProgressSpeed.getValue());
+
+            else if(src == pbProgress)
+            {
+                int index   =   pbProgress.getValue();
+                gPlayback.setIndex(index);
+                PlaybackEntry entry =   gPlayback.current();
+
+                if(entry != null)
+                {
+                    pbName.setText(entry.getName());
+                    pbDate.setText(entry.getDateFormatted());
+
+                    mainPanel.data.setGraph(GraphUtilities.copyNewGraph(entry.getGraph()));
+                    reloadGraph();
+                }
+            }
+        }
     }
 }
