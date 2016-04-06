@@ -53,6 +53,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -63,6 +64,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 
 public class GraphPanel extends JPanel implements ItemListener, GraphMouseListener
@@ -93,6 +95,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     protected DateComboBox gpRecDatePicker;
     protected JComboBox gpRecEntries;
     protected MainPanel mainPanel;
+    protected JCheckBox recordComputeCheck;
 
     public GraphPanel(MainPanel mainPanel)
     {
@@ -197,6 +200,12 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
                 entry   =   new PlaybackEntry(graph, date);
             else
                 entry   =   new PlaybackEntry(graph, date, name);
+            
+            if(recordComputeCheck.isSelected())
+            {
+                DefaultTableModel tModel    =   mainPanel.screenPanel.dataPanel.computationModel;
+                entry.setComputationModel(tModel);
+            }
 
             gPlayback.add(entry);
             gpRecEntries.addItem(entry);
@@ -243,6 +252,11 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
                 gpRecDatePicker.setDate(entry.getDate());
                 mainPanel.data.setGraph(GraphUtilities.copyNewGraph(entry.getGraph()));
                 reloadGraph();
+                
+                if(entry.getComputationModel() != null)
+                {
+                    mainPanel.screenPanel.dataPanel.setComputationModel(entry.getComputationModel());
+                }
            }
        }
 
@@ -490,12 +504,13 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
             pbControlsWrapper.add(pbControls);
 
 
-            gpRecControls   =   new JPanel(new MigLayout("fillx"));
-            gpRecSaveBtn    =   new JButton("Save entry");
-            gpRecRemoveBtn  =   new JButton("Remove entry");
-            gpRecDatePicker =   new DateComboBox();
-            gpRecEntryName  =   new JTextField();
-            gpRecEntries    =   new JComboBox();
+            gpRecControls       =   new JPanel(new MigLayout("fillx"));
+            gpRecSaveBtn        =   new JButton("Save entry");
+            gpRecRemoveBtn      =   new JButton("Remove entry");
+            recordComputeCheck  =   new JCheckBox("Record computation table");
+            gpRecDatePicker     =   new DateComboBox();
+            gpRecEntryName      =   new JTextField();
+            gpRecEntries        =   new JComboBox();
             gpRecEntries.setPreferredSize(new Dimension(120, 20));
             gpRecEntryName.setPreferredSize(new Dimension(120, 20));
             gpRecSaveBtn.setIcon(new ImageIcon(mainPanel.addIcon));
@@ -510,7 +525,8 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
             gpRecInnerWrapper.add(new JLabel("Entry date"));
             gpRecInnerWrapper.add(gpRecDatePicker, "wrap");
             gpRecInnerWrapper.add(new JLabel("Entry name (optional)"));
-            gpRecInnerWrapper.add(gpRecEntryName, "span 2");
+            gpRecInnerWrapper.add(gpRecEntryName, "span 2, wrap");
+            gpRecInnerWrapper.add(recordComputeCheck, "span 2");
             gpRecControls.add(gpRecInnerWrapper, "al center");
 
             JPanel gpRecWrapper =   new JPanel(new BorderLayout());

@@ -438,6 +438,39 @@ public class DataPanel extends JPanel
 
         return id;
     }
+
+    public JTable getComputeTable() 
+    {
+        return computeTable;
+    }
+
+    public void setComputeTable(JTable computeTable)
+    {
+        this.computeTable = computeTable;
+    }
+
+    public DefaultTableModel getComputationModel()
+    {
+        return computationModel;
+    }
+
+    public void setComputationModel(DefaultTableModel computationModel) 
+    {
+        this.computationModel = computationModel;
+        computeTable.setModel(computationModel);
+    }
+
+    public MainPanel getMainPanel()
+    {
+        return mainPanel;
+    }
+
+    public void setMainPanel(MainPanel mainPanel) 
+    {
+        this.mainPanel = mainPanel;
+    }
+    
+    
     
     private class ImmutableTable extends JTable
     {
