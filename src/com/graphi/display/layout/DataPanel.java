@@ -57,10 +57,10 @@ public class DataPanel extends JPanel
         computeScroller     =   new JScrollPane(computeTable);
         vertexTable.setPreferredScrollableViewportSize(new Dimension(630, 500));
 
-        vertexDataModel.addColumn("ID");
+        vertexDataModel.addColumn("NodeID");
         vertexDataModel.addColumn("Name");
 
-        edgeDataModel.addColumn("ID");
+        edgeDataModel.addColumn("EdgeID");
         edgeDataModel.addColumn("FromVertex");
         edgeDataModel.addColumn("ToVertex");
         edgeDataModel.addColumn("Weight");

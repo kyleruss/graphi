@@ -38,15 +38,17 @@ public class TableExporter
     {
         String output               =   "";
         DefaultTableModel tModel    =   (DefaultTableModel) table.getModel();
+        int rowSize                 =   tModel.getRowCount();
+        int colSize                 =   tModel.getColumnCount();
         
-        for(int col = 0; col < tModel.getColumnCount(); col++)
-            output += tModel.getColumnName(col) + delimitor;
+        for(int col = 0; col < colSize; col++)
+            output += tModel.getColumnName(col) + (col < colSize - 1? delimitor : "");
         
         output  +=  "\n";
-        for(int row = 0; row < tModel.getRowCount(); row++)
+        for(int row = 0; row < rowSize; row++)
         {
-            for(int col = 0; col < tModel.getColumnCount(); col++)
-                output  +=   tModel.getValueAt(row, col) + delimitor;
+            for(int col = 0; col < colSize; col++)
+                output  +=   tModel.getValueAt(row, col) + (col < colSize - 1? delimitor : "");
             
             output  +=  "\n";
         }
