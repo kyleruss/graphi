@@ -419,6 +419,10 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         gViewer.repaint();
         mainPanel.screenPanel.dataPanel.loadNodes(mainPanel.data.getGraph());
         mainPanel.screenPanel.dataPanel.loadEdges(mainPanel.data.getGraph());
+        
+        DefaultTableModel tModel    =   mainPanel.screenPanel.dataPanel.computationModel;
+        tModel.setRowCount(0);
+        tModel.setColumnCount(0);
     }
 
     protected void resetGraph()
