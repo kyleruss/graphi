@@ -16,6 +16,7 @@ import com.graphi.util.transformer.EdgeLabelTransformer;
 import com.graphi.util.GraphUtilities;
 import com.graphi.util.MatrixTools;
 import com.graphi.util.Node;
+import com.graphi.util.TableModelContext;
 import com.graphi.util.transformer.ObjectFillTransformer;
 import com.graphi.util.transformer.VertexLabelTransformer;
 import com.graphi.util.transformer.WeightTransformer;
@@ -205,7 +206,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
             if(recordComputeCheck.isSelected())
             {
                 DefaultTableModel tModel    =   mainPanel.screenPanel.dataPanel.computationModel;
-                entry.setComputationModel(tModel);
+                entry.setComputationModel(new TableModelContext(tModel));
             }
 
             gPlayback.add(entry);
@@ -256,7 +257,8 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
                 
                 if(entry.getComputationModel() != null)
                 {
-                    mainPanel.screenPanel.dataPanel.setComputationModel(entry.getComputationModel());
+                    TableModelContext modelContext   =   entry.getComputationModel();
+                    mainPanel.screenPanel.dataPanel.setComputationModel(modelContext == null? null : modelContext.getModel());
                 }
            }
        }
