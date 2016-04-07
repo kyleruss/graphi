@@ -36,6 +36,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
+import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 
@@ -46,7 +47,7 @@ public class DataPanel extends JPanel implements ActionListener
     protected DefaultTableModel vertexDataModel, edgeDataModel, computationModel;
     protected final JTabbedPane dataTabPane;
     protected final JScrollPane vertexScroller, edgeScroller, computeScroller;
-    protected JLabel comModelContextField;
+    protected JLabel comModelContextLabel;
     protected JButton comContextBtn;
     protected MainPanel mainPanel;
 
@@ -71,7 +72,7 @@ public class DataPanel extends JPanel implements ActionListener
         edgeDataModel.addColumn("Weight");
         edgeDataModel.addColumn("EdgeType");
 
-        comModelContextField    =   new JLabel("None");
+        comModelContextLabel    =   new JLabel("None");
         comContextBtn           =   new JButton("Change");
         
         JPanel compTabWrapper       =   new JPanel(new BorderLayout());
@@ -81,7 +82,7 @@ public class DataPanel extends JPanel implements ActionListener
         compContextTitle.setFont(new Font("Arial", Font.BOLD, 12));
         compContextWrapper.add(comContextBtn);
         compContextWrapper.add(compContextTitle);
-        compContextWrapper.add(comModelContextField);
+        compContextWrapper.add(comModelContextLabel);
         compTabWrapper.add(compContextWrapper, BorderLayout.NORTH);
         compTabWrapper.add(computeScroller, BorderLayout.CENTER);
         comContextBtn.addActionListener(this);
@@ -108,6 +109,12 @@ public class DataPanel extends JPanel implements ActionListener
     public void clearComputeTable()
     {
         computationModel    =   null;
+        setComputationContext(null);
+    }
+    
+    public String getComputationContext()
+    {
+        return comModelContextLabel.getText();
     }
 
     protected void loadNodes(Graph graph)
@@ -483,6 +490,7 @@ public class DataPanel extends JPanel implements ActionListener
     {
         this.computationModel = computationModel;
         computeTable.setModel(computationModel);
+        computeTable.tableChanged(new TableModelEvent(computationModel));
     }
 
     public MainPanel getMainPanel()
@@ -498,7 +506,7 @@ public class DataPanel extends JPanel implements ActionListener
     public void setComputationContext(String context)
     {
         if(context == null) context = "None";
-        comModelContextField.setText(context);
+        comModelContextLabel.setText(context);
     }
     
     public void changeComputationContext()

@@ -206,7 +206,8 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
             if(recordComputeCheck.isSelected())
             {
                 DefaultTableModel tModel    =   mainPanel.screenPanel.dataPanel.computationModel;
-                entry.setComputationModel(new TableModelContext(tModel));
+                String context              =   mainPanel.screenPanel.dataPanel.getComputationContext();
+                entry.setComputationModel(new TableModelContext(tModel, context));
             }
 
             gPlayback.add(entry);
@@ -241,6 +242,16 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
             startPlayback();
         }
     }
+    
+    protected void showEntryComputationModel(PlaybackEntry entry)
+    {
+        if(entry != null)
+        {
+            TableModelContext modelContext   =   entry.getComputationModel();
+            mainPanel.screenPanel.dataPanel.setComputationModel(modelContext == null? new DefaultTableModel() : modelContext.getModel());
+            mainPanel.screenPanel.dataPanel.setComputationContext(modelContext == null? null : modelContext.getDescription());
+        }
+    }
 
     protected void displayRecordedGraph()
     {
@@ -254,12 +265,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
                 gpRecDatePicker.setDate(entry.getDate());
                 mainPanel.data.setGraph(GraphUtilities.copyNewGraph(entry.getGraph()));
                 reloadGraph();
-                
-                if(entry.getComputationModel() != null)
-                {
-                    TableModelContext modelContext   =   entry.getComputationModel();
-                    mainPanel.screenPanel.dataPanel.setComputationModel(modelContext == null? null : modelContext.getModel());
-                }
+                showEntryComputationModel(entry);
            }
        }
 
@@ -402,7 +408,8 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         }
         
         mainPanel.screenPanel.dataPanel.setComputationModel(tModel);
-
+        mainPanel.screenPanel.dataPanel.setComputationContext(prefix + " centrality");
+        
         if(transform)
         {
             ArrayList<Node> centralNodes    =   new ArrayList<>();
@@ -432,10 +439,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         gViewer.repaint();
         mainPanel.screenPanel.dataPanel.loadNodes(mainPanel.data.getGraph());
         mainPanel.screenPanel.dataPanel.loadEdges(mainPanel.data.getGraph());
-        
-        DefaultTableModel tModel    =   mainPanel.screenPanel.dataPanel.computationModel;
-        tModel.setRowCount(0);
-        tModel.setColumnCount(0);
+        mainPanel.screenPanel.dataPanel.clearComputeTable();
     }
 
     protected void resetGraph()
@@ -609,6 +613,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
 
                     mainPanel.data.setGraph(GraphUtilities.copyNewGraph(entry.getGraph()));
                     reloadGraph();
+                    showEntryComputationModel(entry);
                 }
             }
         }
