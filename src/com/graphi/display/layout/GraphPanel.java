@@ -43,6 +43,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
+import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -379,16 +380,26 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
             scores =   new PriorityQueue<>((AbstractMap.SimpleEntry<Node, Double> a1, AbstractMap.SimpleEntry<Node, Double> a2) 
             -> Double.compare(a2.getValue(), a1.getValue()));
         }
+        
+        DecimalFormat formatter     =   new DecimalFormat("#.###");
+        DefaultTableModel tModel    =   new DefaultTableModel();
+        tModel.addColumn("NodeID");
+        tModel.addColumn("Centrality");
+        
 
         for(Node node : vertices)
         {
-            double score    =   centrality.get(node);
+            String score    =   formatter.format(centrality.get(node));
             String output   =   MessageFormat.format("({0}) Vertex: {1}, Score: {2}", prefix, node.getID(), score);
+            
+            tModel.addRow(new Object[] { node.getID(), score });
             ComponentUtils.sendToOutput(output, mainPanel.screenPanel.outputPanel.outputArea);
 
             if(transform)
                 scores.add(new AbstractMap.SimpleEntry(node, score));
         }
+        
+        mainPanel.screenPanel.dataPanel.setComputationModel(tModel);
 
         if(transform)
         {

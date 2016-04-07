@@ -459,6 +459,7 @@ public class ControlPanel extends JPanel implements ActionListener
     protected void computeExecute()
     {
         int selectedIndex   =   computeBox.getSelectedIndex();
+        mainPanel.screenPanel.dataPanel.clearComputeTable();
 
         switch(selectedIndex)
         {

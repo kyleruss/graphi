@@ -84,6 +84,11 @@ public class DataPanel extends JPanel
         computationModel    =   new DefaultTableModel();
         computeTable        =   new ImmutableTable(computationModel);
     }
+    
+    public void clearComputeTable()
+    {
+        computationModel    =   null;
+    }
 
     protected void loadNodes(Graph graph)
     {
