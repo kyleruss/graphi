@@ -829,6 +829,8 @@ public class ControlPanel extends JPanel implements ActionListener
         if(file != null)
         {
             mainPanel.screenPanel.graphPanel.gPlayback    =   (GraphPlayback) Storage.openObj(file);
+            mainPanel.screenPanel.graphPanel.gPlayback.prepareIO(false);
+            
             ioPanel.currentStorageLabel.setText(file.getName());
             activeScriptLabel.setText(file.getName());
             mainPanel.screenPanel.graphPanel.addPlaybackEntries();
@@ -840,7 +842,10 @@ public class ControlPanel extends JPanel implements ActionListener
     {
         File file   =   ComponentUtils.getFile(false, "Graphi .gscript file", "gscript");
         if(file != null)
+        {
+            mainPanel.screenPanel.graphPanel.gPlayback.prepareIO(true);
             Storage.saveObj(mainPanel.screenPanel.graphPanel.gPlayback, file);
+        }
     }
     
     protected void exportTable()
