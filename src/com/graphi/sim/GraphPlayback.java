@@ -6,7 +6,7 @@
 
 package com.graphi.sim;
 
-import com.graphi.util.TableModelContext;
+import com.graphi.util.TableModelBean;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -58,7 +58,7 @@ public class GraphPlayback implements Iterator<PlaybackEntry>, Serializable
     {
         for(PlaybackEntry entry : entries)
         {
-            TableModelContext model =   entry.getComputationModel();
+            TableModelBean model =   entry.getComputationModel();
             if(model != null) 
             {
                 if(isExport) model.prepareExport();

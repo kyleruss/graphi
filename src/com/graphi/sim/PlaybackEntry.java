@@ -8,7 +8,7 @@ package com.graphi.sim;
 
 import com.graphi.util.Edge;
 import com.graphi.util.Node;
-import com.graphi.util.TableModelContext;
+import com.graphi.util.TableModelBean;
 import edu.uci.ics.jung.graph.Graph;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -19,7 +19,7 @@ public class PlaybackEntry implements Comparable<PlaybackEntry>, Serializable
     private Graph<Node, Edge> graph;
     private Date date;
     private String name;
-    private TableModelContext computationModel;
+    private TableModelBean computationModel;
     
     public PlaybackEntry(Graph<Node, Edge> graph, Date date)
     {
@@ -73,13 +73,13 @@ public class PlaybackEntry implements Comparable<PlaybackEntry>, Serializable
         this.name   =   name;
     }
     
-    public TableModelContext getComputationModel()
+    public TableModelBean getComputationModel()
     {
         return computationModel;
     }
     
     
-    public void setComputationModel(TableModelContext computationModel)
+    public void setComputationModel(TableModelBean computationModel)
     {
         this.computationModel   =   computationModel;
     }

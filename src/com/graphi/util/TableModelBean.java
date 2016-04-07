@@ -5,19 +5,19 @@ import java.io.Serializable;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 
-public class TableModelContext implements Serializable
+public class TableModelBean implements Serializable
 {
     private String description;
     private transient DefaultTableModel model;
     private Vector modelData;
     private Vector columns;
     
-    public TableModelContext(DefaultTableModel model)
+    public TableModelBean(DefaultTableModel model)
     {
         this(model, "None");
     }
     
-    public TableModelContext(DefaultTableModel model, String description)
+    public TableModelBean(DefaultTableModel model, String description)
     {
         this.model          =   model;
         this.description    =   description;

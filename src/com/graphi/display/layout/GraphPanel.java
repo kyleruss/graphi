@@ -16,7 +16,7 @@ import com.graphi.util.transformer.EdgeLabelTransformer;
 import com.graphi.util.GraphUtilities;
 import com.graphi.util.MatrixTools;
 import com.graphi.util.Node;
-import com.graphi.util.TableModelContext;
+import com.graphi.util.TableModelBean;
 import com.graphi.util.transformer.ObjectFillTransformer;
 import com.graphi.util.transformer.VertexLabelTransformer;
 import com.graphi.util.transformer.WeightTransformer;
@@ -207,7 +207,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
             {
                 DefaultTableModel tModel    =   mainPanel.screenPanel.dataPanel.computationModel;
                 String context              =   mainPanel.screenPanel.dataPanel.getComputationContext();
-                entry.setComputationModel(new TableModelContext(tModel, context));
+                entry.setComputationModel(new TableModelBean(tModel, context));
             }
 
             gPlayback.add(entry);
@@ -247,7 +247,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     {
         if(entry != null)
         {
-            TableModelContext modelContext   =   entry.getComputationModel();
+            TableModelBean modelContext   =   entry.getComputationModel();
             mainPanel.screenPanel.dataPanel.setComputationModel(modelContext == null? new DefaultTableModel() : modelContext.getModel());
             mainPanel.screenPanel.dataPanel.setComputationContext(modelContext == null? null : modelContext.getDescription());
         }
