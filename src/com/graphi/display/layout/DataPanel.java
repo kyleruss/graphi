@@ -12,6 +12,8 @@ import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -36,13 +39,15 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 
-public class DataPanel extends JPanel
+public class DataPanel extends JPanel implements ActionListener
 {
 
     protected JTable vertexTable, edgeTable, computeTable;
     protected DefaultTableModel vertexDataModel, edgeDataModel, computationModel;
     protected final JTabbedPane dataTabPane;
     protected final JScrollPane vertexScroller, edgeScroller, computeScroller;
+    protected JLabel comModelContextField;
+    protected JButton comContextBtn;
     protected MainPanel mainPanel;
 
     public DataPanel(MainPanel mainPanel)
@@ -66,10 +71,25 @@ public class DataPanel extends JPanel
         edgeDataModel.addColumn("Weight");
         edgeDataModel.addColumn("EdgeType");
 
+        comModelContextField    =   new JLabel("None");
+        comContextBtn           =   new JButton("Change");
+        
+        JPanel compTabWrapper       =   new JPanel(new BorderLayout());
+        JPanel compContextWrapper   =   new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JLabel compContextTitle     =   new JLabel("Context: ");
+        
+        compContextTitle.setFont(new Font("Arial", Font.BOLD, 12));
+        compContextWrapper.add(comContextBtn);
+        compContextWrapper.add(compContextTitle);
+        compContextWrapper.add(comModelContextField);
+        compTabWrapper.add(compContextWrapper, BorderLayout.NORTH);
+        compTabWrapper.add(computeScroller, BorderLayout.CENTER);
+        comContextBtn.addActionListener(this);
+
         dataTabPane.addTab("Vertex table", vertexScroller);
         dataTabPane.addTab("Edge table", edgeScroller);
-        dataTabPane.addTab("Computation table", computeScroller);
-
+        dataTabPane.addTab("Computation table", compTabWrapper);
+        
         add(dataTabPane);
     }
     
@@ -473,6 +493,27 @@ public class DataPanel extends JPanel
     public void setMainPanel(MainPanel mainPanel) 
     {
         this.mainPanel = mainPanel;
+    }
+    
+    public void setComputationContext(String context)
+    {
+        if(context == null) context = "None";
+        comModelContextField.setText(context);
+    }
+    
+    public void changeComputationContext()
+    {
+        String context  =   JOptionPane.showInputDialog(null, "Enter the context of this table", "Table context", JOptionPane.OK_CANCEL_OPTION);
+        setComputationContext(context);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) 
+    {
+        Object src = e.getSource();
+        
+        if(src == comContextBtn)
+            changeComputationContext();
     }
     
     
