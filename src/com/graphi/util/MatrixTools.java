@@ -138,6 +138,12 @@ public class MatrixTools
     //Returns the stationary vector after performing power iteration on adjMatrix
     public static SparseDoubleMatrix2D powerIterationFull(SparseDoubleMatrix2D adjMatrix)
     {
+        SparseDoubleMatrix2D v    =   powerIteration(adjMatrix);
+        return normalizeVector(v);
+    }
+    
+    public static SparseDoubleMatrix2D powerIteration(SparseDoubleMatrix2D adjMatrix)
+    {
         final int LIMIT                 =   20;
         final int n                     =   adjMatrix.rows();
         SparseDoubleMatrix2D b          =   addMatrix(adjMatrix, identity(n));
@@ -157,7 +163,7 @@ public class MatrixTools
             v           =   (isRowVector(u))? divRowVector(u, div) : divColVector(u, div);
         }
         
-        return normalizeVector(v);
+        return v;
     }
     
     //Prints out the matrix

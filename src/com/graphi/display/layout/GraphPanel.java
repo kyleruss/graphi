@@ -141,6 +141,11 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
 
         gpRecEntries.setSelectedIndex(0);
     }
+    
+    public void refreshViewer()
+    {
+        gViewer.repaint();
+    }
 
     protected void changePlaybackPanel(String card)
     {

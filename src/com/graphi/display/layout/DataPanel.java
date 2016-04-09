@@ -42,7 +42,6 @@ import net.miginfocom.swing.MigLayout;
 
 public class DataPanel extends JPanel implements ActionListener
 {
-
     protected JTable vertexTable, edgeTable, computeTable;
     protected DefaultTableModel vertexDataModel, edgeDataModel, computationModel;
     protected final JTabbedPane dataTabPane;
