@@ -37,6 +37,11 @@ public class PlaybackEntry implements Comparable<PlaybackEntry>, Serializable
             this.name   =   getDateFormatted();
     }
     
+    public boolean hasComputationModel()
+    {
+        return computationModel != null;
+    }
+    
     public Graph<Node, Edge> getGraph()
     {
         return graph;
@@ -46,6 +51,7 @@ public class PlaybackEntry implements Comparable<PlaybackEntry>, Serializable
     {
         return date;
     }
+    
     
     public String getDateFormatted()
     {

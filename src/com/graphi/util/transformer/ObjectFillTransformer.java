@@ -15,7 +15,7 @@ import org.apache.commons.collections15.Transformer;
 public class ObjectFillTransformer<T extends GraphObject> implements Transformer<T, Paint>
 {
     //Selected/picked state list for the graph objects
-    private final PickedInfo<T> pickedInfo;
+    protected final PickedInfo<T> pickedInfo;
     
     //The default fill colour used when a graph object is selected
     private Color selectedColour;
@@ -23,7 +23,7 @@ public class ObjectFillTransformer<T extends GraphObject> implements Transformer
     public ObjectFillTransformer(PickedInfo<T> pickedInfo)
     {
         this.pickedInfo =   pickedInfo;
-        selectedColour  =   Color.RED;   
+        selectedColour  =   Color.BLUE;   
     }
 
     /**
