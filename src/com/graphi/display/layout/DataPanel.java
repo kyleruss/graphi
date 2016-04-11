@@ -8,6 +8,7 @@ package com.graphi.display.layout;
 
 import com.graphi.util.Edge;
 import com.graphi.util.Node;
+import com.graphi.util.TableModelBean;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import java.awt.BorderLayout;
@@ -114,6 +115,18 @@ public class DataPanel extends JPanel implements ActionListener
     public String getComputationContext()
     {
         return comModelContextLabel.getText();
+    }
+    
+    public TableModelBean getCompModelBean()
+    {
+        String context  =   getComputationContext();
+        return new TableModelBean(computationModel, context);
+    }
+    
+    public void loadCompModelBean(TableModelBean compModel)
+    {
+        setComputationModel(compModel.getModel());
+        setComputationContext(compModel.getDescription());
     }
 
     protected void loadNodes(Graph graph)
@@ -487,6 +500,8 @@ public class DataPanel extends JPanel implements ActionListener
 
     public void setComputationModel(DefaultTableModel computationModel) 
     {
+        if(computationModel == null) computationModel = new DefaultTableModel();
+        
         this.computationModel = computationModel;
         computeTable.setModel(computationModel);
         computeTable.tableChanged(new TableModelEvent(computationModel));

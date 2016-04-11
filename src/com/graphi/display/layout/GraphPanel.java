@@ -149,6 +149,9 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
 
     protected void changePlaybackPanel(String card)
     {
+        if(!controlPanel.isVisible())
+            controlPanel.setPreviousState();
+            
         CardLayout cLayout  =   (CardLayout) gpControlsWrapper.getLayout();
         cLayout.show(gpControlsWrapper, card);
 
@@ -253,9 +256,14 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         if(entry != null)
         {
             TableModelBean modelContext   =   entry.getComputationModel();
-            mainPanel.screenPanel.dataPanel.setComputationModel(modelContext == null? new DefaultTableModel() : modelContext.getModel());
-            mainPanel.screenPanel.dataPanel.setComputationContext(modelContext == null? null : modelContext.getDescription());
+            showComputationModel(modelContext);
         }
+    }
+    
+    protected void showComputationModel(TableModelBean bean)
+    {
+        mainPanel.screenPanel.dataPanel.setComputationModel(bean == null? new DefaultTableModel() : bean.getModel());
+        mainPanel.screenPanel.dataPanel.setComputationContext(bean == null? null : bean.getDescription());
     }
 
     protected void displayRecordedGraph()
@@ -485,6 +493,9 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     
     private class PlaybackControlPanel extends JPanel implements ActionListener, ChangeListener
     {
+        private Graph<Node, Edge> prevGraph;
+        private TableModelBean prevModel;
+        
         public PlaybackControlPanel()
         {
             setLayout(new BorderLayout());
@@ -576,6 +587,28 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
             gpCtrlsClose.addActionListener(this);
         }
         
+        public void setPreviousState()
+        {
+            prevGraph   =   mainPanel.getGraphData().getGraph();
+            prevModel   =   mainPanel.getScreenPanel().getDataPanel().getCompModelBean();
+        }
+        
+        public void reloadPreviousState()
+        {
+            if(prevGraph != null && prevModel != null)
+            {
+                mainPanel.getScreenPanel().getDataPanel().loadCompModelBean(prevModel);
+                mainPanel.getGraphData().setGraph(prevGraph);
+                reloadGraph();
+            }
+        }
+        
+        public void closeControls()
+        {
+            setVisible(false);
+            reloadPreviousState();
+        }
+        
         @Override
         public void actionPerformed(ActionEvent e)
         {
@@ -594,7 +627,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
                 togglePlayback();
 
             else if(src == gpCtrlsClose)
-                setVisible(false);
+                closeControls();
         }
         
         @Override
