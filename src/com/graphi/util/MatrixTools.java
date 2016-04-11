@@ -9,9 +9,11 @@ package com.graphi.util;
 import cern.colt.matrix.impl.SparseDoubleMatrix2D;
 import edu.uci.ics.jung.algorithms.scoring.VertexScorer;
 import edu.uci.ics.jung.graph.Graph;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class MatrixTools 
 {   
@@ -117,11 +119,15 @@ public class MatrixTools
     }
     
     //Returns a normalized vector of vector
-    public static SparseDoubleMatrix2D normalizeVector(SparseDoubleMatrix2D vector)
+    public static SparseDoubleMatrix2D normalizeLengthVector(SparseDoubleMatrix2D vector)
     {
         double vectorLength =   getVectorLength(vector);
-        if(!isRowVector(vector)) return divColVector(vector, vectorLength);
-        else return divRowVector(vector, vectorLength);
+        return normalizeVector(vector, vectorLength);
+    }
+    
+    public static SparseDoubleMatrix2D normalizeVector(SparseDoubleMatrix2D vector, double value)
+    {
+        return !isRowVector(vector)? divColVector(vector, value) : divRowVector(vector, value);
     }
     
     //Returns the transpose of the matrix
@@ -138,11 +144,11 @@ public class MatrixTools
     //Returns the stationary vector after performing power iteration on adjMatrix
     public static SparseDoubleMatrix2D powerIterationFull(SparseDoubleMatrix2D adjMatrix)
     {
-        SparseDoubleMatrix2D v    =   powerIteration(adjMatrix);
-        return normalizeVector(v);
+        SparseDoubleMatrix2D v    =   powerIteration(adjMatrix).getValue();
+        return normalizeLengthVector(v);
     }
     
-    public static SparseDoubleMatrix2D powerIteration(SparseDoubleMatrix2D adjMatrix)
+    public static Entry<Double, SparseDoubleMatrix2D> powerIteration(SparseDoubleMatrix2D adjMatrix)
     {
         final int LIMIT                 =   20;
         final int n                     =   adjMatrix.rows();
@@ -155,15 +161,18 @@ public class MatrixTools
         v   =   transpose(v);
         b   =   transpose(b);
 
-        
+        Entry<Double, SparseDoubleMatrix2D> evEntry =   null;
         for(int i = 0; i < LIMIT; i++)
         {
             u           =   multiplyMatrix(b, v);
             double div  =   u.getQuick(0, 0);
-            v           =   (isRowVector(u))? divRowVector(u, div) : divColVector(u, div);
+            v           =   isRowVector(u)? divRowVector(u, div) : divColVector(u, div);
+            
+            if(i == LIMIT - 1)
+                evEntry =   new SimpleEntry<>(div - 1.0, v);
         }
         
-        return v;
+        return evEntry;
     }
     
     //Prints out the matrix
