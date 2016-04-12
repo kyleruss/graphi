@@ -47,8 +47,10 @@ import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.util.AbstractMap;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -394,12 +396,18 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
 
 
         Collection<Node> vertices     =   mainPanel.data.getGraph().getVertices();
-        PriorityQueue<AbstractMap.SimpleEntry<Node, Double>> scores = null;
+        PriorityQueue<SimpleEntry<Node, Double>> scores = null;
 
         if(transform)
         {
-            scores =   new PriorityQueue<>((AbstractMap.SimpleEntry<Node, Double> a1, AbstractMap.SimpleEntry<Node, Double> a2) 
-            -> Double.compare(a2.getValue(), a1.getValue()));
+            scores = new PriorityQueue<>(new Comparator<SimpleEntry<Node, Double>>()
+            {
+                @Override
+                public int compare(SimpleEntry<Node, Double> a, SimpleEntry<Node, Double> b)
+                {
+                    return Double.compare(b.getValue(), a.getValue());
+                }
+            });
         }
         
         DecimalFormat formatter     =   new DecimalFormat("#.###");
@@ -410,20 +418,20 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
 
         for(Node node : vertices)
         {
-            String score    =   formatter.format(centrality.get(node));
+            double score    =   Double.parseDouble(formatter.format(centrality.get(node)));
             String output   =   MessageFormat.format("({0}) Vertex: {1}, Score: {2}", prefix, node.getID(), score);
             
             tModel.addRow(new Object[] { node.getID(), score });
             ComponentUtils.sendToOutput(output, mainPanel.screenPanel.outputPanel.outputArea);
 
-            if(transform)
-                scores.add(new AbstractMap.SimpleEntry(node, score));
+            if(transform && scores != null)
+                scores.add(new SimpleEntry(node, score));
         }
         
         mainPanel.screenPanel.dataPanel.setComputationModel(tModel);
         mainPanel.screenPanel.dataPanel.setComputationContext(prefix + " centrality");
         
-        if(transform)
+        if(transform && scores != null)
         {
             ArrayList<Node> centralNodes    =   new ArrayList<>();
             Color[] centralColours          =   new Color[] { Color.RED, Color.ORANGE, Color.BLUE };
