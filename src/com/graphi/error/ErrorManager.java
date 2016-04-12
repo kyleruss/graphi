@@ -54,7 +54,6 @@ public class ErrorManager
     public static void CLIErrorMessage(String message, boolean logError, Exception e, Object errorData)
     {
         String prefix   =   "[Error] ";
-        System.out.println(prefix + message);
         
         if(logError)
             logError(message, e, errorData);

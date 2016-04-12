@@ -6,6 +6,7 @@
 
 package com.graphi.plugins;
 
+
 /**
  * The Graphi default plugin creates a basic plugin with the base layout
  * DefaultPlugin is loaded on startup if no other plugin exists or is the default choice

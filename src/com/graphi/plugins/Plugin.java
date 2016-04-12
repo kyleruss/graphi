@@ -8,7 +8,9 @@ package com.graphi.plugins;
 
 import com.graphi.app.AppManager;
 import com.graphi.display.layout.MainPanel;
+import com.graphi.io.Storage;
 import com.graphi.util.GraphData;
+import java.net.URLClassLoader;
 
 /**
  * An abstract definition for a plugin bean
@@ -55,4 +57,8 @@ public interface Plugin
      * @return The Plugin panel's active graph data
      */
     public GraphData getData();
+    
+    public void setLoader(URLClassLoader loader);
+    
+    public URLClassLoader getLoader();
 }

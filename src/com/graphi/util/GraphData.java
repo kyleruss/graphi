@@ -14,8 +14,8 @@ public class GraphData
     private Graph<Node, Edge> graph;
     private final Map<Integer, Node> nodes;
     private final Map<Integer, Edge> edges;
-    private final NodeFactory nodeFactory;
-    private final EdgeFactory edgeFactory;
+    private NodeFactory nodeFactory;
+    private EdgeFactory edgeFactory;
     private Object[] selectedItems;
     
     public GraphData()
@@ -65,5 +65,15 @@ public class GraphData
     public void setGraph(Graph<Node, Edge> graph)
     {
         this.graph  =   graph;
+    }
+
+    public void setNodeFactory(NodeFactory nodeFactory) 
+    {
+        this.nodeFactory = nodeFactory;
+    }
+
+    public void setEdgeFactory(EdgeFactory edgeFactory) 
+    {
+        this.edgeFactory = edgeFactory;
     }
 }

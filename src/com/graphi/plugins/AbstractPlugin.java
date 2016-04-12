@@ -10,6 +10,7 @@ import com.graphi.app.AppManager;
 import com.graphi.display.layout.MainPanel;
 import com.graphi.util.GraphData;
 import java.io.Serializable;
+import java.net.URLClassLoader;
 
 /**
  * A basic serializable, Plugin implementation 
@@ -20,6 +21,7 @@ public abstract class AbstractPlugin implements Plugin, Serializable
     protected final String name;
     protected final String description;
     protected MainPanel panel;
+    private URLClassLoader loader;
     
     public AbstractPlugin(String name, String description)
     {
@@ -84,6 +86,20 @@ public abstract class AbstractPlugin implements Plugin, Serializable
     {
         return panel.getGraphData();
     }
+
+    @Override
+    public URLClassLoader getLoader() 
+    {
+        return loader;
+    }
+
+    @Override
+    public void setLoader(URLClassLoader loader)
+    {
+        this.loader = loader;
+    }
+    
+    
     
     /**
      * Tests if two plugins have the same name
@@ -111,4 +127,5 @@ public abstract class AbstractPlugin implements Plugin, Serializable
     {
         return name.hashCode();
     }
+    
 }

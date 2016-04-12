@@ -6,6 +6,7 @@
 
 package com.graphi.display.layout;
 
+import com.graphi.app.AppManager;
 import com.graphi.app.Consts;
 import com.graphi.display.layout.util.PluginMenuListener;
 import com.graphi.io.AdjMatrixParser;
@@ -799,7 +800,7 @@ public class ControlPanel extends JPanel implements ActionListener
             mainPanel.data.getEdgeFactory().setLastID(0);
 
             if(extension.equalsIgnoreCase("graph"))
-                mainPanel.data.setGraph((Graph) Storage.openObj(file));
+                mainPanel.data.setGraph((Graph) Storage.openObj(file, mainPanel.appManager.getPluginManager().getActiveClassLoader()));
 
             else if(extension.equalsIgnoreCase("txt"))
                 mainPanel.data.setGraph(AdjMatrixParser.importGraph(file, ioPanel.directedCheck.isSelected(), mainPanel.data.getNodeFactory(), mainPanel.data.getEdgeFactory()));
@@ -828,7 +829,9 @@ public class ControlPanel extends JPanel implements ActionListener
         File file   =   ComponentUtils.getFile(true, "Graphi .gscript file", "gscript");
         if(file != null)
         {
-            mainPanel.screenPanel.graphPanel.gPlayback    =   (GraphPlayback) Storage.openObj(file);
+            mainPanel.screenPanel.graphPanel.gPlayback    =   (GraphPlayback) Storage.openObj(file, mainPanel.appManager.getPluginManager().getActiveClassLoader());
+            if(mainPanel.screenPanel.graphPanel.gPlayback == null) return;
+            
             mainPanel.screenPanel.graphPanel.gPlayback.prepareIO(false);
             
             ioPanel.currentStorageLabel.setText(file.getName());

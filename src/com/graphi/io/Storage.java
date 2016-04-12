@@ -14,8 +14,11 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.ObjectStreamClass;
+import java.net.URLClassLoader;
 import javax.swing.JOptionPane;
 
 /**
@@ -47,9 +50,9 @@ public class Storage
      * @param file The file to import the object from
      * @return The object read from the file
      */
-    public static Object openObj(File file)
+    public static Object openObj(File file, URLClassLoader loader)
     {
-        try(ObjectInputStream ois   =   new ObjectInputStream(new FileInputStream(file)))
+        try(ForeignObjectInputStream ois   =   new ForeignObjectInputStream(new FileInputStream(file), loader))
         {
             return ois.readObject();
         }
@@ -99,6 +102,39 @@ public class Storage
         {
             JOptionPane.showMessageDialog(null, "[Error] Failed to read output log");
             return "";
+        }
+    }
+    
+    private static class ForeignObjectInputStream extends ObjectInputStream
+    {
+        private URLClassLoader loader;
+        
+        public ForeignObjectInputStream() throws IOException
+        {
+            super();
+        }
+        
+        public ForeignObjectInputStream(InputStream iStream, URLClassLoader loader) throws IOException
+        {
+            super(iStream);
+            this.loader =   loader;
+        }
+        
+        @Override
+        public Class<?> resolveClass(ObjectStreamClass desc) throws IOException, ClassNotFoundException
+        {
+            String name =   desc.getName();
+            
+            if(loader != null)
+            {
+                try { return loader.loadClass(name); }
+                catch(ClassNotFoundException e)
+                {
+                    return super.resolveClass(desc);
+                }
+            }
+            
+            else return super.resolveClass(desc);
         }
     }
 }

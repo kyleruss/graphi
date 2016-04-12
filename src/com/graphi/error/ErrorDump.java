@@ -6,6 +6,7 @@
 
 package com.graphi.error;
 
+import com.graphi.app.AppManager;
 import com.graphi.app.Consts;
 import com.graphi.io.Storage;
 import java.io.File;
@@ -153,7 +154,7 @@ public class ErrorDump implements Serializable, Iterable<ErrorBean>
      */
     public static ErrorDump openErrorDump(File file)
     {
-        ErrorDump dump  =   (ErrorDump) Storage.openObj(file);
+        ErrorDump dump  =   (ErrorDump) Storage.openObj(file, null);
         return dump;
     }
     

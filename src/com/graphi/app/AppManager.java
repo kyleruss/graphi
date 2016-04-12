@@ -8,6 +8,7 @@ package com.graphi.app;
 
 import com.graphi.display.Window;
 import com.graphi.error.ErrorManager;
+import com.graphi.io.Storage;
 import com.graphi.plugins.PluginManager;
 
 
@@ -19,6 +20,7 @@ import com.graphi.plugins.PluginManager;
 
 public final class AppManager 
 {
+    private static AppManager instance;
     private final ConfigManager configManager; //Manages stored configs
     private final PluginManager pluginManager; //Manages loading & active plugins
     private final ErrorManager errorManager; // Manages error messages & dumping
@@ -64,13 +66,19 @@ public final class AppManager
     {
         window.initFrame();
     }
+
+    public static AppManager getInstance()
+    {
+        if(instance == null) instance = new AppManager();
+        return instance;
+    }
     
     /**
      * @param args Unused
      */
     public static void main(String[] args)
     {
-        AppManager manager  =   new AppManager();
+        AppManager manager  =   getInstance();
         manager.start();
     }
 }

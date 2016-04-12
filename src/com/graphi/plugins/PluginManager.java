@@ -25,6 +25,7 @@ public final class PluginManager
     private Plugin activePlugin;
     private final AppManager appManager;
     private Map<String, Plugin> plugins;
+    private static PluginManager instance;
 
     public PluginManager(AppManager appManager)
     {
@@ -92,6 +93,11 @@ public final class PluginManager
         this.plugins    =   plugins;
     }
     
+    public URLClassLoader getActiveClassLoader()
+    {
+        return activePlugin.getLoader();
+    }
+    
     public Plugin fetchPlugin(File file)
     {
         if(file == null) return null;
@@ -119,8 +125,11 @@ public final class PluginManager
                         Class<?> loadedSuper    =   loadedClass.getSuperclass();
                         
                         if(loadedSuper != null && loadedSuper.getName().equals(AbstractPlugin.class.getName()))
-                            return (Plugin) loadedClass.newInstance();
-
+                        {
+                            Plugin plugin   =   (Plugin) loadedClass.newInstance();
+                            plugin.setLoader(loader);
+                            return plugin;
+                        }
                     }
                     
                     else
@@ -128,7 +137,11 @@ public final class PluginManager
                         for(Class<?> loadedInterface : loadedInterfaces)
                         {
                             if(loadedInterface.getName().equals(Plugin.class.getName()))
-                                return (Plugin) loadedClass.newInstance();
+                            {
+                                Plugin plugin   =   (Plugin) loadedClass.newInstance();
+                                plugin.setLoader(loader);
+                                return plugin;
+                            }
                         }
                     }
                 }
