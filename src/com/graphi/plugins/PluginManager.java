@@ -7,6 +7,7 @@
 package com.graphi.plugins;
 
 import com.graphi.app.AppManager;
+import com.graphi.display.PluginsMenu;
 import com.graphi.util.GraphData;
 import java.io.File;
 import java.io.IOException;
@@ -19,18 +20,18 @@ import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import javax.swing.JFrame;
+import javax.swing.JMenuItem;
 
 public final class PluginManager
 {
     private Plugin activePlugin;
     private final AppManager appManager;
     private Map<String, Plugin> plugins;
-    private static PluginManager instance;
 
     public PluginManager(AppManager appManager)
     {
         this.appManager     =   appManager;
-        plugins =   new HashMap<>();
+        plugins             =   new HashMap<>();
         initDefaultPlugin();
     }
     
@@ -44,7 +45,9 @@ public final class PluginManager
         int defaultPluginIndex          =   config.getDefaultPluginIndex();
         
         if(defaultPluginIndex == -1)
+        {
             defaultPlugin = basePlugin;
+        }
         else
         {
             List<String> pluginPaths    =   config.getLoadedPluginPaths();
@@ -168,12 +171,22 @@ public final class PluginManager
         
         activePlugin    =   plugin;
         activePlugin.attachPanel(appManager);
-        if(data != null) activePlugin.passData(data);
+        
+        if(data != null) 
+            activePlugin.passData(data);
+        
         
         JFrame frame    =   appManager.getWindow().getFrame();
         frame.getContentPane().removeAll();
         frame.add(activePlugin.getPanel());
         frame.revalidate();
+        
+        PluginsMenu pluginsMenu      =   appManager.getWindow().getMenu().getPluginListMenu();
+        String itemName              =   plugin.getPluginName().equals("Default")? "defaultPluginItem" : plugin.getPluginName();
+        JMenuItem item              =    pluginsMenu.getPluginMenuItem(itemName);
+        
+        activePlugin.getPanel().getControlPanel().initPluginMenuListener(this, item);
+        pluginsMenu.setActivePluginItem(item);
     }
     
     public void activePlugin(String pluginName)

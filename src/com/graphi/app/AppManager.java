@@ -8,7 +8,6 @@ package com.graphi.app;
 
 import com.graphi.display.Window;
 import com.graphi.error.ErrorManager;
-import com.graphi.io.Storage;
 import com.graphi.plugins.PluginManager;
 
 

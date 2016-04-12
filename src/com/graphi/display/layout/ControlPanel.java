@@ -6,7 +6,6 @@
 
 package com.graphi.display.layout;
 
-import com.graphi.app.AppManager;
 import com.graphi.app.Consts;
 import com.graphi.display.layout.util.PluginMenuListener;
 import com.graphi.io.AdjMatrixParser;
@@ -117,7 +116,6 @@ public class ControlPanel extends JPanel implements ActionListener
         setPreferredSize(new Dimension(230, 1650));
 
         this.mainPanel  =   mainPanel;
-        menuListener    =   new PluginMenuListener(mainPanel.menu.getPluginListMenu(), mainPanel.appManager.getPluginManager());
         ioPanel         =   new IOPanel();            
         modePanel       =   new JPanel();
         simPanel        =   new JPanel(new MigLayout("fillx"));
@@ -418,7 +416,6 @@ public class ControlPanel extends JPanel implements ActionListener
         pbWrapperPanel.add(playbackPanel);
 
         mainPanel.menu.setMenuItemListener(this);
-        mainPanel.menu.getPluginListMenu().setActivePluginItem(mainPanel.menu.getPluginListMenu().getPluginMenuItem("defaultPluginItem"));
 
         add(modePanel);
         add(Box.createRigidArea(new Dimension(230, 30)));
@@ -434,6 +431,14 @@ public class ControlPanel extends JPanel implements ActionListener
         add(Box.createRigidArea(new Dimension(230, 30)));
         add(pbWrapperPanel);
 
+    }
+    
+    public void initPluginMenuListener(PluginManager pluginManager, JMenuItem item)
+    {
+        if(menuListener == null) 
+            menuListener =   new PluginMenuListener(mainPanel.menu.getPluginListMenu(), pluginManager);
+        
+        item.addActionListener(menuListener);
     }
 
     protected void updateSelectedComponents()
@@ -756,8 +761,6 @@ public class ControlPanel extends JPanel implements ActionListener
 
                 if(!isDefaultPath)
                     pm.addPlugin(plugin);
-                else
-                    mainPanel.menu.getPluginListMenu().setActivePluginItem(item);
             }
         }
     }
