@@ -6,11 +6,18 @@
 
 package com.graphi.display;
 
+import com.graphi.app.AppManager;
 import com.graphi.app.Consts;
+import com.graphi.plugins.Plugin;
+import com.graphi.plugins.PluginConfig;
+import com.graphi.plugins.PluginManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -35,12 +42,13 @@ public class PluginsMenu extends JMenu
     //A tick icon used to identify the active plugin menu item
     protected BufferedImage activeTickIcon;
     
+    protected PluginMenuListener listener;
+    
     public PluginsMenu()
     {
         super("Plugins");
         
-        pluginMenuItems =   new HashMap<>();
-        addPluginMenuItem("defaultPluginItem", new JMenuItem("Default"));
+        pluginMenuItems     =   new HashMap<>();
         
         try { activeTickIcon  =   ImageIO.read(new File(Consts.IMG_DIR + "tick.png")); }
         
@@ -60,6 +68,8 @@ public class PluginsMenu extends JMenu
         pluginMenuItems.put(name, item);
         add(item);
         revalidate();
+        
+        item.addActionListener(listener);
     }
     
     /**
@@ -103,5 +113,69 @@ public class PluginsMenu extends JMenu
 
         activePluginItem    =   item;
         activePluginItem.setIcon(new ImageIcon(activeTickIcon));
+    }
+    
+    public void initPluginMenuListener(PluginManager pluginManager)
+    {
+        if(listener == null)  listener =   new PluginMenuListener(pluginManager);
+    }
+    
+    public void loadConfigPlugins(PluginManager pm, AppManager am)
+    {
+        PluginConfig config =   am.getConfigManager().getPluginConfig();
+        List<String> paths  =   config.getLoadedPluginPaths();
+
+        for(int i = 0; i < paths.size(); i++)
+            loadPluginFile(new File(paths.get(i)), pm, am);
+    }
+    
+    public void loadPluginFile(File file, PluginManager pm, AppManager am)
+    {
+        if(file == null) return;
+
+        Plugin plugin           =   pm.fetchPlugin(file);
+        String defaultPath      =   am.getConfigManager().getPluginConfig().getDefaultPluginPath();
+        boolean isDefaultPath   =   file.getPath().equals(defaultPath);
+
+        if(plugin == null)
+            JOptionPane.showMessageDialog(null, "Failed to load plugin");
+
+        else
+        {
+            if(pm.hasPlugin(plugin) && !isDefaultPath)
+                JOptionPane.showMessageDialog(null, "Plugin is already loaded");
+
+            else
+            {
+                JMenuItem item  =   new JMenuItem(plugin.getPluginName());
+                addPluginMenuItem(plugin.getPluginName(), item);
+
+                if(!isDefaultPath)
+                    pm.addPlugin(plugin);
+            }
+        }
+    }
+    
+    private class PluginMenuListener implements ActionListener
+    {
+        private final PluginManager pluginManager;
+
+        public PluginMenuListener(PluginManager pluginManager)
+        {
+            this.pluginManager  =   pluginManager;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+            JMenuItem item      =   (JMenuItem) e.getSource();
+            String pluginName   =   item.getText();
+            pluginManager.activePlugin(pluginName);
+        }
+
+        public PluginManager getPluginManager() 
+        {
+            return pluginManager;
+        }
     }
 }

@@ -107,10 +107,6 @@ public class MainPanel extends JPanel
         }
     }
     
-    public void initConfigPlugins(PluginManager pm)
-    {
-        controlPanel.loadConfigPlugins(pm);
-    }
     
     public ControlPanel getControlPanel() 
     {

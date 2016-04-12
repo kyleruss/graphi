@@ -32,6 +32,7 @@ public final class PluginManager
     {
         this.appManager     =   appManager;
         plugins             =   new HashMap<>();
+        appManager.getWindow().getMenu().getPluginListMenu().initPluginMenuListener(this);
         initDefaultPlugin();
     }
     
@@ -39,15 +40,15 @@ public final class PluginManager
     {
         AbstractPlugin basePlugin       =   new DefaultPlugin();
         addPlugin(basePlugin);
+        appManager.getWindow().getMenu().getPluginListMenu().addPluginMenuItem("defaultPluginItem", new JMenuItem("Default"));
         
         Plugin defaultPlugin;
         PluginConfig config             =   appManager.getConfigManager().getPluginConfig();
         int defaultPluginIndex          =   config.getDefaultPluginIndex();
         
         if(defaultPluginIndex == -1)
-        {
             defaultPlugin = basePlugin;
-        }
+        
         else
         {
             List<String> pluginPaths    =   config.getLoadedPluginPaths();
@@ -56,12 +57,13 @@ public final class PluginManager
             
             if(defaultPlugin == null)
                 defaultPlugin = basePlugin;
+            
             else
                 addPlugin(defaultPlugin);
         }
-        
+
+        appManager.getWindow().getMenu().getPluginListMenu().loadConfigPlugins(this, appManager);
         activatePlugin(defaultPlugin);
-        defaultPlugin.getPanel().initConfigPlugins(this);
     }
     
     public AppManager getManager()
@@ -181,11 +183,10 @@ public final class PluginManager
         frame.add(activePlugin.getPanel());
         frame.revalidate();
         
-        PluginsMenu pluginsMenu      =   appManager.getWindow().getMenu().getPluginListMenu();
-        String itemName              =   plugin.getPluginName().equals("Default")? "defaultPluginItem" : plugin.getPluginName();
-        JMenuItem item              =    pluginsMenu.getPluginMenuItem(itemName);
+        PluginsMenu pluginsMenu     =   appManager.getWindow().getMenu().getPluginListMenu();
+        String itemName             =   plugin.getPluginName().equals("Default")? "defaultPluginItem" : plugin.getPluginName();
         
-        activePlugin.getPanel().getControlPanel().initPluginMenuListener(this, item);
+        JMenuItem item              =    pluginsMenu.getPluginMenuItem(itemName);
         pluginsMenu.setActivePluginItem(item);
     }
     

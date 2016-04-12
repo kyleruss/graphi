@@ -433,13 +433,6 @@ public class ControlPanel extends JPanel implements ActionListener
 
     }
     
-    public void initPluginMenuListener(PluginManager pluginManager, JMenuItem item)
-    {
-        if(menuListener == null) 
-            menuListener =   new PluginMenuListener(mainPanel.menu.getPluginListMenu(), pluginManager);
-        
-        item.addActionListener(menuListener);
-    }
 
     protected void updateSelectedComponents()
     {
@@ -725,50 +718,10 @@ public class ControlPanel extends JPanel implements ActionListener
         CardLayout gLayout  =   (CardLayout) genPanel.getLayout();
         gLayout.show(genPanel, card);
     }
-
-    protected void loadConfigPlugins(PluginManager pm)
-    {
-        PluginConfig config =   mainPanel.appManager.getConfigManager().getPluginConfig();
-        List<String> paths  =   config.getLoadedPluginPaths();
-
-        for(int i = 0; i < paths.size(); i++)
-            loadPluginFile(new File(paths.get(i)), pm);
-    }
-
-    protected void loadPluginFile(File file, PluginManager pm)
-    {
-        if(file == null) return;
-
-        if(pm == null) pm       =   mainPanel.appManager.getPluginManager();
-
-        Plugin plugin           =   pm.fetchPlugin(file);
-        String defaultPath      =   mainPanel.appManager.getConfigManager().getPluginConfig().getDefaultPluginPath();
-        boolean isDefaultPath   =   file.getPath().equals(defaultPath);
-
-        if(plugin == null)
-            JOptionPane.showMessageDialog(null, "Failed to load plugin");
-
-        else
-        {
-            if(pm.hasPlugin(plugin) && !isDefaultPath)
-                JOptionPane.showMessageDialog(null, "Plugin is already loaded");
-
-            else
-            {
-                JMenuItem item  =   new JMenuItem(plugin.getPluginName());
-                item.addActionListener(menuListener);
-                mainPanel.menu.getPluginListMenu().addPluginMenuItem(plugin.getPluginName(), item);
-
-                if(!isDefaultPath)
-                    pm.addPlugin(plugin);
-            }
-        }
-    }
-
     protected void importPlugin()
     {
         File file           =   ComponentUtils.getFile(true, "Graphi .jar plugin", "jar");
-        loadPluginFile(file, null);
+        mainPanel.appManager.getWindow().getMenu().getPluginListMenu().loadPluginFile(file, mainPanel.appManager.getPluginManager(), mainPanel.appManager);
     }
 
     protected void exportGraph()
