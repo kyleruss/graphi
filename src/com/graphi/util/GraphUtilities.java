@@ -7,6 +7,9 @@
 package com.graphi.util;
 
 import edu.uci.ics.jung.algorithms.cluster.EdgeBetweennessClusterer;
+import edu.uci.ics.jung.algorithms.filters.Filter;
+import edu.uci.ics.jung.algorithms.filters.KNeighborhoodFilter;
+import edu.uci.ics.jung.algorithms.filters.KNeighborhoodFilter.EdgeType;
 import edu.uci.ics.jung.algorithms.layout.AggregateLayout;
 import edu.uci.ics.jung.algorithms.layout.CircleLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
@@ -93,4 +96,9 @@ public class GraphUtilities
         return sum;
     }
     
+    public static Graph<Node, Edge> getNeighbourhood(Graph<Node, Edge> graph, Node node, int dist)
+    {
+        Filter<Node, Edge> filter   =   new KNeighborhoodFilter<>(node, dist, EdgeType.IN_OUT);
+        return filter.transform(graph);
+    }
 }

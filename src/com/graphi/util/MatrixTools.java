@@ -65,6 +65,7 @@ public class MatrixTools
         return c;
     }
     
+    
     //Divides a column vector by divisor div
     public static SparseDoubleMatrix2D divColVector(SparseDoubleMatrix2D v, double div)
     {
