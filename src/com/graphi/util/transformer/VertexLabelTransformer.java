@@ -31,7 +31,7 @@ public class VertexLabelTransformer implements Transformer<Node, String>
     public String transform(Node node)
     {
         if(showLabels)
-            return node.getName();
+            return "" + node.getID();
         else
             return "";
     }
