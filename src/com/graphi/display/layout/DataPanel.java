@@ -176,9 +176,6 @@ public class DataPanel extends JPanel implements ActionListener
                 n1  =   iter.next();
                 n2  =   iter.next();
 
-                edge.setSourceNode(n1);
-                edge.setDestNode(n2);
-
                 if(n1 != null)
                     n1_id   =   n1.getID();
                 else
@@ -342,8 +339,6 @@ public class DataPanel extends JPanel implements ActionListener
                 Edge edge       =   new Edge(id, weight, edgeType);
                 Node n1         =   mainPanel.data.getNodes().get(fromID);
                 Node n2         =   mainPanel.data.getNodes().get(toID);
-                edge.setSourceNode(n1);
-                edge.setDestNode(n2);
 
                 mainPanel.data.getEdges().put(id, edge);
                 mainPanel.data.getGraph().addEdge(edge, n1, n2, edgeType);
@@ -383,8 +378,11 @@ public class DataPanel extends JPanel implements ActionListener
 
         EdgeAddPanel editPanel  =   new EdgeAddPanel();
         editPanel.idSpinner.setValue(editEdge.getID());
-        editPanel.fromSpinner.setValue(editEdge.getSourceNode().getID());
-        editPanel.toSpinner.setValue(editEdge.getDestNode().getID());
+        Node sourceNode =   mainPanel.getData().getGraph().getSource(editEdge);
+        Node destNode   =   mainPanel.getData().getGraph().getDest(editEdge);
+        
+        editPanel.fromSpinner.setValue(sourceNode.getID());
+        editPanel.toSpinner.setValue(destNode.getID());
         editPanel.weightSpinner.setValue(editEdge.getWeight());
         editPanel.edgeTypeBox.setSelectedIndex(editEdge.getEdgeType() == EdgeType.UNDIRECTED? 0 : 1);
 
@@ -399,8 +397,6 @@ public class DataPanel extends JPanel implements ActionListener
 
             Node from   =   mainPanel.data.getNodes().get(Integer.parseInt(editPanel.fromSpinner.getValue().toString()));
             Node to     =   mainPanel.data.getNodes().get(Integer.parseInt(editPanel.toSpinner.getValue().toString()));
-            editEdge.setSourceNode(from);
-            editEdge.setDestNode(to);
 
             mainPanel.data.getGraph().removeEdge(editEdge);
             mainPanel.data.getGraph().addEdge(editEdge, from, to, editEdge.getEdgeType());

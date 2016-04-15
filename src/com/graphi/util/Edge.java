@@ -13,12 +13,11 @@ import java.io.Serializable;
 import java.text.DecimalFormat;
 
 
-public class Edge implements Serializable, GraphObject
+public class Edge implements Serializable, GraphObject<Edge>
 {
     private int id;
     private double weight;
     private EdgeType edgeType;
-    private Node sourceNode, destNode;
     private Color fill;
     
     public Edge()
@@ -76,26 +75,6 @@ public class Edge implements Serializable, GraphObject
     public void setEdgeType(EdgeType edgeType)
     {
         this.edgeType   =   edgeType;
-    }
-    
-    public void setSourceNode(Node node)
-    {
-        sourceNode  =   node;
-    }
-    
-    public Node getSourceNode()
-    {
-        return sourceNode;
-    }
-    
-    public void setDestNode(Node node)
-    {
-        destNode    =   node;
-    }
-    
-    public Node getDestNode()
-    {
-        return destNode;
     }
     
     @Override

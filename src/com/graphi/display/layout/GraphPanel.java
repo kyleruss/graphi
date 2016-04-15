@@ -202,8 +202,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         int selectedIndex   =   gpRecEntries.getSelectedIndex();
         if(selectedIndex == 0)
         {
-            Graph<Node, Edge> graph   =   new SparseMultigraph<>();
-            GraphUtilities.copyGraph(mainPanel.data.getGraph(), graph);
+            Graph<Node, Edge> graph     =   GraphUtilities.copyNewGraph(mainPanel.data.getGraph());
 
             Date date       =   gpRecDatePicker.getDate();
             String name     =   gpRecEntryName.getText();

@@ -8,7 +8,7 @@ package com.graphi.util;
 
 import java.awt.Color;
 
-public interface GraphObject
+public interface GraphObject<T extends GraphObject>
 {
     public int getID();
     

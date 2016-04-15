@@ -78,11 +78,19 @@ public class GraphUtilities
     {
         Collection<Node> nodes  =   source.getVertices();
         for(Node node : nodes)
-            dest.addVertex(node);
+        {
+            Node next   =   new Node();
+            next.setID(node.getID());
+            next.setName(node.getName());
+            dest.addVertex(next);
+        }
         
         Collection<Edge> edges  =   source.getEdges();
         for(Edge edge : edges)
+        {
+            Edge next   =   new Edge();
             dest.addEdge(edge, source.getIncidentVertices(edge));
+        }
     }
     
     public static int degreeSum(Graph<Node, Edge> graph)
