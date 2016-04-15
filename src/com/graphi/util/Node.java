@@ -11,7 +11,7 @@ import java.awt.Color;
 import java.io.Serializable;
 
 
-public class Node implements Serializable, GraphObject
+public class Node implements Serializable, GraphObject<Node>
 {
     protected int id;
     protected String name;
@@ -98,7 +98,7 @@ public class Node implements Serializable, GraphObject
     }
 
     @Override
-    public GraphObject copyGraphObject()
+    public Node copyGraphObject()
     {
         Node node   =   new Node(id, name);
         node.setFill(fill);

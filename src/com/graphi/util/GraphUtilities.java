@@ -67,30 +67,22 @@ public class GraphUtilities
         } 
     }
     
-    public static Graph<Node, Edge> copyNewGraph(Graph<Node, Edge> source)
+    public static Graph<Node, Edge> copyNewGraph(Graph<Node, Edge> source, boolean copyState)
     {
         Graph<Node, Edge> dest  =   new SparseMultigraph<>();
-        copyGraph(source, dest);
+        copyGraph(source, dest, copyState);
         return dest;
     }
     
-    public static void copyGraph(Graph<Node, Edge> source, Graph<Node, Edge> dest)
+    public static void copyGraph(Graph<Node, Edge> source, Graph<Node, Edge> dest, boolean copyState)
     {
         Collection<Node> nodes  =   source.getVertices();
         for(Node node : nodes)
-        {
-            Node next   =   new Node();
-            next.setID(node.getID());
-            next.setName(node.getName());
-            dest.addVertex(next);
-        }
+            dest.addVertex(copyState? node.copyGraphObject() : node);
         
         Collection<Edge> edges  =   source.getEdges();
         for(Edge edge : edges)
-        {
-            Edge next   =   new Edge();
-            dest.addEdge(edge, source.getIncidentVertices(edge));
-        }
+            dest.addEdge(copyState? edge.copyGraphObject() : edge, source.getIncidentVertices(edge));
     }
     
     public static int degreeSum(Graph<Node, Edge> graph)
