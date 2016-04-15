@@ -7,7 +7,6 @@
 package com.graphi.util;
 
 import com.graphi.app.Consts;
-import edu.uci.ics.jung.graph.util.EdgeType;
 import java.awt.Color;
 import java.io.Serializable;
 import java.text.DecimalFormat;
@@ -15,9 +14,9 @@ import java.text.DecimalFormat;
 
 public class Edge implements Serializable, GraphObject<Edge>
 {
-    private int id;
-    private double weight;
-    private Color fill;
+    protected int id;
+    protected double weight;
+    protected Color fill;
     
     public Edge()
     {
@@ -93,5 +92,14 @@ public class Edge implements Serializable, GraphObject<Edge>
         }
         
         else return false;
+    }
+
+    @Override
+    public Edge copyGraphObject() 
+    {
+        Edge edge   =   new Edge(id, weight);
+        edge.setFill(fill);
+        
+        return edge;
     }
 }

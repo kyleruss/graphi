@@ -13,9 +13,9 @@ import java.io.Serializable;
 
 public class Node implements Serializable, GraphObject
 {
-    private int id;
-    private String name;
-    private Color fill;
+    protected int id;
+    protected String name;
+    protected Color fill;
     
     public Node()
     {
@@ -95,5 +95,14 @@ public class Node implements Serializable, GraphObject
         }
         
         else return false;
+    }
+
+    @Override
+    public GraphObject copyGraphObject()
+    {
+        Node node   =   new Node(id, name);
+        node.setFill(fill);
+        
+        return node;
     }
 }
