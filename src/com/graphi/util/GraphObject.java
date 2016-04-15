@@ -17,4 +17,5 @@ public interface GraphObject<T extends GraphObject>
     public Color getFill();
     
     public void setFill(Color fill);
+    
 }

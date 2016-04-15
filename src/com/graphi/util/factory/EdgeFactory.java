@@ -42,6 +42,6 @@ public class EdgeFactory extends GraphObjFactory<Edge>
     {
         lastID          +=  incAmount;
         double weight   =   RGEN.nextDouble() * 100.0;
-        return new Edge(lastID, weight, EdgeType.UNDIRECTED);
+        return new Edge(lastID, weight);
     }
 }

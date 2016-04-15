@@ -17,23 +17,21 @@ public class Edge implements Serializable, GraphObject<Edge>
 {
     private int id;
     private double weight;
-    private EdgeType edgeType;
     private Color fill;
     
     public Edge()
     {
-        this(0, 0.0, Consts.DEFAULT_EDGETYPE);
+        this(0, 0.0);
     }
     
-    public Edge(int id, EdgeType edgeType)
+    public Edge(int id)
     {
-        this(id, 0.0, edgeType);
+        this(id, 0.0);
     }
     
-    public Edge(int id, double weight, EdgeType edgeType)
+    public Edge(int id, double weight)
     {
         this.id         =   id;        
-        this.edgeType   =   edgeType;
         fill            =   Consts.DEFAULT_EDGE_COLOUR;
         setWeight(weight);
     }
@@ -65,16 +63,6 @@ public class Edge implements Serializable, GraphObject<Edge>
     public void setID(int id)
     {
         this.id =   id;
-    }
-    
-    public EdgeType getEdgeType()
-    {
-        return edgeType;
-    }
-    
-    public void setEdgeType(EdgeType edgeType)
-    {
-        this.edgeType   =   edgeType;
     }
     
     @Override

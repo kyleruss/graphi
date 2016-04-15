@@ -336,7 +336,7 @@ public class DataPanel extends JPanel implements ActionListener
 
             if(mainPanel.data.getNodes().containsKey(fromID) && mainPanel.data.getNodes().containsKey(toID))
             {
-                Edge edge       =   new Edge(id, weight, edgeType);
+                Edge edge       =   new Edge(id, weight);
                 Node n1         =   mainPanel.data.getNodes().get(fromID);
                 Node n2         =   mainPanel.data.getNodes().get(toID);
 
@@ -378,13 +378,16 @@ public class DataPanel extends JPanel implements ActionListener
 
         EdgeAddPanel editPanel  =   new EdgeAddPanel();
         editPanel.idSpinner.setValue(editEdge.getID());
-        Node sourceNode =   mainPanel.getData().getGraph().getSource(editEdge);
-        Node destNode   =   mainPanel.getData().getGraph().getDest(editEdge);
+        
+        Graph<Node, Edge> graph =   mainPanel.getData().getGraph();
+        Node sourceNode         =   graph.getSource(editEdge);
+        Node destNode           =   graph.getDest(editEdge);
+        EdgeType eType          =   graph.getEdgeType(editEdge);
         
         editPanel.fromSpinner.setValue(sourceNode.getID());
         editPanel.toSpinner.setValue(destNode.getID());
         editPanel.weightSpinner.setValue(editEdge.getWeight());
-        editPanel.edgeTypeBox.setSelectedIndex(editEdge.getEdgeType() == EdgeType.UNDIRECTED? 0 : 1);
+        editPanel.edgeTypeBox.setSelectedIndex(eType == EdgeType.UNDIRECTED? 0 : 1);
 
         editPanel.idSpinner.setEnabled(false);
         editPanel.autoCheck.setVisible(false);
@@ -393,13 +396,12 @@ public class DataPanel extends JPanel implements ActionListener
         if(option == JOptionPane.OK_OPTION)
         {
             editEdge.setWeight((double) editPanel.weightSpinner.getValue());
-            editEdge.setEdgeType(editPanel.edgeTypeBox.getSelectedIndex() == 0? EdgeType.UNDIRECTED : EdgeType.DIRECTED);
 
             Node from   =   mainPanel.data.getNodes().get(Integer.parseInt(editPanel.fromSpinner.getValue().toString()));
             Node to     =   mainPanel.data.getNodes().get(Integer.parseInt(editPanel.toSpinner.getValue().toString()));
 
             mainPanel.data.getGraph().removeEdge(editEdge);
-            mainPanel.data.getGraph().addEdge(editEdge, from, to, editEdge.getEdgeType());
+            mainPanel.data.getGraph().addEdge(editEdge, from, to, eType);
 
             loadEdges(mainPanel.data.getGraph());
             mainPanel.screenPanel.graphPanel.gViewer.repaint();
