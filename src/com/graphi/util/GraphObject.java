@@ -18,4 +18,5 @@ public interface GraphObject<T extends GraphObject>
     
     public void setFill(Color fill);
     
+    public T copyGraphObject(T other);
 }
