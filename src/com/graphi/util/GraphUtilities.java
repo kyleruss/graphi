@@ -82,7 +82,7 @@ public class GraphUtilities
         
         Collection<Edge> edges  =   source.getEdges();
         for(Edge edge : edges)
-            dest.addEdge(copyState? edge.copyGraphObject() : edge, source.getIncidentVertices(edge));
+            dest.addEdge(copyState? edge.copyGraphObject() : edge, source.getIncidentVertices(edge), source.getEdgeType(edge));
     }
     
     public static int degreeSum(Graph<Node, Edge> graph)
