@@ -10,7 +10,6 @@ import com.graphi.app.AppManager;
 import com.graphi.app.Consts;
 import com.graphi.display.MainMenu;
 import com.graphi.error.ErrorManager;
-import com.graphi.plugins.PluginManager;
 import com.graphi.util.GraphData;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -30,12 +29,12 @@ public class MainPanel extends JPanel
     protected JSplitPane splitPane;
     protected JScrollPane controlScroll;
     
-    protected BufferedImage addIcon, removeIcon, colourIcon;
-    protected BufferedImage clipIcon, openIcon, saveIcon;
-    protected BufferedImage editBlackIcon, pointerIcon, moveIcon;
-    protected BufferedImage moveSelectedIcon, editSelectedIcon, pointerSelectedIcon;
-    protected BufferedImage graphIcon, tableIcon, resetIcon, executeIcon;
-    protected BufferedImage editIcon, playIcon, stopIcon, recordIcon, closeIcon;
+    public BufferedImage addIcon, removeIcon, colourIcon;
+    public BufferedImage clipIcon, openIcon, saveIcon;
+    public BufferedImage editBlackIcon, pointerIcon, moveIcon;
+    public BufferedImage moveSelectedIcon, editSelectedIcon, pointerSelectedIcon;
+    public BufferedImage graphIcon, tableIcon, resetIcon, executeIcon;
+    public BufferedImage editIcon, playIcon, stopIcon, recordIcon, closeIcon;
     
     protected GraphData data;
     protected MainMenu menu;

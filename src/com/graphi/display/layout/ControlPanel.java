@@ -109,13 +109,11 @@ public class ControlPanel extends JPanel implements ActionListener
     {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBorder(BorderFactory.createEmptyBorder(15, 0, 3, 8));
-        setPreferredSize(new Dimension(230, 1650));
 
         this.mainPanel  =   mainPanel;
         ioPanel         =   new IOPanel();            
         modePanel       =   new JPanel();
         simPanel        =   new JPanel(new MigLayout("fillx"));
-        modePanel.setPreferredSize(new Dimension(230, 100));
         modePanel.setBorder(BorderFactory.createTitledBorder("Mode controls"));
         simPanel.setBorder(BorderFactory.createTitledBorder("Simulation controls"));
 
@@ -287,7 +285,6 @@ public class ControlPanel extends JPanel implements ActionListener
         spathPanel          =   new JPanel();
         computeBox          =   new JComboBox();
         computeBtn          =   new JButton("Execute");
-        computePanel.setPreferredSize(new Dimension(230, 180));
         computePanel.setBorder(BorderFactory.createTitledBorder("Computation controls"));
         spathPanel.setLayout(new BoxLayout(spathPanel, BoxLayout.Y_AXIS));
         spathPanel.setBackground(Consts.TRANSPARENT_COL);
@@ -373,10 +370,7 @@ public class ControlPanel extends JPanel implements ActionListener
         viewerVLabelsCheck.addActionListener(this);
         viewerELabelsCheck.addActionListener(this);
 
-
         viewerPanel.setBorder(BorderFactory.createTitledBorder("Viewer controls"));
-        viewerPanel.setPreferredSize(new Dimension(500, 200));
-
         viewerPanel.add(viewerVLabelsCheck, "wrap, span 2, al center");
         viewerPanel.add(viewerELabelsCheck, "wrap, span 2, al center");
         viewerPanel.add(new JLabel("Vertex background"), "al right");
@@ -463,7 +457,7 @@ public class ControlPanel extends JPanel implements ActionListener
         }
     }
 
-    protected void showGeneratorSim()
+    public void showGeneratorSim()
     {
         int genIndex    =   genAlgorithmsBox.getSelectedIndex();
         mainPanel.data.getNodeFactory().setLastID(0);
@@ -497,7 +491,7 @@ public class ControlPanel extends JPanel implements ActionListener
         JOptionPane.showMessageDialog(null, aboutPanel, "Graphi - Author", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    protected void resetSim()
+    public void resetSim()
     {
         mainPanel.data.setGraph(new SparseMultigraph());
         mainPanel.screenPanel.graphPanel.reloadGraph();

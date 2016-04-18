@@ -196,7 +196,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         PB_TIMER.stop();
     }
 
-    protected void addRecordedGraph()
+    public void addRecordedGraph()
     {
         PlaybackEntry entry;
         int selectedIndex   =   gpRecEntries.getSelectedIndex();
