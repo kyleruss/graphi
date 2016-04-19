@@ -586,7 +586,7 @@ public class ControlPanel extends JPanel implements ActionListener
 
         CardLayout gLayout  =   (CardLayout) genPanel.getLayout();
         gLayout.show(genPanel, card);
-    } */
+    } 
     
     protected void importPlugin()
     {
@@ -739,7 +739,7 @@ public class ControlPanel extends JPanel implements ActionListener
             ioPanel.currentStorageLabel.setText(file.getName());
             mainPanel.getScreenPanel().getOutputPanel().outputArea.setText(Storage.openOutputLog(file));
         }
-    }
+    } */
 
 
     @Override
