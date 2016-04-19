@@ -7,15 +7,19 @@
 package com.graphi.display.layout.controls;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JColorChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 
-public class ViewerControlPanel extends JPanel
+public class ViewerControlPanel extends JPanel implements ActionListener
 {
     protected JCheckBox viewerVLabelsCheck;
     protected JCheckBox viewerELabelsCheck;
@@ -57,5 +61,50 @@ public class ViewerControlPanel extends JPanel
         wrapper.add(new JLabel("Viewer background"), "al right");
         wrapper.add(viewerBGBtn, "wrap");
         add(wrapper);
+    }
+    
+    protected void showVertexBGChange()
+    {
+        Color selectedColour    =   JColorChooser.showDialog(null, "Choose vertex colour", Color.BLACK);
+
+        if(selectedColour != null)
+            outer.getMainPanel().getScreenPanel().getGraphPanel().setVertexColour(selectedColour, null);
+    }
+
+    protected void showEdgeBGChange()
+    {
+        Color selectedColour    =   JColorChooser.showDialog(null, "Choose edge colour", Color.BLACK);
+
+        if(selectedColour != null)
+            outer.getMainPanel().getScreenPanel().getGraphPanel().setEdgeColour(selectedColour, null);
+    }
+
+    protected void showViewerBGChange()
+    {
+        Color selectedColour    =   JColorChooser.showDialog(null, "Choose viewer background colour", Color.WHITE);
+
+        if(selectedColour != null)
+            outer.getMainPanel().getScreenPanel().getGraphPanel().gViewer.setBackground(selectedColour);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+        Object src  =   e.getSource();
+        
+        if(src == vertexBGBtn)
+            showVertexBGChange();
+
+        else if(src == edgeBGBtn)
+            showEdgeBGChange();
+
+        else if(src == viewerBGBtn)
+            showViewerBGChange();
+
+        else if(src == viewerVLabelsCheck)
+            outer.getMainPanel().getScreenPanel().getGraphPanel().showVertexLabels(viewerVLabelsCheck.isSelected());
+
+        else if(src == viewerELabelsCheck)
+            outer.getMainPanel().getScreenPanel().getGraphPanel().showEdgeLabels(viewerELabelsCheck.isSelected());
     }
 }

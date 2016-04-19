@@ -70,9 +70,12 @@ public class IOControlPanel extends JPanel implements ActionListener
         currentStorageLabel.setFont(new Font("Arial", Font.BOLD, 12));
     }
 
-    private void performImport() {
+    private void performImport()
+    {
         int typeIndex = ioTypeBox.getSelectedIndex();
-        switch (typeIndex) {
+        
+        switch (typeIndex) 
+        {
             case 0:
                 outer.importGraph();
                 break;
@@ -87,9 +90,12 @@ public class IOControlPanel extends JPanel implements ActionListener
         }
     }
 
-    private void performExport() {
+    private void performExport() 
+    {
         int typeIndex = ioTypeBox.getSelectedIndex();
-        switch (typeIndex) {
+        
+        switch (typeIndex) 
+        {
             case 0:
                 outer.exportGraph();
                 break;
@@ -107,22 +113,26 @@ public class IOControlPanel extends JPanel implements ActionListener
         }
     }
 
-    private void ioTypeChange() {
-        int typeIndex = ioTypeBox.getSelectedIndex();
+    private void ioTypeChange() 
+    {
+        int typeIndex   =   ioTypeBox.getSelectedIndex();
         importBtn.setEnabled(typeIndex != 3);
         directedCheckWrapper.setVisible(typeIndex == 0);
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e) 
+    {
         Object src = e.getSource();
-        if (src == importBtn) {
+        
+        if (src == importBtn) 
             performImport();
-        } else if (src == exportBtn) {
+        
+         else if (src == exportBtn) 
             performExport();
-        } else if (src == ioTypeBox) {
+         
+        else if (src == ioTypeBox) 
             ioTypeChange();
-        }
     }
     
 }

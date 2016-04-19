@@ -7,10 +7,14 @@
 package com.graphi.display.layout.controls;
 
 import com.graphi.app.Consts;
+import com.graphi.sim.Network;
+import edu.uci.ics.jung.graph.SparseMultigraph;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -22,7 +26,7 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import net.miginfocom.swing.MigLayout;
 
-public class SimulationControlPanel extends JPanel
+public class SimulationControlPanel extends JPanel implements ActionListener
 {
     protected JComboBox genAlgorithmsBox;
     protected JButton resetGeneratorBtn, executeGeneratorBtn;
@@ -135,5 +139,98 @@ public class SimulationControlPanel extends JPanel
         wrapperPanel.add(resetGeneratorBtn, "al right");
         wrapperPanel.add(executeGeneratorBtn, "");
         add(wrapperPanel);
+    }
+    
+    protected void showSimPanel()
+    {
+        int selectedIndex   =   genAlgorithmsBox.getSelectedIndex();
+        String card;
+
+        switch(selectedIndex)
+        {
+            case 0: card    =   Consts.KL_PANEL_CARD; break;
+            case 1: card    =   Consts.BA_PANEL_CARD; break;
+            case 2: card    =   Consts.RA_PANEL_CARD; break;
+            default: return;
+        }
+
+        CardLayout gLayout  =   (CardLayout) genPanel.getLayout();
+        gLayout.show(genPanel, card);
+    }
+    
+    public void showGeneratorSim()
+    {
+        int genIndex    =   genAlgorithmsBox.getSelectedIndex();
+        outer.getMainPanel().getGraphData().getNodeFactory().setLastID(0);
+        outer.getMainPanel().getGraphData().getEdgeFactory().setLastID(0);
+
+        switch(genIndex)
+        {
+            case 0: showKleinbergSim(); break;
+            case 1: showBASim(); break;
+            case 2: showRASim(); break;
+        }
+
+        if(simTiesCheck.isSelected())
+            Network.simulateInterpersonalTies(outer.getMainPanel().getGraphData().getGraph(), 
+                    outer.getMainPanel().getGraphData().getEdgeFactory(), (double) simTiesPSpinner.getValue());
+
+        outer.getMainPanel().getScreenPanel().getGraphPanel().reloadGraph();
+    }
+    
+    protected void showBASim()
+    {
+        int m           =   (int) initialNSpinner.getValue();
+        int n           =   (int) addNSpinner.getValue();
+
+        outer.getMainPanel().getGraphData().setGraph(Network.generateBerbasiAlbert(outer.getMainPanel().getGraphData().getNodeFactory(), 
+                outer.getMainPanel().getGraphData().getEdgeFactory(), n, m, baDirectedCheck.isSelected()));
+    }
+
+    protected void showRASim()
+    {
+        int n               =   (int) randNumSpinner.getValue();
+        double p            =   (double) randProbSpinner.getValue();
+        boolean directed    =   randDirectedCheck.isSelected();
+
+        outer.getMainPanel().getGraphData().setGraph(Network.generateRandomGraph(outer.getMainPanel().getGraphData().getNodeFactory(), 
+                outer.getMainPanel().getGraphData().getEdgeFactory(), n, p, directed));
+    }
+    
+    protected void showKleinbergSim()
+    {
+        int latticeSize =   (int) latticeSpinner.getValue();
+        int clusterExp  =   (int) clusteringSpinner.getValue();
+
+        outer.getMainPanel().getGraphData().setGraph(Network.generateKleinberg(latticeSize, 
+                clusterExp, outer.getMainPanel().getGraphData().getNodeFactory(), 
+                outer.getMainPanel().getGraphData().getEdgeFactory()));
+    }
+    
+    public void resetSim()
+    {
+        outer.getMainPanel().getGraphData().setGraph(new SparseMultigraph());
+        outer.getMainPanel().getScreenPanel().getGraphPanel().reloadGraph();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+        Object src  =   e.getSource();
+        
+        if(src == genAlgorithmsBox)
+            showSimPanel();
+         
+        else if(src == executeGeneratorBtn)
+            showGeneratorSim();
+
+        else if(src == resetGeneratorBtn)
+            resetSim();
+         
+        else if(src == simTiesCheck)
+        {
+            simTiesPSpinner.setVisible(!simTiesPSpinner.isVisible());
+            simTiesPLabel.setVisible(!simTiesPLabel.isVisible());
+        }
     }
 }

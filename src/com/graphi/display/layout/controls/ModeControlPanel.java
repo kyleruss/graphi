@@ -6,13 +6,16 @@
 
 package com.graphi.display.layout.controls;
 
+import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
-public class ModeControlPanel extends JPanel
+public class ModeControlPanel extends JPanel implements ActionListener
 {
     protected JRadioButton editCheck, selectCheck, moveCheck;
     protected ButtonGroup modeGroup;
@@ -48,5 +51,23 @@ public class ModeControlPanel extends JPanel
         add(editCheck);
         add(selectCheck);
         add(moveCheck);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+        Object src  =   e.getSource();
+        
+        if(src == editCheck)
+        {
+            outer.getMainPanel().getScreenPanel().getGraphPanel().mouse.setMode(ModalGraphMouse.Mode.EDITING);
+            outer.getMainPanel().getScreenPanel().getGraphPanel().mouse.remove(outer.getMainPanel().getScreenPanel().getGraphPanel().mouse.getPopupEditingPlugin());
+        }
+
+        else if(src == moveCheck)
+            outer.getMainPanel().getScreenPanel().getGraphPanel().mouse.setMode(ModalGraphMouse.Mode.TRANSFORMING);
+
+        else if(src == selectCheck)
+            outer.getMainPanel().getScreenPanel().getGraphPanel().mouse.setMode(ModalGraphMouse.Mode.PICKING);
     }
 }

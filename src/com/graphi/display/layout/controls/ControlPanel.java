@@ -464,7 +464,7 @@ public class ControlPanel extends JPanel implements ActionListener
         }
     }
 
-    public void showGeneratorSim()
+ /*   public void showGeneratorSim()
     {
         int genIndex    =   genAlgorithmsBox.getSelectedIndex();
         mainPanel.getGraphData().getNodeFactory().setLastID(0);
@@ -481,7 +481,7 @@ public class ControlPanel extends JPanel implements ActionListener
             Network.simulateInterpersonalTies(mainPanel.getGraphData().getGraph(), mainPanel.getGraphData().getEdgeFactory(), (double) simTiesPSpinner.getValue());
 
         mainPanel.getScreenPanel().getGraphPanel().reloadGraph();
-    }
+    } */
 
     protected void showAbout()
     {
@@ -498,21 +498,21 @@ public class ControlPanel extends JPanel implements ActionListener
         JOptionPane.showMessageDialog(null, aboutPanel, "Graphi - Author", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    public void resetSim()
+    /*public void resetSim()
     {
         mainPanel.getGraphData().setGraph(new SparseMultigraph());
         mainPanel.getScreenPanel().getGraphPanel().reloadGraph();
-    }
+    } */
 
-    protected void showKleinbergSim()
+   /* protected void showKleinbergSim()
     {
         int latticeSize =   (int) latticeSpinner.getValue();
         int clusterExp  =   (int) clusteringSpinner.getValue();
 
         mainPanel.getGraphData().setGraph(Network.generateKleinberg(latticeSize, clusterExp, mainPanel.getGraphData().getNodeFactory(), mainPanel.getGraphData().getEdgeFactory()));
-    }
+    } */
 
-    protected void showBASim()
+    /*protected void showBASim()
     {
         int m           =   (int) initialNSpinner.getValue();
         int n           =   (int) addNSpinner.getValue();
@@ -527,9 +527,9 @@ public class ControlPanel extends JPanel implements ActionListener
         boolean directed    =   randDirectedCheck.isSelected();
 
         mainPanel.getGraphData().setGraph(Network.generateRandomGraph(mainPanel.getGraphData().getNodeFactory(), mainPanel.getGraphData().getEdgeFactory(), n, p, directed));
-    }
+    } */
 
-    protected void showVertexBGChange()
+    /*protected void showVertexBGChange()
     {
         Color selectedColour    =   JColorChooser.showDialog(null, "Choose vertex colour", Color.BLACK);
 
@@ -551,30 +551,8 @@ public class ControlPanel extends JPanel implements ActionListener
 
         if(selectedColour != null)
             mainPanel.getScreenPanel().getGraphPanel().gViewer.setBackground(selectedColour);
-    }
+    } */
     
-    protected class ModePanel extends JPanel
-    {
-        
-    }
-    
-    protected class GObjPanel extends JPanel
-    {
-        
-    }
-    
-    protected class SimulationPanel extends JPanel
-    {
-        
-    }
-    
-    protected class ComputationPanel extends JPanel
-    {
-        
-    }
-    
-    
-
 
     protected void showCurrentComputePanel()
     {
@@ -593,7 +571,7 @@ public class ControlPanel extends JPanel implements ActionListener
         clusterInnerLayout.show(computeInnerPanel, card);
     }
 
-    protected void showSimPanel()
+    /*protected void showSimPanel()
     {
         int selectedIndex   =   genAlgorithmsBox.getSelectedIndex();
         String card;
@@ -608,7 +586,8 @@ public class ControlPanel extends JPanel implements ActionListener
 
         CardLayout gLayout  =   (CardLayout) genPanel.getLayout();
         gLayout.show(genPanel, card);
-    }
+    } */
+    
     protected void importPlugin()
     {
         File file           =   ComponentUtils.getFile(true, "Graphi .jar plugin", "jar");
@@ -768,18 +747,18 @@ public class ControlPanel extends JPanel implements ActionListener
     {
         Object src  =   e.getSource();
 
-        if(src == computeBox)
-            showCurrentComputePanel();
+       // if(src == computeBox)
+         //   showCurrentComputePanel();
 
-        else if(src == gObjAddBtn)
+       /* if(src == gObjAddBtn)
         {
             if(editVertexRadio.isSelected())
                 mainPanel.getScreenPanel().getDataPanel().addVertex();
             else
                 mainPanel.getScreenPanel().getDataPanel().addEdge();
-        }
+        } */
 
-        else if(src == gObjEditBtn)
+        /*if(src == gObjEditBtn)
         {
             if(editVertexRadio.isSelected())
                 mainPanel.getScreenPanel().getDataPanel().editVertex();
@@ -793,9 +772,9 @@ public class ControlPanel extends JPanel implements ActionListener
                 mainPanel.getScreenPanel().getDataPanel().removeVertex();
             else
                 mainPanel.getScreenPanel().getDataPanel().removeEdge();
-        }
+        } 
 
-        else if(src == editCheck)
+        if(src == editCheck)
         {
             mainPanel.getScreenPanel().getGraphPanel().mouse.setMode(ModalGraphMouse.Mode.EDITING);
             mainPanel.getScreenPanel().getGraphPanel().mouse.remove(mainPanel.getScreenPanel().getGraphPanel().mouse.getPopupEditingPlugin());
@@ -805,21 +784,21 @@ public class ControlPanel extends JPanel implements ActionListener
             mainPanel.getScreenPanel().getGraphPanel().mouse.setMode(ModalGraphMouse.Mode.TRANSFORMING);
 
         else if(src == selectCheck)
-            mainPanel.getScreenPanel().getGraphPanel().mouse.setMode(ModalGraphMouse.Mode.PICKING);
+            mainPanel.getScreenPanel().getGraphPanel().mouse.setMode(ModalGraphMouse.Mode.PICKING); */
 
-        else if(src == executeGeneratorBtn)
+        /*if(src == executeGeneratorBtn)
             showGeneratorSim();
 
         else if(src == resetGeneratorBtn)
-            resetSim();
+            resetSim(); */
 
-        else if(src == computeBtn)
-            computeExecute();
+       // else if(src == computeBtn)
+         //   computeExecute();
 
-        else if(src == genAlgorithmsBox)
-            showSimPanel();
+       // else if(src == genAlgorithmsBox)
+        //    showSimPanel();
 
-        else if(src == vertexBGBtn)
+       /* if(src == vertexBGBtn)
             showVertexBGChange();
 
         else if(src == edgeBGBtn)
@@ -832,7 +811,7 @@ public class ControlPanel extends JPanel implements ActionListener
             mainPanel.getScreenPanel().getGraphPanel().showVertexLabels(viewerVLabelsCheck.isSelected());
 
         else if(src == viewerELabelsCheck)
-            mainPanel.getScreenPanel().getGraphPanel().showEdgeLabels(viewerELabelsCheck.isSelected());
+            mainPanel.getScreenPanel().getGraphPanel().showEdgeLabels(viewerELabelsCheck.isSelected()); */
 
         else if(src == mainPanel.getMenu().getMenuItem("aboutItem"))
             showAbout();
@@ -903,16 +882,16 @@ public class ControlPanel extends JPanel implements ActionListener
         else if(src == mainPanel.menu.getMenuItem("searchObjectItem"))
             mainPanel.getScreenPanel().getGraphPanel().searchGraphObject();
 
-        else if(src == displayCtrlsBtn)
+        /*else if(src == displayCtrlsBtn)
             mainPanel.getScreenPanel().getGraphPanel().changePlaybackPanel(mainPanel.getScreenPanel().getGraphPanel().PLAYBACK_CARD);
 
         else if(src == recordCtrlsBtn)
-            mainPanel.getScreenPanel().getGraphPanel().changePlaybackPanel(mainPanel.getScreenPanel().getGraphPanel().RECORD_CARD);
+            mainPanel.getScreenPanel().getGraphPanel().changePlaybackPanel(mainPanel.getScreenPanel().getGraphPanel().RECORD_CARD); */
 
-        else if(src == simTiesCheck)
+       /* else if(src == simTiesCheck)
         {
             simTiesPSpinner.setVisible(!simTiesPSpinner.isVisible());
             simTiesPLabel.setVisible(!simTiesPLabel.isVisible());
-        }
+        } */
     }
 }

@@ -12,8 +12,9 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -25,7 +26,7 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import net.miginfocom.swing.MigLayout;
 
-public class ComputeControlPanel extends JPanel
+public class ComputeControlPanel extends JPanel implements ActionListener
 {
     protected JPanel computeInnerPanel;
     protected JPanel clusterPanel, centralityPanel;
@@ -96,5 +97,46 @@ public class ComputeControlPanel extends JPanel
         CardLayout clusterInnerLayout   =   (CardLayout) computeInnerPanel.getLayout();
         clusterInnerLayout.show(computeInnerPanel, Consts.CLUSTER_PANEL_CARD);
 
+    }
+    
+    protected void computeExecute()
+    {
+        int selectedIndex   =   computeBox.getSelectedIndex();
+        outer.getMainPanel().getScreenPanel().getDataPanel().clearComputeTable();
+
+        switch(selectedIndex)
+        {
+            case 0: outer.getMainPanel().getScreenPanel().getGraphPanel().showCluster();
+            case 1: outer.getMainPanel().getScreenPanel().getGraphPanel().showCentrality();
+        }
+    }
+    
+    protected void showCurrentComputePanel()
+    {
+        int selectedIndex   =   computeBox.getSelectedIndex();
+        String card;
+
+        switch(selectedIndex)
+        {
+            case 0: card = Consts.CLUSTER_PANEL_CARD; break;
+            case 1: card = Consts.CENTRALITY_PANEL_CARD; break;
+            case 2: card = Consts.SPATH_PANEL_CARD; break;
+            default: return;
+        }
+
+        CardLayout clusterInnerLayout   =   (CardLayout) computeInnerPanel.getLayout();
+        clusterInnerLayout.show(computeInnerPanel, card);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) 
+    {
+        Object src  =   e.getSource();
+        
+        if(src == computeBtn)
+            computeExecute();
+        
+        else if(src == computeBox)
+            showCurrentComputePanel();
     }
 }

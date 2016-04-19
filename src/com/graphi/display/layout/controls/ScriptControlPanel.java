@@ -8,6 +8,8 @@ package com.graphi.display.layout.controls;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -15,7 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 
-public class ScriptControlPanel extends JPanel
+public class ScriptControlPanel extends JPanel implements ActionListener
 {
     protected JButton recordCtrlsBtn;
     protected boolean recording;
@@ -48,5 +50,17 @@ public class ScriptControlPanel extends JPanel
 
         recordCtrlsBtn.addActionListener(this);
         displayCtrlsBtn.addActionListener(this);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) 
+    {
+        Object src  =   e.getSource();
+        
+        if(src == displayCtrlsBtn)
+            outer.getMainPanel().getScreenPanel().getGraphPanel().changePlaybackPanel(outer.getMainPanel().getScreenPanel().getGraphPanel().PLAYBACK_CARD);
+
+        else if(src == recordCtrlsBtn)
+            outer.getMainPanel().getScreenPanel().getGraphPanel().changePlaybackPanel(outer.getMainPanel().getScreenPanel().getGraphPanel().RECORD_CARD);
     }
 }
