@@ -105,7 +105,8 @@ public class ControlPanel extends JPanel implements ActionListener
     protected boolean recording;
     protected JButton displayCtrlsBtn;
     protected JLabel activeScriptLabel;
-    private MainPanel mainPanel;
+    private final MainPanel mainPanel;
+    
 
     public ControlPanel(MainPanel mainPanel) 
     {
@@ -407,7 +408,7 @@ public class ControlPanel extends JPanel implements ActionListener
         JPanel pbWrapperPanel  =   new JPanel(new BorderLayout());
         pbWrapperPanel.add(playbackPanel);
 
-        mainPanel.menu.setMenuItemListener(this);
+        mainPanel.getMenu().setMenuItemListener(this);
 
         add(modePanel);
         add(Box.createRigidArea(new Dimension(230, 30)));
@@ -425,18 +426,22 @@ public class ControlPanel extends JPanel implements ActionListener
 
     }
     
+    public MainPanel getMainPanel()
+    {
+        return mainPanel;
+    }
 
     protected void updateSelectedComponents()
     {
-        if(mainPanel.data.getSelectedItems() == null || mainPanel.data.getSelectedItems().length == 0)
+        if(mainPanel.getGraphData().getSelectedItems() == null || mainPanel.getGraphData().getSelectedItems().length == 0)
             selectedLabel.setText("None");
         else
         {
-            if(mainPanel.data.getSelectedItems().length > 1)
-                selectedLabel.setText(mainPanel.data.getSelectedItems().length + " objects");
+            if(mainPanel.getGraphData().getSelectedItems().length > 1)
+                selectedLabel.setText(mainPanel.getGraphData().getSelectedItems().length + " objects");
             else
             {
-                Object selectedObj  =   mainPanel.data.getSelectedItems()[0];
+                Object selectedObj  =   mainPanel.getGraphData().getSelectedItems()[0];
                 if(selectedObj instanceof Node)
                     selectedLabel.setText("Node (ID=" + ((Node) selectedObj).getID() + ")");
 
@@ -450,20 +455,20 @@ public class ControlPanel extends JPanel implements ActionListener
     protected void computeExecute()
     {
         int selectedIndex   =   computeBox.getSelectedIndex();
-        mainPanel.screenPanel.dataPanel.clearComputeTable();
+        mainPanel.getScreenPanel().getDataPanel().clearComputeTable();
 
         switch(selectedIndex)
         {
-            case 0: mainPanel.screenPanel.graphPanel.showCluster();
-            case 1: mainPanel.screenPanel.graphPanel.showCentrality();
+            case 0: mainPanel.getScreenPanel().getGraphPanel().showCluster();
+            case 1: mainPanel.getScreenPanel().getGraphPanel().showCentrality();
         }
     }
 
     public void showGeneratorSim()
     {
         int genIndex    =   genAlgorithmsBox.getSelectedIndex();
-        mainPanel.data.getNodeFactory().setLastID(0);
-        mainPanel.data.getEdgeFactory().setLastID(0);
+        mainPanel.getGraphData().getNodeFactory().setLastID(0);
+        mainPanel.getGraphData().getEdgeFactory().setLastID(0);
 
         switch(genIndex)
         {
@@ -473,9 +478,9 @@ public class ControlPanel extends JPanel implements ActionListener
         }
 
         if(simTiesCheck.isSelected())
-            Network.simulateInterpersonalTies(mainPanel.data.getGraph(), mainPanel.data.getEdgeFactory(), (double) simTiesPSpinner.getValue());
+            Network.simulateInterpersonalTies(mainPanel.getGraphData().getGraph(), mainPanel.getGraphData().getEdgeFactory(), (double) simTiesPSpinner.getValue());
 
-        mainPanel.screenPanel.graphPanel.reloadGraph();
+        mainPanel.getScreenPanel().getGraphPanel().reloadGraph();
     }
 
     protected void showAbout()
@@ -495,8 +500,8 @@ public class ControlPanel extends JPanel implements ActionListener
 
     public void resetSim()
     {
-        mainPanel.data.setGraph(new SparseMultigraph());
-        mainPanel.screenPanel.graphPanel.reloadGraph();
+        mainPanel.getGraphData().setGraph(new SparseMultigraph());
+        mainPanel.getScreenPanel().getGraphPanel().reloadGraph();
     }
 
     protected void showKleinbergSim()
@@ -504,7 +509,7 @@ public class ControlPanel extends JPanel implements ActionListener
         int latticeSize =   (int) latticeSpinner.getValue();
         int clusterExp  =   (int) clusteringSpinner.getValue();
 
-        mainPanel.data.setGraph(Network.generateKleinberg(latticeSize, clusterExp, mainPanel.data.getNodeFactory(), mainPanel.data.getEdgeFactory()));
+        mainPanel.getGraphData().setGraph(Network.generateKleinberg(latticeSize, clusterExp, mainPanel.getGraphData().getNodeFactory(), mainPanel.getGraphData().getEdgeFactory()));
     }
 
     protected void showBASim()
@@ -512,7 +517,7 @@ public class ControlPanel extends JPanel implements ActionListener
         int m           =   (int) initialNSpinner.getValue();
         int n           =   (int) addNSpinner.getValue();
 
-        mainPanel.data.setGraph(Network.generateBerbasiAlbert(mainPanel.data.getNodeFactory(), mainPanel.data.getEdgeFactory(), n, m, baDirectedCheck.isSelected()));
+        mainPanel.getGraphData().setGraph(Network.generateBerbasiAlbert(mainPanel.getGraphData().getNodeFactory(), mainPanel.getGraphData().getEdgeFactory(), n, m, baDirectedCheck.isSelected()));
     }
 
     protected void showRASim()
@@ -521,7 +526,7 @@ public class ControlPanel extends JPanel implements ActionListener
         double p            =   (double) randProbSpinner.getValue();
         boolean directed    =   randDirectedCheck.isSelected();
 
-        mainPanel.data.setGraph(Network.generateRandomGraph(mainPanel.data.getNodeFactory(), mainPanel.data.getEdgeFactory(), n, p, directed));
+        mainPanel.getGraphData().setGraph(Network.generateRandomGraph(mainPanel.getGraphData().getNodeFactory(), mainPanel.getGraphData().getEdgeFactory(), n, p, directed));
     }
 
     protected void showVertexBGChange()
@@ -529,7 +534,7 @@ public class ControlPanel extends JPanel implements ActionListener
         Color selectedColour    =   JColorChooser.showDialog(null, "Choose vertex colour", Color.BLACK);
 
         if(selectedColour != null)
-            mainPanel.screenPanel.graphPanel.setVertexColour(selectedColour, null);
+            mainPanel.getScreenPanel().getGraphPanel().setVertexColour(selectedColour, null);
     }
 
     protected void showEdgeBGChange()
@@ -537,7 +542,7 @@ public class ControlPanel extends JPanel implements ActionListener
         Color selectedColour    =   JColorChooser.showDialog(null, "Choose edge colour", Color.BLACK);
 
         if(selectedColour != null)
-            mainPanel.screenPanel.graphPanel.setEdgeColour(selectedColour, null);
+            mainPanel.getScreenPanel().getGraphPanel().setEdgeColour(selectedColour, null);
     }
 
     protected void showViewerBGChange()
@@ -545,7 +550,7 @@ public class ControlPanel extends JPanel implements ActionListener
         Color selectedColour    =   JColorChooser.showDialog(null, "Choose viewer background colour", Color.WHITE);
 
         if(selectedColour != null)
-            mainPanel.screenPanel.graphPanel.gViewer.setBackground(selectedColour);
+            mainPanel.getScreenPanel().getGraphPanel().gViewer.setBackground(selectedColour);
     }
     
     protected class ModePanel extends JPanel
@@ -607,7 +612,7 @@ public class ControlPanel extends JPanel implements ActionListener
     protected void importPlugin()
     {
         File file           =   ComponentUtils.getFile(true, "Graphi .jar plugin", "jar");
-        mainPanel.appManager.getWindow().getMenu().getPluginListMenu().loadPluginFile(file, mainPanel.appManager.getPluginManager(), mainPanel.appManager);
+        mainPanel.getAppManager().getWindow().getMenu().getPluginListMenu().loadPluginFile(file, mainPanel.getAppManager().getPluginManager(), mainPanel.getAppManager());
     }
 
     protected void exportGraph()
@@ -615,19 +620,19 @@ public class ControlPanel extends JPanel implements ActionListener
         File file           =   ComponentUtils.getFile(false, "Graphi .graph, adjacency matrix .txt, .gml, graphML .xml", "graph", "txt", "gml", "xml");
         String extension    =   ComponentUtils.getFileExtension(file);
 
-        if(file != null && mainPanel.data.getGraph() != null)
+        if(file != null && mainPanel.getGraphData().getGraph() != null)
         {
             if(extension.equalsIgnoreCase("graph"))
-                Storage.saveObj(mainPanel.data.getGraph(), file);
+                Storage.saveObj(mainPanel.getGraphData().getGraph(), file);
 
             else if(extension.equalsIgnoreCase("txt"))
-                AdjMatrixParser.exportGraph(mainPanel.data.getGraph(), file, ioPanel.directedCheck.isSelected());
+                AdjMatrixParser.exportGraph(mainPanel.getGraphData().getGraph(), file, ioPanel.directedCheck.isSelected());
 
             else if(extension.equalsIgnoreCase("gml"))
-                GMLParser.exportGraph(mainPanel.data.getGraph(), file, ioPanel.directedCheck.isSelected());
+                GMLParser.exportGraph(mainPanel.getGraphData().getGraph(), file, ioPanel.directedCheck.isSelected());
 
             else if(extension.equalsIgnoreCase("xml"))
-                GraphMLParser.exportGraph(file, mainPanel.data.getGraph());
+                GraphMLParser.exportGraph(file, mainPanel.getGraphData().getGraph());
         }
     }
 
@@ -638,20 +643,20 @@ public class ControlPanel extends JPanel implements ActionListener
 
         if(file != null)
         {
-            mainPanel.data.getNodeFactory().setLastID(0);
-            mainPanel.data.getEdgeFactory().setLastID(0);
+            mainPanel.getGraphData().getNodeFactory().setLastID(0);
+            mainPanel.getGraphData().getEdgeFactory().setLastID(0);
 
             if(extension.equalsIgnoreCase("graph"))
-                mainPanel.data.setGraph((Graph) Storage.openObj(file, mainPanel.appManager.getPluginManager().getActiveClassLoader()));
+                mainPanel.getGraphData().setGraph((Graph) Storage.openObj(file, mainPanel.getAppManager().getPluginManager().getActiveClassLoader()));
 
             else if(extension.equalsIgnoreCase("txt"))
-                mainPanel.data.setGraph(AdjMatrixParser.importGraph(file, ioPanel.directedCheck.isSelected(), mainPanel.data.getNodeFactory(), mainPanel.data.getEdgeFactory()));
+                mainPanel.getGraphData().setGraph(AdjMatrixParser.importGraph(file, ioPanel.directedCheck.isSelected(), mainPanel.getGraphData().getNodeFactory(), mainPanel.getGraphData().getEdgeFactory()));
 
             else if(extension.equalsIgnoreCase("gml"))
-                mainPanel.data.setGraph(GMLParser.importGraph(file, mainPanel.data.getNodeFactory(), mainPanel.data.getEdgeFactory()));
+                mainPanel.getGraphData().setGraph(GMLParser.importGraph(file, mainPanel.getGraphData().getNodeFactory(), mainPanel.getGraphData().getEdgeFactory()));
 
             else if(extension.equalsIgnoreCase("xml"))
-                mainPanel.data.setGraph(GraphMLParser.importGraph(file, mainPanel.data.getNodeFactory(), mainPanel.data.getEdgeFactory()));
+                mainPanel.getGraphData().setGraph(GraphMLParser.importGraph(file, mainPanel.getGraphData().getNodeFactory(), mainPanel.getGraphData().getEdgeFactory()));
 
 
             ioPanel.currentStorageLabel.setText(file.getName());
@@ -659,10 +664,10 @@ public class ControlPanel extends JPanel implements ActionListener
             initCurrentNodes();
             initCurrentEdges();
 
-            mainPanel.screenPanel.graphPanel.gLayout.setGraph(mainPanel.data.getGraph());
-            mainPanel.screenPanel.graphPanel.gViewer.repaint();
-            mainPanel.screenPanel.dataPanel.loadNodes(mainPanel.data.getGraph());
-            mainPanel.screenPanel.dataPanel.loadEdges(mainPanel.data.getGraph());
+            mainPanel.getScreenPanel().getGraphPanel().gLayout.setGraph(mainPanel.getGraphData().getGraph());
+            mainPanel.getScreenPanel().getGraphPanel().gViewer.repaint();
+            mainPanel.getScreenPanel().getDataPanel().loadNodes(mainPanel.getGraphData().getGraph());
+            mainPanel.getScreenPanel().getDataPanel().loadEdges(mainPanel.getGraphData().getGraph());
         }
     }
 
@@ -671,14 +676,14 @@ public class ControlPanel extends JPanel implements ActionListener
         File file   =   ComponentUtils.getFile(true, "Graphi .gscript file", "gscript");
         if(file != null)
         {
-            mainPanel.screenPanel.graphPanel.gPlayback    =   (GraphPlayback) Storage.openObj(file, mainPanel.appManager.getPluginManager().getActiveClassLoader());
-            if(mainPanel.screenPanel.graphPanel.gPlayback == null) return;
+            mainPanel.getScreenPanel().getGraphPanel().gPlayback    =   (GraphPlayback) Storage.openObj(file, mainPanel.getAppManager().getPluginManager().getActiveClassLoader());
+            if(mainPanel.getScreenPanel().getGraphPanel().gPlayback == null) return;
             
-            mainPanel.screenPanel.graphPanel.gPlayback.prepareIO(false);
+            mainPanel.getScreenPanel().getGraphPanel().gPlayback.prepareIO(false);
             
             ioPanel.currentStorageLabel.setText(file.getName());
             activeScriptLabel.setText(file.getName());
-            mainPanel.screenPanel.graphPanel.addPlaybackEntries();
+            mainPanel.getScreenPanel().getGraphPanel().addPlaybackEntries();
 
         }
     }
@@ -688,8 +693,8 @@ public class ControlPanel extends JPanel implements ActionListener
         File file   =   ComponentUtils.getFile(false, "Graphi .gscript file", "gscript");
         if(file != null)
         {
-            mainPanel.screenPanel.graphPanel.gPlayback.prepareIO(true);
-            Storage.saveObj(mainPanel.screenPanel.graphPanel.gPlayback, file);
+            mainPanel.getScreenPanel().getGraphPanel().getGraphPlayback().prepareIO(true);
+            Storage.saveObj(mainPanel.getScreenPanel().getGraphPanel().getGraphPlayback(), file);
         }
     }
     
@@ -699,19 +704,19 @@ public class ControlPanel extends JPanel implements ActionListener
         if(file != null)
         {
             JTable table        =    null;
-            DataPanel dataPanel =   mainPanel.screenPanel.dataPanel;
+            DataPanel dataPanel =   mainPanel.getScreenPanel().getDataPanel();
             int tableIndex      =   dataPanel.dataTabPane.getSelectedIndex();
             
             switch (tableIndex) 
             {
                 case 0:
-                    table   =   dataPanel.vertexTable;
+                    table   =   mainPanel.getScreenPanel().getDataPanel().getVertexTable();
                     break;
                 case 1:
-                    table   =   dataPanel.edgeTable;
+                    table   =   mainPanel.getScreenPanel().getDataPanel().getEdgeTable();
                     break;
                 case 2:
-                    table   =   dataPanel.computeTable;
+                    table   =   mainPanel.getScreenPanel().getDataPanel().getComputeTable();
                     break;
             }
             
@@ -721,30 +726,30 @@ public class ControlPanel extends JPanel implements ActionListener
 
     protected void initCurrentNodes()
     {
-        if(mainPanel.data.getGraph() == null) return;
+        if(mainPanel.getGraphData().getGraph() == null) return;
 
-        mainPanel.data.getNodes().clear();
-        Collection<Node> nodes  =   mainPanel.data.getGraph().getVertices();
+        mainPanel.getGraphData().getNodes().clear();
+        Collection<Node> nodes  =   mainPanel.getGraphData().getGraph().getVertices();
         for(Node node : nodes)
-            mainPanel.data.getNodes().put(node.getID(), node);
+            mainPanel.getGraphData().getNodes().put(node.getID(), node);
     }
 
     protected void initCurrentEdges()
     {
-        if(mainPanel.data.getGraph() == null) return;
+        if(mainPanel.getGraphData().getGraph() == null) return;
 
-        mainPanel.data.getEdges().clear();
-        Collection<Edge> edges  =   mainPanel.data.getGraph().getEdges();
+        mainPanel.getGraphData().getEdges().clear();
+        Collection<Edge> edges  =   mainPanel.getGraphData().getGraph().getEdges();
 
         for(Edge edge : edges)
-            mainPanel.data.getEdges().put(edge.getID(), edge);
+            mainPanel.getGraphData().getEdges().put(edge.getID(), edge);
     }
 
     protected void exportLog()
     {
         File file   =   ComponentUtils.getFile(false, "Graphi .log file", "log");
         if(file != null)
-            Storage.saveOutputLog(mainPanel.screenPanel.outputPanel.outputArea.getText(), file);
+            Storage.saveOutputLog(mainPanel.getScreenPanel().getOutputPanel().outputArea.getText(), file);
     }
 
     protected void importLog()
@@ -753,7 +758,7 @@ public class ControlPanel extends JPanel implements ActionListener
         if(file != null)
         {
             ioPanel.currentStorageLabel.setText(file.getName());
-            mainPanel.screenPanel.outputPanel.outputArea.setText(Storage.openOutputLog(file));
+            mainPanel.getScreenPanel().getOutputPanel().outputArea.setText(Storage.openOutputLog(file));
         }
     }
 
@@ -769,38 +774,38 @@ public class ControlPanel extends JPanel implements ActionListener
         else if(src == gObjAddBtn)
         {
             if(editVertexRadio.isSelected())
-                mainPanel.screenPanel.dataPanel.addVertex();
+                mainPanel.getScreenPanel().getDataPanel().addVertex();
             else
-                mainPanel.screenPanel.dataPanel.addEdge();
+                mainPanel.getScreenPanel().getDataPanel().addEdge();
         }
 
         else if(src == gObjEditBtn)
         {
             if(editVertexRadio.isSelected())
-                mainPanel.screenPanel.dataPanel.editVertex();
+                mainPanel.getScreenPanel().getDataPanel().editVertex();
             else
-                mainPanel.screenPanel.dataPanel.editEdge();
+                mainPanel.getScreenPanel().getDataPanel().editEdge();
         }
 
         else if(src == gObjRemoveBtn)
         {
             if(editVertexRadio.isSelected())
-                mainPanel.screenPanel.dataPanel.removeVertex();
+                mainPanel.getScreenPanel().getDataPanel().removeVertex();
             else
-                mainPanel.screenPanel.dataPanel.removeEdge();
+                mainPanel.getScreenPanel().getDataPanel().removeEdge();
         }
 
         else if(src == editCheck)
         {
-            mainPanel.screenPanel.graphPanel.mouse.setMode(ModalGraphMouse.Mode.EDITING);
-            mainPanel.screenPanel.graphPanel.mouse.remove(mainPanel.screenPanel.graphPanel.mouse.getPopupEditingPlugin());
+            mainPanel.getScreenPanel().getGraphPanel().mouse.setMode(ModalGraphMouse.Mode.EDITING);
+            mainPanel.getScreenPanel().getGraphPanel().mouse.remove(mainPanel.getScreenPanel().getGraphPanel().mouse.getPopupEditingPlugin());
         }
 
         else if(src == moveCheck)
-            mainPanel.screenPanel.graphPanel.mouse.setMode(ModalGraphMouse.Mode.TRANSFORMING);
+            mainPanel.getScreenPanel().getGraphPanel().mouse.setMode(ModalGraphMouse.Mode.TRANSFORMING);
 
         else if(src == selectCheck)
-            mainPanel.screenPanel.graphPanel.mouse.setMode(ModalGraphMouse.Mode.PICKING);
+            mainPanel.getScreenPanel().getGraphPanel().mouse.setMode(ModalGraphMouse.Mode.PICKING);
 
         else if(src == executeGeneratorBtn)
             showGeneratorSim();
@@ -824,15 +829,15 @@ public class ControlPanel extends JPanel implements ActionListener
             showViewerBGChange();
 
         else if(src == viewerVLabelsCheck)
-            mainPanel.screenPanel.graphPanel.showVertexLabels(viewerVLabelsCheck.isSelected());
+            mainPanel.getScreenPanel().getGraphPanel().showVertexLabels(viewerVLabelsCheck.isSelected());
 
         else if(src == viewerELabelsCheck)
-            mainPanel.screenPanel.graphPanel.showEdgeLabels(viewerELabelsCheck.isSelected());
+            mainPanel.getScreenPanel().getGraphPanel().showEdgeLabels(viewerELabelsCheck.isSelected());
 
-        else if(src == mainPanel.menu.getMenuItem("aboutItem"))
+        else if(src == mainPanel.getMenu().getMenuItem("aboutItem"))
             showAbout();
 
-        else if(src == mainPanel.menu.getMenuItem("exitItem"))
+        else if(src == mainPanel.getMenu().getMenuItem("exitItem"))
             System.exit(0);
 
         else if(src == mainPanel.menu.getMenuItem("miniItem"))
@@ -854,10 +859,10 @@ public class ControlPanel extends JPanel implements ActionListener
             exportLog();
 
         else if(src == mainPanel.menu.getMenuItem("vLabelsItem"))
-            mainPanel.screenPanel.graphPanel.showVertexLabels(true);
+            mainPanel.getScreenPanel().getGraphPanel().showVertexLabels(true);
 
         else if(src == mainPanel.menu.getMenuItem("eLabelsItem"))
-            mainPanel.screenPanel.graphPanel.showEdgeLabels(true);
+            mainPanel.getScreenPanel().getGraphPanel().showEdgeLabels(true);
 
         else if(src == mainPanel.menu.getMenuItem("viewerBGItem"))
             showViewerBGChange();
@@ -869,40 +874,40 @@ public class ControlPanel extends JPanel implements ActionListener
             showVertexBGChange();
 
         else if(src == mainPanel.menu.getMenuItem("clearLogItem"))
-            mainPanel.screenPanel.outputPanel.clearLog();
+            mainPanel.getScreenPanel().outputPanel.clearLog();
 
         else if(src == mainPanel.menu.getMenuItem("resetGraphItem"))
-            mainPanel.screenPanel.graphPanel.resetGraph();
+            mainPanel.getScreenPanel().getGraphPanel().resetGraph();
 
         else if(src == mainPanel.menu.getMenuItem("addVertexItem"))
-            mainPanel.screenPanel.dataPanel.addVertex();
+            mainPanel.getScreenPanel().getDataPanel().addVertex();
 
         else if(src == mainPanel.menu.getMenuItem("editVertexItem"))
-            mainPanel.screenPanel.dataPanel.editVertex();
+            mainPanel.getScreenPanel().getDataPanel().editVertex();
 
         else if(src == mainPanel.menu.getMenuItem("removeVertexItem"))
-            mainPanel.screenPanel.dataPanel.removeVertex();
+            mainPanel.getScreenPanel().getDataPanel().removeVertex();
 
         else if(src == mainPanel.menu.getMenuItem("addEdgeItem"))
-            mainPanel.screenPanel.dataPanel.addEdge();
+            mainPanel.getScreenPanel().getDataPanel().addEdge();
 
         else if(src == mainPanel.menu.getMenuItem("editEdgeItem"))
-            mainPanel.screenPanel.dataPanel.editEdge();
+            mainPanel.getScreenPanel().getDataPanel().editEdge();
 
         else if(src == mainPanel.menu.getMenuItem("removeEdgeItem"))
-            mainPanel.screenPanel.dataPanel.removeEdge();
+            mainPanel.getScreenPanel().getDataPanel().removeEdge();
 
         else if(src == mainPanel.menu.getMenuItem("loadPluginItem"))
             importPlugin();
         
         else if(src == mainPanel.menu.getMenuItem("searchObjectItem"))
-            mainPanel.screenPanel.graphPanel.searchGraphObject();
+            mainPanel.getScreenPanel().getGraphPanel().searchGraphObject();
 
         else if(src == displayCtrlsBtn)
-            mainPanel.screenPanel.graphPanel.changePlaybackPanel(mainPanel.screenPanel.graphPanel.PLAYBACK_CARD);
+            mainPanel.getScreenPanel().getGraphPanel().changePlaybackPanel(mainPanel.getScreenPanel().getGraphPanel().PLAYBACK_CARD);
 
         else if(src == recordCtrlsBtn)
-            mainPanel.screenPanel.graphPanel.changePlaybackPanel(mainPanel.screenPanel.graphPanel.RECORD_CARD);
+            mainPanel.getScreenPanel().getGraphPanel().changePlaybackPanel(mainPanel.getScreenPanel().getGraphPanel().RECORD_CARD);
 
         else if(src == simTiesCheck)
         {

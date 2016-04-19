@@ -1,8 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+//=========================================
+//  Kyle Russell
+//  AUT University 2015
+//  https://github.com/denkers/graphi
+//=========================================
+
 package com.graphi.display.layout.controls;
 
 import com.graphi.app.Consts;
@@ -21,9 +22,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-//--------------------------------------
-//  IO PANEL
-//--------------------------------------
 public class IOControlPanel extends JPanel implements ActionListener
 {
     protected JButton exportBtn;
@@ -34,17 +32,19 @@ public class IOControlPanel extends JPanel implements ActionListener
     protected JPanel directedCheckWrapper;
     private final ControlPanel outer;
 
-    public IOControlPanel(final ControlPanel outer) {
+    public IOControlPanel(ControlPanel outer)
+    {
         this.outer = outer;
         setLayout(new GridLayout(4, 1));
         setBorder(BorderFactory.createTitledBorder("I/O Controls"));
+        
         currentStorageLabel = new JLabel("None");
         importBtn = new JButton("Import");
         exportBtn = new JButton("Export");
         ioTypeBox = new JComboBox();
         directedCheck = new JCheckBox("Directed");
-        importBtn.setIcon(new ImageIcon(outer.mainPanel.openIcon));
-        exportBtn.setIcon(new ImageIcon(outer.mainPanel.saveIcon));
+        importBtn.setIcon(new ImageIcon(outer.getMainPanel().openIcon));
+        exportBtn.setIcon(new ImageIcon(outer.getMainPanel().saveIcon));
         ioTypeBox.addItem("Graph");
         ioTypeBox.addItem("Log");
         ioTypeBox.addItem("Script");
