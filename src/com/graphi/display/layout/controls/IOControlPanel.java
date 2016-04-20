@@ -158,7 +158,7 @@ public class IOControlPanel extends JPanel implements ActionListener
             outer.getMainPanel().getScreenPanel().getGraphPanel().getGraphPlayback().prepareIO(false);
             
             currentStorageLabel.setText(file.getName());
-            activeScriptLabel.setText(file.getName());
+            outer.getScriptPanel().getActiveScriptLabel().setText(file.getName());
             outer.getMainPanel().getScreenPanel().getGraphPanel().addPlaybackEntries();
 
         }

@@ -133,4 +133,9 @@ public class MainPanel extends JPanel
     {
         return appManager;
     }
+    
+    public JFrame getFrame()
+    {
+        return frame;
+    }
 }

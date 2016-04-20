@@ -72,6 +72,8 @@ public class ModeControlPanel extends JPanel implements ActionListener
         else if(src == selectCheck)
             mouse.setMode(ModalGraphMouse.Mode.PICKING);
     }
+    
+    
 
     public JRadioButton getEditCheck() 
     {

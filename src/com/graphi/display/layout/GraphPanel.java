@@ -355,7 +355,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     @Override
     public void graphReleased(Object v, MouseEvent me)
     {
-        if(mainPanel.controlPanel.editCheck.isSelected())
+        if(mainPanel.controlPanel.getModePanel().getEditCheck().isSelected())
         {
             mainPanel.screenPanel.dataPanel.loadNodes(mainPanel.data.getGraph());
             mainPanel.screenPanel.dataPanel.loadEdges(mainPanel.data.getGraph());
@@ -399,8 +399,8 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
 
     public void showCluster()
     {
-        int numRemoved  =   (int) mainPanel.controlPanel.clusterEdgeRemoveSpinner.getValue();
-        boolean group   =   mainPanel.controlPanel.clusterTransformCheck.isSelected();
+        int numRemoved  =   (int) mainPanel.controlPanel.getComputePanel().getClusterEdgeRemoveSpinner().getValue();
+        boolean group   =   mainPanel.controlPanel.getComputePanel().getClusterTransformCheck().isSelected();
         GraphUtilities.cluster(gLayout, mainPanel.data.getGraph(), numRemoved, group);
         gViewer.repaint();
     }
@@ -411,8 +411,8 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         if(mainPanel.data.getGraph().getVertexCount() <= 1) return;
 
         SparseDoubleMatrix2D matrix =   GraphMatrixOperations.graphToSparseMatrix(mainPanel.data.getGraph());
-        int selectedCentrality      =   mainPanel.controlPanel.centralityTypeBox.getSelectedIndex();
-        boolean transform           =   mainPanel.controlPanel.centralityMorphCheck.isSelected();
+        int selectedCentrality      =   mainPanel.controlPanel.getComputePanel().getCentralityTypeBox().getSelectedIndex();
+        boolean transform           =   mainPanel.controlPanel.getComputePanel().getCentralityMorphCheck().isSelected();
         String prefix;
 
         switch(selectedCentrality)
@@ -504,7 +504,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         mainPanel.screenPanel.dataPanel.clearComputeTable();
     }
 
-    protected void resetGraph()
+    public void resetGraph()
     {
         mainPanel.data.setGraph(new SparseMultigraph<>());
         reloadGraph();
@@ -513,10 +513,32 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     @Override
     public void itemStateChanged(ItemEvent e)
     {
-        if(mainPanel.controlPanel.selectCheck.isSelected())
+        if(mainPanel.controlPanel.getModePanel().getSelectCheck().isSelected())
         {
             mainPanel.data.setSelectedItems(e.getItemSelectable().getSelectedObjects());
-            mainPanel.controlPanel.updateSelectedComponents();
+            updateSelectedComponents();
+        }
+    }
+    
+    protected void updateSelectedComponents()
+    {
+        JLabel selectedLabel    =   mainPanel.controlPanel.getgObjPanel().getSelectedLabel();
+        if(mainPanel.getGraphData().getSelectedItems() == null || mainPanel.getGraphData().getSelectedItems().length == 0)
+            selectedLabel.setText("None");
+        else
+        {
+            if(mainPanel.getGraphData().getSelectedItems().length > 1)
+                selectedLabel.setText(mainPanel.getGraphData().getSelectedItems().length + " objects");
+            else
+            {
+                Object selectedObj  =   mainPanel.getGraphData().getSelectedItems()[0];
+                if(selectedObj instanceof Node)
+                    selectedLabel.setText("Node (ID=" + ((Node) selectedObj).getID() + ")");
+
+
+                else if(selectedObj instanceof Edge)
+                    selectedLabel.setText("Edge (ID=" + ((Edge) selectedObj).getID() + ")");
+            }
         }
     }
     

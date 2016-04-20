@@ -31,7 +31,7 @@ public class OutputPanel extends JPanel
         add(outputScroller);
     }
 
-    protected void clearLog()
+    public void clearLog()
     {
         outputArea.setText("");
     }
