@@ -139,4 +139,31 @@ public class ComputeControlPanel extends JPanel implements ActionListener
         else if(src == computeBox)
             showCurrentComputePanel();
     }
+
+    public JSpinner getClusterEdgeRemoveSpinner() 
+    {
+        return clusterEdgeRemoveSpinner;
+    }
+
+    public JCheckBox getClusterTransformCheck()
+    {
+        return clusterTransformCheck;
+    }
+
+    public JComboBox getComputeBox() 
+    {
+        return computeBox;
+    }
+
+    public JComboBox getCentralityTypeBox()
+    {
+        return centralityTypeBox;
+    }
+
+    public JCheckBox getCentralityMorphCheck() 
+    {
+        return centralityMorphCheck;
+    }
+    
+    
 }

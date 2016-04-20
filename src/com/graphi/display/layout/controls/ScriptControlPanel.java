@@ -65,4 +65,16 @@ public class ScriptControlPanel extends JPanel implements ActionListener
         else if(src == recordCtrlsBtn)
             grapPanel.changePlaybackPanel(outer.getMainPanel().getScreenPanel().getGraphPanel().RECORD_CARD);
     }
+
+    public boolean isRecording() 
+    {
+        return recording;
+    }
+
+    public JLabel getActiveScriptLabel() 
+    {
+        return activeScriptLabel;
+    }
+    
+    
 }

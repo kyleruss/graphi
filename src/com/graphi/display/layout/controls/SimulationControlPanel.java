@@ -233,4 +233,56 @@ public class SimulationControlPanel extends JPanel implements ActionListener
             simTiesPLabel.setVisible(!simTiesPLabel.isVisible());
         }
     }
+
+    public JComboBox getGenAlgorithmsBox() 
+    {
+        return genAlgorithmsBox;
+    }
+
+    public JSpinner getLatticeSpinner()
+    {
+        return latticeSpinner;
+    }
+
+    public JSpinner getClusteringSpinner() 
+    {
+        return clusteringSpinner;
+    }
+
+    public JSpinner getInitialNSpinner()
+    {
+        return initialNSpinner;
+    }
+
+    public JSpinner getAddNSpinner()
+    {
+        return addNSpinner;
+    }
+
+    public JSpinner getRandProbSpinner() 
+    {
+        return randProbSpinner;
+    }
+
+    public JSpinner getRandNumSpinner()
+    {
+        return randNumSpinner;
+    }
+
+    public JCheckBox getSimTiesCheck()
+    {
+        return simTiesCheck;
+    }
+
+    public JCheckBox getBaDirectedCheck() 
+    {
+        return baDirectedCheck;
+    }
+
+    public JSpinner getSimTiesPSpinner()
+    {
+        return simTiesPSpinner;
+    }
+    
+    
 }

@@ -101,4 +101,21 @@ public class GraphObjControlPanel extends JPanel implements ActionListener
                 outer.getMainPanel().getScreenPanel().getDataPanel().removeEdge();
         }
     }
+
+    public JRadioButton getEditVertexRadio()
+    {
+        return editVertexRadio;
+    }
+
+    public JRadioButton getEditEdgeRadio()
+    {
+        return editEdgeRadio;
+    }
+
+    public JLabel getSelectedLabel()
+    {
+        return selectedLabel;
+    }
+    
+    
 }

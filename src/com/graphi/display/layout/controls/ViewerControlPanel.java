@@ -107,4 +107,16 @@ public class ViewerControlPanel extends JPanel implements ActionListener
         else if(src == viewerELabelsCheck)
             outer.getMainPanel().getScreenPanel().getGraphPanel().showEdgeLabels(viewerELabelsCheck.isSelected());
     }
+
+    public JCheckBox getViewerVLabelsCheck() 
+    {
+        return viewerVLabelsCheck;
+    }
+
+    public JCheckBox getViewerELabelsCheck() 
+    {
+        return viewerELabelsCheck;
+    }
+    
+    
 }

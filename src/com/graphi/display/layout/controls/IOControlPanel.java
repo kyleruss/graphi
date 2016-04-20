@@ -302,5 +302,21 @@ public class IOControlPanel extends JPanel implements ActionListener
         else if (src == ioTypeBox) 
             ioTypeChange();
     }
+
+    public JLabel getCurrentStorageLabel()
+    {
+        return currentStorageLabel;
+    }
+
+    public JCheckBox getDirectedCheck() 
+    {
+        return directedCheck;
+    }
+
+    public JComboBox getIoTypeBox()
+    {
+        return ioTypeBox;
+    }
+    
     
 }
