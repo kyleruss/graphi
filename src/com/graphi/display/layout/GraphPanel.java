@@ -43,6 +43,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
@@ -55,12 +57,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
@@ -142,6 +147,43 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
             gpRecEntries.addItem(entry);
 
         gpRecEntries.setSelectedIndex(0);
+    }
+    
+    public void searchGraphObject()
+    {
+        JPanel searchDialog         =   new JPanel();
+        JRadioButton vertexRadio    =   new JRadioButton("Vertex");
+        JRadioButton edgeRadio      =   new JRadioButton("Edge");
+        ButtonGroup gObjGroup       =   new ButtonGroup();
+        
+        gObjGroup.add(vertexRadio);
+        gObjGroup.add(edgeRadio);
+        searchDialog.add(vertexRadio);
+        searchDialog.add(edgeRadio);
+        vertexRadio.setSelected(true);
+        
+        String id   =   JOptionPane.showInputDialog(null, searchDialog, "Search graph object", JOptionPane.OK_CANCEL_OPTION);
+        if(id != null)
+        {
+            boolean selectVertex    =   vertexRadio.isSelected();
+            int gObjID              =   Integer.parseInt(id);
+            gViewer.getPickedVertexState().clear();
+            gViewer.getPickedEdgeState().clear();
+            
+            if(selectVertex)
+            {
+                Node node   =   mainPanel.getGraphData().getNodes().get(gObjID);
+                if(node != null)
+                    gViewer.getPickedVertexState().pick(node, true);
+            }
+            
+            else
+            {
+                Edge edge   =   mainPanel.getGraphData().getEdges().get(gObjID);
+                if(edge != null)
+                    gViewer.getPickedEdgeState().pick(edge, true);
+            }
+        }
     }
     
     public void refreshViewer()

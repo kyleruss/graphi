@@ -4,9 +4,11 @@
 //  https://github.com/denkers/graphi
 //=========================================
 
-package com.graphi.display.layout;
+package com.graphi.display.layout.controls;
 
 import com.graphi.app.Consts;
+import com.graphi.display.layout.DataPanel;
+import com.graphi.display.layout.MainPanel;
 import com.graphi.display.layout.util.PluginMenuListener;
 import com.graphi.io.AdjMatrixParser;
 import com.graphi.io.GMLParser;
@@ -73,7 +75,7 @@ public class ControlPanel extends JPanel implements ActionListener
     protected JSpinner simTiesPSpinner;
     protected JLabel simTiesPLabel;
 
-    protected IOPanel ioPanel;
+    protected IOControlPanel ioPanel;
     protected JPanel editPanel;
     protected JLabel selectedLabel;
     protected JButton gObjAddBtn, gObjEditBtn, gObjRemoveBtn;
@@ -111,7 +113,7 @@ public class ControlPanel extends JPanel implements ActionListener
         setBorder(BorderFactory.createEmptyBorder(15, 0, 3, 8));
 
         this.mainPanel  =   mainPanel;
-        ioPanel         =   new IOPanel();            
+        ioPanel         =   new IOControlPanel(this);            
         modePanel       =   new JPanel();
         simPanel        =   new JPanel(new MigLayout("fillx"));
         modePanel.setBorder(BorderFactory.createTitledBorder("Mode controls"));
@@ -545,135 +547,29 @@ public class ControlPanel extends JPanel implements ActionListener
         if(selectedColour != null)
             mainPanel.screenPanel.graphPanel.gViewer.setBackground(selectedColour);
     }
-
-    //--------------------------------------
-    //  IO PANEL
-    //--------------------------------------
-
-    protected class IOPanel extends JPanel implements ActionListener
+    
+    protected class ModePanel extends JPanel
     {
-        protected JButton exportBtn, importBtn;
-        protected JLabel currentStorageLabel;
-        protected JCheckBox directedCheck;
-        protected JComboBox ioTypeBox;
-        protected JPanel directedCheckWrapper;
-
-        public IOPanel()
-        {
-            setLayout(new GridLayout(4, 1));
-            setBorder(BorderFactory.createTitledBorder("I/O Controls"));
-            currentStorageLabel     =   new JLabel("None");
-            importBtn               =   new JButton("Import");
-            exportBtn               =   new JButton("Export");
-            ioTypeBox               =   new JComboBox();
-            directedCheck           =   new JCheckBox("Directed");
-
-            importBtn.setIcon(new ImageIcon(mainPanel.openIcon));
-            exportBtn.setIcon(new ImageIcon(mainPanel.saveIcon));
-
-            ioTypeBox.addItem("Graph");
-            ioTypeBox.addItem("Log");
-            ioTypeBox.addItem("Script");
-            ioTypeBox.addItem("Table");
-            ioTypeBox.setPreferredSize(new Dimension(150, 30));
-
-            ioTypeBox.addActionListener(this);
-            importBtn.addActionListener(this);
-            exportBtn.addActionListener(this);
-
-            importBtn.setBackground(Color.WHITE);
-            exportBtn.setBackground(Color.WHITE);
-
-            JPanel storageBtnWrapper    =   ComponentUtils.wrapComponents(null, importBtn, exportBtn);
-            JPanel currentGraphWrapper  =   ComponentUtils.wrapComponents(null, new JLabel("Active: "), currentStorageLabel);
-            JPanel ioTypeWrapper        =   ComponentUtils.wrapComponents(null, ioTypeBox);
-            directedCheckWrapper        =   ComponentUtils.wrapComponents(null, directedCheck);
-
-            storageBtnWrapper.setBackground(Consts.PRESET_COL);
-            currentGraphWrapper.setBackground(Consts.PRESET_COL);
-            directedCheckWrapper.setBackground(Consts.PRESET_COL);
-            ioTypeWrapper.setBackground(Consts.PRESET_COL);
-
-            add(currentGraphWrapper);
-            add(ioTypeWrapper);
-            add(directedCheckWrapper);
-            add(storageBtnWrapper);
-            currentStorageLabel.setFont(new Font("Arial", Font.BOLD, 12));
-        }
         
-        private void performImport()
-        {
-            int typeIndex   =   ioTypeBox.getSelectedIndex();
-            
-            switch (typeIndex) 
-            {
-                case 0:
-                    importGraph();
-                    break;
-                    
-                case 1:
-                    importLog();
-                    break;
-                    
-                case 2:
-                    importScript();
-                    break;
-                    
-                default:
-                    break;
-            }
-        }
-        
-        private void performExport()
-        {
-            int typeIndex = ioTypeBox.getSelectedIndex();
-            
-            switch(typeIndex)
-            {
-                case 0:
-                    exportGraph();
-                    break;
-                    
-                case 1:
-                    exportLog();
-                    break;
-                    
-                case 2:
-                    exportScript();
-                    break;
-                    
-                case 3:
-                    exportTable();
-                    break;
-                    
-                default:
-                    break;
-            }
-        }
-        
-        private void ioTypeChange()
-        {
-            int typeIndex   =   ioTypeBox.getSelectedIndex();
-            
-            importBtn.setEnabled(typeIndex != 3);
-            directedCheckWrapper.setVisible(typeIndex == 0);
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e)
-        {
-            Object src  =   e.getSource();
-
-            if(src == importBtn)
-                performImport();
-
-            else if(src == exportBtn)
-                performExport();
-            
-            else if(src == ioTypeBox)
-                ioTypeChange();
-        }
     }
+    
+    protected class GObjPanel extends JPanel
+    {
+        
+    }
+    
+    protected class SimulationPanel extends JPanel
+    {
+        
+    }
+    
+    protected class ComputationPanel extends JPanel
+    {
+        
+    }
+    
+    
+
 
     protected void showCurrentComputePanel()
     {
@@ -998,6 +894,9 @@ public class ControlPanel extends JPanel implements ActionListener
 
         else if(src == mainPanel.menu.getMenuItem("loadPluginItem"))
             importPlugin();
+        
+        else if(src == mainPanel.menu.getMenuItem("searchObjectItem"))
+            mainPanel.screenPanel.graphPanel.searchGraphObject();
 
         else if(src == displayCtrlsBtn)
             mainPanel.screenPanel.graphPanel.changePlaybackPanel(mainPanel.screenPanel.graphPanel.PLAYBACK_CARD);

@@ -6,6 +6,7 @@
 
 package com.graphi.display.layout;
 
+import com.graphi.display.layout.controls.ControlPanel;
 import com.graphi.app.AppManager;
 import com.graphi.app.Consts;
 import com.graphi.display.MainMenu;
@@ -22,7 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
-public class MainPanel extends JPanel
+public class MainPanel extends JPanel 
 {
     protected ControlPanel controlPanel;
     protected ScreenPanel screenPanel;
@@ -57,6 +58,7 @@ public class MainPanel extends JPanel
         controlScroll       =   new JScrollPane(controlPanel);
 
         controlScroll.setBorder(null);
+        controlScroll.getVerticalScrollBar().setUnitIncrement(25);
         splitPane.setLeftComponent(screenPanel);
         splitPane.setRightComponent(controlScroll); 
         splitPane.setResizeWeight(Consts.MAIN_SPLIT_WG);

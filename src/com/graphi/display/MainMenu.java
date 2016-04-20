@@ -6,6 +6,7 @@
 
 package com.graphi.display;
 
+import com.sun.glass.events.KeyEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
@@ -71,6 +72,7 @@ public class MainMenu extends JMenuBar
         addMenuItem("addEdgeItem", new JMenuItem("Add"), edgeMenu);
         addMenuItem("editEdgeItem", new JMenuItem("Edit"), edgeMenu);
         addMenuItem("removeEdgeItem", new JMenuItem("Remove"), edgeMenu);
+        addMenuItem("searchObjectItem", new JMenuItem("Search", KeyEvent.VK_S), graphMenu);
         //----------------------------------------------------------------------
         
         graphMenu.add(vertexMenu);
