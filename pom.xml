@@ -91,7 +91,7 @@
 	<repository>
 		<id>synthetica.local</id>
 		<name>synthetica-repo</name>
-		<url>file:${basedir}/synthetica-repo</url>
+		<url>file:${basedir}/data/lib/synthetica-repo</url>
 	</repository>
 </repositories>
     
