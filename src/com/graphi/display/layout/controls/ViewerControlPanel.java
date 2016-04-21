@@ -84,7 +84,7 @@ public class ViewerControlPanel extends JPanel implements ActionListener
         Color selectedColour    =   JColorChooser.showDialog(null, "Choose viewer background colour", Color.WHITE);
 
         if(selectedColour != null)
-            outer.getMainPanel().getScreenPanel().getGraphPanel().gViewer.setBackground(selectedColour);
+            outer.getMainPanel().getScreenPanel().getGraphPanel().getGraphViewer().setBackground(selectedColour);
     }
 
     @Override

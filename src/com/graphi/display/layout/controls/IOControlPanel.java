@@ -100,10 +100,10 @@ public class IOControlPanel extends JPanel implements ActionListener
                 Storage.saveObj(outer.getMainPanel().getGraphData().getGraph(), file);
 
             else if(extension.equalsIgnoreCase("txt"))
-                AdjMatrixParser.exportGraph(outer.getMainPanel().getGraphData().getGraph(), file, ioPanel.directedCheck.isSelected());
+                AdjMatrixParser.exportGraph(outer.getMainPanel().getGraphData().getGraph(), file, directedCheck.isSelected());
 
             else if(extension.equalsIgnoreCase("gml"))
-                GMLParser.exportGraph(outer.getMainPanel().getGraphData().getGraph(), file, ioPanel.directedCheck.isSelected());
+                GMLParser.exportGraph(outer.getMainPanel().getGraphData().getGraph(), file, directedCheck.isSelected());
 
             else if(extension.equalsIgnoreCase("xml"))
                 GraphMLParser.exportGraph(file, outer.getMainPanel().getGraphData().getGraph());
@@ -124,7 +124,7 @@ public class IOControlPanel extends JPanel implements ActionListener
                 outer.getMainPanel().getGraphData().setGraph((Graph) Storage.openObj(file, outer.getMainPanel().getAppManager().getPluginManager().getActiveClassLoader()));
 
             else if(extension.equalsIgnoreCase("txt"))
-                outer.getMainPanel().getGraphData().setGraph(AdjMatrixParser.importGraph(file, ioPanel.directedCheck.isSelected(), outer.getMainPanel().getGraphData().getNodeFactory(), outer.getMainPanel().getGraphData().getEdgeFactory()));
+                outer.getMainPanel().getGraphData().setGraph(AdjMatrixParser.importGraph(file, directedCheck.isSelected(), outer.getMainPanel().getGraphData().getNodeFactory(), outer.getMainPanel().getGraphData().getEdgeFactory()));
 
             else if(extension.equalsIgnoreCase("gml"))
                 outer.getMainPanel().getGraphData().setGraph(GMLParser.importGraph(file, outer.getMainPanel().getGraphData().getNodeFactory(), outer.getMainPanel().getGraphData().getEdgeFactory()));
@@ -133,13 +133,13 @@ public class IOControlPanel extends JPanel implements ActionListener
                 outer.getMainPanel().getGraphData().setGraph(GraphMLParser.importGraph(file, outer.getMainPanel().getGraphData().getNodeFactory(), outer.getMainPanel().getGraphData().getEdgeFactory()));
 
 
-            ioPanel.currentStorageLabel.setText(file.getName());
+            currentStorageLabel.setText(file.getName());
 
             initCurrentNodes();
             initCurrentEdges();
 
-            outer.getMainPanel().getScreenPanel().getGraphPanel().gLayout.setGraph(outer.getMainPanel().getGraphData().getGraph());
-            outer.getMainPanel().getScreenPanel().getGraphPanel().gViewer.repaint();
+            outer.getMainPanel().getScreenPanel().getGraphPanel().getGraphLayout().setGraph(outer.getMainPanel().getGraphData().getGraph());
+            outer.getMainPanel().getScreenPanel().getGraphPanel().getGraphViewer().repaint();
             outer.getMainPanel().getScreenPanel().getDataPanel().loadNodes(outer.getMainPanel().getGraphData().getGraph());
             outer.getMainPanel().getScreenPanel().getDataPanel().loadEdges(outer.getMainPanel().getGraphData().getGraph());
         }
@@ -150,12 +150,14 @@ public class IOControlPanel extends JPanel implements ActionListener
         File file   =   ComponentUtils.getFile(true, "Graphi .gscript file", "gscript");
         if(file != null)
         {
-            outer.getMainPanel().getScreenPanel().getGraphPanel().gPlayback    =   (GraphPlayback) Storage.openObj(file, outer.getMainPanel().getAppManager().getPluginManager().getActiveClassLoader());
-            if(outer.getMainPanel().getScreenPanel().getGraphPanel().gPlayback == null) return;
+            outer.getMainPanel().getScreenPanel().getGraphPanel().setGraphPlayback(
+                    (GraphPlayback) Storage.openObj(file, outer.getMainPanel().getAppManager().getPluginManager().getActiveClassLoader()));
             
-            outer.getMainPanel().getScreenPanel().getGraphPanel().gPlayback.prepareIO(false);
+            if(outer.getMainPanel().getScreenPanel().getGraphPanel().getGraphPlayback() == null) return;
             
-            ioPanel.currentStorageLabel.setText(file.getName());
+            outer.getMainPanel().getScreenPanel().getGraphPanel().getGraphPlayback().prepareIO(false);
+            
+            currentStorageLabel.setText(file.getName());
             activeScriptLabel.setText(file.getName());
             outer.getMainPanel().getScreenPanel().getGraphPanel().addPlaybackEntries();
 
@@ -179,7 +181,7 @@ public class IOControlPanel extends JPanel implements ActionListener
         {
             JTable table        =    null;
             DataPanel dataPanel =   outer.getMainPanel().getScreenPanel().getDataPanel();
-            int tableIndex      =   dataPanel.dataTabPane.getSelectedIndex();
+            int tableIndex      =   dataPanel.getDataTabPane().getSelectedIndex();
             
             switch (tableIndex) 
             {
@@ -223,7 +225,7 @@ public class IOControlPanel extends JPanel implements ActionListener
     {
         File file   =   ComponentUtils.getFile(false, "Graphi .log file", "log");
         if(file != null)
-            Storage.saveOutputLog(outer.getMainPanel().getScreenPanel().getOutputPanel().outputArea.getText(), file);
+            Storage.saveOutputLog(outer.getMainPanel().getScreenPanel().getOutputPanel().getOutputArea().getText(), file);
     }
 
     protected void importLog()
@@ -231,8 +233,8 @@ public class IOControlPanel extends JPanel implements ActionListener
         File file   =   ComponentUtils.getFile(true, "Graphi .log file", "log");
         if(file != null)
         {
-            ioPanel.currentStorageLabel.setText(file.getName());
-            outer.getMainPanel().getScreenPanel().getOutputPanel().outputArea.setText(Storage.openOutputLog(file));
+            currentStorageLabel.setText(file.getName());
+            outer.getMainPanel().getScreenPanel().getOutputPanel().getOutputArea().setText(Storage.openOutputLog(file));
         }
     }
 

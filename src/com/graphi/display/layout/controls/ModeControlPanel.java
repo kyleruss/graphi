@@ -6,6 +6,7 @@
 
 package com.graphi.display.layout.controls;
 
+import edu.uci.ics.jung.visualization.control.EditingModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -57,17 +58,35 @@ public class ModeControlPanel extends JPanel implements ActionListener
     public void actionPerformed(ActionEvent e)
     {
         Object src  =   e.getSource();
+        EditingModalGraphMouse mouse    =   outer.getMainPanel().getScreenPanel().getGraphPanel().getMouse();
         
         if(src == editCheck)
         {
-            outer.getMainPanel().getScreenPanel().getGraphPanel().mouse.setMode(ModalGraphMouse.Mode.EDITING);
-            outer.getMainPanel().getScreenPanel().getGraphPanel().mouse.remove(outer.getMainPanel().getScreenPanel().getGraphPanel().mouse.getPopupEditingPlugin());
+            mouse.setMode(ModalGraphMouse.Mode.EDITING);
+            mouse.remove(mouse.getPopupEditingPlugin());
         }
 
         else if(src == moveCheck)
-            outer.getMainPanel().getScreenPanel().getGraphPanel().mouse.setMode(ModalGraphMouse.Mode.TRANSFORMING);
+            mouse.setMode(ModalGraphMouse.Mode.TRANSFORMING);
 
         else if(src == selectCheck)
-            outer.getMainPanel().getScreenPanel().getGraphPanel().mouse.setMode(ModalGraphMouse.Mode.PICKING);
+            mouse.setMode(ModalGraphMouse.Mode.PICKING);
     }
+
+    public JRadioButton getEditCheck() 
+    {
+        return editCheck;
+    }
+
+    public JRadioButton getSelectCheck() 
+    {
+        return selectCheck;
+    }
+
+    public JRadioButton getMoveCheck()
+    {
+        return moveCheck;
+    }
+    
+    
 }

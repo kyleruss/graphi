@@ -129,7 +129,7 @@ public class DataPanel extends JPanel implements ActionListener
         setComputationContext(compModel.getDescription());
     }
 
-    protected void loadNodes(Graph graph)
+    public void loadNodes(Graph graph)
     {
         ArrayList<Node> vertices   =   new ArrayList<>(graph.getVertices());
         Collections.sort(vertices, (Node n1, Node n2) -> Integer.compare(n1.getID(), n2.getID()));
@@ -154,7 +154,7 @@ public class DataPanel extends JPanel implements ActionListener
         });
     }
 
-    protected void loadEdges(Graph graph)
+    public void loadEdges(Graph graph)
     {
         ArrayList<Edge> edges  =   new ArrayList<>(graph.getEdges());
         Collections.sort(edges, (Edge e1, Edge e2) -> Integer.compare(e1.getID(), e2.getID())); 
@@ -195,7 +195,7 @@ public class DataPanel extends JPanel implements ActionListener
         });
     }
 
-    protected void addVertex()
+    public void addVertex()
     {
         VertexAddPanel addPanel    =   new VertexAddPanel();
 
@@ -219,7 +219,7 @@ public class DataPanel extends JPanel implements ActionListener
         }
     }
 
-    protected void editVertex()
+    public void editVertex()
     {
         Node editNode;
         Set<Node> selectedVertices      =   mainPanel.screenPanel.graphPanel.gViewer.getPickedVertexState().getPicked();
@@ -275,7 +275,7 @@ public class DataPanel extends JPanel implements ActionListener
         }
     }
 
-    protected void removeVertex()
+    public void removeVertex()
     {
         Set<Node> pickedNodes    =   mainPanel.screenPanel.graphPanel.gViewer.getPickedVertexState().getPicked();
         if(!pickedNodes.isEmpty())
@@ -313,7 +313,7 @@ public class DataPanel extends JPanel implements ActionListener
         }
     }
 
-    protected void addEdge()
+    public void addEdge()
     {
         EdgeAddPanel addPanel   =   new EdgeAddPanel();
 
@@ -350,7 +350,7 @@ public class DataPanel extends JPanel implements ActionListener
         }
     }
 
-    protected void editEdge()
+    public void editEdge()
     {
         Edge editEdge;
         Set<Edge> selectedEdges =   mainPanel.screenPanel.graphPanel.gViewer.getPickedEdgeState().getPicked();
@@ -408,7 +408,7 @@ public class DataPanel extends JPanel implements ActionListener
         }
     }
 
-    protected void removeEdge()
+    public void removeEdge()
     {
         Set<Edge> selectedEdges =   mainPanel.screenPanel.graphPanel.gViewer.getPickedEdgeState().getPicked();
 
@@ -658,4 +658,11 @@ public class DataPanel extends JPanel implements ActionListener
     {
         return edgeDataModel;
     }
+
+    public JTabbedPane getDataTabPane() 
+    {
+        return dataTabPane;
+    }
+    
+    
 }

@@ -6,6 +6,7 @@
 
 package com.graphi.display.layout.controls;
 
+import com.graphi.display.layout.GraphPanel;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -56,11 +57,12 @@ public class ScriptControlPanel extends JPanel implements ActionListener
     public void actionPerformed(ActionEvent e) 
     {
         Object src  =   e.getSource();
+        GraphPanel grapPanel    =   outer.getMainPanel().getScreenPanel().getGraphPanel();
         
         if(src == displayCtrlsBtn)
-            outer.getMainPanel().getScreenPanel().getGraphPanel().changePlaybackPanel(outer.getMainPanel().getScreenPanel().getGraphPanel().PLAYBACK_CARD);
+            grapPanel.changePlaybackPanel(grapPanel.PLAYBACK_CARD);
 
         else if(src == recordCtrlsBtn)
-            outer.getMainPanel().getScreenPanel().getGraphPanel().changePlaybackPanel(outer.getMainPanel().getScreenPanel().getGraphPanel().RECORD_CARD);
+            grapPanel.changePlaybackPanel(outer.getMainPanel().getScreenPanel().getGraphPanel().RECORD_CARD);
     }
 }

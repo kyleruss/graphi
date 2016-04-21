@@ -78,9 +78,9 @@ import net.miginfocom.swing.MigLayout;
 
 public class GraphPanel extends JPanel implements ItemListener, GraphMouseListener
 {
-    protected final String RECORD_CARD    =   "rec";
-    protected final String PLAYBACK_CARD  =   "pb";
-    protected final int INITIAL_DELAY     =   500;
+    public final String RECORD_CARD         =   "rec";
+    public final String PLAYBACK_CARD       =   "pb";
+    protected final int INITIAL_DELAY       =   500;
     
     protected final VisualizationViewer<Node, Edge> gViewer;
     protected AggregateLayout<Node, Edge> gLayout;
@@ -137,7 +137,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         add(controlPanel, BorderLayout.SOUTH);
     }
 
-    protected void addPlaybackEntries()
+    public void addPlaybackEntries()
     {
         gpRecEntries.removeAllItems();
         gpRecEntries.addItem("-- New entry --");
@@ -191,7 +191,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         gViewer.repaint();
     }
 
-    protected void changePlaybackPanel(String card)
+    public void changePlaybackPanel(String card)
     {
         if(!controlPanel.isVisible())
             controlPanel.setPreviousState();
@@ -362,7 +362,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         }
     }
 
-    protected void setVertexColour(Color colour, Collection<Node> vertices)
+    public void setVertexColour(Color colour, Collection<Node> vertices)
     {
         if(vertices == null)
             vertices   =   mainPanel.data.getGraph().getVertices();
@@ -373,7 +373,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         gViewer.repaint();
     }
 
-    protected void setEdgeColour(Color colour, Collection<Edge> edges)
+    public void setEdgeColour(Color colour, Collection<Edge> edges)
     {
         if(edges == null)
             edges   =   mainPanel.data.getGraph().getEdges();
@@ -384,20 +384,20 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         gViewer.repaint();
     }
 
-    protected void showVertexLabels(boolean show)
+    public void showVertexLabels(boolean show)
     {
         gViewer.getRenderContext().setVertexLabelTransformer(new VertexLabelTransformer(show));
         gViewer.repaint();
     }
 
-    protected void showEdgeLabels(boolean show)
+    public void showEdgeLabels(boolean show)
     {
         gViewer.getRenderContext().setEdgeLabelTransformer(new EdgeLabelTransformer(show));
         gViewer.repaint();
     }
 
 
-    protected void showCluster()
+    public void showCluster()
     {
         int numRemoved  =   (int) mainPanel.controlPanel.clusterEdgeRemoveSpinner.getValue();
         boolean group   =   mainPanel.controlPanel.clusterTransformCheck.isSelected();
@@ -405,7 +405,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         gViewer.repaint();
     }
 
-    protected void showCentrality()
+    public void showCentrality()
     {
         Map<Node, Double> centrality;
         if(mainPanel.data.getGraph().getVertexCount() <= 1) return;
@@ -490,7 +490,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     } 
 
 
-    protected void reloadGraph()
+    public void reloadGraph()
     {
         gViewer.getPickedVertexState().clear();
         gViewer.getPickedEdgeState().clear();
@@ -538,6 +538,11 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     public GraphPlayback getGraphPlayback()
     {
         return gPlayback;
+    }
+    
+    public void setGraphPlayback(GraphPlayback gPlayback)
+    {
+        this.gPlayback  =   gPlayback;
     }
     
     private class PlaybackControlPanel extends JPanel implements ActionListener, ChangeListener
