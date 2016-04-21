@@ -6,8 +6,10 @@
 
 package com.graphi.display.layout.controls;
 
+import com.graphi.display.layout.util.GUIUtils;
 import edu.uci.ics.jung.visualization.control.EditingModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
@@ -15,6 +17,13 @@ import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import net.java.balloontip.BalloonTip;
+import net.java.balloontip.styles.IsometricBalloonStyle;
+import net.java.balloontip.styles.MinimalBalloonStyle;
+import net.java.balloontip.styles.ModernBalloonStyle;
+import net.java.balloontip.styles.RoundedBalloonStyle;
+import net.java.balloontip.styles.ToolTipBalloonStyle;
+import net.java.balloontip.utils.ToolTipUtils;
 
 public class ModeControlPanel extends JPanel implements ActionListener
 {
@@ -35,6 +44,7 @@ public class ModeControlPanel extends JPanel implements ActionListener
         editCheck.setIcon(new ImageIcon(outer.getMainPanel().editBlackIcon));
         selectCheck.setIcon(new ImageIcon(outer.getMainPanel().pointerIcon));
         moveCheck.setIcon(new ImageIcon(outer.getMainPanel().moveIcon));
+        GUIUtils.showTooltip(editCheck, "Hey!");
 
         moveCheck.setSelectedIcon(new ImageIcon(outer.getMainPanel().moveSelectedIcon));
         editCheck.setSelectedIcon(new ImageIcon(outer.getMainPanel().editSelectedIcon));
