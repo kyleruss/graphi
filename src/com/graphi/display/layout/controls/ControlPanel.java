@@ -16,11 +16,8 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 
 public class ControlPanel extends JPanel implements ActionListener
 {
@@ -68,27 +65,6 @@ public class ControlPanel extends JPanel implements ActionListener
 
     }
     
-    public MainPanel getMainPanel()
-    {
-        return mainPanel;
-    }
-
-    protected void showAbout()
-    {
-        JLabel nameLabel    =   new JLabel("Kyle Russell 2015", SwingConstants.CENTER);
-        JLabel locLabel     =   new JLabel("AUT University");
-        JLabel repoLabel    =   new JLabel("https://github.com/denkers/graphi");
-
-        JPanel aboutPanel   =   new JPanel();
-        aboutPanel.setLayout(new BoxLayout(aboutPanel, BoxLayout.Y_AXIS));
-        aboutPanel.add(nameLabel);
-        aboutPanel.add(locLabel);
-        aboutPanel.add(repoLabel);
-
-        JOptionPane.showMessageDialog(null, aboutPanel, "Graphi - Author", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-
     @Override
     public void actionPerformed(ActionEvent e)
     {
@@ -97,7 +73,7 @@ public class ControlPanel extends JPanel implements ActionListener
         MainMenu menu   =   mainPanel.getMenu();
         
         if(src == mainPanel.getMenu().getMenuItem("aboutItem"))
-            showAbout();
+            mainPanel.getMenu().showAbout();
 
         else if(src == mainPanel.getMenu().getMenuItem("exitItem"))
             System.exit(0);
@@ -207,5 +183,8 @@ public class ControlPanel extends JPanel implements ActionListener
         return viewerPanel;
     }
     
-    
+    public MainPanel getMainPanel()
+    {
+        return mainPanel;
+    }
 }

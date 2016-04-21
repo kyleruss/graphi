@@ -10,13 +10,17 @@ import com.sun.glass.events.KeyEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 /**
  * The default menu bar attached to Window.frame
- * 
  */
 public class MainMenu extends JMenuBar
 {
@@ -57,8 +61,8 @@ public class MainMenu extends JMenuBar
         addMenuItem("aboutItem", new JMenuItem("Author"), helpMenu);
         addMenuItem("importGraphItem", new JMenuItem("Import Graph"), graphMenu);
         addMenuItem("exportGraphItem", new JMenuItem("Export Graph"), graphMenu);
-        addMenuItem("importLogItem", new JMenuItem("Import Log"), graphMenu);
-        addMenuItem("exportLogItem", new JMenuItem("Export Log"), graphMenu);
+        addMenuItem("importLogItem", new JMenuItem("Import Log"), loggingMenu);
+        addMenuItem("exportLogItem", new JMenuItem("Export Log"), loggingMenu);
         addMenuItem("vLabelsItem", new JMenuItem("Vertex labels"), viewMenu);
         addMenuItem("eLabelsItem", new JMenuItem("Eedge labels"), viewMenu);
         addMenuItem("viewerBGItem", new JMenuItem("Change viewer background"), optionsMenu);
@@ -88,6 +92,21 @@ public class MainMenu extends JMenuBar
         add(optionsMenu);
         add(helpMenu);
         add(pluginMenu);
+    }
+    
+    public void showAbout()
+    {
+        JLabel nameLabel    =   new JLabel("Kyle Russell 2015", SwingConstants.CENTER);
+        JLabel locLabel     =   new JLabel("AUT University");
+        JLabel repoLabel    =   new JLabel("https://github.com/denkers/graphi");
+
+        JPanel aboutPanel   =   new JPanel();
+        aboutPanel.setLayout(new BoxLayout(aboutPanel, BoxLayout.Y_AXIS));
+        aboutPanel.add(nameLabel);
+        aboutPanel.add(locLabel);
+        aboutPanel.add(repoLabel);
+
+        JOptionPane.showMessageDialog(null, aboutPanel, "Graphi - Author", JOptionPane.INFORMATION_MESSAGE);
     }
     
     /**

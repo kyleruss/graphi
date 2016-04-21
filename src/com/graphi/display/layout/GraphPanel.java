@@ -151,37 +151,57 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     
     public void searchGraphObject()
     {
-        JPanel searchDialog         =   new JPanel();
+        JPanel searchDialog         =   new JPanel(new MigLayout("fillx"));
         JRadioButton vertexRadio    =   new JRadioButton("Vertex");
         JRadioButton edgeRadio      =   new JRadioButton("Edge");
         ButtonGroup gObjGroup       =   new ButtonGroup();
+        JLabel searchLabel          =   new JLabel("Enter object ID");
         
         gObjGroup.add(vertexRadio);
         gObjGroup.add(edgeRadio);
         searchDialog.add(vertexRadio);
-        searchDialog.add(edgeRadio);
+        searchDialog.add(edgeRadio, "wrap");
+        searchDialog.add(searchLabel);
         vertexRadio.setSelected(true);
         
         String id   =   JOptionPane.showInputDialog(null, searchDialog, "Search graph object", JOptionPane.OK_CANCEL_OPTION);
-        if(id != null)
+        if(id != null && !id.equals(""))
         {
-            boolean selectVertex    =   vertexRadio.isSelected();
-            int gObjID              =   Integer.parseInt(id);
-            gViewer.getPickedVertexState().clear();
-            gViewer.getPickedEdgeState().clear();
-            
-            if(selectVertex)
+            try
             {
-                Node node   =   mainPanel.getGraphData().getNodes().get(gObjID);
-                if(node != null)
-                    gViewer.getPickedVertexState().pick(node, true);
+                boolean selectVertex    =   vertexRadio.isSelected();
+                int gObjID              =   Integer.parseInt(id);
+
+                if(selectVertex)
+                {
+                    Node node   =   mainPanel.getGraphData().getNodes().get(gObjID);
+                    if(node != null)
+                    {
+                        gViewer.getPickedVertexState().clear();
+                        gViewer.getPickedEdgeState().clear();
+                        gViewer.getPickedVertexState().pick(node, true);
+                    }
+                    
+                    else JOptionPane.showMessageDialog(null, "Node was not found");
+                }
+
+                else
+                {
+                    Edge edge   =   mainPanel.getGraphData().getEdges().get(gObjID);
+                    if(edge != null)
+                    {
+                        gViewer.getPickedVertexState().clear();
+                        gViewer.getPickedEdgeState().clear();
+                        gViewer.getPickedEdgeState().pick(edge, true);
+                    }
+                    
+                    else JOptionPane.showMessageDialog(null, "Edge was not found");
+                }
             }
             
-            else
+            catch(NumberFormatException e)
             {
-                Edge edge   =   mainPanel.getGraphData().getEdges().get(gObjID);
-                if(edge != null)
-                    gViewer.getPickedEdgeState().pick(edge, true);
+                JOptionPane.showMessageDialog(null, "Invalid object ID");
             }
         }
     }

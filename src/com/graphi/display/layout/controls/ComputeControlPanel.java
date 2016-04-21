@@ -88,6 +88,7 @@ public class ComputeControlPanel extends JPanel implements ActionListener
         computeInnerPanel.add(clusterPanel, Consts.CLUSTER_PANEL_CARD);
         computeInnerPanel.add(centralityPanel, Consts.CENTRALITY_PANEL_CARD);
 
+        wrapper.setBackground(Consts.PRESET_COL);
         wrapper.add(new JLabel("Compute "), "al right");
         wrapper.add(computeBox, "wrap");
         wrapper.add(computeInnerPanel, "wrap, span 2, al center");
