@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -20,6 +21,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.SpinnerNumberModel;
@@ -36,12 +38,13 @@ public class TaskControlPanel extends JPanel implements ActionListener
         "Reset network simulation",
     };
     
-    private JButton setupButton, repeatButton;
     private ControlPanel controlPanel;
     private JComboBox repeatBox;
     private TaskPopupPanel setupPanel, repeatPanel;
-    private JButton runSetupButton, runRepeatButton;
     private JPanel repeatManyPanel;
+    private JRadioButton setupRadio, repeatablesRadio;
+    private ButtonGroup taskBtnGroup;
+    private JButton taskButton, runButton;
     private JPanel wrapper;
     private JSpinner repeatCountSpinner;
     
@@ -54,13 +57,18 @@ public class TaskControlPanel extends JPanel implements ActionListener
         wrapper             =   new JPanel(new MigLayout("fillx"));
         setupPanel          =   new TaskPopupPanel();
         repeatPanel         =   new TaskPopupPanel();
-        setupButton         =   new JButton("Setup tasks");
-        repeatButton        =   new JButton("Repeat tasks");
-        runSetupButton      =   new JButton("Run setup");
-        runRepeatButton     =   new JButton("Run repeat");
+        taskButton          =   new JButton("Tasks");
+        runButton           =   new JButton("Run");
         repeatManyPanel     =   new JPanel(new MigLayout("fillx"));
         repeatBox           =   new JComboBox();
         repeatCountSpinner  =   new JSpinner(new SpinnerNumberModel(1, 1, 100, 1));
+        setupRadio          =   new JRadioButton("Setup");
+        repeatablesRadio    =   new JRadioButton("Repeatables");
+        taskBtnGroup        =   new ButtonGroup();
+        
+        taskBtnGroup.add(setupRadio);
+        taskBtnGroup.add(repeatablesRadio);
+        setupRadio.setSelected(true);
         
         repeatManyPanel.add(new JLabel("Repeat count"));
         repeatManyPanel.add(repeatCountSpinner, "al center");
@@ -70,20 +78,23 @@ public class TaskControlPanel extends JPanel implements ActionListener
         repeatBox.addItem("Manual");
 
         wrapper.setBackground(Consts.PRESET_COL);
-        wrapper.add(new JLabel("Repeat method"), "al center");
+        wrapper.add(new JLabel("Repeat method"), "al right");
         wrapper.add(repeatBox, "wrap");
         wrapper.add(repeatManyPanel, "al center, span 2, wrap");
-        wrapper.add(setupButton, "al center");
-        wrapper.add(repeatButton, "wrap");
-        wrapper.add(runSetupButton, "al center");
-        wrapper.add(runRepeatButton);
+        
+        JPanel radioWrapper =   new JPanel();
+        radioWrapper.setBackground(Consts.PRESET_COL);
+        radioWrapper.add(setupRadio);
+        radioWrapper.add(repeatablesRadio);
+        
+        wrapper.add(radioWrapper, "al center, span 2, wrap");
+        wrapper.add(taskButton, "al right");
+        wrapper.add(runButton);
         add(wrapper);
         
-        setupButton.addActionListener(this);
-        repeatButton.addActionListener(this);
+        taskButton.addActionListener(this);
+        runButton.addActionListener(this);
         repeatBox.addActionListener(this);
-        runSetupButton.addActionListener(this);
-        runRepeatButton.addActionListener(this);
     }
     
     public void executeActions(boolean setup, int n)
@@ -126,25 +137,32 @@ public class TaskControlPanel extends JPanel implements ActionListener
             case 3: middleMan.getControlPanel().getSimulationPanel().resetSim(); break;
         }
     }
+    
+    public void showTasksDialog(boolean isSetup)
+    {
+        if(isSetup)
+            JOptionPane.showMessageDialog(null, setupPanel, "Manage setup tasks", JOptionPane.INFORMATION_MESSAGE);
+        else
+            JOptionPane.showMessageDialog(null, repeatPanel, "Manage repeat tasks", JOptionPane.INFORMATION_MESSAGE);
+    }
 
     @Override
     public void actionPerformed(ActionEvent e)
     {
         Object src  =   e.getSource();
-        if(src == setupButton)
-            JOptionPane.showMessageDialog(null, setupPanel, "Manage setup tasks", JOptionPane.INFORMATION_MESSAGE);
-        
-        else if(src == repeatButton)
-            JOptionPane.showMessageDialog(null, repeatPanel, "Manage repeat tasks", JOptionPane.INFORMATION_MESSAGE);
+        if(src == taskButton)
+            showTasksDialog(setupRadio.isSelected());
         
         else if(src == repeatBox)
             repeatManyPanel.setVisible(repeatBox.getSelectedIndex() == 0);
         
-        else if(src == runSetupButton)
-            executeActions(true, 1);
-        
-        else if(src == runRepeatButton)
-            runRepeat();
+        else if(src == runButton)
+        {
+            if(setupRadio.isSelected())
+                executeActions(true, 1);
+            
+            else runRepeat();
+        }
     }
     
     private class TaskPopupPanel extends JPanel implements ActionListener
