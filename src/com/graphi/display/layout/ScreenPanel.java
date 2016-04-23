@@ -9,11 +9,15 @@ package com.graphi.display.layout;
 import com.graphi.app.Consts;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 public class ScreenPanel extends JPanel
 {
@@ -57,8 +61,18 @@ public class ScreenPanel extends JPanel
         tabPane.setTabComponentAt(1, dataLabel);
         tabPane.setTabComponentAt(2, outLabel);
 
-
         add(tabPane);
+        
+        SwingUtilities.invokeLater(()->
+        {
+            Timer timer =   new Timer(2500, (ActionEvent e) -> 
+            {
+                changeDisplayCard(Consts.DISPLAY_GRAPH_CARD);
+            });
+            
+            timer.setRepeats(false);
+            timer.start();
+        });
     }
     
     public void changeDisplayCard(String cardName)

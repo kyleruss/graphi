@@ -17,7 +17,6 @@ public class TransitionPanel extends JPanel
     public TransitionPanel()
     {
         setLayout(new BorderLayout());
-        setBackground(Color.WHITE);
         
         transitionIcon  =   new ImageIcon("data/resources/images/loadspinner.gif");
         transitionLabel =   new JLabel(transitionIcon);
