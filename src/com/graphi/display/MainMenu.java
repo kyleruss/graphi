@@ -146,7 +146,12 @@ public class MainMenu extends JMenuBar
     public void setMenuItemListener(ActionListener listener)
     {
         for(JMenuItem item : menuItems.values())
+        {
+            for(ActionListener otherListener : item.getActionListeners())
+                item.removeActionListener(otherListener);
+            
             item.addActionListener(listener);
+        }
     }
     
     /**
