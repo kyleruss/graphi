@@ -6,7 +6,9 @@
 
 package com.graphi.display.layout;
 
+import com.graphi.app.Consts;
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -16,10 +18,12 @@ import javax.swing.JTabbedPane;
 public class ScreenPanel extends JPanel
 {
     protected MainPanel mainPanel;
-    protected final DataPanel dataPanel;
-    protected final GraphPanel graphPanel;
-    protected final OutputPanel outputPanel;
-    protected final JTabbedPane tabPane;
+    protected DataPanel dataPanel;
+    protected GraphPanel graphPanel;
+    protected OutputPanel outputPanel;
+    protected JTabbedPane tabPane;
+    protected TransitionPanel transitionPanel;
+    protected JPanel displayPanel;
 
     public ScreenPanel(MainPanel mainPanel)
     {            
@@ -27,13 +31,17 @@ public class ScreenPanel extends JPanel
         setBorder(BorderFactory.createEmptyBorder(15, 5, 5, 5));
         
         this.mainPanel      =   mainPanel;
+        displayPanel        =   new JPanel(new CardLayout());
         tabPane             =   new JTabbedPane();
+        transitionPanel     =   new TransitionPanel();
         dataPanel           =   new DataPanel(mainPanel);
         graphPanel          =   new GraphPanel(mainPanel);
         outputPanel         =   new OutputPanel();
+        
+        displayPanel.add(transitionPanel, Consts.DISPLAY_TRANSIT_CARD);
+        displayPanel.add(graphPanel, Consts.DISPLAY_GRAPH_CARD);
 
-
-        tabPane.addTab("", graphPanel);
+        tabPane.addTab("", displayPanel);
         tabPane.addTab("", dataPanel);
         tabPane.addTab("", outputPanel);
 
@@ -51,6 +59,17 @@ public class ScreenPanel extends JPanel
 
 
         add(tabPane);
+    }
+    
+    public void changeDisplayCard(String cardName)
+    {
+        CardLayout cLayout  =   (CardLayout) displayPanel.getLayout();
+        cLayout.show(displayPanel, cardName);
+    }
+    
+    public JPanel getDisplayPanel()
+    {
+        return displayPanel;
     }
     
     public MainPanel getMainPanel() 

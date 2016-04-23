@@ -83,5 +83,9 @@ public final class Consts
     public static final String CLUSTER_PANEL_CARD     =   "cluster_panel";
     public static final String SPATH_PANEL_CARD       =   "spath_panel";
     public static final String CENTRALITY_PANEL_CARD  =   "centrality_panel";
+    
+    //GraphPanel
+    public static final String DISPLAY_GRAPH_CARD     =   "disp_graph";
+    public static final String DISPLAY_TRANSIT_CARD   =   "disp_transit";
     //------------------------------------------------------------------------
 }
