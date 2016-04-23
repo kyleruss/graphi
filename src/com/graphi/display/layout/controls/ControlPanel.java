@@ -24,15 +24,15 @@ public class ControlPanel extends JPanel implements ActionListener
     protected PluginMenuListener menuListener;
     protected JMenuItem activePluginItem;
     
-    private ComputeControlPanel computePanel;
-    private GraphObjControlPanel gObjPanel;
-    private IOControlPanel ioPanel;
-    private ModeControlPanel modePanel;
-    private ScriptControlPanel scriptPanel;
-    private SimulationControlPanel simulationPanel;
-    private TaskControlPanel taskPanel;
-    private ViewerControlPanel viewerPanel;
-    private final MainPanel mainPanel;
+    protected ComputeControlPanel computePanel;
+    protected GraphObjControlPanel gObjPanel;
+    protected IOControlPanel ioPanel;
+    protected ModeControlPanel modePanel;
+    protected ScriptControlPanel scriptPanel;
+    protected SimulationControlPanel simulationPanel;
+    protected TaskControlPanel taskPanel;
+    protected ViewerControlPanel viewerPanel;
+    protected final MainPanel mainPanel;
     
     public ControlPanel(MainPanel mainPanel) 
     {
@@ -40,15 +40,7 @@ public class ControlPanel extends JPanel implements ActionListener
         setBorder(BorderFactory.createEmptyBorder(15, 0, 3, 8));
 
         this.mainPanel  =   mainPanel;
-        computePanel    =   new ComputeControlPanel(this);
-        gObjPanel       =   new GraphObjControlPanel(this);
-        ioPanel         =   new IOControlPanel(this);
-        modePanel       =   new ModeControlPanel(this);
-        scriptPanel     =   new ScriptControlPanel(this);
-        simulationPanel =   new SimulationControlPanel(this);
-        viewerPanel     =   new ViewerControlPanel(this);
-        taskPanel       =   new TaskControlPanel(this);
-
+        initControls();
         mainPanel.getMenu().setMenuItemListener(this);
 
         add(modePanel);
@@ -66,7 +58,18 @@ public class ControlPanel extends JPanel implements ActionListener
         add(viewerPanel);
         add(Box.createRigidArea(new Dimension(230, 30)));
         add(scriptPanel);
-
+    }
+    
+    protected void initControls()
+    {
+        computePanel    =   new ComputeControlPanel(this);
+        gObjPanel       =   new GraphObjControlPanel(this);
+        ioPanel         =   new IOControlPanel(this);
+        modePanel       =   new ModeControlPanel(this);
+        scriptPanel     =   new ScriptControlPanel(this);
+        simulationPanel =   new SimulationControlPanel(this);
+        viewerPanel     =   new ViewerControlPanel(this);
+        taskPanel       =   new TaskControlPanel(this);
     }
     
     @Override

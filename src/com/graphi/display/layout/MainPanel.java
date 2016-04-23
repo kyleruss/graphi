@@ -52,10 +52,7 @@ public class MainPanel extends JPanel
         menu                =   appManager.getWindow().getMenu();
         frame               =   appManager.getWindow().getFrame();
         data                =   new GraphData();
-        controlPanel        =   new ControlPanel(this);
-        screenPanel         =   new ScreenPanel(this);
-        splitPane           =   new JSplitPane();
-        controlScroll       =   new JScrollPane(controlPanel);
+        initComponents();
 
         controlScroll.setBorder(null);
         controlScroll.getVerticalScrollBar().setUnitIncrement(25);
@@ -63,6 +60,14 @@ public class MainPanel extends JPanel
         splitPane.setRightComponent(controlScroll); 
         splitPane.setResizeWeight(Consts.MAIN_SPLIT_WG);
         add(splitPane, BorderLayout.CENTER);
+    }
+    
+    protected void initComponents()
+    {
+        controlPanel        =   new ControlPanel(this);
+        screenPanel         =   new ScreenPanel(this);
+        splitPane           =   new JSplitPane();
+        controlScroll       =   new JScrollPane(controlPanel);
     }
     
     public GraphData getGraphData()
