@@ -34,7 +34,7 @@ import net.miginfocom.swing.MigLayout;
 
 public class TaskControlPanel extends JPanel implements ActionListener
 {
-    private final String[] OPTIONS    =   
+    protected String[] OPTIONS    =   
     { 
         "Record graph", 
         "Simulate network", 
@@ -129,7 +129,7 @@ public class TaskControlPanel extends JPanel implements ActionListener
     }
     
     
-    private void handleAction(int actionIndex)
+    protected void handleAction(int actionIndex)
     {
         MainPanel middleMan  =   controlPanel.getMainPanel();
         
@@ -137,7 +137,7 @@ public class TaskControlPanel extends JPanel implements ActionListener
         {
             case 0: middleMan.getScreenPanel().getGraphPanel().addRecordedGraph(); break;
             case 1: middleMan.getControlPanel().getSimulationPanel().showGeneratorSim(); break;
-            case 3: middleMan.getControlPanel().getSimulationPanel().resetSim(); break;
+            case 2: middleMan.getControlPanel().getSimulationPanel().resetSim(); break;
         }
     }
     
@@ -147,6 +147,18 @@ public class TaskControlPanel extends JPanel implements ActionListener
             JOptionPane.showMessageDialog(null, setupPanel, "Manage setup tasks", JOptionPane.INFORMATION_MESSAGE);
         else
             JOptionPane.showMessageDialog(null, repeatPanel, "Manage repeat tasks", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    protected void addOption(String name)
+    {
+        setupPanel.optionsBox.addItem(name);
+        repeatPanel.optionsBox.addItem(name);
+    }
+    
+    protected void removeOption(String name)
+    {
+        setupPanel.optionsBox.removeItem(name);
+        repeatPanel.optionsBox.addItem(name);
     }
 
     @Override
@@ -217,19 +229,19 @@ public class TaskControlPanel extends JPanel implements ActionListener
             topControlsPanel.add(optionsBox, BorderLayout.CENTER);
             topControlsPanel.add(addButton, BorderLayout.EAST);
             
-            initOptions();
             addButton.addActionListener(this);
+            initOptions();
             
             add(outerWrapper, BorderLayout.CENTER);
             add(topControlsPanel, BorderLayout.NORTH);
         }
         
-        private void initOptions()
+        protected void initOptions()
         {
             for(String option : OPTIONS)
                 optionsBox.addItem(option);
         }
-
+        
         @Override
         public void actionPerformed(ActionEvent e) 
         {
