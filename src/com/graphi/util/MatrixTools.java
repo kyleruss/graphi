@@ -163,28 +163,11 @@ public class MatrixTools
         b   =   transpose(b);
 
         Entry<Double, SparseDoubleMatrix2D> evEntry =   null;
-        int divIndex = 0;
         
         for(int i = 0; i < LIMIT; i++)
         {
-            u    =   multiplyMatrix(b, v);
-            
-            if(i == 0)
-            {
-                double maxDiv   =   u.get(0, 0);
-                for(int j = 1; j < u.rows(); j++)
-                {
-                    double currentDiv  =   u.get(j, 0);
-                    if(currentDiv > maxDiv)
-                    {
-                        maxDiv      =   currentDiv;
-                        divIndex    =   j;   
-                    }
-                }
-                
-            }
-            
-            double div  =   u.get(divIndex, 0);
+            u           =   multiplyMatrix(b, v);
+            double div  =   u.get(0, 0);
             v           =   isRowVector(u)? divRowVector(u, div) : divColVector(u, div);
             
             if(i == LIMIT - 1)
