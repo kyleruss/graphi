@@ -53,7 +53,7 @@ public class ScreenPanel extends JPanel
         JLabel dataLabel    =   new JLabel("Data", JLabel.CENTER);
         JLabel outLabel     =   new JLabel("Output", JLabel.CENTER);
 
-        dispLabel.setIcon(new ImageIcon(mainPanel.graphIcon));
+        dispLabel.setIcon(new ImageIcon(AppResources.getInstance().getResource("graphIconV2")));
         outLabel.setIcon(new ImageIcon(mainPanel.clipIcon));
         dataLabel.setIcon(new ImageIcon(mainPanel.tableIcon));
 

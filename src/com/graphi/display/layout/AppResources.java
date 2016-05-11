@@ -29,7 +29,7 @@ public class AppResources
     {
         try
         {
-            resourceMap         =   new HashMap<>();
+            resourceMap  =   new HashMap<>();
             resourceMap.put("addIcon", ImageIO.read(new File(Consts.IMG_DIR + "addSmallIcon.png")));
             resourceMap.put("removeIcon", ImageIO.read(new File(Consts.IMG_DIR + "removeSmallIcon.png")));
             resourceMap.put("colourIcon", ImageIO.read(new File(Consts.IMG_DIR + "color_icon.png")));
@@ -51,6 +51,7 @@ public class AppResources
             resourceMap.put("stopIcon", ImageIO.read(new File(Consts.IMG_DIR + "stop.png")));
             resourceMap.put("recordIcon", ImageIO.read(new File(Consts.IMG_DIR + "record.png")));
             resourceMap.put("closeIcon", ImageIO.read(new File(Consts.IMG_DIR + "close.png")));
+            resourceMap.put("graphIconV2", ImageIO.read(new File(Consts.IMG_DIR + "graph2.png")));
         }
         
         catch(IOException e)
@@ -74,7 +75,7 @@ public class AppResources
         return resourceMap.containsKey(resourceName);
     }
     
-    public static AppResources getResources()
+    public static AppResources getInstance()
     {
         if(instance == null) instance   =   new AppResources();
         return instance;
