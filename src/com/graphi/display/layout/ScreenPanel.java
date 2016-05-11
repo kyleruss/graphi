@@ -54,8 +54,8 @@ public class ScreenPanel extends JPanel
         JLabel outLabel     =   new JLabel("Output", JLabel.CENTER);
 
         dispLabel.setIcon(new ImageIcon(AppResources.getInstance().getResource("graphIconV2")));
-        outLabel.setIcon(new ImageIcon(mainPanel.clipIcon));
-        dataLabel.setIcon(new ImageIcon(mainPanel.tableIcon));
+        outLabel.setIcon(new ImageIcon(AppResources.getInstance().getResource("clipIcon")));
+        dataLabel.setIcon(new ImageIcon(AppResources.getInstance().getResource("tableIcon")));
 
         tabPane.setTabComponentAt(0, dispLabel);
         tabPane.setTabComponentAt(1, dataLabel);

@@ -298,7 +298,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         if(pbPlaying)
         {
             pbPlaying = false;
-            pbToggle.setIcon(new ImageIcon(mainPanel.playIcon));
+            pbToggle.setIcon(new ImageIcon(AppResources.getInstance().getResource("playIcon")));
             pbToggle.setText("Play");
             stopPlayback();
         }
@@ -306,7 +306,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         else
         {
             pbPlaying = true;
-            pbToggle.setIcon(new ImageIcon(mainPanel.stopIcon));
+            pbToggle.setIcon(new ImageIcon(AppResources.getInstance().getResource("stopIcon")));
             pbToggle.setText("Stop");
             startPlayback();
         }
@@ -601,7 +601,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
             pbDate          =   new JLabel("N/A");
             pbPlaying       =   false;
 
-            pbToggle.setIcon(new ImageIcon(mainPanel.playIcon));
+            pbToggle.setIcon(new ImageIcon(AppResources.getInstance().getResource("playIcon")));
             pbProgress.addChangeListener(this);
             pbProgressSpeed.addChangeListener(this);
 
@@ -645,8 +645,8 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
             gpRecEntries        =   new JComboBox();
             gpRecEntries.setPreferredSize(new Dimension(120, 20));
             gpRecEntryName.setPreferredSize(new Dimension(120, 20));
-            gpRecSaveBtn.setIcon(new ImageIcon(mainPanel.addIcon));
-            gpRecRemoveBtn.setIcon(new ImageIcon(mainPanel.removeIcon));
+            gpRecSaveBtn.setIcon(new ImageIcon(AppResources.getInstance().getResource("addIcon")));
+            gpRecRemoveBtn.setIcon(new ImageIcon(AppResources.getInstance().getResource("removeIcon")));
             gpRecEntries.addItem("-- New entry --");
 
             JPanel gpRecInnerWrapper    =   new JPanel(new MigLayout());
@@ -671,7 +671,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
 
             gpCtrlsClose                =   new JButton("Close");
             JPanel gpControlsExitPanel  =   new JPanel();
-            gpCtrlsClose.setIcon(new ImageIcon(mainPanel.closeIcon));
+            gpCtrlsClose.setIcon(new ImageIcon(AppResources.getInstance().getResource("closeIcon")));
 
             gpControlsExitPanel.add(gpCtrlsClose);
             add(gpControlsWrapper, BorderLayout.CENTER);

@@ -29,14 +29,6 @@ public class MainPanel extends JPanel
     protected ScreenPanel screenPanel;
     protected JSplitPane splitPane;
     protected JScrollPane controlScroll;
-    
-    public BufferedImage addIcon, removeIcon, colourIcon;
-    public BufferedImage clipIcon, openIcon, saveIcon;
-    public BufferedImage editBlackIcon, pointerIcon, moveIcon;
-    public BufferedImage moveSelectedIcon, editSelectedIcon, pointerSelectedIcon;
-    public BufferedImage graphIcon, tableIcon, resetIcon, executeIcon;
-    public BufferedImage editIcon, playIcon, stopIcon, recordIcon, closeIcon;
-    
     protected GraphData data;
     protected MainMenu menu;
     protected JFrame frame; 
@@ -46,7 +38,6 @@ public class MainPanel extends JPanel
     {
         setPreferredSize(new Dimension(Consts.WINDOW_WIDTH, Consts.WINDOW_HEIGHT));
         setLayout(new BorderLayout());        
-        initResources();
         
         this.appManager     =   appManager;
         menu                =   appManager.getWindow().getMenu();
@@ -80,38 +71,6 @@ public class MainPanel extends JPanel
         this.data   =   data;
     }
     
-    protected void initResources()
-    {
-        try
-        {
-            addIcon             =   ImageIO.read(new File(Consts.IMG_DIR + "addSmallIcon.png"));
-            removeIcon          =   ImageIO.read(new File(Consts.IMG_DIR + "removeSmallIcon.png"));   
-            colourIcon          =   ImageIO.read(new File(Consts.IMG_DIR + "color_icon.png"));   
-            clipIcon            =   ImageIO.read(new File(Consts.IMG_DIR + "clipboard.png"));  
-            saveIcon            =   ImageIO.read(new File(Consts.IMG_DIR + "new_file.png"));
-            openIcon            =   ImageIO.read(new File(Consts.IMG_DIR + "open_icon.png"));
-            editBlackIcon       =   ImageIO.read(new File(Consts.IMG_DIR + "editblack.png"));
-            pointerIcon         =   ImageIO.read(new File(Consts.IMG_DIR + "pointer.png"));
-            moveIcon            =   ImageIO.read(new File(Consts.IMG_DIR + "move.png"));
-            moveSelectedIcon    =   ImageIO.read(new File(Consts.IMG_DIR + "move_selected.png"));
-            editSelectedIcon    =   ImageIO.read(new File(Consts.IMG_DIR + "editblack_selected.png"));
-            pointerSelectedIcon =   ImageIO.read(new File(Consts.IMG_DIR + "pointer_selected.png"));
-            graphIcon           =   ImageIO.read(new File(Consts.IMG_DIR + "graph.png"));
-            tableIcon           =   ImageIO.read(new File(Consts.IMG_DIR + "table.png"));
-            executeIcon         =   ImageIO.read(new File(Consts.IMG_DIR + "execute.png"));
-            resetIcon           =   ImageIO.read(new File(Consts.IMG_DIR + "reset.png"));
-            editIcon            =   ImageIO.read(new File(Consts.IMG_DIR + "edit.png"));
-            playIcon            =   ImageIO.read(new File(Consts.IMG_DIR + "play.png"));
-            stopIcon            =   ImageIO.read(new File(Consts.IMG_DIR + "stop.png"));
-            recordIcon          =   ImageIO.read(new File(Consts.IMG_DIR + "record.png"));
-            closeIcon           =   ImageIO.read(new File(Consts.IMG_DIR + "close.png"));
-        }
-        
-        catch(IOException e)
-        {
-            ErrorManager.GUIErrorMessage("Failed to load resources", true, e, null);
-        }
-    }
     
     
     public ControlPanel getControlPanel() 
