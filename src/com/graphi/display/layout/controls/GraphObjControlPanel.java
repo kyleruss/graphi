@@ -7,6 +7,7 @@
 package com.graphi.display.layout.controls;
 
 import com.graphi.app.Consts;
+import com.graphi.display.layout.AppResources;
 import com.graphi.util.ComponentUtils;
 import java.awt.Color;
 import java.awt.Font;
@@ -46,9 +47,9 @@ public class GraphObjControlPanel extends JPanel implements ActionListener
         gObjAddBtn.setBackground(Color.WHITE);
         gObjEditBtn.setBackground(Color.WHITE);
         gObjRemoveBtn.setBackground(Color.WHITE);
-        gObjAddBtn.setIcon(new ImageIcon(outer.getMainPanel().addIcon));
-        gObjRemoveBtn.setIcon(new ImageIcon(outer.getMainPanel().removeIcon));
-        gObjEditBtn.setIcon(new ImageIcon(outer.getMainPanel().editIcon));
+        gObjAddBtn.setIcon(new ImageIcon(AppResources.getInstance().getResource("addIcon")));
+        gObjRemoveBtn.setIcon(new ImageIcon(AppResources.getInstance().getResource("removeIcon")));
+        gObjEditBtn.setIcon(new ImageIcon(AppResources.getInstance().getResource("editIcon")));
 
         selectedLabel.setFont(new Font("Arial", Font.BOLD, 12));
 

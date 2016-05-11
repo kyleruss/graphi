@@ -6,6 +6,7 @@
 
 package com.graphi.display.layout.controls;
 
+import com.graphi.display.layout.AppResources;
 import com.graphi.display.layout.GraphPanel;
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -38,8 +39,8 @@ public class ScriptControlPanel extends JPanel implements ActionListener
         displayCtrlsBtn     =   new JButton("Playback controls");
         recording           =   false;
 
-        recordCtrlsBtn.setIcon(new ImageIcon(outer.getMainPanel().recordIcon));
-        displayCtrlsBtn.setIcon(new ImageIcon(outer.getMainPanel().playIcon));
+        recordCtrlsBtn.setIcon(new ImageIcon(AppResources.getInstance().getResource("recordIcon")));
+        displayCtrlsBtn.setIcon(new ImageIcon(AppResources.getInstance().getResource("playIcon")));
         activeScriptLabel.setFont(new Font("Arial", Font.BOLD, 12));
         
         wrapper.setBorder(BorderFactory.createTitledBorder("Script controls"));

@@ -7,6 +7,7 @@
 package com.graphi.display.layout.controls;
 
 import com.graphi.app.Consts;
+import com.graphi.display.layout.AppResources;
 import com.graphi.display.layout.DataPanel;
 import com.graphi.io.AdjMatrixParser;
 import com.graphi.io.GMLParser;
@@ -56,8 +57,8 @@ public class IOControlPanel extends JPanel implements ActionListener
         exportBtn = new JButton("Export");
         ioTypeBox = new JComboBox();
         directedCheck = new JCheckBox("Directed");
-        importBtn.setIcon(new ImageIcon(outer.getMainPanel().openIcon));
-        exportBtn.setIcon(new ImageIcon(outer.getMainPanel().saveIcon));
+        importBtn.setIcon(new ImageIcon(AppResources.getInstance().getResource("openIcon")));
+        exportBtn.setIcon(new ImageIcon(AppResources.getInstance().getResource("saveIcon")));
         ioTypeBox.addItem("Graph");
         ioTypeBox.addItem("Log");
         ioTypeBox.addItem("Script");

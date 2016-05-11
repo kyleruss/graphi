@@ -7,6 +7,7 @@
 package com.graphi.display.layout.controls;
 
 import com.graphi.app.Consts;
+import com.graphi.display.layout.AppResources;
 import com.graphi.util.ComponentUtils;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -54,7 +55,7 @@ public class ComputeControlPanel extends JPanel implements ActionListener
         computeBtn          =   new JButton("Execute");
         computeBtn.setBackground(Color.WHITE);
         computeBtn.addActionListener(this);
-        computeBtn.setIcon(new ImageIcon(outer.getMainPanel().executeIcon));
+        computeBtn.setIcon(new ImageIcon(AppResources.getInstance().getResource("executeIcon")));
 
         computeBox.addItem("Clusters");
         computeBox.addItem("Centrality");

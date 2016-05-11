@@ -7,6 +7,7 @@
 package com.graphi.display.layout.controls;
 
 import com.graphi.app.Consts;
+import com.graphi.display.layout.AppResources;
 import com.graphi.display.layout.MainPanel;
 import com.graphi.display.layout.util.ButtonColumn;
 import java.awt.BorderLayout;
@@ -205,13 +206,14 @@ public class TaskControlPanel extends JPanel implements ActionListener
             };
             
             taskTable       =   new JTable(taskTableModel);
-            addButton.setIcon(new ImageIcon(controlPanel.getMainPanel().addIcon));
+            addButton.setIcon(new ImageIcon(AppResources.getInstance().getResource("addIcon")));
             
             taskTableModel.addColumn("");
             taskTableModel.addColumn("");
             taskTable.getColumnModel().getColumn(0).setCellRenderer(new TaskLabelCellRenderer());
             
-            ButtonColumn btnColumn  =   new ButtonColumn(taskTable, new TaskItemListener(), 1, new ImageIcon(controlPanel.getMainPanel().removeIcon));
+            ButtonColumn btnColumn  =   new ButtonColumn(taskTable, new TaskItemListener(), 1, 
+                    new ImageIcon(AppResources.getInstance().getResource("removeIcon")));
             
             taskTable.getColumnModel().getColumn(0).setCellRenderer(new TaskLabelCellRenderer());
             taskTable.getColumnModel().getColumn(0).setPreferredWidth(120);
@@ -265,7 +267,7 @@ public class TaskControlPanel extends JPanel implements ActionListener
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
             {
                 JLabel taskLabel    =   new JLabel("" + value);
-                taskLabel.setIcon(new ImageIcon(controlPanel.getMainPanel().executeIcon));
+                taskLabel.setIcon(new ImageIcon(AppResources.getInstance().getResource("executeIcon")));
                 
                 return taskLabel;
             }

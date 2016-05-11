@@ -7,6 +7,7 @@
 package com.graphi.display.layout.controls;
 
 import com.graphi.app.Consts;
+import com.graphi.display.layout.AppResources;
 import com.graphi.sim.Network;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import java.awt.BorderLayout;
@@ -68,8 +69,8 @@ public class SimulationControlPanel extends JPanel implements ActionListener
         resetGeneratorBtn.setBackground(Color.WHITE);
         executeGeneratorBtn.setBackground(Color.WHITE);
 
-        resetGeneratorBtn.setIcon(new ImageIcon(outer.getMainPanel().resetIcon));
-        executeGeneratorBtn.setIcon(new ImageIcon(outer.getMainPanel().executeIcon));
+        resetGeneratorBtn.setIcon(new ImageIcon(AppResources.getInstance().getResource("resetIcon")));
+        executeGeneratorBtn.setIcon(new ImageIcon(AppResources.getInstance().getResource("executeIcon")));
 
         genPanel    =   new JPanel(new CardLayout());
         baGenPanel  =   new JPanel(new MigLayout());

@@ -6,6 +6,7 @@
 
 package com.graphi.display.layout.controls;
 
+import com.graphi.display.layout.AppResources;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -40,7 +41,7 @@ public class ViewerControlPanel extends JPanel implements ActionListener
         vertexBGBtn             =   new JButton("Choose");
         edgeBGBtn               =   new JButton("Choose");
 
-        ImageIcon clrIcon   =   new ImageIcon(outer.getMainPanel().colourIcon);
+        ImageIcon clrIcon   =   new ImageIcon(AppResources.getInstance().getResource("colourIcon"));
         viewerBGBtn.setIcon(clrIcon);
         vertexBGBtn.setIcon(clrIcon);
         edgeBGBtn.setIcon(clrIcon);
