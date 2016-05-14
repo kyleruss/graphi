@@ -39,7 +39,7 @@ public class ScreenPanel extends JPanel
         transitionPanel     =   new TransitionPanel();
         dataPanel           =   new DataPanel(mainPanel);
         graphPanel          =   new GraphPanel(mainPanel);
-        outputPanel         =   new OutputPanel();
+        outputPanel         =   new OutputPanel(mainPanel);
         
         displayPanel.add(transitionPanel, Consts.DISPLAY_TRANSIT_CARD);
         displayPanel.add(graphPanel, Consts.DISPLAY_GRAPH_CARD);

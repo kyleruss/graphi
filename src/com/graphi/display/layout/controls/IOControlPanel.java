@@ -84,13 +84,13 @@ public class IOControlPanel extends JPanel implements ActionListener
         currentStorageLabel.setFont(new Font("Arial", Font.BOLD, 12));
     }
     
-    protected void importPlugin()
+    public void importPlugin()
     {
         File file           =   ComponentUtils.getFile(true, "Graphi .jar plugin", "jar");
         outer.getMainPanel().getAppManager().getWindow().getMenu().getPluginListMenu().loadPluginFile(file, outer.getMainPanel().getAppManager().getPluginManager(), outer.getMainPanel().getAppManager());
     }
 
-    protected void exportGraph()
+    public void exportGraph()
     {
         File file           =   ComponentUtils.getFile(false, "Graphi .graph, adjacency matrix .txt, .gml, graphML .xml", "graph", "txt", "gml", "xml");
         String extension    =   ComponentUtils.getFileExtension(file);
@@ -111,7 +111,7 @@ public class IOControlPanel extends JPanel implements ActionListener
         }
     }
 
-    protected void importGraph()
+    public void importGraph()
     {
         File file           =   ComponentUtils.getFile(true, "Graphi .graph, adjacency matrix .txt, .gml, graphML .xml", "graph", "txt", "gml", "xml");
         String extension    =   ComponentUtils.getFileExtension(file);   
@@ -146,7 +146,7 @@ public class IOControlPanel extends JPanel implements ActionListener
         }
     }
 
-    protected void importScript()
+    public void importScript()
     {
         File file   =   ComponentUtils.getFile(true, "Graphi .gscript file", "gscript");
         if(file != null)
@@ -165,7 +165,7 @@ public class IOControlPanel extends JPanel implements ActionListener
         }
     }
 
-    protected void exportScript()
+    public void exportScript()
     {
         File file   =   ComponentUtils.getFile(false, "Graphi .gscript file", "gscript");
         if(file != null)
@@ -222,14 +222,14 @@ public class IOControlPanel extends JPanel implements ActionListener
             outer.getMainPanel().getGraphData().getEdges().put(edge.getID(), edge);
     }
 
-    protected void exportLog()
+    public void exportLog()
     {
         File file   =   ComponentUtils.getFile(false, "Graphi .log file", "log");
         if(file != null)
             Storage.saveOutputLog(outer.getMainPanel().getScreenPanel().getOutputPanel().getOutputArea().getText(), file);
     }
 
-    protected void importLog()
+    public void importLog()
     {
         File file   =   ComponentUtils.getFile(true, "Graphi .log file", "log");
         if(file != null)
