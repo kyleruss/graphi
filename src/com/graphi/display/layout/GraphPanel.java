@@ -350,14 +350,25 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
        }
     }
 
-    protected void removeRecordedGraph()
+    public void removeRecordedGraph()
     {
         int selectedIndex   =   gpRecEntries.getSelectedIndex();
-        if(selectedIndex != 0)
+        removeRecordedGraph(selectedIndex);
+    }
+    
+    public void removeAllRecordedEntries()
+    {
+        while(gpRecEntries.getItemCount() > 1)
+            removeRecordedGraph(1);
+    }
+    
+    public void removeRecordedGraph(int index)
+    {
+        if(index != 0)
         {
             PlaybackEntry entry =   (PlaybackEntry) gpRecEntries.getSelectedItem();
             gPlayback.remove(entry);
-            gpRecEntries.removeItemAt(selectedIndex);
+            gpRecEntries.removeItemAt(index);
             gpRecEntries.setSelectedIndex(0);
             gpRecEntryName.setText("");
             gpRecDatePicker.setDate(new Date());

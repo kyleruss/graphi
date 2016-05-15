@@ -38,7 +38,6 @@ public class ModeControlPanel extends JPanel implements ActionListener
         editCheck.setIcon(new ImageIcon(resources.getResource("editBlackIcon")));
         selectCheck.setIcon(new ImageIcon(resources.getResource("pointerIcon")));
         moveCheck.setIcon(new ImageIcon(resources.getResource("moveIcon")));
-        GUIUtils.showTooltip(editCheck, "Hey!");
 
         moveCheck.setSelectedIcon(new ImageIcon(resources.getResource("moveSelectedIcon")));
         editCheck.setSelectedIcon(new ImageIcon(resources.getResource("editSelectedIcon")));

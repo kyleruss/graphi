@@ -35,11 +35,12 @@ import net.miginfocom.swing.MigLayout;
 
 public class TaskControlPanel extends JPanel implements ActionListener
 {
-    protected String[] OPTIONS    =   
+    protected final String[] OPTIONS    =   
     { 
         "Record graph", 
         "Simulate network", 
         "Reset network simulation",
+        "Clear recorded entries"
     };
     
     private ControlPanel controlPanel;
@@ -139,7 +140,13 @@ public class TaskControlPanel extends JPanel implements ActionListener
             case 0: middleMan.getScreenPanel().getGraphPanel().addRecordedGraph(); break;
             case 1: middleMan.getControlPanel().getSimulationPanel().showGeneratorSim(); break;
             case 2: middleMan.getControlPanel().getSimulationPanel().resetSim(); break;
+            case 3: middleMan.getScreenPanel().getGraphPanel().removeAllRecordedEntries(); break;
         }
+    }
+    
+    public int getOptionsCount()
+    {
+        return OPTIONS.length;
     }
     
     public void showTasksDialog(boolean isSetup)

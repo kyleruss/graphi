@@ -108,8 +108,9 @@ public class DataPanel extends JPanel implements ActionListener
     
     public void clearComputeTable()
     {
-        computationModel    =   null;
+        computationModel    =   new DefaultTableModel();
         setComputationContext(null);
+        computeTable.setModel(computationModel);
     }
     
     public String getComputationContext()
