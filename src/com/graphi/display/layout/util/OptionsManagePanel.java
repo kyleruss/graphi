@@ -17,15 +17,13 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
-public class OptionsManagePanel extends JPanel 
+public abstract class OptionsManagePanel extends JPanel 
 {
     private JTable taskTable;
     private DefaultTableModel taskTableModel;
@@ -51,8 +49,7 @@ public class OptionsManagePanel extends JPanel
         taskTableModel.addColumn("");
         taskTable.getColumnModel().getColumn(0).setCellRenderer(new TaskLabelCellRenderer());
 
-        ButtonColumn btnColumn  =   new ButtonColumn(taskTable, new TaskItemListener(), 1, 
-                new ImageIcon(AppResources.getInstance().getResource("removeIcon")));
+        ButtonColumn btnColumn  =   new ButtonColumn(taskTable, new TaskItemListener(), 1, getItemIcon());
 
         taskTable.getColumnModel().getColumn(0).setCellRenderer(new TaskLabelCellRenderer());
         taskTable.getColumnModel().getColumn(0).setPreferredWidth(120);
@@ -68,6 +65,9 @@ public class OptionsManagePanel extends JPanel
 
         add(outerWrapper, BorderLayout.CENTER);
     }
+    
+    protected abstract ImageIcon getItemIcon();
+ 
    
     public List getValues(int column)
     {

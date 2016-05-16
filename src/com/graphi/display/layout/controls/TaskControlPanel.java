@@ -220,5 +220,11 @@ public class TaskControlPanel extends JPanel implements ActionListener
         {
             add(optionsBox.getSelectedItem(), "");
         }
+
+        @Override
+        protected ImageIcon getItemIcon() 
+        {
+            return new ImageIcon(AppResources.getInstance().getResource("removeIcon"));
+        }
     }
 }
