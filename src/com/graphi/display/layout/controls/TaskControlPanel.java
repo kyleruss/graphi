@@ -10,11 +10,13 @@ import com.graphi.app.Consts;
 import com.graphi.display.layout.AppResources;
 import com.graphi.display.layout.MainPanel;
 import com.graphi.display.layout.util.ButtonColumn;
+import com.graphi.display.layout.util.OptionsManagePanel;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -104,15 +106,14 @@ public class TaskControlPanel extends JPanel implements ActionListener
     
     public void executeActions(boolean setup, int n)
     {
-        DefaultTableModel model =   setup? setupPanel.taskTableModel : repeatPanel.taskTableModel;
-        int rowCount            =   model.getRowCount();
         JComboBox comboBox      =   setupPanel.optionsBox;
+        List taskList           =   setup? setupPanel.getValues(0) : repeatPanel.getValues(0);
         
         for(int i = 0; i < n; i++)
         {
-            for(int row = 0; row < rowCount; row++)
+            for(int j = 0; j < taskList.size(); j++)
             {
-                String option   =   model.getValueAt(row, 0).toString();
+                String option   =   taskList.get(j).toString();
                 int actionIndex =   ((DefaultComboBoxModel) comboBox.getModel()).getIndexOf(option);
 
                 if(actionIndex != -1) handleAction(actionIndex);
@@ -166,7 +167,7 @@ public class TaskControlPanel extends JPanel implements ActionListener
     protected void removeOption(String name)
     {
         setupPanel.optionsBox.removeItem(name);
-        repeatPanel.optionsBox.addItem(name);
+        repeatPanel.optionsBox.removeItem(name);
     }
 
     @Override
@@ -188,61 +189,24 @@ public class TaskControlPanel extends JPanel implements ActionListener
         }
     }
     
-    private class TaskPopupPanel extends JPanel implements ActionListener
+    private class TaskPopupPanel extends OptionsManagePanel implements ActionListener
     {
         private JButton addButton;
         private JComboBox optionsBox;
-        private JTable taskTable;
-        private DefaultTableModel taskTableModel;
         
         public TaskPopupPanel()
         {
-            setLayout(new BorderLayout());
-            setBackground(Consts.PRESET_COL);
-            setPreferredSize(new Dimension(300, 270));
-            
             addButton       =   new JButton("Add task");
             optionsBox      =   new JComboBox();
-            taskTableModel  =   new DefaultTableModel()
-            {
-                @Override
-                public boolean isCellEditable(int row, int col)
-                {
-                    return col != 0;
-                }
-            };
-            
-            taskTable       =   new JTable(taskTableModel);
             addButton.setIcon(new ImageIcon(AppResources.getInstance().getResource("addIcon")));
-            
-            taskTableModel.addColumn("");
-            taskTableModel.addColumn("");
-            taskTable.getColumnModel().getColumn(0).setCellRenderer(new TaskLabelCellRenderer());
-            
-            ButtonColumn btnColumn  =   new ButtonColumn(taskTable, new TaskItemListener(), 1, 
-                    new ImageIcon(AppResources.getInstance().getResource("removeIcon")));
-            
-            taskTable.getColumnModel().getColumn(0).setCellRenderer(new TaskLabelCellRenderer());
-            taskTable.getColumnModel().getColumn(0).setPreferredWidth(120);
-            taskTable.getColumnModel().getColumn(1).setPreferredWidth(5);
-            taskTable.setBackground(Consts.PRESET_COL);
-            
-            JPanel tableWrapper =   new JPanel(new BorderLayout());
-            JPanel outerWrapper =   new JPanel(new BorderLayout());
-            tableWrapper.setBorder(BorderFactory.createTitledBorder("Tasks"));
-            
-            tableWrapper.add(taskTable);
-            outerWrapper.add(tableWrapper);
             
             JPanel topControlsPanel =   new JPanel(new BorderLayout());
             topControlsPanel.add(optionsBox, BorderLayout.CENTER);
             topControlsPanel.add(addButton, BorderLayout.EAST);
-            
-            addButton.addActionListener(this);
+            add(topControlsPanel, BorderLayout.NORTH);
             initOptions();
             
-            add(outerWrapper, BorderLayout.CENTER);
-            add(topControlsPanel, BorderLayout.NORTH);
+            addButton.addActionListener(this);
         }
         
         protected void initOptions()
@@ -254,31 +218,7 @@ public class TaskControlPanel extends JPanel implements ActionListener
         @Override
         public void actionPerformed(ActionEvent e) 
         {
-            taskTableModel.addRow(new Object[] { optionsBox.getSelectedItem(), "" });
-        }
-        
-        private class TaskItemListener extends AbstractAction
-        {
-
-            @Override
-            public void actionPerformed(ActionEvent e) 
-            {
-                int row =   Integer.valueOf(e.getActionCommand());
-                taskTableModel.removeRow(row);
-            }
-        }
-        
-        private class TaskLabelCellRenderer implements TableCellRenderer
-        {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
-            {
-                JLabel taskLabel    =   new JLabel("" + value);
-                taskLabel.setIcon(new ImageIcon(AppResources.getInstance().getResource("executeIcon")));
-                
-                return taskLabel;
-            }
+            add(optionsBox.getSelectedItem(), "");
         }
     }
-    
 }
