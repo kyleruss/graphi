@@ -11,7 +11,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.AbstractAction;
@@ -49,7 +48,7 @@ public abstract class OptionsManagePanel extends JPanel
         taskTableModel.addColumn("");
         taskTable.getColumnModel().getColumn(0).setCellRenderer(new TaskLabelCellRenderer());
 
-        ButtonColumn btnColumn  =   new ButtonColumn(taskTable, new TaskItemListener(), 1, getItemIcon());
+        ButtonColumn btnColumn  =   new ButtonColumn(taskTable, new TaskItemListener(), 1, new ImageIcon(AppResources.getInstance().getResource("removeIcon")));
 
         taskTable.getColumnModel().getColumn(0).setCellRenderer(new TaskLabelCellRenderer());
         taskTable.getColumnModel().getColumn(0).setPreferredWidth(120);
@@ -58,7 +57,7 @@ public abstract class OptionsManagePanel extends JPanel
 
         JPanel tableWrapper =   new JPanel(new BorderLayout());
         JPanel outerWrapper =   new JPanel(new BorderLayout());
-        tableWrapper.setBorder(BorderFactory.createTitledBorder("Tasks"));
+        tableWrapper.setBorder(BorderFactory.createTitledBorder("Items"));
 
         tableWrapper.add(taskTable);
         outerWrapper.add(tableWrapper);
@@ -80,7 +79,7 @@ public abstract class OptionsManagePanel extends JPanel
         return items;
     }
 
-    public void add(Object... obj)
+    public void addOption(Object... obj)
     {
         taskTableModel.addRow(obj);
     }
@@ -102,7 +101,7 @@ public abstract class OptionsManagePanel extends JPanel
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
         {
             JLabel taskLabel    =   new JLabel("" + value);
-            taskLabel.setIcon(new ImageIcon(AppResources.getInstance().getResource("executeIcon")));
+            taskLabel.setIcon(getItemIcon());
 
             return taskLabel;
         }

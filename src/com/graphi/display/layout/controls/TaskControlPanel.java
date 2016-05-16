@@ -29,10 +29,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
-import javax.swing.JTable;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import net.miginfocom.swing.MigLayout;
 
 public class TaskControlPanel extends JPanel implements ActionListener
@@ -218,13 +215,13 @@ public class TaskControlPanel extends JPanel implements ActionListener
         @Override
         public void actionPerformed(ActionEvent e) 
         {
-            add(optionsBox.getSelectedItem(), "");
+            addOption(optionsBox.getSelectedItem(), "");
         }
 
         @Override
         protected ImageIcon getItemIcon() 
         {
-            return new ImageIcon(AppResources.getInstance().getResource("removeIcon"));
+            return new ImageIcon(AppResources.getInstance().getResource("executeIcon"));
         }
     }
 }
