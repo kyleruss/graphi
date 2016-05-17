@@ -12,12 +12,9 @@ import com.graphi.display.layout.MainPanel;
 import com.graphi.display.layout.util.ButtonColumn;
 import com.graphi.display.layout.util.OptionsManagePanel;
 import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -112,8 +109,9 @@ public class TaskControlPanel extends JPanel implements ActionListener
             {
                 String option   =   taskList.get(j).toString();
                 int actionIndex =   ((DefaultComboBoxModel) comboBox.getModel()).getIndexOf(option);
-
-                if(actionIndex != -1) handleAction(actionIndex);
+                
+                if(actionIndex != -1)
+                    handleAction(actionIndex);
             }
         }
     }

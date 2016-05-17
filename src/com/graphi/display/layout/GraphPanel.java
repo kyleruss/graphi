@@ -134,6 +134,13 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         add(gViewer, BorderLayout.CENTER);
         add(controlPanel, BorderLayout.SOUTH);
     }
+    
+    public void resetEntries()
+    {
+        gpRecEntries.removeAllItems();
+        mainPanel.getGraphData().setGraph(new SparseMultigraph());
+        reloadGraph();
+    }
 
     public void addPlaybackEntries()
     {
@@ -366,7 +373,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     {
         if(index != 0)
         {
-            PlaybackEntry entry =   (PlaybackEntry) gpRecEntries.getSelectedItem();
+            PlaybackEntry entry =   (PlaybackEntry) gpRecEntries.getItemAt(index);
             gPlayback.remove(entry);
             gpRecEntries.removeItemAt(index);
             gpRecEntries.setSelectedIndex(0);
