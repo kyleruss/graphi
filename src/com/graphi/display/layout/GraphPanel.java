@@ -130,6 +130,9 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         
         controlPanel    =   new PlaybackControlPanel();
         controlPanel.setVisible(false);
+        
+        recordComputeCheck.setSelected(true);
+        recordStateCheck.setSelected(true);
 
         add(gViewer, BorderLayout.CENTER);
         add(controlPanel, BorderLayout.SOUTH);
