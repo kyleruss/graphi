@@ -4,12 +4,11 @@
 //  https://github.com/denkers/graphi
 //=========================================
 
-package com.graphi.plugins;
+package com.graphi.config;
 
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
-import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 

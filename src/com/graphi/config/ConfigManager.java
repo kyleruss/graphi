@@ -4,9 +4,9 @@
 //  https://github.com/denkers/graphi
 //=========================================
 
-package com.graphi.app;
+package com.graphi.config;
 
-import com.graphi.plugins.PluginConfig;
+import com.graphi.app.Consts;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.JOptionPane;

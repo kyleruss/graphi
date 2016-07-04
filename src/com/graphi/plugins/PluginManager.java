@@ -6,6 +6,7 @@
 
 package com.graphi.plugins;
 
+import com.graphi.config.PluginConfig;
 import com.graphi.app.AppManager;
 import com.graphi.display.PluginsMenu;
 import com.graphi.util.GraphData;

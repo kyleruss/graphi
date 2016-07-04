@@ -9,7 +9,7 @@ package com.graphi.display;
 import com.graphi.app.AppManager;
 import com.graphi.app.Consts;
 import com.graphi.plugins.Plugin;
-import com.graphi.plugins.PluginConfig;
+import com.graphi.config.PluginConfig;
 import com.graphi.plugins.PluginManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
