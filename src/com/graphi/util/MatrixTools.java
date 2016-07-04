@@ -131,6 +131,23 @@ public class MatrixTools
         return !isRowVector(vector)? divColVector(vector, value) : divRowVector(vector, value);
     }
     
+    public static SparseDoubleMatrix2D manhattenNormalizeVector(SparseDoubleMatrix2D eVector, double eValue)
+    {
+        double len  =   0.0;
+        SparseDoubleMatrix2D normalizedVector   =   new SparseDoubleMatrix2D(1, eVector.columns());
+        
+        for(int i = 0; i < eVector.columns(); i++)
+            len += eVector.get(0, i);
+        
+        for(int i = 0; i < eVector.columns(); i++)
+        {
+            double val  =   (eValue * eVector.get(0, i)) / len;
+            normalizedVector.set(0, i, val);
+        }
+        
+        return normalizedVector;
+    }
+    
     //Returns the transpose of the matrix
     public static SparseDoubleMatrix2D transpose(SparseDoubleMatrix2D matrix)
     {
