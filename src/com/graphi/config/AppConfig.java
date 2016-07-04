@@ -6,7 +6,29 @@
 
 package com.graphi.config;
 
+import org.w3c.dom.Document;
+
 public class AppConfig 
 {
+    private boolean displayVisuals;
     
+    public AppConfig(Document document)
+    {
+        parseDocument(document);
+    }
+    
+    private void parseDocument(Document document)
+    {
+        displayVisuals  =   document.getElementsByTagName("displayVisuals").item(0).getTextContent().equalsIgnoreCase("true");
+    }
+    
+    public boolean isDisplayVisuals()
+    {
+        return displayVisuals;
+    }
+    
+    public void setDisplayVisuals(boolean displayVisuals)
+    {
+        this.displayVisuals     =   displayVisuals;
+    }
 }

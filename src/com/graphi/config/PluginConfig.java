@@ -67,4 +67,14 @@ public class PluginConfig
     {
         return loadedPluginPaths;
     }
+    
+    public void setDefaultPluginIndex(int index)
+    {
+        this.defaultIndex   =   index;
+    }
+    
+    public void setLoadedPluginPaths(List<String> paths)
+    {
+        this.loadedPluginPaths  =   paths;
+    }
 }
