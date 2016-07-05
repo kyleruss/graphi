@@ -1,6 +1,6 @@
 <globalConfig>
 	<appConfig>
-		<displayVisuals>true</displayVisuals>
+		<displayVisuals>false</displayVisuals>
 	</appConfig>
 
 	<!-- Configure default plugin & plugins loaded on startup -->

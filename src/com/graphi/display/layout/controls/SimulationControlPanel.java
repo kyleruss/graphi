@@ -165,18 +165,24 @@ public class SimulationControlPanel extends JPanel implements ActionListener
         outer.getMainPanel().getGraphData().getNodeFactory().setLastID(0);
         outer.getMainPanel().getGraphData().getEdgeFactory().setLastID(0);
 
-        switch(genIndex)
+        
+        Thread simThread   =   new Thread(()->
         {
-            case 0: showKleinbergSim(); break;
-            case 1: showBASim(); break;
-            case 2: showRASim(); break;
-        }
+            switch(genIndex)
+            {
+                case 0: showKleinbergSim(); break;
+                case 1: showBASim(); break;
+                case 2: showRASim(); break;
+            }
 
-        if(simTiesCheck.isSelected())
-            Network.simulateInterpersonalTies(outer.getMainPanel().getGraphData().getGraph(), 
-                    outer.getMainPanel().getGraphData().getEdgeFactory(), (double) simTiesPSpinner.getValue());
+            if(simTiesCheck.isSelected())
+                Network.simulateInterpersonalTies(outer.getMainPanel().getGraphData().getGraph(), 
+                        outer.getMainPanel().getGraphData().getEdgeFactory(), (double) simTiesPSpinner.getValue());
 
-        outer.getMainPanel().getScreenPanel().getGraphPanel().reloadGraph();
+            outer.getMainPanel().getScreenPanel().getGraphPanel().reloadGraph();
+        });
+        
+        simThread.start();
     }
     
     protected void showBASim()
@@ -184,8 +190,13 @@ public class SimulationControlPanel extends JPanel implements ActionListener
         int m           =   (int) initialNSpinner.getValue();
         int n           =   (int) addNSpinner.getValue();
 
+        Thread th   =   new Thread(()->
+        {
         outer.getMainPanel().getGraphData().setGraph(Network.generateBerbasiAlbert(outer.getMainPanel().getGraphData().getNodeFactory(), 
                 outer.getMainPanel().getGraphData().getEdgeFactory(), n, m, baDirectedCheck.isSelected()));
+        });
+        
+        th.start();
     }
 
     protected void showRASim()
@@ -203,7 +214,7 @@ public class SimulationControlPanel extends JPanel implements ActionListener
         int latticeSize =   (int) latticeSpinner.getValue();
         int clusterExp  =   (int) clusteringSpinner.getValue();
 
-        outer.getMainPanel().getGraphData().setGraph(Network.generateKleinberg(latticeSize, 
+                outer.getMainPanel().getGraphData().setGraph(Network.generateKleinberg(latticeSize, 
                 clusterExp, outer.getMainPanel().getGraphData().getNodeFactory(), 
                 outer.getMainPanel().getGraphData().getEdgeFactory()));
     }
