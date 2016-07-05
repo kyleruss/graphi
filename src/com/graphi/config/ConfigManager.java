@@ -24,6 +24,7 @@ import org.xml.sax.SAXException;
 public class ConfigManager 
 {
     private PluginConfig pluginConfig;
+    private AppConfig appConfig;
     
     public ConfigManager()
     {
@@ -43,6 +44,7 @@ public class ConfigManager
             Document configDoc          =   docBuilder.parse(configFile);
             
             pluginConfig                =   new PluginConfig(configDoc);
+            appConfig                   =   new AppConfig(configDoc);
         }
         
         catch(ParserConfigurationException | SAXException | IOException e)
@@ -58,5 +60,10 @@ public class ConfigManager
     public PluginConfig getPluginConfig()
     {
         return pluginConfig;
+    }
+    
+    public AppConfig getAppConfig()
+    {
+        return appConfig;
     }
 }
