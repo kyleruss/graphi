@@ -11,6 +11,7 @@ import org.w3c.dom.Document;
 public class AppConfig implements Config
 {
     private boolean displayVisuals;
+    private String exportDir;
     
     public AppConfig(Document document)
     {
@@ -21,12 +22,18 @@ public class AppConfig implements Config
     public void parseDocumentConfig(Document document)
     {
         displayVisuals  =   document.getElementsByTagName("displayVisuals").item(0).getTextContent().equalsIgnoreCase("true");
+        exportDir       =   document.getElementsByTagName("exportDir").item(0).getTextContent();
     }
     
     @Override
     public String getConfigName()
     {
         return "appConfig";
+    }
+    
+    public String getDefaultExportDir()
+    {
+        return exportDir;
     }
     
     public boolean isDisplayVisuals()

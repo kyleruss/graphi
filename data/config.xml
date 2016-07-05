@@ -1,6 +1,7 @@
 <globalConfig>
 	<appConfig>
 		<displayVisuals>false</displayVisuals>
+		<exportDir></exportDir>
 	</appConfig>
 
 	<!-- Configure default plugin & plugins loaded on startup -->
