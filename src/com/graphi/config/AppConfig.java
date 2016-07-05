@@ -8,18 +8,25 @@ package com.graphi.config;
 
 import org.w3c.dom.Document;
 
-public class AppConfig 
+public class AppConfig implements Config
 {
     private boolean displayVisuals;
     
     public AppConfig(Document document)
     {
-        parseDocument(document);
+        parseDocumentConfig(document);
     }
     
-    private void parseDocument(Document document)
+    @Override
+    public void parseDocumentConfig(Document document)
     {
         displayVisuals  =   document.getElementsByTagName("displayVisuals").item(0).getTextContent().equalsIgnoreCase("true");
+    }
+    
+    @Override
+    public String getConfigName()
+    {
+        return "appConfig";
     }
     
     public boolean isDisplayVisuals()

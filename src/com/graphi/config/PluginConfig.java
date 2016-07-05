@@ -13,7 +13,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
 
-public class PluginConfig 
+public class PluginConfig implements Config
 {
     private int defaultIndex;
     private List<String> loadedPluginPaths;
@@ -29,7 +29,8 @@ public class PluginConfig
         this.loadedPluginPaths  =   loadedPluginPaths;
     }
     
-    private void parseDocumentConfig(Document doc)
+    @Override
+    public void parseDocumentConfig(Document doc)
     {
         try
         {
@@ -48,6 +49,12 @@ public class PluginConfig
         {
             JOptionPane.showMessageDialog(null, "[Error] Failed to read plugin config");
         }
+    }
+    
+    @Override
+    public String getConfigName()
+    {
+        return "pluginConfig";
     }
     
     public int getDefaultPluginIndex()
@@ -77,4 +84,5 @@ public class PluginConfig
     {
         this.loadedPluginPaths  =   paths;
     }
+    
 }
