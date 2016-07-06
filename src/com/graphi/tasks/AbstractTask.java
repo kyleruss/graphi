@@ -11,9 +11,9 @@ import java.util.Map;
 
 public abstract class AbstractTask implements Task
 {
-    private String description;
-    private String name;
-    private Map properties;
+    protected String description;
+    protected String name;
+    protected Map properties;
     
     public AbstractTask()
     {
@@ -21,6 +21,7 @@ public abstract class AbstractTask implements Task
         name        =   "";
         properties  =   new HashMap();
         initDefaultProperties();
+        initTaskDetails();
     }
     
     @Override
@@ -46,6 +47,8 @@ public abstract class AbstractTask implements Task
     {
         return name;
     }
+    
+    public abstract void initTaskDetails();
     
     public abstract void initDefaultProperties();
 

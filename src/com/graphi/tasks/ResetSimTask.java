@@ -10,13 +10,19 @@ public class ResetSimTask extends AbstractTask
 {
 
     @Override
-    public void initDefaultProperties() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void initDefaultProperties() 
+    {
     }
 
     @Override
-    public void performTask() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void performTask() 
+    {
+    }
+
+    @Override
+    public void initTaskDetails()
+    {
+        name    =   "Reset network simulation";
     }
     
 }

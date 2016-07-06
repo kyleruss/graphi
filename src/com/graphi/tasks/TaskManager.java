@@ -17,16 +17,31 @@ public class TaskManager
 {
     private static TaskManager instance;
     private TasksBean tasks;
-    private List<Task> taskList;
+    private List<Task> availTaskList;
     
     private TaskManager()
     {
         tasks   =   new TasksBean();
+        initDefaultTaskList();
     }
     
     private void initDefaultTaskList()
     {
-        taskList    =   new ArrayList<>();
+        availTaskList    =   new ArrayList<>();
+        availTaskList.add(new RecordGraphTask());
+        availTaskList.add(new SimulateNetworkTask());
+        availTaskList.add(new ClearEntriesTask());
+        availTaskList.add(new ResetSimTask());
+    }
+    
+    public List<Task> getAvailTaskList()
+    {
+        return availTaskList;
+    }
+    
+    public void registerTaskList(List<Task> otherTasks)
+    {
+        availTaskList.addAll(otherTasks);
     }
     
     public TasksBean getTasks()

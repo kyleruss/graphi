@@ -6,7 +6,23 @@
 
 package com.graphi.tasks;
 
-public class ClearEntriesTask 
+public class ClearEntriesTask extends AbstractTask
 {
+
+    @Override
+    public void initTaskDetails() 
+    {
+        name = "Clear recorded entries";
+    }
+
+    @Override
+    public void initDefaultProperties()
+    {
+    }
+
+    @Override
+    public void performTask() 
+    {
+    }
     
 }

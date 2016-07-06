@@ -11,13 +11,17 @@ public class SimulateNetworkTask extends AbstractTask
     @Override
     public void initDefaultProperties()
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void performTask() 
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void initTaskDetails()
+    {
+        name    =   "Simulate network";
     }
     
 }

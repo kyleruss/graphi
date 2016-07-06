@@ -11,6 +11,8 @@ import com.graphi.display.layout.AppResources;
 import com.graphi.display.layout.MainPanel;
 import com.graphi.display.layout.util.ButtonColumn;
 import com.graphi.display.layout.util.OptionsManagePanel;
+import com.graphi.tasks.Task;
+import com.graphi.tasks.TaskManager;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,13 +33,13 @@ import net.miginfocom.swing.MigLayout;
 
 public class TaskControlPanel extends JPanel implements ActionListener
 {
-    protected final String[] OPTIONS    =   
+   /* protected final String[] OPTIONS    =   
     { 
         "Record graph", 
         "Simulate network", 
         "Reset network simulation",
         "Clear recorded entries"
-    };
+    }; */
     
     private ControlPanel controlPanel;
     private JComboBox repeatBox;
@@ -142,7 +144,7 @@ public class TaskControlPanel extends JPanel implements ActionListener
     
     public int getOptionsCount()
     {
-        return OPTIONS.length;
+        return TaskManager.getInstance().getAvailTaskList().size();//OPTIONS.length;
     }
     
     public void showTasksDialog(boolean isSetup)
@@ -206,8 +208,8 @@ public class TaskControlPanel extends JPanel implements ActionListener
         
         protected void initOptions()
         {
-            for(String option : OPTIONS)
-                optionsBox.addItem(option);
+            for(Task taskOption : TaskManager.getInstance().getAvailTaskList())
+                optionsBox.addItem(taskOption);
         }
         
         @Override
