@@ -15,6 +15,7 @@ import com.graphi.io.GraphMLParser;
 import com.graphi.io.Storage;
 import com.graphi.io.TableExporter;
 import com.graphi.sim.GraphPlayback;
+import com.graphi.tasks.TaskManager;
 import com.graphi.util.ComponentUtils;
 import com.graphi.util.Edge;
 import com.graphi.util.Node;
@@ -63,6 +64,7 @@ public class IOControlPanel extends JPanel implements ActionListener
         ioTypeBox.addItem("Log");
         ioTypeBox.addItem("Script");
         ioTypeBox.addItem("Table");
+        ioTypeBox.addItem("Tasks");
         ioTypeBox.setPreferredSize(new Dimension(150, 30));
         ioTypeBox.addActionListener(this);
         importBtn.addActionListener(this);
@@ -238,6 +240,19 @@ public class IOControlPanel extends JPanel implements ActionListener
             outer.getMainPanel().getScreenPanel().getOutputPanel().getOutputArea().setText(Storage.openOutputLog(file));
         }
     }
+    
+    public void storeTasks(boolean importTasks)
+    {
+        File file   =   ComponentUtils.getFile(importTasks, "Graphi .tasks file", "tasks");
+        if(file != null)
+        {
+            if(importTasks)
+                TaskManager.getInstance().importTasks(file);
+            else
+                TaskManager.getInstance().exportTasks(file);
+        }
+    }
+    
 
     private void performImport()
     {
@@ -253,6 +268,9 @@ public class IOControlPanel extends JPanel implements ActionListener
                 break;
             case 2:
                 importScript();
+                break;
+            case 3:
+                storeTasks(true);
                 break;
             default:
                 break;
@@ -276,6 +294,9 @@ public class IOControlPanel extends JPanel implements ActionListener
                 break;
             case 3:
                 exportTable();
+                break;
+            case 4:
+                storeTasks(false);
                 break;
             default:
                 break;
