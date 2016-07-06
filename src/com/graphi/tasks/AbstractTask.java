@@ -38,6 +38,12 @@ public abstract class AbstractTask implements Task
     {
         return properties;
     }
+    
+    @Override
+    public String toString()
+    {
+        return name;
+    }
 
     @Override
     public abstract void performTask();
