@@ -269,7 +269,7 @@ public class IOControlPanel extends JPanel implements ActionListener
             case 2:
                 importScript();
                 break;
-            case 3:
+            case 4:
                 storeTasks(true);
                 break;
             default:
@@ -309,7 +309,7 @@ public class IOControlPanel extends JPanel implements ActionListener
         importBtn.setEnabled(typeIndex != 3);
         directedCheckWrapper.setVisible(typeIndex == 0);
     }
-
+    
     @Override
     public void actionPerformed(ActionEvent e) 
     {
