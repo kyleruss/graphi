@@ -20,6 +20,7 @@ public abstract class AbstractTask implements Task
         description =   "";
         name        =   "";
         properties  =   new HashMap();
+        initDefaultProperties();
     }
     
     @Override
