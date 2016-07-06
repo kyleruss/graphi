@@ -6,16 +6,18 @@
 
 package com.graphi.tasks;
 
-public class RecordGraphTask extends AbstractTask
+public class SimulateNetworkTask extends AbstractTask
 {
     @Override
-    public void performTask() 
+    public void initDefaultProperties()
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void initDefaultProperties() {
+    public void performTask() 
+    {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
 }

@@ -34,7 +34,8 @@ public abstract class AbstractTask implements Task
         return name;
     }
     
-    public Map getProperties()
+    @Override
+    public Map getTaskProperties()
     {
         return properties;
     }
@@ -44,6 +45,8 @@ public abstract class AbstractTask implements Task
     {
         return name;
     }
+    
+    public abstract void initDefaultProperties();
 
     @Override
     public abstract void performTask();
