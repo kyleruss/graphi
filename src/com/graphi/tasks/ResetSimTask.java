@@ -6,17 +6,22 @@
 
 package com.graphi.tasks;
 
+import com.graphi.app.AppManager;
+import com.graphi.display.layout.MainPanel;
+import edu.uci.ics.jung.graph.SparseMultigraph;
+
 public class ResetSimTask extends AbstractTask
 {
 
     @Override
-    public void initDefaultProperties() 
-    {
-    }
+    public void initDefaultProperties() {}
 
     @Override
     public void performTask() 
     {
+        MainPanel mainPanel =   AppManager.getInstance().getPluginManager().getActivePlugin().getPanel();
+        mainPanel.getGraphData().setGraph(new SparseMultigraph());
+        mainPanel.getScreenPanel().getGraphPanel().reloadGraph();
     }
 
     @Override
