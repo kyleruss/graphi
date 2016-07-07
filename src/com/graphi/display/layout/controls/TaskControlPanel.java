@@ -9,7 +9,6 @@ package com.graphi.display.layout.controls;
 import com.graphi.app.Consts;
 import com.graphi.display.layout.AppResources;
 import com.graphi.display.layout.MainPanel;
-import com.graphi.display.layout.util.ButtonColumn;
 import com.graphi.display.layout.util.OptionsManagePanel;
 import com.graphi.tasks.Task;
 import com.graphi.tasks.TaskManager;

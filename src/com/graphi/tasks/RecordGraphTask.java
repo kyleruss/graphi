@@ -6,6 +6,7 @@
 
 package com.graphi.tasks;
 
+import com.graphi.app.AppManager;
 import java.util.Date;
 
 public class RecordGraphTask extends AbstractTask
@@ -13,6 +14,14 @@ public class RecordGraphTask extends AbstractTask
     @Override
     public void performTask() 
     {
+        Date date           =   (Date) properties.get("Entry date");
+        String entryName    =   (String) properties.get("Entry name");
+        boolean recordState =   (boolean) properties.get("Record state");
+        boolean recordTable =   (boolean) properties.get("Record table");
+        
+        AppManager.getInstance().getPluginManager().getActivePlugin()
+                .getPanel().getScreenPanel().getGraphPanel()
+                .addRecordedGraph(entryName, date, recordState, recordTable, true);
     }
 
     @Override
