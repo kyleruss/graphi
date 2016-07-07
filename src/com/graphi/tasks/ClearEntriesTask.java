@@ -6,6 +6,8 @@
 
 package com.graphi.tasks;
 
+import com.graphi.app.AppManager;
+
 public class ClearEntriesTask extends AbstractTask
 {
 
@@ -16,13 +18,13 @@ public class ClearEntriesTask extends AbstractTask
     }
 
     @Override
-    public void initDefaultProperties()
-    {
-    }
+    public void initDefaultProperties() {}
 
     @Override
     public void performTask() 
     {
+        AppManager.getInstance().getPluginManager().getActivePlugin()
+                  .getPanel().getScreenPanel().getGraphPanel().removeAllRecordedEntries();
     }
     
 }

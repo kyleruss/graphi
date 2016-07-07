@@ -42,6 +42,11 @@ public abstract class AbstractTask implements Task
         return properties;
     }
     
+    public void setProperty(String propertyName, Object propertyValue)
+    {
+        properties.put(propertyName, propertyValue);
+    }
+    
     @Override
     public String toString()
     {
