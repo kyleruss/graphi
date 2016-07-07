@@ -6,6 +6,8 @@
 
 package com.graphi.tasks;
 
+import java.util.Date;
+
 public class RecordGraphTask extends AbstractTask
 {
     @Override
@@ -16,6 +18,10 @@ public class RecordGraphTask extends AbstractTask
     @Override
     public void initDefaultProperties()
     {
+        properties.put("Record table", true);
+        properties.put("Record state", true);
+        properties.put("Entry name", "");
+        properties.put("Entry date", new Date());
     }
 
     @Override

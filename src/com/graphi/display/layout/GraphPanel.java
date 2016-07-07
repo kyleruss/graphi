@@ -266,24 +266,21 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     {
         PB_TIMER.stop();
     }
-
-    public void addRecordedGraph()
+    
+    public void addRecordedGraph(String entryName, Date date, boolean recordState, boolean recordTable, boolean newEntry)
     {
         PlaybackEntry entry;
-        int selectedIndex   =   gpRecEntries.getSelectedIndex();
-        if(selectedIndex == 0)
+        if(newEntry)
         {
-            Graph<Node, Edge> graph     =   GraphUtilities.copyNewGraph(mainPanel.data.getGraph(), recordStateCheck.isSelected());
+            Graph<Node, Edge> graph     =   GraphUtilities.copyNewGraph(mainPanel.data.getGraph(), recordState);
 
-            Date date       =   gpRecDatePicker.getDate();
-            String name     =   gpRecEntryName.getText();
 
-            if(name.equals(""))
+            if(entryName.equals(""))
                 entry   =   new PlaybackEntry(graph, date);
             else
-                entry   =   new PlaybackEntry(graph, date, name);
+                entry   =   new PlaybackEntry(graph, date, entryName);
             
-            if(recordComputeCheck.isSelected())
+            if(recordTable)
             {
                 DefaultTableModel tModel    =   mainPanel.screenPanel.dataPanel.computationModel;
                 String context              =   mainPanel.screenPanel.dataPanel.getComputationContext();
@@ -302,6 +299,18 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
             entry.setDate(gpRecDatePicker.getDate());
             entry.setGraph(GraphUtilities.copyNewGraph(mainPanel.data.getGraph(), recordStateCheck.isSelected()));
         }
+    }
+
+    public void addRecordedGraph()
+    {
+        int selectedIndex   =   gpRecEntries.getSelectedIndex();
+        Date date           =   gpRecDatePicker.getDate();
+        String name         =   gpRecEntryName.getText();
+        boolean recordState =   recordStateCheck.isSelected();
+        boolean recordTable =   recordComputeCheck.isSelected();
+        boolean newEntry    =   selectedIndex == 0;
+        
+        addRecordedGraph(name, date, recordState, recordTable, newEntry);
     }
 
     protected void togglePlayback()

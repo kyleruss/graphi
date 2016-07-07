@@ -1,6 +1,6 @@
 <globalConfig>
 	<appConfig>
-		<displayVisuals>false</displayVisuals>
+		<displayVisuals>true</displayVisuals>
 		<exportDir></exportDir>
 	</appConfig>
 
