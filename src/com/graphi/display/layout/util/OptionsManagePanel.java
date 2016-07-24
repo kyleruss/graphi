@@ -47,7 +47,7 @@ public abstract class OptionsManagePanel extends JPanel
         taskTableModel.addColumn("");
         taskTableModel.addColumn("");
         taskTable.getColumnModel().getColumn(0).setCellRenderer(new TaskLabelCellRenderer());
-        taskTable.getColumnModel().getColumn(0).setPreferredWidth(120);
+        //taskTable.getColumnModel().getColumn(0).setMinWidth(300);
         taskTable.setBackground(Consts.PRESET_COL);
 
         tableWrapper =   new JPanel(new BorderLayout());

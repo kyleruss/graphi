@@ -15,9 +15,12 @@ import com.graphi.tasks.Task;
 import com.graphi.tasks.TaskManager;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -29,9 +32,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 
 public class TaskControlPanel extends JPanel implements ActionListener
@@ -139,7 +144,7 @@ public class TaskControlPanel extends JPanel implements ActionListener
     
     public int getOptionsCount()
     {
-        return TaskManager.getInstance().getAvailTaskList().size();//OPTIONS.length;
+        return TaskManager.getInstance().getAvailTaskList().size();
     }
     
     public void showTasksDialog(boolean isSetup)
@@ -233,8 +238,8 @@ public class TaskControlPanel extends JPanel implements ActionListener
                 initOptions();
 
                 taskTableModel.addColumn("");
-                taskTable.getColumnModel().getColumn(1).setPreferredWidth(5);
-                taskTable.getColumnModel().getColumn(2).setPreferredWidth(5);
+                taskTable.getColumnModel().getColumn(1).setMaxWidth(60);
+                taskTable.getColumnModel().getColumn(2).setMaxWidth(60);
                  ButtonColumn otherBtnCol  =   new ButtonColumn(taskTable, new SettingsItemListener(), 2, 
                     new ImageIcon(AppResources.getInstance().getResource("settingsIcon")));
 
@@ -268,6 +273,7 @@ public class TaskControlPanel extends JPanel implements ActionListener
                     int row     =   Integer.valueOf(e.getActionCommand());
                     Task task   =   (Task) taskTable.getValueAt(row, 0);
                     taskPropPanel.setTaskNameTitle(task.getTaskName());
+                    taskPropPanel.setActiveTask(task);
                     showTaskProperties();
                 }
             }
@@ -277,21 +283,69 @@ public class TaskControlPanel extends JPanel implements ActionListener
         {
             private JTable propertyTable;
             private JLabel taskNameLabel;
+            private DefaultTableModel propertyModel;
+            private JScrollPane propertyTableScroller;
             private JButton backBtn;
+            private Task activeTask;
 
             public TaskPropertiesPanel()
             {
-                taskNameLabel   =   new JLabel();
-                backBtn         =   new JButton(new ImageIcon(AppResources.getInstance().getResource("resetIcon")));
+                setLayout(new BorderLayout());
+                taskNameLabel           =   new JLabel();
+                backBtn                 =   new JButton(new ImageIcon(AppResources.getInstance().getResource("resetIcon")));
+                propertyModel           =   new DefaultTableModel();
+                propertyTable           =   new JTable(propertyModel);
+                propertyTableScroller   =   new JScrollPane(propertyTable);   
                 
-                add(backBtn);
-                add(taskNameLabel);
+                propertyModel.addColumn("Property");
+                propertyModel.addColumn("Value");
+                propertyTableScroller.setPreferredSize(new Dimension(400, 300));
+                
+                JPanel titleWrapper     =    new JPanel();
+                titleWrapper.add(backBtn);
+                titleWrapper.add(taskNameLabel);
+                
+                add(titleWrapper, BorderLayout.NORTH);
+                add(propertyTableScroller, BorderLayout.CENTER);
                 backBtn.addActionListener(this);
+            }
+            
+            public void setActiveTask(Task activeTask)
+            {
+                this.activeTask =   activeTask;
+                initTaskProperties();
+            }
+            
+            public Task getActiveTask()
+            {
+                return activeTask;
+            }
+            
+            public void initTaskProperties()
+            {
+                if(activeTask == null) return;
+                
+                Map properties  =   activeTask.getTaskProperties();
+                if(properties != null)
+                {
+                    for(Object entry : properties.entrySet())
+                    {
+                        Entry<String, Object> property  =   (Entry<String, Object>) entry;
+                        String propertyName             =   property.getKey();
+                        Object propertyValue            =   property.getValue();
+                        propertyModel.addRow(new Object[] { propertyName, propertyValue });
+                    }
+                }
+            }
+            
+            public void saveTaskProperties()
+            {
+                if(activeTask == null) return;
             }
             
             public void setTaskNameTitle(String taskName)
             {
-                taskNameLabel.setText(taskName);
+                taskNameLabel.setText(taskName + " properties");
             }
 
             @Override
