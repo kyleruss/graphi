@@ -9,6 +9,7 @@ package com.graphi.display.layout.controls;
 import com.graphi.app.Consts;
 import com.graphi.display.layout.AppResources;
 import com.graphi.display.layout.MainPanel;
+import com.graphi.display.layout.util.ButtonColumn;
 import com.graphi.display.layout.util.OptionsManagePanel;
 import com.graphi.tasks.Task;
 import com.graphi.tasks.TaskManager;
@@ -16,6 +17,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -27,6 +29,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
+import javax.swing.JTable;
 import javax.swing.SpinnerNumberModel;
 import net.miginfocom.swing.MigLayout;
 
@@ -202,6 +205,13 @@ public class TaskControlPanel extends JPanel implements ActionListener
             add(topControlsPanel, BorderLayout.NORTH);
             initOptions();
             
+            taskTableModel.addColumn("");
+            taskTable.getColumnModel().getColumn(1).setPreferredWidth(5);
+            taskTable.getColumnModel().getColumn(2).setPreferredWidth(5);
+             ButtonColumn otherBtnCol  =   new ButtonColumn(taskTable, new SettingsItemListener(), 2, 
+                new ImageIcon(AppResources.getInstance().getResource("settingsIcon")));
+            
+            attachTable();
             addButton.addActionListener(this);
         }
         
@@ -221,6 +231,33 @@ public class TaskControlPanel extends JPanel implements ActionListener
         protected ImageIcon getItemIcon() 
         {
             return new ImageIcon(AppResources.getInstance().getResource("executeIcon"));
+        }
+        
+        private class SettingsItemListener extends AbstractAction
+        {
+            @Override
+            public void actionPerformed(ActionEvent e) 
+            {
+
+            }
+        }
+        
+        private class TaskPropertiesPanel extends JPanel implements ActionListener
+        {
+            private JTable propertyTable;
+            private JLabel taskNameLabel;
+            private JButton backBtn;
+
+            public TaskPropertiesPanel()
+            {
+
+            }
+
+            @Override
+            public void actionPerformed(ActionEvent e) 
+            {
+
+            }
         }
     }
 }

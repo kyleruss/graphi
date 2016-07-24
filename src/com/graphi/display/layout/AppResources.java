@@ -52,6 +52,7 @@ public class AppResources
             resourceMap.put("recordIcon", ImageIO.read(new File(Consts.IMG_DIR + "record.png")));
             resourceMap.put("closeIcon", ImageIO.read(new File(Consts.IMG_DIR + "close.png")));
             resourceMap.put("graphIconV2", ImageIO.read(new File(Consts.IMG_DIR + "graph2.png")));
+            resourceMap.put("settingsIcon", ImageIO.read(new File(Consts.IMG_DIR + "settingsIcon.png")));
         }
         
         catch(IOException e)

@@ -7,10 +7,12 @@ package com.graphi.display.layout.util;
 
 import com.graphi.app.Consts;
 import com.graphi.display.layout.AppResources;
+import com.graphi.display.layout.controls.TaskControlPanel;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.AbstractAction;
@@ -24,9 +26,10 @@ import javax.swing.table.TableCellRenderer;
 
 public abstract class OptionsManagePanel extends JPanel 
 {
-    private JTable taskTable;
-    private DefaultTableModel taskTableModel;
-
+    protected JTable taskTable;
+    protected DefaultTableModel taskTableModel;
+    protected JPanel outerWrapper, tableWrapper;
+    
     public OptionsManagePanel()
     {
         setLayout(new BorderLayout());
@@ -43,22 +46,22 @@ public abstract class OptionsManagePanel extends JPanel
         };
 
         taskTable       =   new JTable(taskTableModel);
-
         taskTableModel.addColumn("");
         taskTableModel.addColumn("");
-        taskTable.getColumnModel().getColumn(0).setCellRenderer(new TaskLabelCellRenderer());
-
-        ButtonColumn btnColumn  =   new ButtonColumn(taskTable, new TaskItemListener(), 1, new ImageIcon(AppResources.getInstance().getResource("removeIcon")));
-
         taskTable.getColumnModel().getColumn(0).setCellRenderer(new TaskLabelCellRenderer());
         taskTable.getColumnModel().getColumn(0).setPreferredWidth(120);
-        taskTable.getColumnModel().getColumn(1).setPreferredWidth(5);
         taskTable.setBackground(Consts.PRESET_COL);
 
-        JPanel tableWrapper =   new JPanel(new BorderLayout());
-        JPanel outerWrapper =   new JPanel(new BorderLayout());
+        tableWrapper =   new JPanel(new BorderLayout());
+        outerWrapper =   new JPanel(new BorderLayout());
         tableWrapper.setBorder(BorderFactory.createTitledBorder("Items"));
-
+    }
+    
+    protected void attachTable() 
+    {
+        ButtonColumn btnColumn    =   new ButtonColumn(taskTable, new RemoveItemListener(), 1, 
+                new ImageIcon(AppResources.getInstance().getResource("removeIcon")));
+        
         tableWrapper.add(taskTable);
         outerWrapper.add(tableWrapper);
 
@@ -84,7 +87,7 @@ public abstract class OptionsManagePanel extends JPanel
         taskTableModel.addRow(obj);
     }
     
-    private class TaskItemListener extends AbstractAction
+    private class RemoveItemListener extends AbstractAction
     {
 
         @Override
@@ -94,6 +97,7 @@ public abstract class OptionsManagePanel extends JPanel
             taskTableModel.removeRow(row);
         }
     }
+    
 
     private class TaskLabelCellRenderer implements TableCellRenderer
     {
