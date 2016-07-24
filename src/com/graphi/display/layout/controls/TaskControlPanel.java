@@ -149,10 +149,25 @@ public class TaskControlPanel extends JPanel implements ActionListener
     
     public void showTasksDialog(boolean isSetup)
     {
+        TaskPopupPanel panel;
+        String title;
+        
         if(isSetup)
-            JOptionPane.showMessageDialog(null, setupPanel, "Manage setup tasks", JOptionPane.INFORMATION_MESSAGE);
+        {
+            panel   =   setupPanel;
+            title   =   "Manage setup tasks";
+        }
+        
         else
-            JOptionPane.showMessageDialog(null, repeatPanel, "Manage repeat tasks", JOptionPane.INFORMATION_MESSAGE);
+        {
+            panel   =   repeatPanel;
+            title   =   "Manage repeat tasks";
+        }
+        
+        int option  =   JOptionPane.showConfirmDialog(null, panel, title, JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+        
+        if(option == JOptionPane.OK_OPTION)
+            panel.taskPropPanel.saveTaskProperties();
     }
     
     protected void addOption(String name)
@@ -341,6 +356,14 @@ public class TaskControlPanel extends JPanel implements ActionListener
             public void saveTaskProperties()
             {
                 if(activeTask == null) return;
+             
+                int n   =   propertyModel.getRowCount();
+                for(int i = 0; i < n; i++)
+                {
+                    String propertyName     =   (String) propertyModel.getValueAt(i, 0);
+                    Object propertyValue    =   propertyModel.getValueAt(i, 1);
+                    activeTask.setProperty(propertyName, propertyValue);
+                }
             }
             
             public void setTaskNameTitle(String taskName)
@@ -351,6 +374,7 @@ public class TaskControlPanel extends JPanel implements ActionListener
             @Override
             public void actionPerformed(ActionEvent e) 
             {
+                saveTaskProperties();
                 showTaskList();
             }
         }
