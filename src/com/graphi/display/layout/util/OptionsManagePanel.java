@@ -7,12 +7,10 @@ package com.graphi.display.layout.util;
 
 import com.graphi.app.Consts;
 import com.graphi.display.layout.AppResources;
-import com.graphi.display.layout.controls.TaskControlPanel;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.AbstractAction;

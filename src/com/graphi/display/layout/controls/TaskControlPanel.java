@@ -14,6 +14,7 @@ import com.graphi.display.layout.util.OptionsManagePanel;
 import com.graphi.tasks.Task;
 import com.graphi.tasks.TaskManager;
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -35,14 +36,6 @@ import net.miginfocom.swing.MigLayout;
 
 public class TaskControlPanel extends JPanel implements ActionListener
 {
-   /* protected final String[] OPTIONS    =   
-    { 
-        "Record graph", 
-        "Simulate network", 
-        "Reset network simulation",
-        "Clear recorded entries"
-    }; */
-    
     private ControlPanel controlPanel;
     private JComboBox repeatBox;
     private TaskPopupPanel setupPanel, repeatPanel;
@@ -104,8 +97,8 @@ public class TaskControlPanel extends JPanel implements ActionListener
     
     public void executeActions(boolean setup, int n)
     {
-        JComboBox comboBox      =   setupPanel.optionsBox;
-        List taskList           =   setup? setupPanel.getValues(0) : repeatPanel.getValues(0);
+        JComboBox comboBox      =   setupPanel.taskListPanel.optionsBox;
+        List taskList           =   setup? setupPanel.taskListPanel.getValues(0) : repeatPanel.taskListPanel.getValues(0);
         
         for(int i = 0; i < n; i++)
         {
@@ -159,14 +152,14 @@ public class TaskControlPanel extends JPanel implements ActionListener
     
     protected void addOption(String name)
     {
-        setupPanel.optionsBox.addItem(name);
-        repeatPanel.optionsBox.addItem(name);
+        setupPanel.taskListPanel.optionsBox.addItem(name);
+        repeatPanel.taskListPanel.optionsBox.addItem(name);
     }
     
     protected void removeOption(String name)
     {
-        setupPanel.optionsBox.removeItem(name);
-        repeatPanel.optionsBox.removeItem(name);
+        setupPanel.taskListPanel.optionsBox.removeItem(name);
+        repeatPanel.taskListPanel.optionsBox.removeItem(name);
     }
 
     @Override
@@ -188,57 +181,95 @@ public class TaskControlPanel extends JPanel implements ActionListener
         }
     }
     
-    private class TaskPopupPanel extends OptionsManagePanel implements ActionListener
+    private class TaskPopupPanel extends JPanel
     {
-        private JButton addButton;
-        private JComboBox optionsBox;
+        private final String T_LIST_CARD    =   "t_list";
+        private final String T_PROP_CARD    =   "t_prop";
+        
+        private TaskOptionPanel taskListPanel;
+        private TaskPropertiesPanel taskPropPanel;
         
         public TaskPopupPanel()
         {
-            addButton       =   new JButton("Add task");
-            optionsBox      =   new JComboBox();
-            addButton.setIcon(new ImageIcon(AppResources.getInstance().getResource("addIcon")));
+            setLayout(new CardLayout());
+            taskListPanel   =   new TaskOptionPanel();
+            taskPropPanel   =   new TaskPropertiesPanel();
             
-            JPanel topControlsPanel =   new JPanel(new BorderLayout());
-            topControlsPanel.add(optionsBox, BorderLayout.CENTER);
-            topControlsPanel.add(addButton, BorderLayout.EAST);
-            add(topControlsPanel, BorderLayout.NORTH);
-            initOptions();
-            
-            taskTableModel.addColumn("");
-            taskTable.getColumnModel().getColumn(1).setPreferredWidth(5);
-            taskTable.getColumnModel().getColumn(2).setPreferredWidth(5);
-             ButtonColumn otherBtnCol  =   new ButtonColumn(taskTable, new SettingsItemListener(), 2, 
-                new ImageIcon(AppResources.getInstance().getResource("settingsIcon")));
-            
-            attachTable();
-            addButton.addActionListener(this);
+            add(taskListPanel, T_LIST_CARD);
+            add(taskPropPanel, T_PROP_CARD);
         }
         
-        protected void initOptions()
+        public void showTaskList()
         {
-            for(Task taskOption : TaskManager.getInstance().getAvailTaskList())
-                optionsBox.addItem(taskOption);
+            changePopupPanel(T_LIST_CARD);
         }
         
-        @Override
-        public void actionPerformed(ActionEvent e) 
+        public void showTaskProperties()
         {
-            addOption(optionsBox.getSelectedItem(), "");
+            changePopupPanel(T_PROP_CARD);
         }
+        
+        private void changePopupPanel(String cardName)
+        {
+            CardLayout cLayout  =   (CardLayout) getLayout();
+            cLayout.show(this, cardName);
+        }
+        
+        private class TaskOptionPanel extends OptionsManagePanel implements ActionListener
+        {
+            private JButton addButton;
+            private JComboBox optionsBox;
 
-        @Override
-        protected ImageIcon getItemIcon() 
-        {
-            return new ImageIcon(AppResources.getInstance().getResource("executeIcon"));
-        }
-        
-        private class SettingsItemListener extends AbstractAction
-        {
+            public TaskOptionPanel()
+            {
+                addButton       =   new JButton("Add task");
+                optionsBox      =   new JComboBox();
+                addButton.setIcon(new ImageIcon(AppResources.getInstance().getResource("addIcon")));
+
+                JPanel topControlsPanel =   new JPanel(new BorderLayout());
+                topControlsPanel.add(optionsBox, BorderLayout.CENTER);
+                topControlsPanel.add(addButton, BorderLayout.EAST);
+                add(topControlsPanel, BorderLayout.NORTH);
+                initOptions();
+
+                taskTableModel.addColumn("");
+                taskTable.getColumnModel().getColumn(1).setPreferredWidth(5);
+                taskTable.getColumnModel().getColumn(2).setPreferredWidth(5);
+                 ButtonColumn otherBtnCol  =   new ButtonColumn(taskTable, new SettingsItemListener(), 2, 
+                    new ImageIcon(AppResources.getInstance().getResource("settingsIcon")));
+
+                attachTable();
+                addButton.addActionListener(this);
+            }
+
+            protected void initOptions()
+            {
+                for(Task taskOption : TaskManager.getInstance().getAvailTaskList())
+                    optionsBox.addItem(taskOption);
+            }
+
             @Override
             public void actionPerformed(ActionEvent e) 
             {
+                addOption(optionsBox.getSelectedItem(), "");
+            }
 
+            @Override
+            protected ImageIcon getItemIcon() 
+            {
+                return new ImageIcon(AppResources.getInstance().getResource("executeIcon"));
+            }
+
+            private class SettingsItemListener extends AbstractAction
+            {
+                @Override
+                public void actionPerformed(ActionEvent e) 
+                {
+                    int row     =   Integer.valueOf(e.getActionCommand());
+                    Task task   =   (Task) taskTable.getValueAt(row, 0);
+                    taskPropPanel.setTaskNameTitle(task.getTaskName());
+                    showTaskProperties();
+                }
             }
         }
         
@@ -250,13 +281,23 @@ public class TaskControlPanel extends JPanel implements ActionListener
 
             public TaskPropertiesPanel()
             {
-
+                taskNameLabel   =   new JLabel();
+                backBtn         =   new JButton(new ImageIcon(AppResources.getInstance().getResource("resetIcon")));
+                
+                add(backBtn);
+                add(taskNameLabel);
+                backBtn.addActionListener(this);
+            }
+            
+            public void setTaskNameTitle(String taskName)
+            {
+                taskNameLabel.setText(taskName);
             }
 
             @Override
             public void actionPerformed(ActionEvent e) 
             {
-
+                showTaskList();
             }
         }
     }
