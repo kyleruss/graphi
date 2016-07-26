@@ -64,6 +64,16 @@ public class MappedProperty
     {
         return name;
     }
+    
+    public void setName(String name)
+    {
+        this.name   =   name;
+    }
+    
+    public void setParamValue(String name, String value)
+    {
+        params.put(name, value);
+    }
         
     @Override
     public String toString()

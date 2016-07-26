@@ -18,7 +18,11 @@ public class SimulateNetworkTask extends AbstractTask
     @Override
     public void initDefaultProperties()
     {
-        properties.put("Generator", "");
+        MappedProperty prop =   new MappedProperty();
+        prop.setName("kleinberg");
+        prop.setParamValue("latSize", "15");
+        prop.setParamValue("exp", "2");
+        properties.put("Generator", prop);
         properties.put("Generate directed edges", false);
         properties.put("Directed edge chance", 0.0);
     }
