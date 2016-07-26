@@ -20,6 +20,13 @@ public class RandomNetworkGenerator extends AbstractGenerator
     private int numNodes;
     private double edgeProbability;
     private boolean directed;
+    
+    public RandomNetworkGenerator(int numNodes, double edgeProbability, boolean directed)
+    {
+        this.numNodes           =   numNodes;
+        this.edgeProbability    =   edgeProbability;
+        this.directed           =   directed;
+    }
             
     @Override
     protected void initGeneratorDetails()

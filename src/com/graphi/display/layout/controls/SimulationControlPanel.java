@@ -9,6 +9,13 @@ package com.graphi.display.layout.controls;
 import com.graphi.app.Consts;
 import com.graphi.display.layout.AppResources;
 import com.graphi.sim.Network;
+import com.graphi.sim.generator.BerbasiGenerator;
+import com.graphi.sim.generator.KleinbergGenerator;
+import com.graphi.sim.generator.NetworkGenerator;
+import com.graphi.sim.generator.RandomNetworkGenerator;
+import com.graphi.util.Edge;
+import com.graphi.util.Node;
+import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -159,7 +166,7 @@ public class SimulationControlPanel extends JPanel implements ActionListener
         gLayout.show(genPanel, card);
     }
     
-    public void showGeneratorSim()
+    public void showGeneratorSim(final NetworkGenerator generator)
     {
         int genIndex    =   genAlgorithmsBox.getSelectedIndex();
         outer.getMainPanel().getGraphData().getNodeFactory().setLastID(0);
@@ -168,12 +175,20 @@ public class SimulationControlPanel extends JPanel implements ActionListener
         
         Thread simThread   =   new Thread(()->
         {
-            switch(genIndex)
+            NetworkGenerator gen    =   generator;
+            
+            if(gen == null)
             {
-                case 0: showKleinbergSim(); break;
-                case 1: showBASim(); break;
-                case 2: showRASim(); break;
+                switch(genIndex)
+                {
+                    case 0: gen = getKleinbergSim(); break;
+                    case 1: gen = getBASim(); break;
+                    case 2: gen = getRASim(); break;
+                }
             }
+            
+            Graph<Node, Edge> generatedGraph    =   gen != null? gen.generateNetwork() : new SparseMultigraph<>();
+            outer.getMainPanel().getGraphData().setGraph(generatedGraph);
 
             if(simTiesCheck.isSelected())
                 Network.simulateInterpersonalTies(outer.getMainPanel().getGraphData().getGraph(), 
@@ -185,33 +200,30 @@ public class SimulationControlPanel extends JPanel implements ActionListener
         simThread.start();
     }
     
-    protected void showBASim()
+    protected NetworkGenerator getBASim()
     {
         int m           =   (int) initialNSpinner.getValue();
         int n           =   (int) addNSpinner.getValue();
-
-        outer.getMainPanel().getGraphData().setGraph(Network.generateBerbasiAlbert(outer.getMainPanel().getGraphData().getNodeFactory(), 
-                outer.getMainPanel().getGraphData().getEdgeFactory(), n, m, baDirectedCheck.isSelected()));
+        boolean dir     =   baDirectedCheck.isSelected();
+        
+       return new BerbasiGenerator(m, n, dir);
     }
 
-    protected void showRASim()
+    protected NetworkGenerator getRASim()
     {
         int n               =   (int) randNumSpinner.getValue();
         double p            =   (double) randProbSpinner.getValue();
         boolean directed    =   randDirectedCheck.isSelected();
 
-        outer.getMainPanel().getGraphData().setGraph(Network.generateRandomGraph(outer.getMainPanel().getGraphData().getNodeFactory(), 
-                outer.getMainPanel().getGraphData().getEdgeFactory(), n, p, directed));
+        return new RandomNetworkGenerator(n, p, directed);
     }
     
-    protected void showKleinbergSim()
+    protected NetworkGenerator getKleinbergSim()
     {
         int latticeSize =   (int) latticeSpinner.getValue();
         int clusterExp  =   (int) clusteringSpinner.getValue();
 
-                outer.getMainPanel().getGraphData().setGraph(Network.generateKleinberg(latticeSize, 
-                clusterExp, outer.getMainPanel().getGraphData().getNodeFactory(), 
-                outer.getMainPanel().getGraphData().getEdgeFactory()));
+        return new KleinbergGenerator(latticeSize, clusterExp);
     }
     
     public void resetSim()
@@ -229,7 +241,7 @@ public class SimulationControlPanel extends JPanel implements ActionListener
             showSimPanel();
          
         else if(src == executeGeneratorBtn)
-            showGeneratorSim();
+            showGeneratorSim(null);
 
         else if(src == resetGeneratorBtn)
             resetSim();

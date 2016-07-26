@@ -24,6 +24,13 @@ public class BerbasiGenerator extends AbstractGenerator
     private int numAddNodes;
     private boolean directedEdges;
     
+    public BerbasiGenerator(int initialNodeCount, int numAddNodes, boolean directedEdges)
+    {
+        this.initialNodeCount   =   initialNodeCount;
+        this.numAddNodes        =   numAddNodes;
+        this.directedEdges      =   directedEdges;
+    }
+    
     @Override
     protected void initGeneratorDetails() 
     {

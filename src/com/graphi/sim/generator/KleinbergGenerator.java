@@ -18,6 +18,11 @@ public class KleinbergGenerator extends AbstractGenerator
     private int latticeSize;
     private int clusterExp;
     
+    public KleinbergGenerator(int latticeSize, int clusterExp)
+    {
+        this.latticeSize    =   latticeSize;
+        this.clusterExp     =   clusterExp;
+    }
     
     @Override
     protected void initGeneratorDetails()

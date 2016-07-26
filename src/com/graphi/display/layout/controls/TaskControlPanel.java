@@ -137,7 +137,7 @@ public class TaskControlPanel extends JPanel implements ActionListener
         switch(actionIndex)
         {
             case 0: middleMan.getScreenPanel().getGraphPanel().addRecordedGraph(); break;
-            case 1: middleMan.getControlPanel().getSimulationPanel().showGeneratorSim(); break;
+            case 1: middleMan.getControlPanel().getSimulationPanel().showGeneratorSim(null); break;
             case 2: middleMan.getControlPanel().getSimulationPanel().resetSim(); break;
             case 3: middleMan.getScreenPanel().getGraphPanel().removeAllRecordedEntries(); break;
         }
