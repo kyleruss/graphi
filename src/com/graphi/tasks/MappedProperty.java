@@ -32,6 +32,7 @@ public class MappedProperty
         
         while(matcher.find())
         {
+            System.out.println("found group");
             String paramGroup       =   matcher.group();
             Matcher pNameMatcher    =   Pattern.compile("@(\\w+)").matcher(paramGroup);
             if(pNameMatcher.find())
@@ -63,13 +64,14 @@ public class MappedProperty
     public String toString()
     {
         String propertyStr  =   "";
+        String paramStr     =   "";
         propertyStr += name + "(";
         
         for(Entry<String, String> param : params.entrySet())
-            propertyStr += "@" + param.getKey() + "=" + param.getValue() + ", ";
+            paramStr += "@" + param.getKey() + "=" + param.getValue() + ", ";
         
-        if(propertyStr.length() > 1) propertyStr = propertyStr.substring(0, propertyStr.length() - 1);
-        propertyStr += ")";
+        if(paramStr.length() > 1) paramStr = paramStr.substring(0, paramStr.length() - 2);
+        propertyStr += paramStr + ")";
         
         return propertyStr;
     }

@@ -10,7 +10,6 @@ import com.graphi.app.AppManager;
 
 public class ClearEntriesTask extends AbstractTask
 {
-
     @Override
     public void initTaskDetails() 
     {

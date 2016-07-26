@@ -6,14 +6,12 @@
 
 package com.graphi.tasks;
 
-import com.graphi.app.AppManager;
-
 public class SimulateNetworkTask extends AbstractTask
 {
     @Override
     public void initDefaultProperties()
     {
-        properties.put("Generator name", "");
+        properties.put("Generator", "");
         properties.put("Generate directed edges", false);
         properties.put("Directed edge chance", 0.0);
     }
@@ -21,9 +19,8 @@ public class SimulateNetworkTask extends AbstractTask
     @Override
     public void performTask() 
     {
-        AppManager.getInstance().getPluginManager().getActivePlugin()
-                  .getPanel().getControlPanel().getSimulationPanel()
-                  .showGeneratorSim();;
+        String genAlgorithmStr  =   (String) getProperty("Generator");
+        MappedProperty genProp  =   new MappedProperty(genAlgorithmStr);
     }
 
     @Override

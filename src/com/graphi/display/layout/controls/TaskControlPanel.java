@@ -109,11 +109,12 @@ public class TaskControlPanel extends JPanel implements ActionListener
         {
             for(int j = 0; j < taskList.size(); j++)
             {
-                String option   =   taskList.get(j).toString();
-                int actionIndex =   ((DefaultComboBoxModel) comboBox.getModel()).getIndexOf(option);
+                Task task   =   (Task) taskList.get(j);
+                task.performTask();
+                /*int actionIndex =   ((DefaultComboBoxModel) comboBox.getModel()).getIndexOf(option);
                 
                 if(actionIndex != -1)
-                    handleAction(actionIndex);
+                    handleAction(actionIndex); */
             }
         }
     }

@@ -190,13 +190,8 @@ public class SimulationControlPanel extends JPanel implements ActionListener
         int m           =   (int) initialNSpinner.getValue();
         int n           =   (int) addNSpinner.getValue();
 
-        Thread th   =   new Thread(()->
-        {
         outer.getMainPanel().getGraphData().setGraph(Network.generateBerbasiAlbert(outer.getMainPanel().getGraphData().getNodeFactory(), 
                 outer.getMainPanel().getGraphData().getEdgeFactory(), n, m, baDirectedCheck.isSelected()));
-        });
-        
-        th.start();
     }
 
     protected void showRASim()
