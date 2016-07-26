@@ -55,6 +55,11 @@ public class MappedProperty
         return params;
     }
     
+    public String getParamValue(String paramName)
+    {
+        return params.get(paramName);
+    }
+    
     public String getName()
     {
         return name;
