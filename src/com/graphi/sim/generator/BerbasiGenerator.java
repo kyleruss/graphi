@@ -6,7 +6,7 @@
 
 package com.graphi.sim.generator;
 
-import static com.graphi.sim.Network.generateConnectedGraph;
+import com.graphi.sim.Network;
 import com.graphi.util.Edge;
 import com.graphi.util.GraphUtilities;
 import com.graphi.util.Node;
@@ -38,7 +38,7 @@ public class BerbasiGenerator extends AbstractGenerator
         int n                                       =   numAddNodes;
         int m                                       =   initialNodeCount;
         
-        Graph<Node, Edge> graph                     =   generateConnectedGraph(nodeFactory, edgeFactory, m);
+        Graph<Node, Edge> graph                     =   Network.generateConnectedGraph(nodeFactory, edgeFactory, m);
         
         
         for(int i = 0; i < n; i++)
