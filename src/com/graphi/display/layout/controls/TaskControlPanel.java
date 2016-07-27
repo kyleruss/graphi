@@ -24,7 +24,6 @@ import java.util.Map.Entry;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -102,7 +101,6 @@ public class TaskControlPanel extends JPanel implements ActionListener
     
     public void executeActions(boolean setup, int n)
     {
-        JComboBox comboBox      =   setupPanel.taskListPanel.optionsBox;
         List taskList           =   setup? setupPanel.taskListPanel.getValues(0) : repeatPanel.taskListPanel.getValues(0);
         
         for(int i = 0; i < n; i++)
@@ -111,10 +109,6 @@ public class TaskControlPanel extends JPanel implements ActionListener
             {
                 Task task   =   (Task) taskList.get(j);
                 task.performTask();
-                /*int actionIndex =   ((DefaultComboBoxModel) comboBox.getModel()).getIndexOf(option);
-                
-                if(actionIndex != -1)
-                    handleAction(actionIndex); */
             }
         }
     }
@@ -129,19 +123,6 @@ public class TaskControlPanel extends JPanel implements ActionListener
             executeActions(false, 1);
     }
     
-    
-    protected void handleAction(int actionIndex)
-    {
-        MainPanel middleMan  =   controlPanel.getMainPanel();
-        
-        switch(actionIndex)
-        {
-            case 0: middleMan.getScreenPanel().getGraphPanel().addRecordedGraph(); break;
-            case 1: middleMan.getControlPanel().getSimulationPanel().showGeneratorSim(null); break;
-            case 2: middleMan.getControlPanel().getSimulationPanel().resetSim(); break;
-            case 3: middleMan.getScreenPanel().getGraphPanel().removeAllRecordedEntries(); break;
-        }
-    }
     
     public int getOptionsCount()
     {
