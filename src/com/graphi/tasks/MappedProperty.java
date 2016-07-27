@@ -32,7 +32,6 @@ public class MappedProperty
         
         while(matcher.find())
         {
-            System.out.println("found group");
             String paramGroup       =   matcher.group();
             Matcher pNameMatcher    =   Pattern.compile("@(\\w+)").matcher(paramGroup);
             if(pNameMatcher.find())

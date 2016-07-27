@@ -22,7 +22,7 @@ public class SimulateNetworkTask extends AbstractTask
         prop.setName("kleinberg");
         prop.setParamValue("latSize", "15");
         prop.setParamValue("exp", "2");
-        properties.put("Generator", prop);
+        properties.put("Generator", prop.toString());
         properties.put("Generate directed edges", false);
         properties.put("Directed edge chance", 0.0);
     }

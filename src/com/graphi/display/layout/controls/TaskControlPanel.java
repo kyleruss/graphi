@@ -169,6 +169,8 @@ public class TaskControlPanel extends JPanel implements ActionListener
         
         if(option == JOptionPane.OK_OPTION)
             panel.taskPropPanel.saveTaskProperties();
+        
+        panel.taskPropPanel.resetProperties();
     }
     
     protected void addOption(String name)
@@ -326,6 +328,12 @@ public class TaskControlPanel extends JPanel implements ActionListener
                 backBtn.addActionListener(this);
             }
             
+            public void resetProperties()
+            {
+                activeTask  =   null;
+                showTaskList();
+            }
+            
             public void setActiveTask(Task activeTask)
             {
                 this.activeTask =   activeTask;
@@ -339,9 +347,12 @@ public class TaskControlPanel extends JPanel implements ActionListener
             
             public void initTaskProperties()
             {
+                propertyModel.setRowCount(0);
+                
                 if(activeTask == null) return;
                 
                 Map properties  =   activeTask.getTaskProperties();
+                
                 if(properties != null)
                 {
                     for(Object entry : properties.entrySet())
