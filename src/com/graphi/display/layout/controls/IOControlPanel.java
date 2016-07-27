@@ -177,30 +177,36 @@ public class IOControlPanel extends JPanel implements ActionListener
         }
     }
     
-    protected void exportTable()
+    public void exportTable(int tableIndex, File file)
     {
-        File file   =   ComponentUtils.getFile(false, "CSV, TSV", "csv", "tsv");
         if(file != null)
         {
             JTable table        =    null;
             DataPanel dataPanel =   outer.getMainPanel().getScreenPanel().getDataPanel();
-            int tableIndex      =   dataPanel.getDataTabPane().getSelectedIndex();
             
             switch (tableIndex) 
             {
                 case 0:
-                    table   =   outer.getMainPanel().getScreenPanel().getDataPanel().getVertexTable();
+                    table   =   dataPanel.getVertexTable();
                     break;
                 case 1:
-                    table   =   outer.getMainPanel().getScreenPanel().getDataPanel().getEdgeTable();
+                    table   =   dataPanel.getEdgeTable();
                     break;
                 case 2:
-                    table   =   outer.getMainPanel().getScreenPanel().getDataPanel().getComputeTable();
+                    table   =   dataPanel.getComputeTable();
                     break;
             }
             
             TableExporter.exportTable(table, file);
         }
+    }
+    
+    public void exportTable()
+    {
+        DataPanel dataPanel =   outer.getMainPanel().getScreenPanel().getDataPanel();
+        int tableIndex      =   dataPanel.getDataTabPane().getSelectedIndex();
+        File file           =   ComponentUtils.getFile(false, "CSV, TSV", "csv", "tsv");
+        exportTable(tableIndex, file);
     }
 
     protected void initCurrentNodes()

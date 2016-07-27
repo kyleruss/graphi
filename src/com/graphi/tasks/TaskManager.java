@@ -49,6 +49,11 @@ public class TaskManager
         return tasks;
     }
     
+    public void registerTask(Task task)
+    {
+        availTaskList.add(task);
+    }
+    
     public void importTasks(File file)
     {
         tasks   =   (TasksBean) Storage.openObj(file, AppManager.getInstance().getPluginManager().getActiveClassLoader());
