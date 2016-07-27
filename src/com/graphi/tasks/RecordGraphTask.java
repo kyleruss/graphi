@@ -14,10 +14,10 @@ public class RecordGraphTask extends AbstractTask
     @Override
     public void performTask() 
     {
-        Date date           =   (Date) properties.get("Entry date");
+        Date date           =   new Date(properties.get("Entry date"));
         String entryName    =   (String) properties.get("Entry name");
-        boolean recordState =   (boolean) properties.get("Record state");
-        boolean recordTable =   (boolean) properties.get("Record table");
+        boolean recordState =   properties.get("Record state").equalsIgnoreCase("true");
+        boolean recordTable =   properties.get("Record table").equalsIgnoreCase("true");
         
         AppManager.getInstance().getPluginManager().getActivePlugin()
                 .getPanel().getScreenPanel().getGraphPanel()
@@ -27,10 +27,10 @@ public class RecordGraphTask extends AbstractTask
     @Override
     public void initDefaultProperties()
     {
-        properties.put("Record table", true);
-        properties.put("Record state", true);
+        properties.put("Record table", "true");
+        properties.put("Record state", "true");
         properties.put("Entry name", "");
-        properties.put("Entry date", new Date());
+        properties.put("Entry date", new Date().toString());
     }
 
     @Override

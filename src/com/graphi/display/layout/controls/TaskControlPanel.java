@@ -354,7 +354,7 @@ public class TaskControlPanel extends JPanel implements ActionListener
                 for(int i = 0; i < n; i++)
                 {
                     String propertyName     =   (String) propertyModel.getValueAt(i, 0);
-                    Object propertyValue    =   propertyModel.getValueAt(i, 1);
+                    String propertyValue    =   propertyModel.getValueAt(i, 1).toString();
                     activeTask.setProperty(propertyName, propertyValue);
                 }
             }

@@ -13,13 +13,13 @@ public abstract class AbstractTask implements Task
 {
     protected String description;
     protected String name;
-    protected Map properties;
+    protected Map<String, String> properties;
     
     public AbstractTask()
     {
         description =   "";
         name        =   "";
-        properties  =   new HashMap();
+        properties  =   new HashMap<>();
         initDefaultProperties();
         initTaskDetails();
     }
@@ -43,13 +43,13 @@ public abstract class AbstractTask implements Task
     }
     
     @Override
-    public void setProperty(String propertyName, Object propertyValue)
+    public void setProperty(String propertyName, String propertyValue)
     {
         properties.put(propertyName, propertyValue);
     }
     
     @Override
-    public Object getProperty(String propertyName)
+    public String getProperty(String propertyName)
     {
         return properties.get(propertyName);
     }

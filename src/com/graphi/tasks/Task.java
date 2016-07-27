@@ -17,9 +17,9 @@ public interface Task extends Serializable
     
     public void performTask();
     
-    public Map getTaskProperties();
+    public Map<String, String> getTaskProperties();
     
-    public void setProperty(String propertyName, Object value);
+    public void setProperty(String propertyName, String value);
     
-    public Object getProperty(String propertyName);
+    public String getProperty(String propertyName);
 }
