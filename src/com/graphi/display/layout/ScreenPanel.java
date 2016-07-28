@@ -74,6 +74,16 @@ public class ScreenPanel extends JPanel
         });
     }
     
+    public void displayTransition()
+    {
+        changeDisplayCard(Consts.DISPLAY_TRANSIT_CARD);
+    }
+    
+    public void displayGraph()
+    {
+        changeDisplayCard(Consts.DISPLAY_GRAPH_CARD);
+    }
+    
     public void changeDisplayCard(String cardName)
     {
         CardLayout cLayout  =   (CardLayout) displayPanel.getLayout();

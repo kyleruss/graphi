@@ -176,6 +176,7 @@ public class SimulationControlPanel extends JPanel implements ActionListener
         Thread simThread   =   new Thread(()->
         {
             NetworkGenerator gen    =   generator;
+            outer.getMainPanel().getScreenPanel().displayTransition();
             
             if(gen == null)
             {
@@ -195,6 +196,7 @@ public class SimulationControlPanel extends JPanel implements ActionListener
                         outer.getMainPanel().getGraphData().getEdgeFactory(), (double) simTiesPSpinner.getValue());
 
             outer.getMainPanel().getScreenPanel().getGraphPanel().reloadGraph();
+            outer.getMainPanel().getScreenPanel().displayGraph();
         });
         
         simThread.start();
