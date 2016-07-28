@@ -32,6 +32,7 @@ public class TaskManager
         availTaskList.add(new SimulateNetworkTask());
         availTaskList.add(new ClearEntriesTask());
         availTaskList.add(new ResetSimTask());
+        availTaskList.add(new ExportTableTask());
     }
     
     public List<Task> getAvailTaskList()
