@@ -11,8 +11,13 @@ import java.util.Map;
 
 public abstract class AbstractTask implements Task
 {
+    //A brief description of the task role and actions
     protected String description;
+    
+    //The name of the task that identifies the task
     protected String name;
+    
+    //The properties that can be set by the user
     protected Map<String, String> properties;
     
     public AbstractTask()
@@ -23,14 +28,28 @@ public abstract class AbstractTask implements Task
         initDefaultProperties();
         initTaskDetails();
     }
-    
+
+    /**
+     * Should initialize the name and description of the task
+     * Called on constructor
+     */
     public abstract void initTaskDetails();
     
+    /**
+     * Should initialize all the possible properties and default values
+     * Called on constructor
+     */
     public abstract void initDefaultProperties();
-
-    @Override
-    public abstract void performTask();
     
+    /**
+     * @return The name of the task
+     */
+    @Override
+    public String toString()
+    {
+        return name;
+    }
+
     @Override
     public String getTaskDescription() 
     {
@@ -59,11 +78,5 @@ public abstract class AbstractTask implements Task
     public String getProperty(String propertyName)
     {
         return properties.get(propertyName);
-    }
-    
-    @Override
-    public String toString()
-    {
-        return name;
     }
 }
