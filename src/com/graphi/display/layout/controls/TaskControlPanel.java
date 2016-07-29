@@ -13,6 +13,7 @@ import com.graphi.display.layout.util.ButtonColumn;
 import com.graphi.display.layout.util.OptionsManagePanel;
 import com.graphi.tasks.Task;
 import com.graphi.tasks.TaskManager;
+import com.graphi.tasks.TasksBean;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
@@ -97,6 +98,22 @@ public class TaskControlPanel extends JPanel implements ActionListener
         taskButton.addActionListener(this);
         runButton.addActionListener(this);
         repeatBox.addActionListener(this);
+    }
+    
+    public void initTaskBean(TasksBean bean)
+    {
+        List<Task> repeatTasks  =   bean.getRepeatableTasks();
+        List<Task> setupTasks   =   bean.getRepeatableTasks();
+        
+        
+        setupPanel.taskListPanel.resetOptions();
+        repeatPanel.taskListPanel.resetOptions();
+        
+        for(Task task : repeatTasks)
+            repeatPanel.taskListPanel.addOption(task, "");
+        
+        for(Task task : setupTasks)
+            setupPanel.taskListPanel.addOption(task, "");
     }
     
     public void executeActions(boolean setup, int n)
@@ -255,7 +272,18 @@ public class TaskControlPanel extends JPanel implements ActionListener
             @Override
             public void actionPerformed(ActionEvent e) 
             {
-                addOption(optionsBox.getSelectedItem(), "");
+                try
+                {
+                    Task task   =   (Task) optionsBox.getSelectedItem();
+                    Task nTask  =   task.getClass().newInstance();
+                
+                    addOption(nTask, "");
+                }
+                
+                catch(Exception ex)
+                {
+                    JOptionPane.showMessageDialog(null, "Error failed to create new task");
+                }
             }
 
             @Override

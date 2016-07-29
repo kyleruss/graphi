@@ -47,7 +47,6 @@ public abstract class OptionsManagePanel extends JPanel
         taskTableModel.addColumn("");
         taskTableModel.addColumn("");
         taskTable.getColumnModel().getColumn(0).setCellRenderer(new TaskLabelCellRenderer());
-        //taskTable.getColumnModel().getColumn(0).setMinWidth(300);
         taskTable.setBackground(Consts.PRESET_COL);
 
         tableWrapper =   new JPanel(new BorderLayout());
@@ -83,6 +82,11 @@ public abstract class OptionsManagePanel extends JPanel
     public void addOption(Object... obj)
     {
         taskTableModel.addRow(obj);
+    }
+    
+    public void resetOptions()
+    {
+        taskTableModel.setRowCount(0);
     }
     
     private class RemoveItemListener extends AbstractAction

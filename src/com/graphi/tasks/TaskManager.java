@@ -58,6 +58,8 @@ public class TaskManager
     public void importTasks(File file)
     {
         tasks   =   (TasksBean) Storage.openObj(file, AppManager.getInstance().getPluginManager().getActiveClassLoader());
+        AppManager.getInstance().getPluginManager().getActivePlugin().getPanel().getControlPanel()
+                .getTaskPanel().initTaskBean(tasks);
     }
     
     public void exportTasks(File file)
