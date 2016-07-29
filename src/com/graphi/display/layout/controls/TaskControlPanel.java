@@ -103,7 +103,7 @@ public class TaskControlPanel extends JPanel implements ActionListener
     public void initTaskBean(TasksBean bean)
     {
         List<Task> repeatTasks  =   bean.getRepeatableTasks();
-        List<Task> setupTasks   =   bean.getRepeatableTasks();
+        List<Task> setupTasks   =   bean.getSetupTasks();
         
         
         setupPanel.taskListPanel.resetOptions();
@@ -274,10 +274,16 @@ public class TaskControlPanel extends JPanel implements ActionListener
             {
                 try
                 {
-                    Task task   =   (Task) optionsBox.getSelectedItem();
-                    Task nTask  =   task.getClass().newInstance();
-                
+                    Task task       =   (Task) optionsBox.getSelectedItem();
+                    Task nTask      =   task.getClass().newInstance();
                     addOption(nTask, "");
+                    
+                    TasksBean tasks =   TaskManager.getInstance().getTasks();
+                    
+                    if(setupRadio.isSelected())
+                        tasks.addSetupTask(nTask);
+                    else
+                        tasks.addRepeatableTask(nTask);
                 }
                 
                 catch(Exception ex)
