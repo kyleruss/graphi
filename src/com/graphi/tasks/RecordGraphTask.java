@@ -7,21 +7,33 @@
 package com.graphi.tasks;
 
 import com.graphi.app.AppManager;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.JOptionPane;
 
 public class RecordGraphTask extends AbstractTask
 {
     @Override
     public void performTask() 
     {
-        Date date           =   new Date(properties.get("Entry date"));
-        String entryName    =   (String) properties.get("Entry name");
-        boolean recordState =   properties.get("Record state").equalsIgnoreCase("true");
-        boolean recordTable =   properties.get("Record table").equalsIgnoreCase("true");
+        try
+        {
+            SimpleDateFormat parser =   new SimpleDateFormat("EEE MMM d HH:mm:ss zzz yyyy");
+            Date date               =   parser.parse(properties.get("Entry date"));
+            String entryName        =   (String) properties.get("Entry name");
+            boolean recordState     =   properties.get("Record state").equalsIgnoreCase("true");
+            boolean recordTable     =   properties.get("Record table").equalsIgnoreCase("true");
+
+            AppManager.getInstance().getPluginManager().getActivePlugin()
+                    .getPanel().getScreenPanel().getGraphPanel()
+                    .addRecordedGraph(entryName, date, recordState, recordTable, true);
+        }
         
-        AppManager.getInstance().getPluginManager().getActivePlugin()
-                .getPanel().getScreenPanel().getGraphPanel()
-                .addRecordedGraph(entryName, date, recordState, recordTable, true);
+        catch(ParseException e)
+        {
+            JOptionPane.showMessageDialog(null, "Invalid date");
+        }
     }
 
     @Override
