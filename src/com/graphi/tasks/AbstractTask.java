@@ -24,6 +24,13 @@ public abstract class AbstractTask implements Task
         initTaskDetails();
     }
     
+    public abstract void initTaskDetails();
+    
+    public abstract void initDefaultProperties();
+
+    @Override
+    public abstract void performTask();
+    
     @Override
     public String getTaskDescription() 
     {
@@ -59,11 +66,4 @@ public abstract class AbstractTask implements Task
     {
         return name;
     }
-    
-    public abstract void initTaskDetails();
-    
-    public abstract void initDefaultProperties();
-
-    @Override
-    public abstract void performTask();
 }
