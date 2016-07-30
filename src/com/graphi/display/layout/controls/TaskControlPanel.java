@@ -254,10 +254,16 @@ public class TaskControlPanel extends JPanel implements ActionListener
                 initOptions();
 
                 taskTableModel.addColumn("");
+                taskTableModel.addColumn("");
                 taskTable.getColumnModel().getColumn(1).setMaxWidth(60);
                 taskTable.getColumnModel().getColumn(2).setMaxWidth(60);
-                 ButtonColumn otherBtnCol  =   new ButtonColumn(taskTable, new SettingsItemListener(), 2, 
+                taskTable.getColumnModel().getColumn(3).setMaxWidth(60);
+                
+                 ButtonColumn settingsBtnCol    =   new ButtonColumn(taskTable, new SettingsItemListener(), 2, 
                     new ImageIcon(AppResources.getInstance().getResource("settingsIcon")));
+                 
+                 ButtonColumn helpBtnCol        =   new ButtonColumn(taskTable, new HelpItemListener(), 3, 
+                    new ImageIcon(AppResources.getInstance().getResource("helpIcon")));
 
                 attachTable();
                 addButton.addActionListener(this);
@@ -308,6 +314,21 @@ public class TaskControlPanel extends JPanel implements ActionListener
                     taskPropPanel.setTaskNameTitle(task.getTaskName());
                     taskPropPanel.setActiveTask(task);
                     showTaskProperties();
+                }
+            }
+            
+            private class HelpItemListener extends AbstractAction
+            {
+
+                @Override
+                public void actionPerformed(ActionEvent e) 
+                {
+                    int row     =   Integer.valueOf(e.getActionCommand());
+                    Task task   =   (Task) taskTable.getValueAt(row, 0);
+                    String name =   task.getTaskName();
+                    String desc =   task.getTaskDescription();
+                    
+                    JOptionPane.showMessageDialog(null, desc, "About task: " + name, JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         }
