@@ -50,9 +50,9 @@ public class RandomNetworkGenerator extends AbstractGenerator
             {
                 if(!other.equals(node))
                 {
-                    double p    =   rGen.nextDouble() * 100;
+                    double p    =   rGen.nextDouble();
                     
-                    if(p >= edgeProbability && !(!directed && graph.isNeighbor(other, node)))
+                    if(edgeProbability >= p && !(!directed && graph.isNeighbor(other, node)))
                         graph.addEdge(edgeFactory.create(), node, other, directed? EdgeType.DIRECTED : EdgeType.UNDIRECTED);
                 }
             }
