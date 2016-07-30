@@ -68,6 +68,16 @@ public abstract class AbstractTask implements Task
         return properties;
     }
     
+    protected void setTaskName(String name)
+    {
+        this.name   =   name;
+    }
+    
+    protected void setTaskDescription(String description)
+    {
+        this.description    =   description;
+    }
+    
     @Override
     public void setProperty(String propertyName, String propertyValue)
     {

@@ -12,7 +12,12 @@ import edu.uci.ics.jung.graph.SparseMultigraph;
 
 public class ResetSimTask extends AbstractTask
 {
-
+    @Override
+    public void initTaskDetails()
+    {
+        setTaskName("Reset network simulation");
+    }
+    
     @Override
     public void initDefaultProperties() {}
 
@@ -23,11 +28,4 @@ public class ResetSimTask extends AbstractTask
         mainPanel.getGraphData().setGraph(new SparseMultigraph());
         mainPanel.getScreenPanel().getGraphPanel().reloadGraph();
     }
-
-    @Override
-    public void initTaskDetails()
-    {
-        name    =   "Reset network simulation";
-    }
-    
 }

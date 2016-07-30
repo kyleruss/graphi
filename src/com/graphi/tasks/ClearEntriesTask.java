@@ -13,7 +13,7 @@ public class ClearEntriesTask extends AbstractTask
     @Override
     public void initTaskDetails() 
     {
-        name = "Clear recorded entries";
+        setTaskName("Clear recorded entries");
     }
 
     @Override

@@ -14,16 +14,23 @@ import javax.swing.JOptionPane;
 
 public class RecordGraphTask extends AbstractTask
 {
+
+    @Override
+    public void initTaskDetails() 
+    {
+        setTaskName("Record Graph");
+    }
+    
     @Override
     public void performTask() 
     {
         try
         {
             SimpleDateFormat parser =   new SimpleDateFormat("EEE MMM d HH:mm:ss zzz yyyy");
-            Date date               =   parser.parse(properties.get("Entry date"));
-            String entryName        =   (String) properties.get("Entry name");
-            boolean recordState     =   properties.get("Record state").equalsIgnoreCase("true");
-            boolean recordTable     =   properties.get("Record table").equalsIgnoreCase("true");
+            Date date               =   parser.parse(getProperty("Entry date"));
+            String entryName        =   (String) getProperty("Entry name");
+            boolean recordState     =   getProperty("Record state").equalsIgnoreCase("true");
+            boolean recordTable     =   getProperty("Record table").equalsIgnoreCase("true");
 
             AppManager.getInstance().getPluginManager().getActivePlugin()
                     .getPanel().getScreenPanel().getGraphPanel()
@@ -39,15 +46,9 @@ public class RecordGraphTask extends AbstractTask
     @Override
     public void initDefaultProperties()
     {
-        properties.put("Record table", "true");
-        properties.put("Record state", "true");
-        properties.put("Entry name", "");
-        properties.put("Entry date", new Date().toString());
-    }
-
-    @Override
-    public void initTaskDetails() 
-    {
-        name    =   "Record Graph";
+        setProperty("Record table", "true");
+        setProperty("Record state", "true");
+        setProperty("Entry name", "");
+        setProperty("Entry date", new Date().toString());
     }
 }

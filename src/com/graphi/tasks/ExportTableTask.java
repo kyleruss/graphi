@@ -14,21 +14,21 @@ public class ExportTableTask extends AbstractTask
     @Override
     public void initTaskDetails() 
     {
-        name    =   "Export table";
+        setTaskName("Export table");
     }
 
     @Override
     public void initDefaultProperties() 
     {
-        properties.put("File name", "data/exampletable.csv");
-        properties.put("Table index", "0");
+        setProperty("File name", "data/exampletable.csv");
+        setProperty("Table index", "0");
     }
 
     @Override
     public void performTask() 
     {
-        String fileName =   properties.get("File name");
-        int tableIndex  =   Integer.parseInt(properties.get("Table index"));
+        String fileName =   getProperty("File name");
+        int tableIndex  =   Integer.parseInt(getProperty("Table index"));
         File file       =   new File(fileName);
         
         AppManager.getInstance().getPluginManager().getActivePlugin()

@@ -16,15 +16,21 @@ import javax.swing.JOptionPane;
 public class SimulateNetworkTask extends AbstractTask
 {
     @Override
+    public void initTaskDetails()
+    {
+        setTaskName("Simulate network");
+    }
+    
+    @Override
     public void initDefaultProperties()
     {
         MappedProperty prop =   new MappedProperty();
         prop.setName("kleinberg");
         prop.setParamValue("latSize", "15");
         prop.setParamValue("exp", "2");
-        properties.put("Generator", prop.toString());
-        properties.put("Generate directed edges", "false");
-        properties.put("Directed edge chance", "0.0");
+        setProperty("Generator", prop.toString());
+        setProperty("Generate directed edges", "false");
+        setProperty("Directed edge chance", "0.0");
     }
 
     @Override
@@ -37,9 +43,9 @@ public class SimulateNetworkTask extends AbstractTask
         
         switch(genName)
         {
-            case "berbasi": gen = getBASim(genProp); break;
-            case "kleinberg": gen = getKleinbergSim(genProp); break;
-            case "random": gen = getRASim(genProp); break;
+            case "berbasi": gen     =   getBASim(genProp); break;
+            case "kleinberg": gen   =   getKleinbergSim(genProp); break;
+            case "random": gen      =   getRASim(genProp); break;
             default: gen = null;
         }
         
@@ -78,11 +84,4 @@ public class SimulateNetworkTask extends AbstractTask
 
         return new KleinbergGenerator(latticeSize, clusterExp);
     }
-
-    @Override
-    public void initTaskDetails()
-    {
-        name    =   "Simulate network";
-    }
-    
 }
