@@ -13,7 +13,10 @@ import com.graphi.util.Node;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import java.util.AbstractMap;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Random;
 import org.apache.commons.collections15.Factory;
@@ -44,7 +47,6 @@ public class BerbasiGenerator extends AbstractGenerator
         if(edgeFactory == null) edgeFactory         =   () -> new Edge();
         int n                                       =   numAddNodes;
         int m                                       =   initialNodeCount;
-        
         Graph<Node, Edge> graph                     =   Network.generateConnectedGraph(nodeFactory, edgeFactory, m);
         
         
@@ -52,37 +54,45 @@ public class BerbasiGenerator extends AbstractGenerator
         {
             Node current    =   nodeFactory.create();
             
-            PriorityQueue<AbstractMap.SimpleEntry<Node, Double>> nextVerticies =   new PriorityQueue<>
-                ((AbstractMap.SimpleEntry<Node, Double> a1, AbstractMap.SimpleEntry<Node, Double> a2) 
-                -> Double.compare(a1.getValue(), a2.getValue()));
+            ArrayList<Node> vertices            =   new ArrayList<>(graph.getVertices());
+            ArrayList<Node> nextVertices        =   new ArrayList<>();   
+            Map<Integer, Integer> ignoreIndexes =   new HashMap<>();   
+            Random rGen                         =   new Random();
             
-            ArrayList<Node> vertices    =   new ArrayList<>(graph.getVertices());
-            Random rGen                 =   new Random();
-            
-            while(!vertices.isEmpty())
+            for(int j = 0; j < vertices.size(); j++)
             {
-                int index   =   rGen.nextInt(vertices.size());
-                Node next   =   vertices.get(index);
+                if(ignoreIndexes.containsKey(j)) 
+                {
+                    if(j == vertices.size() -1 && nextVertices.size() < m)
+                        j = 0;
+                    
+                    continue;
+                }
+                
+                Node next       =   vertices.get(j);
                 int degree      =   (directedEdges)? graph.inDegree(next) : graph.degree(next);
                 int degreeSum   =   GraphUtilities.degreeSum(graph);
                 double p        =   degree / (degreeSum * 1.0);
-
-                if(nextVerticies.size() < m)
-                    nextVerticies.add(new AbstractMap.SimpleEntry<> (next, p));
+                double r        =   rGen.nextDouble();
                 
-                else if(p > nextVerticies.peek().getValue())
+                
+                if(r <= p)
                 {
-                    nextVerticies.poll();
-                    nextVerticies.add(new AbstractMap.SimpleEntry<> (next, p));
+                    nextVertices.add(next);
+                    if(!ignoreIndexes.containsKey(j)) ignoreIndexes.put(j, null);
                 }
                 
-                vertices.remove(index);
+                if(nextVertices.size() == m) break;
+                
+                else if(j == vertices.size() -1 && nextVertices.size() < m)
+                    j = 0;
             }
             
             graph.addVertex(current);
             
-            while(!nextVerticies.isEmpty())
-                graph.addEdge(edgeFactory.create(), current, nextVerticies.poll().getKey(), directedEdges? EdgeType.DIRECTED : EdgeType.UNDIRECTED);
+            for(Node next : nextVertices)
+                graph.addEdge(edgeFactory.create(), current, next);
+                       
         }
         
         return graph;
