@@ -64,7 +64,7 @@ public class BerbasiGenerator extends AbstractGenerator
                 if(ignoreIndexes.containsKey(j)) 
                 {
                     if(j == vertices.size() -1 && nextVertices.size() < m)
-                        j = 0;
+                        j = -1;
                     
                     continue;
                 }
@@ -75,7 +75,6 @@ public class BerbasiGenerator extends AbstractGenerator
                 double p        =   degree / (degreeSum * 1.0);
                 double r        =   rGen.nextDouble();
                 
-                
                 if(r <= p)
                 {
                     nextVertices.add(next);
@@ -85,13 +84,14 @@ public class BerbasiGenerator extends AbstractGenerator
                 if(nextVertices.size() == m) break;
                 
                 else if(j == vertices.size() -1 && nextVertices.size() < m)
-                    j = 0;
+                    j = -1;
             }
             
             graph.addVertex(current);
             
             for(Node next : nextVertices)
-                graph.addEdge(edgeFactory.create(), current, next);
+                graph.addEdge(edgeFactory.create(), current, next,
+                directedEdges? EdgeType.DIRECTED : EdgeType.UNDIRECTED);
                        
         }
         
