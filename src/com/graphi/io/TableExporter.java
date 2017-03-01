@@ -1,3 +1,8 @@
+//=========================================
+//  Kyle Russell
+//  AUT University 2015
+//  https://github.com/denkers/graphi
+//=========================================
 
 package com.graphi.io;
 
@@ -12,9 +17,15 @@ import org.apache.commons.io.FilenameUtils;
 
 public class TableExporter 
 {
+    /**
+     * Exports a passed javax.swing.JTable to a specified path
+     * Supports csv & tsv
+     * @param table a non-null javax.swing.JTable to export
+     * @param file the path file to export the table to
+     */
     public static void exportTable(JTable table, File file)
     {
-        if(file == null) return;
+        if(file == null || table == null) return;
         
         String extension    =   FilenameUtils.getExtension(file.getName());
         if(extension.equalsIgnoreCase("csv"))
@@ -24,16 +35,32 @@ public class TableExporter
             exportToTSV(table, file);
     }
     
+    /**
+     * Exports a passed jtable to a CSV file
+     * @param table a non-null javax.swing.JTable to export
+     * @param file the path file to export the table to
+     */
     public static void exportToCSV(JTable table, File file)
     {
         exportToDelimitedFormat(table, ",", file);
     }
     
+    /**
+     * Exports a passed jtable to a TSV file
+     * @param table a non-null javax.swing.JTable to export
+     * @param file the path file to export the table to
+     */
     public static void exportToTSV(JTable table, File file)
     {
         exportToDelimitedFormat(table, "\t", file);
     }
     
+    /**
+     * Exports a passed jtable to a file with specified delimitor
+     * @param table a non-null javax.swing.JTable to export
+     * @param file the path file to export the table to
+     * @param delimitor The file delimitor type e.g. "," for CSV
+     */
     public static void exportToDelimitedFormat(JTable table, String delimitor, File file)
     {
         String output               =   "";

@@ -10,7 +10,10 @@ import org.w3c.dom.Document;
 
 public class AppConfig implements Config
 {
+    //enable or disable graph visuals on main panel
     private boolean displayVisuals;
+    
+    //default export path
     private String exportDir;
     
     public AppConfig(Document document)

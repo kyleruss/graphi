@@ -15,7 +15,10 @@ import org.w3c.dom.NodeList;
 
 public class PluginConfig implements Config
 {
+    //The default plugin index for startup (-1 for default)
     private int defaultIndex;
+    
+    //List of paths to plugins installed
     private List<String> loadedPluginPaths;
     
     public PluginConfig(Document doc)
