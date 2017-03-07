@@ -18,6 +18,10 @@ import javax.imageio.ImageIO;
 public class AppResources 
 {
     protected static AppResources instance;
+    
+    //Table containing application images
+    //Key: name of the image
+    //Value: the image for the corresponding name
     protected Map<String, BufferedImage> resourceMap;
     
     protected AppResources()
@@ -25,35 +29,38 @@ public class AppResources
         initResources();
     }
     
-    protected void initResources()
+    /**
+     * Initializes all image resources for the application
+     */
+    private void initResources()
     {
         try
         {
             resourceMap  =   new HashMap<>();
-            resourceMap.put("addIcon", ImageIO.read(new File(Consts.IMG_DIR + "addSmallIcon.png")));
-            resourceMap.put("removeIcon", ImageIO.read(new File(Consts.IMG_DIR + "removeSmallIcon.png")));
-            resourceMap.put("colourIcon", ImageIO.read(new File(Consts.IMG_DIR + "color_icon.png")));
-            resourceMap.put("clipIcon", ImageIO.read(new File(Consts.IMG_DIR + "clipboard.png")));
-            resourceMap.put("saveIcon", ImageIO.read(new File(Consts.IMG_DIR + "new_file.png")));
-            resourceMap.put("openIcon", ImageIO.read(new File(Consts.IMG_DIR + "open_icon.png")));
-            resourceMap.put("editBlackIcon", ImageIO.read(new File(Consts.IMG_DIR + "editblack.png")));
-            resourceMap.put("pointerIcon", ImageIO.read(new File(Consts.IMG_DIR + "pointer.png")));
-            resourceMap.put("moveIcon", ImageIO.read(new File(Consts.IMG_DIR + "move.png")));
-            resourceMap.put("moveSelectedIcon", ImageIO.read(new File(Consts.IMG_DIR + "move_selected.png")));
-            resourceMap.put("editSelectedIcon", ImageIO.read(new File(Consts.IMG_DIR + "editblack_selected.png")));
-            resourceMap.put("pointerSelectedIcon", ImageIO.read(new File(Consts.IMG_DIR + "pointer_selected.png")));
-            resourceMap.put("graphIcon", ImageIO.read(new File(Consts.IMG_DIR + "graph.png")));
-            resourceMap.put("tableIcon", ImageIO.read(new File(Consts.IMG_DIR + "table.png")));
-            resourceMap.put("executeIcon", ImageIO.read(new File(Consts.IMG_DIR + "execute.png")));
-            resourceMap.put("resetIcon", ImageIO.read(new File(Consts.IMG_DIR + "reset.png")));
-            resourceMap.put("editIcon", ImageIO.read(new File(Consts.IMG_DIR + "edit.png")));
-            resourceMap.put("playIcon", ImageIO.read(new File(Consts.IMG_DIR + "play.png")));
-            resourceMap.put("stopIcon", ImageIO.read(new File(Consts.IMG_DIR + "stop.png")));
-            resourceMap.put("recordIcon", ImageIO.read(new File(Consts.IMG_DIR + "record.png")));
-            resourceMap.put("closeIcon", ImageIO.read(new File(Consts.IMG_DIR + "close.png")));
-            resourceMap.put("graphIconV2", ImageIO.read(new File(Consts.IMG_DIR + "graph2.png")));
-            resourceMap.put("settingsIcon", ImageIO.read(new File(Consts.IMG_DIR + "settingsIcon.png")));
-            resourceMap.put("helpIcon", ImageIO.read(new File(Consts.IMG_DIR + "help.png")));
+            resourceMap.put("addIcon", getImage("addSmallIcon.png"));
+            resourceMap.put("removeIcon", getImage("removeSmallIcon.png"));
+            resourceMap.put("colourIcon", getImage("color_icon.png"));
+            resourceMap.put("clipIcon", getImage("clipboard.png"));
+            resourceMap.put("saveIcon", getImage("new_file.png"));
+            resourceMap.put("openIcon", getImage("open_icon.png"));
+            resourceMap.put("editBlackIcon", getImage("editblack.png"));
+            resourceMap.put("pointerIcon", getImage("pointer.png"));
+            resourceMap.put("moveIcon", getImage("move.png"));
+            resourceMap.put("moveSelectedIcon", getImage("move_selected.png"));
+            resourceMap.put("editSelectedIcon", getImage("editblack_selected.png"));
+            resourceMap.put("pointerSelectedIcon", getImage("pointer_selected.png"));
+            resourceMap.put("graphIcon", getImage("graph.png"));
+            resourceMap.put("tableIcon", getImage("table.png"));
+            resourceMap.put("executeIcon", getImage("execute.png"));
+            resourceMap.put("resetIcon", getImage("reset.png"));
+            resourceMap.put("editIcon", getImage("edit.png"));
+            resourceMap.put("playIcon", getImage("play.png"));
+            resourceMap.put("stopIcon", getImage("stop.png"));
+            resourceMap.put("recordIcon", getImage("record.png"));
+            resourceMap.put("closeIcon", getImage("close.png"));
+            resourceMap.put("graphIconV2", getImage("graph2.png"));
+            resourceMap.put("settingsIcon", getImage("settingsIcon.png"));
+            resourceMap.put("helpIcon", getImage("help.png"));
         }
         
         catch(IOException e)
@@ -62,16 +69,37 @@ public class AppResources
         }
     }
     
+    /**
+     * Returns an image for the passed image name
+     * @param name Name of the image
+     * @return The BufferedImage corresponding to the passed image name
+     */
+    private BufferedImage getImage(String name) throws IOException
+    {
+        return ImageIO.read(new File(Consts.IMG_DIR + name));
+    }
+    
+    /**
+     * @return The image resources in the application
+     */
     public Map<String, BufferedImage> getResourceMap()
     {
         return resourceMap;
     }
     
+    /**
+     * @param resourceName The image name/alias (not path)
+     * @return The image for the corresponding resource name
+     */
     public BufferedImage getResource(String resourceName)
     {
         return resourceMap.get(resourceName);
     }
     
+    /**
+     * @param resourceName the name of the image
+     * @return True if the image has been initialized; false otherwise
+     */
     public boolean hasResource(String resourceName)
     {
         return resourceMap.containsKey(resourceName);
