@@ -1,8 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+//=========================================
+//  Kyle Russell
+//  AUT University 2015
+//  https://github.com/denkers/graphi
+//=========================================
+
 package com.graphi.display.layout.util;
 
 import com.graphi.app.Consts;

@@ -25,9 +25,14 @@ import javax.swing.JMenuItem;
 
 public final class PluginManager
 {
+    //Current plugin in use
     private Plugin activePlugin;
-    private final AppManager appManager;
+    
+    //Table of plugins
+    //Key: plugin name
+    //Value: plugin instance
     private Map<String, Plugin> plugins;
+    private final AppManager appManager;
 
     public PluginManager(AppManager appManager)
     {
@@ -37,6 +42,8 @@ public final class PluginManager
         initDefaultPlugin();
     }
     
+    //Initializes the default in the application
+    //Uses the user specified default or the base plugin
     private void initDefaultPlugin()
     {
         AbstractPlugin basePlugin       =   new DefaultPlugin();
@@ -47,9 +54,11 @@ public final class PluginManager
         PluginConfig config             =   appManager.getConfigManager().getPluginConfig();
         int defaultPluginIndex          =   config.getDefaultPluginIndex();
         
+        //No user specified default, use base
         if(defaultPluginIndex == -1)
             defaultPlugin = basePlugin;
         
+        //Use user specified default plugin
         else
         {
             List<String> pluginPaths    =   config.getLoadedPluginPaths();
@@ -65,43 +74,6 @@ public final class PluginManager
 
         appManager.getWindow().getMenu().getPluginListMenu().loadConfigPlugins(this, appManager);
         activatePlugin(defaultPlugin);
-    }
-    
-    public AppManager getManager()
-    {
-        return appManager;
-    }
-    
-    public Plugin getActivePlugin()
-    {
-        return activePlugin;
-    }
-    
-    public Map<String, Plugin> getPlugins()
-    {
-        return plugins;
-    }
-    
-    public void addPlugin(Plugin plugin)
-    {
-        if(plugin != null)
-            plugins.put(plugin.getPluginName(), plugin);
-    }
-    
-    public boolean hasPlugin(Plugin plugin)
-    {
-        if(plugin == null) return false;
-        else return plugins.containsKey(plugin.getPluginName());
-    }
-    
-    public void setPlugins(Map<String, Plugin> plugins)
-    {
-        this.plugins    =   plugins;
-    }
-    
-    public URLClassLoader getActiveClassLoader()
-    {
-        return activePlugin.getLoader();
     }
     
     public Plugin fetchPlugin(File file)
@@ -197,5 +169,42 @@ public final class PluginManager
         
         if(plugin != null && !activePlugin.equals(plugin))
             activatePlugin(plugin);
+    }
+    
+    public AppManager getManager()
+    {
+        return appManager;
+    }
+    
+    public Plugin getActivePlugin()
+    {
+        return activePlugin;
+    }
+    
+    public Map<String, Plugin> getPlugins()
+    {
+        return plugins;
+    }
+    
+    public void addPlugin(Plugin plugin)
+    {
+        if(plugin != null)
+            plugins.put(plugin.getPluginName(), plugin);
+    }
+    
+    public boolean hasPlugin(Plugin plugin)
+    {
+        if(plugin == null) return false;
+        else return plugins.containsKey(plugin.getPluginName());
+    }
+    
+    public void setPlugins(Map<String, Plugin> plugins)
+    {
+        this.plugins    =   plugins;
+    }
+    
+    public URLClassLoader getActiveClassLoader()
+    {
+        return activePlugin.getLoader();
     }
 }

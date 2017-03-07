@@ -8,7 +8,6 @@ package com.graphi.plugins;
 
 import com.graphi.app.AppManager;
 import com.graphi.display.layout.MainPanel;
-import com.graphi.io.Storage;
 import com.graphi.util.GraphData;
 import java.net.URLClassLoader;
 
@@ -58,7 +57,14 @@ public interface Plugin
      */
     public GraphData getData();
     
+    /**
+     * Set the plugin class loader
+     * @param loader The class loader
+     */
     public void setLoader(URLClassLoader loader);
     
+    /**
+     * @return The plugins class loader
+     */
     public URLClassLoader getLoader();
 }
