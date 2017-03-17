@@ -24,14 +24,18 @@ public final class AppManager
     private final ConfigManager configManager; //Manages stored configs
     private final PluginManager pluginManager; //Manages loading & active plugins
     private final ErrorManager errorManager; // Manages error messages & dumping
+    private final StartupManager startupManager;
     private final Window window; //Handles display of the application
     
-    private AppManager()
+    private AppManager(String[] args)
     {
         errorManager    =   new ErrorManager(this);
         configManager   =   new ConfigManager();
         window          =   Window.getWindowInstance();
-        pluginManager   =   new PluginManager(this);   
+        pluginManager   =   new PluginManager(this); 
+        
+        startupManager  =   StartupManager.createInstance(args);
+        startupManager.pollListeners();
     }
     
     /**
@@ -67,9 +71,14 @@ public final class AppManager
         window.initFrame();
     }
 
+    public static AppManager createInstance(String[] args)
+    {
+        if(instance == null) instance = new AppManager(args);
+        return instance;
+    }
+    
     public static AppManager getInstance()
     {
-        if(instance == null) instance = new AppManager();
         return instance;
     }
     
