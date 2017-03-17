@@ -30,7 +30,7 @@ public abstract class StartupListener
         return params;
     }
     
-    public boolean hasParam(String paramName)
+    public boolean isListening(String paramName)
     {
         return params.containsKey(paramName);
     }

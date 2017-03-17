@@ -22,6 +22,7 @@ public class StartupManager
         listeners       =   new ArrayList<>();
         appParams       =   new HashMap<>();
         initAppParams(params);
+        initDefaultListeners();
     }
     
     private void initAppParams(String[] params)
@@ -34,6 +35,25 @@ public class StartupManager
             String paramValue   =   params[paramIndex + 1];
             appParams.put(paramName, paramValue);
         }
+    }
+    
+    public void pollListeners()
+    {
+        if(listeners.isEmpty() || appParams.isEmpty()) return;
+        
+        for(String paramName : appParams.keySet())
+        {
+            for(StartupListener listener : listeners)
+            {
+                if(listener.isListening(paramName))
+                    listener.setParam(paramName, appParams.get(paramName));
+            }
+        }
+    }
+    
+    private void initDefaultListeners()
+    {
+        addListener(new UpdaterStartupListener());
     }
     
     public void addListener(StartupListener listener)
