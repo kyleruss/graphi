@@ -6,11 +6,17 @@
 
 package com.graphi.app;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public abstract class StartupListener 
 {
     protected Map<String, String> params;
+    
+    public StartupListener()
+    {
+        params  =   new HashMap<>();
+    }
     
     protected abstract void initParamNames();
     
