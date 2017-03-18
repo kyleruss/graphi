@@ -157,6 +157,8 @@ public final class PluginManager
         
         Window window   =   Window.getInstance();
         JFrame frame    =   window.getFrame();
+        
+        //remove current card panel and replace with active plugin
         frame.getContentPane().removeAll();
         frame.add(activePlugin.getPanel());
         frame.revalidate();

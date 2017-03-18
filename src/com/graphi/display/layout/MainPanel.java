@@ -65,8 +65,6 @@ public class MainPanel extends JPanel
         this.data   =   data;
     }
     
-    
-    
     public ControlPanel getControlPanel() 
     {
         return controlPanel;
