@@ -29,8 +29,8 @@ public final class AppManager
     
     private AppManager(String[] args)
     {
-        errorManager    =   new ErrorManager(this);
-        configManager   =   new ConfigManager();
+        errorManager    =   ErrorManager.createInstance();
+        configManager   =   ConfigManager.createInstance();
         window          =   Window.getWindowInstance();
         pluginManager   =   new PluginManager(this); 
         

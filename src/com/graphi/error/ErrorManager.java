@@ -6,7 +6,6 @@
 
 package com.graphi.error;
 
-import com.graphi.app.AppManager;
 import java.util.Date;
 import javax.swing.JOptionPane;
 
@@ -19,13 +18,13 @@ public class ErrorManager
     //The active ErrorDump instance
     //Uses most recent instance 
     private static ErrorDump errorDump;
+
+
+    private static ErrorManager instance;
     
-    //The parent app manager
-    private final AppManager appManager;
     
-    public ErrorManager(AppManager appManager)
+    private ErrorManager()
     {
-        this.appManager =   appManager;
         errorDump       =   ErrorDump.getLatestErrorDump();
     }
     
@@ -71,5 +70,16 @@ public class ErrorManager
          ErrorBean bean  =   new ErrorBean(new Date(), e, message, errorData);
          errorDump.addErrorBean(bean);
          errorDump.saveErrorDumpInstance();
+    }
+    
+    public static ErrorManager createInstance()
+    {
+        if(instance == null) instance   =   new ErrorManager();
+        return instance;
+    }
+    
+    public static ErrorManager getInstance()
+    {
+        return instance;
     }
 }

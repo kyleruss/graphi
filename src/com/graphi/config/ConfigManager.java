@@ -23,10 +23,11 @@ import org.xml.sax.SAXException;
 
 public class ConfigManager 
 {
+    private static ConfigManager instance;
     private PluginConfig pluginConfig;
     private AppConfig appConfig;
     
-    public ConfigManager()
+    private ConfigManager()
     {
         loadConfig();
     }
@@ -65,5 +66,16 @@ public class ConfigManager
     public AppConfig getAppConfig()
     {
         return appConfig;
+    }
+    
+    public static ConfigManager createInstance()
+    {
+        if(instance == null) instance   =   new ConfigManager();
+        return instance;
+    }
+    
+    public static ConfigManager getInstance()
+    {
+        return instance;
     }
 }
