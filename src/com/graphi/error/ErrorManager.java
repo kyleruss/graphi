@@ -18,10 +18,7 @@ public class ErrorManager
     //The active ErrorDump instance
     //Uses most recent instance 
     private static ErrorDump errorDump;
-
-
     private static ErrorManager instance;
-    
     
     private ErrorManager()
     {

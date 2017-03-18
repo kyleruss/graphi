@@ -25,6 +25,8 @@ import javax.swing.JMenuItem;
 
 public final class PluginManager
 {
+    private static PluginManager instance;
+    
     //Current plugin in use
     private Plugin activePlugin;
     
@@ -32,13 +34,11 @@ public final class PluginManager
     //Key: plugin name
     //Value: plugin instance
     private Map<String, Plugin> plugins;
-    private final AppManager appManager;
 
-    public PluginManager(AppManager appManager)
+    private PluginManager()
     {
-        this.appManager     =   appManager;
         plugins             =   new HashMap<>();
-        appManager.getWindow().getMenu().getPluginListMenu().initPluginMenuListener(this);
+        AppManager.getInstance().getWindow().getMenu().getPluginListMenu().initPluginMenuListener(this);
         initDefaultPlugin();
     }
     
@@ -46,6 +46,7 @@ public final class PluginManager
     //Uses the user specified default or the base plugin
     private void initDefaultPlugin()
     {
+        AppManager appManager           =   AppManager.getInstance();
         AbstractPlugin basePlugin       =   new DefaultPlugin();
         addPlugin(basePlugin);
         appManager.getWindow().getMenu().getPluginListMenu().addPluginMenuItem("defaultPluginItem", new JMenuItem("Default"));
@@ -137,6 +138,8 @@ public final class PluginManager
     
     public void activatePlugin(Plugin plugin)
     {
+        AppManager appManager   =   AppManager.getInstance();
+        
         if(plugin == null) return;
 
         GraphData data  =   null;
@@ -171,11 +174,6 @@ public final class PluginManager
             activatePlugin(plugin);
     }
     
-    public AppManager getManager()
-    {
-        return appManager;
-    }
-    
     public Plugin getActivePlugin()
     {
         return activePlugin;
@@ -206,5 +204,16 @@ public final class PluginManager
     public URLClassLoader getActiveClassLoader()
     {
         return activePlugin.getLoader();
+    }
+    
+    public static PluginManager createInstance()
+    {
+        if(instance == null) instance   =   new PluginManager();
+        return instance;
+    }
+    
+    public static PluginManager getInstance()
+    {
+        return instance;
     }
 }

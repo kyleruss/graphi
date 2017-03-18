@@ -32,7 +32,7 @@ public final class AppManager
         errorManager    =   ErrorManager.createInstance();
         configManager   =   ConfigManager.createInstance();
         window          =   Window.getWindowInstance();
-        pluginManager   =   new PluginManager(this); 
+        pluginManager   =   PluginManager.createInstance();
         
         startupManager  =   StartupManager.createInstance(args);
         startupManager.pollListeners();
