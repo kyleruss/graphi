@@ -28,14 +28,12 @@ public class MainPanel extends JPanel
     protected GraphData data;
     protected MainMenu menu;
     protected JFrame frame; 
-    protected AppManager appManager;
     
     public MainPanel(AppManager appManager)
     {
         setPreferredSize(new Dimension(Consts.WINDOW_WIDTH, Consts.WINDOW_HEIGHT));
         setLayout(new BorderLayout());        
         
-        this.appManager     =   appManager;
         menu                =   Window.getInstance().getMenu();
         frame               =   Window.getInstance().getFrame();
         data                =   new GraphData();
@@ -87,11 +85,6 @@ public class MainPanel extends JPanel
     public MainMenu getMenu()
     {
         return menu;
-    }
-
-    public AppManager getAppManager() 
-    {
-        return appManager;
     }
     
     public JFrame getFrame()

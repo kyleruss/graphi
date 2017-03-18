@@ -51,12 +51,12 @@ public class IOControlPanel extends JPanel implements ActionListener
     protected JComboBox ioTypeBox;
     protected JPanel directedCheckWrapper;
     private final ControlPanel outer;
-    private MainPanel mainPanel;
+    private final MainPanel mainPanel;
 
     public IOControlPanel(ControlPanel outer)
     {
         this.outer  =   outer;
-        mainPanel   =   mainPanel;
+        mainPanel   =   outer.getMainPanel();
         setLayout(new GridLayout(4, 1));
         setBorder(BorderFactory.createTitledBorder("I/O Controls"));
         
