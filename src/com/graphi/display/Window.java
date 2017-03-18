@@ -91,11 +91,16 @@ public final class Window
     /**
     * @return Creates a Window instance if it doesn't exist and returns the instance
     */
-    public static Window getWindowInstance()
+    public static Window createInstance()
     {
         if(instance == null)
             instance = new Window();
         
+        return instance;
+    }
+    
+    public static Window getInstance()
+    {
         return instance;
     }
 }

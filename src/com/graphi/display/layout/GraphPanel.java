@@ -8,6 +8,7 @@ package com.graphi.display.layout;
 
 import cern.colt.matrix.impl.SparseDoubleMatrix2D;
 import com.graphi.app.AppManager;
+import com.graphi.config.ConfigManager;
 import com.graphi.sim.GraphPlayback;
 import com.graphi.sim.PlaybackEntry;
 import com.graphi.util.transformer.CentralityTransformer;
@@ -545,7 +546,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         gViewer.getPickedEdgeState().clear();
         mainPanel.data.setSelectedItems(null);
 
-        if(AppManager.getInstance().getConfigManager().getAppConfig().isDisplayVisuals())
+        if(ConfigManager.getInstance().getAppConfig().isDisplayVisuals())
         {
             gLayout.removeAll();
             gLayout.setGraph(mainPanel.data.getGraph());

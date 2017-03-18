@@ -21,47 +21,16 @@ import com.graphi.plugins.PluginManager;
 public final class AppManager 
 {
     private static AppManager instance;
-    private  ConfigManager configManager; //Manages stored configs
-    private  PluginManager pluginManager; //Manages loading & active plugins
-    private  ErrorManager errorManager; // Manages error messages & dumping
-    private StartupManager startupManager;
-    private Window window; //Handles display of the application
     
     private AppManager() {}
     
     private void startManagers(String[] startupArgs)
     {
-        errorManager    =   ErrorManager.createInstance();
-        configManager   =   ConfigManager.createInstance();
-        window          =   Window.getWindowInstance();
-        pluginManager   =   PluginManager.createInstance();
-        startupManager  =   StartupManager.createInstance(startupArgs);
-        startupManager.pollListeners();
-    }
-    
-    /**
-    * @return The Graphi config manager that handles all stored configs
-    */
-    public ConfigManager getConfigManager()
-    {
-        return configManager;
-    }
-    
-    /**
-    * @return The Graphi plugin manager for loading plugins & handeling active plugins
-    */
-    public PluginManager getPluginManager()
-    {
-        return pluginManager;
-    }
-    
-    /**
-    * @return The Graphi layout/display manager
-    * Has access to the apps menu and frame
-    */
-    public Window getWindow()
-    {
-        return window;
+        ErrorManager.createInstance();
+        ConfigManager.createInstance();
+        Window.createInstance();
+        PluginManager.createInstance();
+        StartupManager.createInstance(startupArgs).pollListeners();
     }
     
     /**
@@ -70,7 +39,7 @@ public final class AppManager
     private void start(String[] startupArgs)
     {
         startManagers(startupArgs);
-        window.initFrame();
+        Window.getInstance().initFrame();
     }
 
     public static AppManager createInstance()

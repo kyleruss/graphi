@@ -6,7 +6,7 @@
 
 package com.graphi.tasks;
 
-import com.graphi.app.AppManager;
+import com.graphi.plugins.PluginManager;
 
 public class ClearEntriesTask extends AbstractTask
 {
@@ -22,7 +22,7 @@ public class ClearEntriesTask extends AbstractTask
     @Override
     public void performTask() 
     {
-        AppManager.getInstance().getPluginManager().getActivePlugin()
+        PluginManager.getInstance().getActivePlugin()
                   .getPanel().getScreenPanel().getGraphPanel().removeAllRecordedEntries();
     }
     

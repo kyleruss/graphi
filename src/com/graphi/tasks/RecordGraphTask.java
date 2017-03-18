@@ -7,6 +7,7 @@
 package com.graphi.tasks;
 
 import com.graphi.app.AppManager;
+import com.graphi.plugins.PluginManager;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -32,7 +33,7 @@ public class RecordGraphTask extends AbstractTask
             boolean recordState     =   getProperty("Record state").equalsIgnoreCase("true");
             boolean recordTable     =   getProperty("Record table").equalsIgnoreCase("true");
 
-            AppManager.getInstance().getPluginManager().getActivePlugin()
+            PluginManager.getInstance().getActivePlugin()
                     .getPanel().getScreenPanel().getGraphPanel()
                     .addRecordedGraph(entryName, date, recordState, recordTable, true);
         }

@@ -8,6 +8,7 @@ package com.graphi.display;
 
 import com.graphi.app.AppManager;
 import com.graphi.app.Consts;
+import com.graphi.config.ConfigManager;
 import com.graphi.plugins.Plugin;
 import com.graphi.config.PluginConfig;
 import com.graphi.plugins.PluginManager;
@@ -122,7 +123,7 @@ public class PluginsMenu extends JMenu
     
     public void loadConfigPlugins(PluginManager pm, AppManager am)
     {
-        PluginConfig config =   am.getConfigManager().getPluginConfig();
+        PluginConfig config =   ConfigManager.getInstance().getPluginConfig();
         List<String> paths  =   config.getLoadedPluginPaths();
 
         for(int i = 0; i < paths.size(); i++)
@@ -134,7 +135,7 @@ public class PluginsMenu extends JMenu
         if(file == null) return;
 
         Plugin plugin           =   pm.fetchPlugin(file);
-        String defaultPath      =   am.getConfigManager().getPluginConfig().getDefaultPluginPath();
+        String defaultPath      =   ConfigManager.getInstance().getPluginConfig().getDefaultPluginPath();
         boolean isDefaultPath   =   file.getPath().equals(defaultPath);
 
         if(plugin == null)

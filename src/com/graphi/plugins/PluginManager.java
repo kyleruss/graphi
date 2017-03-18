@@ -8,7 +8,9 @@ package com.graphi.plugins;
 
 import com.graphi.config.PluginConfig;
 import com.graphi.app.AppManager;
+import com.graphi.config.ConfigManager;
 import com.graphi.display.PluginsMenu;
+import com.graphi.display.Window;
 import com.graphi.util.GraphData;
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +40,7 @@ public final class PluginManager
     private PluginManager()
     {
         plugins             =   new HashMap<>();
-        AppManager.getInstance().getWindow().getMenu().getPluginListMenu().initPluginMenuListener(this);
+        Window.getInstance().getMenu().getPluginListMenu().initPluginMenuListener(this);
         initDefaultPlugin();
     }
     
@@ -49,10 +51,10 @@ public final class PluginManager
         AppManager appManager           =   AppManager.getInstance();
         AbstractPlugin basePlugin       =   new DefaultPlugin();
         addPlugin(basePlugin);
-        appManager.getWindow().getMenu().getPluginListMenu().addPluginMenuItem("defaultPluginItem", new JMenuItem("Default"));
+        Window.getInstance().getMenu().getPluginListMenu().addPluginMenuItem("defaultPluginItem", new JMenuItem("Default"));
         
         Plugin defaultPlugin;
-        PluginConfig config             =   appManager.getConfigManager().getPluginConfig();
+        PluginConfig config             =   ConfigManager.getInstance().getPluginConfig();
         int defaultPluginIndex          =   config.getDefaultPluginIndex();
         
         //No user specified default, use base
@@ -73,7 +75,7 @@ public final class PluginManager
                 addPlugin(defaultPlugin);
         }
 
-        appManager.getWindow().getMenu().getPluginListMenu().loadConfigPlugins(this, appManager);
+        Window.getInstance().getMenu().getPluginListMenu().loadConfigPlugins(this, appManager);
         activatePlugin(defaultPlugin);
     }
     
@@ -153,13 +155,13 @@ public final class PluginManager
         if(data != null) 
             activePlugin.passData(data);
         
-        
-        JFrame frame    =   appManager.getWindow().getFrame();
+        Window window   =   Window.getInstance();
+        JFrame frame    =   window.getFrame();
         frame.getContentPane().removeAll();
         frame.add(activePlugin.getPanel());
         frame.revalidate();
         
-        PluginsMenu pluginsMenu     =   appManager.getWindow().getMenu().getPluginListMenu();
+        PluginsMenu pluginsMenu     =   window.getMenu().getPluginListMenu();
         String itemName             =   plugin.getPluginName().equals("Default")? "defaultPluginItem" : plugin.getPluginName();
         
         JMenuItem item              =    pluginsMenu.getPluginMenuItem(itemName);

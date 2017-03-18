@@ -10,6 +10,7 @@ import com.graphi.display.layout.controls.ControlPanel;
 import com.graphi.app.AppManager;
 import com.graphi.app.Consts;
 import com.graphi.display.MainMenu;
+import com.graphi.display.Window;
 import com.graphi.util.GraphData;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -35,8 +36,8 @@ public class MainPanel extends JPanel
         setLayout(new BorderLayout());        
         
         this.appManager     =   appManager;
-        menu                =   appManager.getWindow().getMenu();
-        frame               =   appManager.getWindow().getFrame();
+        menu                =   Window.getInstance().getMenu();
+        frame               =   Window.getInstance().getFrame();
         data                =   new GraphData();
         initComponents();
 

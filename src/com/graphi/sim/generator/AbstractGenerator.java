@@ -7,6 +7,7 @@
 package com.graphi.sim.generator;
 
 import com.graphi.app.AppManager;
+import com.graphi.plugins.PluginManager;
 import com.graphi.util.Edge;
 import com.graphi.util.Node;
 import edu.uci.ics.jung.graph.Graph;
@@ -26,12 +27,12 @@ public abstract class AbstractGenerator implements NetworkGenerator
     
     protected Factory<Node> getDefaultNodeFactory()
     {
-        return AppManager.getInstance().getPluginManager().getActivePlugin().getPanel().getGraphData().getNodeFactory();
+        return PluginManager.getInstance().getActivePlugin().getPanel().getGraphData().getNodeFactory();
     }
     
     protected Factory<Edge> getDefaultEdgeFactory()
     {
-        return AppManager.getInstance().getPluginManager().getActivePlugin().getPanel().getGraphData().getEdgeFactory();
+        return PluginManager.getInstance().getActivePlugin().getPanel().getGraphData().getEdgeFactory();
     }
     
     @Override
