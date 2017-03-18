@@ -21,20 +21,21 @@ import com.graphi.plugins.PluginManager;
 public final class AppManager 
 {
     private static AppManager instance;
-    private final ConfigManager configManager; //Manages stored configs
-    private final PluginManager pluginManager; //Manages loading & active plugins
-    private final ErrorManager errorManager; // Manages error messages & dumping
-    private final StartupManager startupManager;
-    private final Window window; //Handles display of the application
+    private  ConfigManager configManager; //Manages stored configs
+    private  PluginManager pluginManager; //Manages loading & active plugins
+    private  ErrorManager errorManager; // Manages error messages & dumping
+    private StartupManager startupManager;
+    private Window window; //Handles display of the application
     
-    private AppManager(String[] args)
+    private AppManager() {}
+    
+    private void startManagers(String[] startupArgs)
     {
         errorManager    =   ErrorManager.createInstance();
         configManager   =   ConfigManager.createInstance();
         window          =   Window.getWindowInstance();
         pluginManager   =   PluginManager.createInstance();
-        
-        startupManager  =   StartupManager.createInstance(args);
+        startupManager  =   StartupManager.createInstance(startupArgs);
         startupManager.pollListeners();
     }
     
@@ -66,14 +67,15 @@ public final class AppManager
     /**
     * @return Starts Graphi by initializing & displaying the applications frame
     */
-    private void start()
+    private void start(String[] startupArgs)
     {
+        startManagers(startupArgs);
         window.initFrame();
     }
 
-    public static AppManager createInstance(String[] args)
+    public static AppManager createInstance()
     {
-        if(instance == null) instance = new AppManager(args);
+        if(instance == null) instance = new AppManager();
         return instance;
     }
     
@@ -87,7 +89,7 @@ public final class AppManager
      */
     public static void main(String[] args)
     {
-        AppManager manager  =   getInstance();
-        manager.start();
+        AppManager manager  =   AppManager.createInstance();
+        manager.start(args);
     }
 }
