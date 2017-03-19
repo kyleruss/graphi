@@ -11,6 +11,7 @@ import com.graphi.app.AppManager;
 import com.graphi.config.ConfigManager;
 import com.graphi.display.PluginsMenu;
 import com.graphi.display.Window;
+import com.graphi.display.layout.ViewPort;
 import com.graphi.util.GraphData;
 import java.io.File;
 import java.io.IOException;
@@ -155,15 +156,10 @@ public final class PluginManager
         if(data != null) 
             activePlugin.passData(data);
         
-        Window window   =   Window.getInstance();
-        JFrame frame    =   window.getFrame();
+        ViewPort viewPort   =   ViewPort.getInstance();
+        viewPort.attachMainPanel(activePlugin.getPanel());
         
-        //remove current card panel and replace with active plugin
-        frame.getContentPane().removeAll();
-        frame.add(activePlugin.getPanel());
-        frame.revalidate();
-        
-        PluginsMenu pluginsMenu     =   window.getMenu().getPluginListMenu();
+        PluginsMenu pluginsMenu     =   Window.getInstance().getMenu().getPluginListMenu();
         String itemName             =   plugin.getPluginName().equals("Default")? "defaultPluginItem" : plugin.getPluginName();
         
         JMenuItem item              =    pluginsMenu.getPluginMenuItem(itemName);

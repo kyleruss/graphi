@@ -24,7 +24,18 @@ public class TransitionPanel extends JPanel
         transitionLabel.setBorder(BorderFactory.createEmptyBorder(130, 0, 0, 0));
         wrapperPanel    =   new JPanel();
         wrapperPanel.add(transitionLabel);
+        wrapperPanel.setBackground(Color.WHITE);
         add(wrapperPanel);
+    }
+    
+    public JLabel getTransitionLabel()
+    {
+        return transitionLabel;
+    }
+    
+    public JPanel getWrapperPanel()
+    {
+        return wrapperPanel;
     }
     
     @Override

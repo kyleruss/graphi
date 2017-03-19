@@ -8,7 +8,9 @@ package com.graphi.display;
 
 import com.graphi.app.Consts;
 import com.graphi.display.layout.AppResources;
+import com.graphi.display.layout.ViewPort;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -75,12 +77,19 @@ public final class Window
         }
     }
     
+    private void attachPanel()
+    {
+        JPanel panel    =   ViewPort.getInstance();
+        frame.getContentPane().add(panel);
+    }
+    
     /**
     * Initializes the application frame and displays it
     * Initial plugin layout is already added to content pane by plugins/PluginManager
     */
     public void initFrame()
     {
+        attachPanel();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);     
         frame.pack();
         frame.setLocationRelativeTo(null);
