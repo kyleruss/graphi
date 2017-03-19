@@ -21,8 +21,11 @@ public class ViewPort extends JPanel
 {
     public static final String TRANSITION_SCENE =   "tr_sc";
     public static final String MAIN_SCENE       =   "main_sc";
+    public static final String TITLE_SCENE      =   "title_sc";
+    
     private static ViewPort instance;
     private TransitionPanel transitionPanel;
+    private TitlePanel titlePanel;
     private JPanel mainScenePanel;
     
     private ViewPort()
@@ -31,6 +34,7 @@ public class ViewPort extends JPanel
         setPreferredSize(new Dimension(Consts.WINDOW_WIDTH, Consts.WINDOW_HEIGHT));
         initTransitionPanel();
         initMainScene();
+        initTitlePanel();
     }
     
     public void attachMainPanel(MainPanel mainPanel)
@@ -38,6 +42,12 @@ public class ViewPort extends JPanel
         mainScenePanel.removeAll();
         mainScenePanel.add(mainPanel);
         mainScenePanel.revalidate();
+    }
+    
+    private void initTitlePanel()
+    {
+        titlePanel  =   new TitlePanel();
+        add(titlePanel, TITLE_SCENE);
     }
     
     private void initMainScene()
