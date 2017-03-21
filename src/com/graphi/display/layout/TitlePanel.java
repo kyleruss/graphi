@@ -6,6 +6,7 @@
 
 package com.graphi.display.layout;
 
+import com.graphi.app.Consts;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -13,20 +14,40 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class TitlePanel extends JPanel
 {
     private ControlPanel controlPanel;
+    private LogoPanel logoPanel;
     
     public TitlePanel()
     {
         setBackground(Color.WHITE);
         controlPanel    =   new ControlPanel();
+        logoPanel       =   new LogoPanel();
         
-        add(Box.createRigidArea(new Dimension(getSize().width, 700)));
+        add(Box.createRigidArea(new Dimension(Consts.WINDOW_WIDTH, 50)));
+        add(logoPanel);
+        add(Box.createRigidArea(new Dimension(Consts.WINDOW_WIDTH, 50)));
         add(controlPanel);
+    }
+    
+    private class LogoPanel extends JPanel
+    {
+        private JLabel logoLabel;
+       
+        private LogoPanel()
+        {
+            setBackground(Color.WHITE);
+            AppResources resources  =   AppResources.getInstance();
+            logoLabel   =   new JLabel(new ImageIcon(resources.getResource("logoIcon")));
+            
+            add(logoLabel);
+        }
     }
     
     private class ControlPanel extends JPanel implements ActionListener

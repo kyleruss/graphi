@@ -61,6 +61,7 @@ public class AppResources
             resourceMap.put("graphIconV2", getImage("graph2.png"));
             resourceMap.put("settingsIcon", getImage("settingsIcon.png"));
             resourceMap.put("helpIcon", getImage("help.png"));
+            resourceMap.put("logoIcon", getImage("logo.png"));
         }
         
         catch(IOException e)
