@@ -62,6 +62,11 @@ public class AppResources
             resourceMap.put("settingsIcon", getImage("settingsIcon.png"));
             resourceMap.put("helpIcon", getImage("help.png"));
             resourceMap.put("logoIcon", getImage("logo.png"));
+            resourceMap.put("newProjectBtn", getImage("newProjectBtn.png"));
+            resourceMap.put("openProjectBtn", getImage("openProjectBtn.png"));
+            resourceMap.put("exitBtn", getImage("exitBtn.png"));
+            resourceMap.put("pluginBtn", getImage("pluginBtn.png"));
+            resourceMap.put("settingsBtn", getImage("settingsBtn.png"));
         }
         
         catch(IOException e)
