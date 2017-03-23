@@ -7,6 +7,7 @@
 package com.graphi.display.layout;
 
 import com.graphi.app.Consts;
+import com.graphi.util.ComponentUtils;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -62,11 +63,12 @@ public class TitlePanel extends JPanel
             setBackground(Color.WHITE);
             setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
             
-            settingsBtn         =   new JButton("Settings");
-            newBtn              =   new JButton("New project");
-            openBtn             =   new JButton("Open project");
-            pluginBtn           =   new JButton("Load plugin");
-            exitBtn             =   new JButton("Exit");
+            AppResources res    =   AppResources.getInstance();
+            settingsBtn         =   new JButton(new ImageIcon(res.getResource("settingsBtn")));
+            newBtn              =   new JButton(new ImageIcon(res.getResource("newProjectBtn")));
+            openBtn             =   new JButton(new ImageIcon(res.getResource("openProjectBtn")));
+            pluginBtn           =   new JButton(new ImageIcon(res.getResource("pluginBtn")));
+            exitBtn             =   new JButton(new ImageIcon(res.getResource("exitBtn")));
             
             GridLayout layout   =   new GridLayout(5, 1, 0, 5);
             JPanel wrapperPanel =   new JPanel(layout);
@@ -74,11 +76,11 @@ public class TitlePanel extends JPanel
             wrapperPanel.setPreferredSize(new Dimension(300, 450));
             wrapperPanel.setBackground(Color.WHITE);
             
-            settingsBtn.setFocusable(false);
-            newBtn.setFocusable(false);
-            openBtn.setFocusable(false);
-            pluginBtn.setFocusable(false);
-            exitBtn.setFocusable(false);
+            ComponentUtils.setTransparentControl(settingsBtn);
+            ComponentUtils.setTransparentControl(newBtn);
+            ComponentUtils.setTransparentControl(openBtn);
+            ComponentUtils.setTransparentControl(pluginBtn);
+            ComponentUtils.setTransparentControl(exitBtn);
             
             wrapperPanel.add(newBtn);
             wrapperPanel.add(openBtn);

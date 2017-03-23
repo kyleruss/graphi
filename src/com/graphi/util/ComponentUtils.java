@@ -10,6 +10,7 @@ import java.awt.Component;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -90,5 +91,15 @@ public class ComponentUtils
             panel.add(component);
         
         return panel;
+    }
+    
+    public static void setTransparentControl(JButton control)
+    {
+        if(control == null) return;
+        
+        control.setBorderPainted(false);
+        control.setFocusable(false);
+        control.setContentAreaFilled(false);
+        control.setOpaque(false);
     }
 }
