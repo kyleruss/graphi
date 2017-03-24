@@ -41,6 +41,11 @@ public final class AppManager
         startManagers(startupArgs);
         Window.getInstance().initFrame();
     }
+    
+    public void closeApplication()
+    {
+        System.exit(0);
+    }
 
     public static AppManager createInstance()
     {

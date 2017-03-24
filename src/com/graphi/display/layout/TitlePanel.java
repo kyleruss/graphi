@@ -6,6 +6,7 @@
 
 package com.graphi.display.layout;
 
+import com.graphi.app.AppManager;
 import com.graphi.app.Consts;
 import com.graphi.util.ComponentUtils;
 import java.awt.Color;
@@ -82,6 +83,7 @@ public class TitlePanel extends JPanel
             ComponentUtils.setTransparentControl(pluginBtn);
             ComponentUtils.setTransparentControl(exitBtn);
             
+            
             wrapperPanel.add(newBtn);
             wrapperPanel.add(openBtn);
             wrapperPanel.add(pluginBtn);
@@ -100,6 +102,12 @@ public class TitlePanel extends JPanel
         public void actionPerformed(ActionEvent e) 
         {
             Object src  =   e.getSource();
+            
+            if(src == exitBtn)
+                AppManager.getInstance().closeApplication();
+            
+            else if(src == newBtn)
+                ViewPort.getInstance().transitionScene(ViewPort.MAIN_SCENE);
         }
     }
 }

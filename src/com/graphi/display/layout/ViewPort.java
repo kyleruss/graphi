@@ -66,11 +66,13 @@ public class ViewPort extends JPanel
     
     public void transitionScene(String sceneName)
     {
+        setScene(TRANSITION_SCENE);
+        
         SwingUtilities.invokeLater(()->
         {
-            Timer timer =   new Timer(2500, (ActionEvent e) -> 
+            Timer timer =   new Timer(1500, (ActionEvent e) -> 
             {
-                setScene(Consts.DISPLAY_GRAPH_CARD);
+                setScene(sceneName);
             });
             
             timer.setRepeats(false);
