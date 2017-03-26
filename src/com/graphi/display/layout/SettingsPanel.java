@@ -6,9 +6,25 @@
 
 package com.graphi.display.layout;
 
-import javax.swing.JPanel;
+import java.awt.BorderLayout;
+import javax.swing.ImageIcon;
 
-public class SettingsPanel extends JPanel
+public class SettingsPanel extends MenuSceneTemplate
 {
+    public SettingsPanel()
+    {
+        sceneTitlePanel     =   new SettingsTitlePanel();
+        sceneControlPanel   =   new SceneControlPanel();
+        
+        add(sceneTitlePanel, BorderLayout.NORTH);
+        add(sceneControlPanel, BorderLayout.CENTER);
+    }
     
+    private class SettingsTitlePanel extends MenuSceneTemplate.SceneTitlePanel
+    {
+        private SettingsTitlePanel()
+        {
+            titleLabel.setIcon(new ImageIcon(AppResources.getInstance().getResource("settingsTitleIcon")));
+        }
+    }
 }
