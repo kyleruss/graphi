@@ -34,7 +34,7 @@ public abstract class MenuSceneTemplate extends JPanel
         {
             setBackground(Color.WHITE);
             
-            titleLabel  =   new JLabel("Options");
+            titleLabel  =   new JLabel();
             titleLabel.setFont(new Font("Arial", Font.BOLD, 72));
             titleLabel.setForeground(Color.DARK_GRAY);
             titleLabel.setIcon(new ImageIcon(AppResources.getInstance().getResource("settingsTitleIcon")));

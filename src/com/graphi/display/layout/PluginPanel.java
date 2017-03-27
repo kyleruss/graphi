@@ -9,23 +9,23 @@ package com.graphi.display.layout;
 import java.awt.BorderLayout;
 import javax.swing.ImageIcon;
 
-public class SettingsPanel extends MenuSceneTemplate
+public class PluginPanel extends MenuSceneTemplate
 {
-    public SettingsPanel()
+    public PluginPanel()
     {
-        sceneTitlePanel     =   new SettingsTitlePanel();
+        sceneTitlePanel     =   new PluginTitlePanel();
         sceneControlPanel   =   new SceneControlPanel();
         
         add(sceneTitlePanel, BorderLayout.NORTH);
         add(sceneControlPanel, BorderLayout.CENTER);
     }
     
-    private class SettingsTitlePanel extends MenuSceneTemplate.SceneTitlePanel
+    private class PluginTitlePanel extends MenuSceneTemplate.SceneTitlePanel
     {
-        private SettingsTitlePanel()
+        private PluginTitlePanel()
         {
-            titleLabel.setText("Options");
-            titleLabel.setIcon(new ImageIcon(AppResources.getInstance().getResource("settingsTitleIcon")));
+            titleLabel.setText("Plugins");
+            titleLabel.setIcon(new ImageIcon(AppResources.getInstance().getResource("pluginsTitleIcon")));
         }
     }
 }

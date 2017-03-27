@@ -23,17 +23,21 @@ public class ViewPort extends JPanel
     public static final String MAIN_SCENE       =   "main_sc";
     public static final String TITLE_SCENE      =   "title_sc";
     public static final String SETTINGS_SCENE   =   "settings_sc";
+    public static final String PLUGINS_SCENE    =   "plugins_sc";
     
     private static ViewPort instance;
     private TransitionPanel transitionPanel;
     private TitlePanel titlePanel;
     private SettingsPanel settingsPanel;
+    private PluginPanel pluginsPanel;
     private JPanel mainScenePanel;
     
     private ViewPort()
     {
         setLayout(new CardLayout());
         setPreferredSize(new Dimension(Consts.WINDOW_WIDTH, Consts.WINDOW_HEIGHT));
+        
+        initPluginPanel();
         initSettingsPanel();
         initTitlePanel();
         initTransitionPanel();
@@ -64,6 +68,12 @@ public class ViewPort extends JPanel
     {
         mainScenePanel  =   new JPanel(new BorderLayout());
         add(mainScenePanel, MAIN_SCENE);
+    }
+    
+    private void initPluginPanel()
+    {
+        pluginsPanel =   new PluginPanel();
+        add(pluginsPanel, PLUGINS_SCENE);
     }
     
     private void initTransitionPanel()
