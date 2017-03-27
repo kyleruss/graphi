@@ -7,7 +7,6 @@
 package com.graphi.display;
 
 import com.graphi.app.Consts;
-import com.graphi.display.layout.AppResources;
 import com.graphi.display.layout.ViewPort;
 import javax.swing.JFrame;
 import javax.swing.JPanel;

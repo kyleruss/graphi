@@ -6,7 +6,7 @@
 
 package com.graphi.display.layout.controls;
 
-import com.graphi.display.layout.AppResources;
+import com.graphi.display.AppResources;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;

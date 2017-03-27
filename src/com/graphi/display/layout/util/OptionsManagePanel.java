@@ -7,7 +7,7 @@
 package com.graphi.display.layout.util;
 
 import com.graphi.app.Consts;
-import com.graphi.display.layout.AppResources;
+import com.graphi.display.AppResources;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;

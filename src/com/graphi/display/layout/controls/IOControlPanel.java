@@ -9,7 +9,7 @@ package com.graphi.display.layout.controls;
 import com.graphi.app.AppManager;
 import com.graphi.app.Consts;
 import com.graphi.display.Window;
-import com.graphi.display.layout.AppResources;
+import com.graphi.display.AppResources;
 import com.graphi.display.layout.DataPanel;
 import com.graphi.display.layout.GraphPanel;
 import com.graphi.display.layout.MainPanel;

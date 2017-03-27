@@ -6,7 +6,7 @@
 
 package com.graphi.display.layout.controls;
 
-import com.graphi.display.layout.AppResources;
+import com.graphi.display.AppResources;
 import edu.uci.ics.jung.visualization.control.EditingModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
 import java.awt.event.ActionEvent;

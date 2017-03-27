@@ -6,6 +6,7 @@
 
 package com.graphi.display.layout;
 
+import com.graphi.display.AppResources;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;

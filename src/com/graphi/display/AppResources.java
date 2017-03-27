@@ -4,7 +4,7 @@
 //  https://github.com/denkers/graphi
 //=========================================
 
-package com.graphi.display.layout;
+package com.graphi.display;
 
 import com.graphi.app.Consts;
 import com.graphi.error.ErrorManager;

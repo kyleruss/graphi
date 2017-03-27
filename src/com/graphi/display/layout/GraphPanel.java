@@ -6,6 +6,7 @@
 
 package com.graphi.display.layout;
 
+import com.graphi.display.AppResources;
 import cern.colt.matrix.impl.SparseDoubleMatrix2D;
 import com.graphi.app.AppManager;
 import com.graphi.config.ConfigManager;
