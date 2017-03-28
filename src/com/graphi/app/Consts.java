@@ -30,6 +30,7 @@ public final class Consts
     public static final String GLOBAL_CONF_FILE =   DATA_DIR + "config.xml";
     public static final String ERROR_DUMP_DIR   =   DATA_DIR + "error" + SEPARATOR;
     public static final String UPDATER_DIR      =   DATA_DIR + "updater" + SEPARATOR;
+    public static final String REPO_LINK        =   "Github.com/denkers/graphi";
     //----------------------------------------------------------------------------------
     
 
