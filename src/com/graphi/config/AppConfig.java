@@ -24,8 +24,8 @@ public class AppConfig implements Config
     @Override
     public void parseDocumentConfig(Document document)
     {
-        displayVisuals  =   document.getElementsByTagName("displayVisuals").item(0).getTextContent().equalsIgnoreCase("true");
-        exportDir       =   document.getElementsByTagName("exportDir").item(0).getTextContent();
+        displayVisuals  =   ConfigManager.getBooleanConfig(document, "displayVisuals");
+        exportDir       =   ConfigManager.getStringConfig(document, "exportDir");
     }
     
     @Override

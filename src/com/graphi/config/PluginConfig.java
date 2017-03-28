@@ -33,12 +33,12 @@ public class PluginConfig implements Config
     }
     
     @Override
-    public void parseDocumentConfig(Document doc)
+    public void parseDocumentConfig(Document document)
     {
         try
         {
-            int pluginIndex         =   Integer.parseInt(doc.getElementsByTagName("defaultPluginIndex").item(0).getTextContent());
-            NodeList loadPluginList =   doc.getElementsByTagName("pluginFile");
+            int pluginIndex         =   ConfigManager.getIntegerConfig(document, "defaultPluginIndex");
+            NodeList loadPluginList =   document.getElementsByTagName("pluginFile");
             List<String> paths      =   new ArrayList<>();
             
             for(int i = 0; i < loadPluginList.getLength(); i++)
