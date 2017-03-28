@@ -16,6 +16,10 @@ public class UpdaterVersionConfig implements Config
     private String buildID;
     private Date buildDate;
     
+    public UpdaterVersionConfig(Document document)
+    {
+        parseDocumentConfig(document);
+    }
     
     @Override
     public void parseDocumentConfig(Document document) 
@@ -27,6 +31,7 @@ public class UpdaterVersionConfig implements Config
         
             SimpleDateFormat dateFmt    =   new SimpleDateFormat("dd-MM-yyy");
             buildDate                   =   dateFmt.parse(buildDateStr);
+            System.out.println(buildID);
         }
         
         catch(Exception e)

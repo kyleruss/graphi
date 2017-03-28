@@ -26,10 +26,11 @@ public class ConfigManager
     private static ConfigManager instance;
     private PluginConfig pluginConfig;
     private AppConfig appConfig;
+    private UpdaterVersionConfig versionConfig;
     
     private ConfigManager()
     {
-        loadConfig();
+        loadConfigs();
     }
     
     /**
@@ -55,11 +56,16 @@ public class ConfigManager
         }
     }
     
-    private void loadConfig()
+    private void loadConfigs()
     {
-        Document mainConfig         =   getConfigDocument(Consts.GLOBAL_CONF_FILE);
-        pluginConfig                =   new PluginConfig(mainConfig);
-        appConfig                   =   new AppConfig(mainConfig);
+        Document mainConfDoc        =   getConfigDocument(Consts.GLOBAL_CONF_FILE);
+        pluginConfig                =   new PluginConfig(mainConfDoc);
+        appConfig                   =   new AppConfig(mainConfDoc);
+        
+        String versionPath          =   Consts.UPDATER_DIR + "data" + Consts.SEPARATOR + "conf" + Consts.SEPARATOR + "version.xml";
+        System.out.println(versionPath);
+        Document versionConfDoc     =   getConfigDocument(versionPath);
+        versionConfig               =   new UpdaterVersionConfig(versionConfDoc);
     }
     
     /**
@@ -74,6 +80,11 @@ public class ConfigManager
     public AppConfig getAppConfig()
     {
         return appConfig;
+    }
+    
+    public UpdaterVersionConfig getVersionConfig()
+    {
+        return versionConfig;
     }
     
     public static boolean getBooleanConfig(Document doc, String name)
