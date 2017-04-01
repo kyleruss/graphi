@@ -8,6 +8,7 @@ package com.graphi.display.layout.controls;
 
 import com.graphi.display.MainMenu;
 import com.graphi.display.layout.MainPanel;
+import com.graphi.display.layout.ViewPort;
 import com.graphi.display.layout.util.PluginMenuListener;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -147,6 +148,9 @@ public class ControlPanel extends JPanel implements ActionListener
         
         else if(src == menu.getMenuItem("searchObjectItem"))
             mainPanel.getScreenPanel().getGraphPanel().searchGraphObject();
+        
+        else if(src == menu.getMenuItem("mainMenuItem"))
+            ViewPort.getInstance().setScene(ViewPort.TITLE_SCENE);
 
     }
 

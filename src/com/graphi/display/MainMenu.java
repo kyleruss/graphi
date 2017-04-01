@@ -51,13 +51,14 @@ public class MainMenu extends JMenuBar
         
         //----------------------------------------------------------------------
         //  ADD MENU ITEMS
-        //----------------------------------------------------------------------
+        //----------------------------------------------------------------------;
         //- Menu items are stored in the menuItems map for later indexing
         //- Use getMenuItem for access to an item
         
-        addMenuItem("exitItem", new JMenuItem("Exit"), fileMenu);
+        addMenuItem("mainMenuItem", new JMenuItem("Menu"), fileMenu);
         addMenuItem("miniItem", new JMenuItem("Minimize"), fileMenu);
         addMenuItem("maxItem", new JMenuItem("Maximize"), fileMenu);
+        addMenuItem("exitItem", new JMenuItem("Exit"), fileMenu);
         addMenuItem("aboutItem", new JMenuItem("Author"), helpMenu);
         addMenuItem("importGraphItem", new JMenuItem("Import Graph"), graphMenu);
         addMenuItem("exportGraphItem", new JMenuItem("Export Graph"), graphMenu);
