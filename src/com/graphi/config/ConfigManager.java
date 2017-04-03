@@ -58,9 +58,11 @@ public class ConfigManager
     
     private void loadConfigs()
     {
-        Document mainConfDoc        =   getConfigDocument(Consts.GLOBAL_CONF_FILE);
-        pluginConfig                =   new PluginConfig(mainConfDoc);
-        appConfig                   =   new AppConfig(mainConfDoc);
+        Document appConfigDoc       =   getConfigDocument(Consts.APP_CONF_FILE);
+        appConfig                   =   new AppConfig(appConfigDoc);
+        
+        Document pluginConfigDoc    =   getConfigDocument(Consts.PLUGIN_CONF_FILE);
+        pluginConfig                =   new PluginConfig(pluginConfigDoc);
         
         String versionPath          =   Consts.UPDATER_DIR + "data" + Consts.SEPARATOR + "conf" + Consts.SEPARATOR + "version.xml";
         System.out.println(versionPath);

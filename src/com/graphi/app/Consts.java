@@ -27,7 +27,9 @@ public final class Consts
     public static final String RES_DIR          =   DATA_DIR + "resources" + SEPARATOR;
     public static final String IMG_DIR          =   RES_DIR + "images" + SEPARATOR;
     public static final String TEST_DIR         =   DATA_DIR + "test";
-    public static final String GLOBAL_CONF_FILE =   DATA_DIR + "config.xml";
+    public static final String CONF_DIR         =   DATA_DIR + "conf" + SEPARATOR;
+    public static final String APP_CONF_FILE    =   CONF_DIR + "app-config.xml";
+    public static final String PLUGIN_CONF_FILE =   CONF_DIR + "plugin-config.xml";
     public static final String ERROR_DUMP_DIR   =   DATA_DIR + "error" + SEPARATOR;
     public static final String UPDATER_DIR      =   DATA_DIR + "updater" + SEPARATOR;
     public static final String REPO_LINK        =   "Github.com/denkers/graphi";
