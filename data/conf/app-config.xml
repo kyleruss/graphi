@@ -2,5 +2,7 @@
 <appConfig>
 	<displayVisuals>true</displayVisuals>
 	<exportDir></exportDir>
+	<debug-mode>false</debug-mode>
+	<display-background>#FFF</display-background>
 </appConfig>
 

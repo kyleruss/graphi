@@ -15,6 +15,7 @@ public class UpdaterVersionConfig implements Config
 {
     private String buildID;
     private Date buildDate;
+    private String version;
     
     public UpdaterVersionConfig(Document document)
     {
@@ -26,17 +27,16 @@ public class UpdaterVersionConfig implements Config
     {
         try
         {
+            version                 =   ConfigManager.getStringConfig(document, "build-version");
             buildID                 =   ConfigManager.getStringConfig(document, "build-id");
             String buildDateStr     =   ConfigManager.getStringConfig(document, "build-date");
         
             SimpleDateFormat dateFmt    =   new SimpleDateFormat("dd-MM-yyy");
             buildDate                   =   dateFmt.parse(buildDateStr);
-            System.out.println(buildID);
         }
         
         catch(Exception e)
         {
-            e.printStackTrace();
             JOptionPane.showMessageDialog(null, "[Error] Failed to read version config");
         }
     }
@@ -49,6 +49,11 @@ public class UpdaterVersionConfig implements Config
     public Date getBuildDate()
     {
         return buildDate;
+    }
+    
+    public String getVersion()
+    {
+        return version;
     }
     
     @Override

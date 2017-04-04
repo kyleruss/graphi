@@ -65,7 +65,6 @@ public class ConfigManager
         pluginConfig                =   new PluginConfig(pluginConfigDoc);
         
         String versionPath          =   Consts.UPDATER_DIR + "data" + Consts.SEPARATOR + "conf" + Consts.SEPARATOR + "version.xml";
-        System.out.println(versionPath);
         Document versionConfDoc     =   getConfigDocument(versionPath);
         versionConfig               =   new UpdaterVersionConfig(versionConfDoc);
     }
