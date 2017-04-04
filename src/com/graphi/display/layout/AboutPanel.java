@@ -9,13 +9,14 @@ package com.graphi.display.layout;
 import com.graphi.display.AppResources;
 import java.awt.BorderLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 public class AboutPanel extends MenuSceneTemplate
 {
     public AboutPanel()
     {
         sceneTitlePanel     =   new AboutTitlePanel();
-        sceneControlPanel   =   new SceneControlPanel();
+        sceneControlPanel   =   new AboutContentPanel();
 
         add(sceneTitlePanel, BorderLayout.NORTH);
         add(sceneControlPanel, BorderLayout.CENTER);
@@ -27,6 +28,17 @@ public class AboutPanel extends MenuSceneTemplate
         {
             titleLabel.setText("About");
             titleLabel.setIcon(new ImageIcon(AppResources.getInstance().getResource("aboutTitleIcon")));
+        }
+    }
+    
+    private class AboutContentPanel extends MenuSceneTemplate.SceneControlPanel
+    {
+        private JLabel userLabel, universityLabel, repositoryLabel;
+        private JLabel licenseLabel, versionLabel;
+        
+        private AboutContentPanel()
+        {
+            
         }
     }
 }

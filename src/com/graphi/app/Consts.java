@@ -32,7 +32,6 @@ public final class Consts
     public static final String PLUGIN_CONF_FILE =   CONF_DIR + "plugin-config.xml";
     public static final String ERROR_DUMP_DIR   =   DATA_DIR + "error" + SEPARATOR;
     public static final String UPDATER_DIR      =   DATA_DIR + "updater" + SEPARATOR;
-    public static final String REPO_LINK        =   "Github.com/denkers/graphi";
     //----------------------------------------------------------------------------------
     
 
@@ -92,4 +91,15 @@ public final class Consts
     public static final String DISPLAY_GRAPH_CARD     =   "disp_graph";
     public static final String DISPLAY_TRANSIT_CARD   =   "disp_transit";
     //------------------------------------------------------------------------
+    
+    
+    
+    //----------------------------------------------------------------
+    //  ABOUT DETAILS
+    //----------------------------------------------------------------
+    private final String NAME       =   "Kyle Russell";
+    private final String UNIVERSITY =   "AUT University";
+    private final String LICENSE    =   "MIT License";
+    private final String REPO_LINK  =   "Github.com/denkers/graphi";
+    //----------------------------------------------------------------
 }
