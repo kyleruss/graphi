@@ -97,9 +97,9 @@ public final class Consts
     //----------------------------------------------------------------
     //  ABOUT DETAILS
     //----------------------------------------------------------------
-    private final String NAME       =   "Kyle Russell";
-    private final String UNIVERSITY =   "AUT University";
-    private final String LICENSE    =   "MIT License";
-    private final String REPO_LINK  =   "Github.com/denkers/graphi";
+    public static final String ABOUT_NAME        =   "Kyle Russell";
+    public static final String ABOUT_UNIVERSITY  =   "AUT University";
+    public static final String ABOUT_LICENSE     =   "MIT License";
+    public static final String REPO_LINK         =   "Github.com/denkers/graphi";
     //----------------------------------------------------------------
 }
