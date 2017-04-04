@@ -57,6 +57,12 @@ public class UpdaterVersionConfig implements Config
     }
     
     @Override
+    public String toString()
+    {
+        return "v" + version + " (" + buildID + ")"; 
+    }
+    
+    @Override
     public String getConfigName()
     {
         return "version";

@@ -71,6 +71,7 @@ public class AppResources
             resourceMap.put("pluginsTitleIcon", getImage("pluginsTitleIcon.png"));
             resourceMap.put("githubIcon", getImage("githubIcon.png"));
             resourceMap.put("homeIcon", getImage("homeIcon.png"));
+            resourceMap.put("aboutTitleIcon", getImage("aboutTitleIcon.png"));
         }
         
         catch(IOException e)

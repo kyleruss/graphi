@@ -9,6 +9,7 @@ package com.graphi.display.layout;
 import com.graphi.display.AppResources;
 import com.graphi.app.AppManager;
 import com.graphi.app.Consts;
+import com.graphi.config.ConfigManager;
 import com.graphi.util.ComponentUtils;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -126,16 +127,21 @@ public class TitlePanel extends JPanel
     private class ProjectDetailsPanel extends JPanel
     {
         private final JLabel repositoryLabel;
+        private final JLabel versionLabel;
         
         private ProjectDetailsPanel()
         {
             setBackground(Color.WHITE);
             
+            versionLabel    =   new JLabel("v" + ConfigManager.getInstance().getVersionConfig().getVersion());
             repositoryLabel =   new JLabel(Consts.REPO_LINK);
             repositoryLabel.setIcon(new ImageIcon(AppResources.getInstance().getResource("githubIcon")));
-            repositoryLabel.setFont(new Font("Arial", Font.BOLD, 12));
+            Font detFont    =   new Font("Arial", Font.BOLD, 12);
+            repositoryLabel.setFont(detFont);
+            versionLabel.setFont(detFont);
             
-            add(repositoryLabel);
+           add(repositoryLabel);
+           add(versionLabel);
         }
     }
 }
