@@ -77,6 +77,7 @@ public class AppResources
             resourceMap.put("aboutVersionIcon", getImage("aboutVersionIcon.png"));
             resourceMap.put("aboutGithubIcon", getImage("aboutGithubIcon.png"));
             resourceMap.put("aboutUniversityIcon", getImage("aboutUniversityIcon.png"));
+            resourceMap.put("saveLargeBtn", getImage("saveLgBtn.png"));
         }
         
         catch(IOException e)

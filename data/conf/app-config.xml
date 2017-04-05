@@ -7,7 +7,7 @@
 		<export-dir></export-dir>
 	</advanced-settings>
 
-	<view-settigns>
+	<view-settings>
 		<view-node-labels>false</view-node-labels>
 		<view-edge-labels>false</view-edge-labels>
 		<display-visuals>true</display-visuals>
