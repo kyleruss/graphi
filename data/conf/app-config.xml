@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <appConfig>
-	<displayVisuals>true</displayVisuals>
-	<exportDir></exportDir>
-	<debug-mode>false</debug-mode>
-	<display-background>#FFF</display-background>
-	<node-background>#009933</node-background>
-	<edge-background>#000</edge-background>
-	<edge-type>0</edge-type>
-	<view-node-lables>false</view-node-lables>
-	<view-edge-labels>false</view-edge-labels>
-	<enable-logging>false</enable-logging>
-	<enable-updating>false</enable-updating>
-	<enable-custom-res>false</enable-custom-res>
-	<custom-width>900</custom-width>
-	<custom-height>900</custom-height>
-	<theme-type>0</theme-type>
+	<advanced-settings>
+		<enable-logging>false</enable-logging>
+		<enable-updating>false</enable-updating>
+		<enable-debug-mode>false</enable-debug-mode>
+		<exportDir></exportDir>
+	</advanced-settings>
+
+	<view-settigns>
+		<view-node-lables>false</view-node-lables>
+		<view-edge-labels>false</view-edge-labels>
+		<displayVisuals>true</displayVisuals>
+	</view-settings>
+
+	<customization-settings>
+		<enable-custom-res>false</enable-custom-res>
+		<custom-width>900</custom-width>
+		<custom-height>900</custom-height>
+		<theme-type>0</theme-type>
+		<display-background>#FFF</display-background>
+		<node-background>#009933</node-background>
+		<edge-background>#000</edge-background>
+		<edge-type>0</edge-type>
+	</customization-settings>
 </appConfig>
 
