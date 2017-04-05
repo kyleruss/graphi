@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<appConfig>
+<app-config>
 	<advanced-settings>
 		<enable-logging>false</enable-logging>
 		<enable-updating>false</enable-updating>
 		<enable-debug-mode>false</enable-debug-mode>
-		<exportDir></exportDir>
+		<export-dir></export-dir>
 	</advanced-settings>
 
 	<view-settigns>
-		<view-node-lables>false</view-node-lables>
+		<view-node-labels>false</view-node-labels>
 		<view-edge-labels>false</view-edge-labels>
-		<displayVisuals>true</displayVisuals>
+		<display-visuals>true</display-visuals>
 	</view-settings>
 
 	<customization-settings>
@@ -23,5 +23,5 @@
 		<edge-background>#000</edge-background>
 		<edge-type>0</edge-type>
 	</customization-settings>
-</appConfig>
+</app-config>
 
