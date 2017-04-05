@@ -7,6 +7,7 @@
 package com.graphi.display;
 
 import com.graphi.app.Consts;
+import com.graphi.config.ConfigManager;
 import com.graphi.display.layout.ViewPort;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -30,7 +31,8 @@ public final class Window
         initLookAndFeel();
         
         menu            =   new MainMenu();
-        frame           =   new JFrame(Consts.WINDOW_TITLE);
+        String title    =   "Graphi " + ConfigManager.getInstance().getVersionConfig().getVersion();
+        frame           =   new JFrame(title);
        
         initMenu();        
     }
