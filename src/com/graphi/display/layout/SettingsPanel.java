@@ -18,6 +18,7 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -64,10 +65,24 @@ public class SettingsPanel extends MenuSceneTemplate
             controlPanel        =   new SettingsControlPanel();
             settingsTabPane     =   new JTabbedPane();
             
-            settingsTabPane.addTab("Customization", customizationPanel);
-            settingsTabPane.addTab("Display", viewingPanel);
-            settingsTabPane.addTab("Advanced", advancedPanel);
-            settingsTabPane.setFont(new Font("Arial", Font.BOLD, 14));
+            
+            AppResources resources  =   AppResources.getInstance();
+            JLabel customTabLabel   =   new JLabel("Customization", JLabel.CENTER);
+            JLabel viewTabLabel     =   new JLabel("Display", JLabel.CENTER);
+            JLabel advancedTabLabel =   new JLabel("Advanced", JLabel.CENTER);
+            customTabLabel.setIcon(new ImageIcon(resources.getResource("customizationTabIcon")));
+            viewTabLabel.setIcon(new ImageIcon(resources.getResource("viewTabIcon")));
+            advancedTabLabel.setIcon(new ImageIcon(resources.getResource("advancedTabIcon")));
+            
+            settingsTabPane.addTab("", customizationPanel);
+            settingsTabPane.addTab("", viewingPanel);
+            settingsTabPane.addTab("", advancedPanel);
+            
+            settingsTabPane.setTabComponentAt(0, customTabLabel);
+            settingsTabPane.setTabComponentAt(1, viewTabLabel);
+            settingsTabPane.setTabComponentAt(2, advancedTabLabel);
+            
+            settingsTabPane.setFont(new Font("Arial", Font.PLAIN, 14));
             settingsTabPane.setPreferredSize(new Dimension(SETTINGS_WIDTH, SETTINGS_HEIGHT));
             
             JPanel settingsContentWrapper   =   new JPanel();
