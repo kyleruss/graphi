@@ -40,8 +40,11 @@ import edu.uci.ics.jung.visualization.control.ScalingControl;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -106,6 +109,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     protected JComboBox gpRecEntries;
     protected MainPanel mainPanel;
     protected JCheckBox recordComputeCheck, recordStateCheck;
+    private DisplayNavigationPanel displayNavPanel;
 
     public GraphPanel(MainPanel mainPanel)
     {
@@ -114,6 +118,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         gLayout         =   new AggregateLayout(new FRLayout(mainPanel.data.getGraph()));
         gViewer         =   new VisualizationViewer<>(gLayout);
         gPlayback       =   new GraphPlayback();
+        displayNavPanel =   new DisplayNavigationPanel();
 
         ScalingControl scaler   =   new CrossoverScalingControl();
         scaler.scale(gViewer, 0.7f, gViewer.getCenter());
@@ -136,9 +141,33 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         
         recordComputeCheck.setSelected(true);
         recordStateCheck.setSelected(true);
-
+        
+        gViewer.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        gViewer.add(displayNavPanel);
+        
         add(gViewer, BorderLayout.CENTER);
         add(controlPanel, BorderLayout.SOUTH);
+    }
+    
+    private class DisplayNavigationPanel extends JPanel
+    {
+        private final JLabel displayNavBgLabel;
+        
+        private DisplayNavigationPanel()
+        {
+            displayNavBgLabel    =   new JLabel();
+            displayNavBgLabel.setIcon(new ImageIcon(AppResources.getInstance().getResource("displayNavBackground")));
+            
+            add(displayNavBgLabel);
+        }
+        
+        @Override
+        protected void paintComponent(Graphics g)
+        {
+            super.paintComponent(g);
+            g.setColor(Color.WHITE);
+            g.fillRect(0, 0, getWidth(), getHeight());
+        }
     }
     
     public void resetEntries()
