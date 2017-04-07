@@ -50,6 +50,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.util.AbstractMap;
@@ -61,6 +62,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -109,7 +111,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     protected JComboBox gpRecEntries;
     protected MainPanel mainPanel;
     protected JCheckBox recordComputeCheck, recordStateCheck;
-    private DisplayNavigationPanel displayNavPanel;
+    private final DisplayNavigationPanel displayNavPanel;
 
     public GraphPanel(MainPanel mainPanel)
     {
@@ -149,16 +151,40 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         add(controlPanel, BorderLayout.SOUTH);
     }
     
-    private class DisplayNavigationPanel extends JPanel
+    private class DisplayNavigationPanel extends JPanel implements ActionListener
     {
-        private final JLabel displayNavBgLabel;
+        private JButton moveBtn;
+        private JButton selectBtn;
+        private JButton editBtn;
+        private BufferedImage currentBG;
         
         private DisplayNavigationPanel()
         {
-            displayNavBgLabel    =   new JLabel();
-            displayNavBgLabel.setIcon(new ImageIcon(AppResources.getInstance().getResource("displayNavBackground")));
+            setPreferredSize(new Dimension(120, 150));
+            setLayout(new BorderLayout());
             
-            add(displayNavBgLabel);
+            moveBtn                 =   new JButton();
+            selectBtn               =   new JButton();
+            editBtn                 =   new JButton();
+            currentBG               =   AppResources.getInstance().getResource("displayNavBackground");
+            
+            ComponentUtils.setTransparentControl(moveBtn);
+            ComponentUtils.setTransparentControl(selectBtn);
+            ComponentUtils.setTransparentControl(editBtn);
+            
+            editBtn.setPreferredSize(new Dimension(40, 60));
+            moveBtn.setPreferredSize(new Dimension(60, 40));
+            selectBtn.setPreferredSize(new Dimension(60, 40));
+            Component botPadding    =   Box.createRigidArea(new Dimension(1, 20));
+            
+            add(editBtn, BorderLayout.NORTH);
+            add(moveBtn, BorderLayout.WEST);
+            add(selectBtn, BorderLayout.EAST);
+            add(botPadding, BorderLayout.SOUTH);
+            
+            editBtn.addActionListener(this);
+            moveBtn.addActionListener(this);
+            selectBtn.addActionListener(this);
         }
         
         @Override
@@ -167,6 +193,41 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
             super.paintComponent(g);
             g.setColor(Color.WHITE);
             g.fillRect(0, 0, getWidth(), getHeight());
+            g.drawImage(currentBG, 0, 0, null);
+        }
+        
+        private void toggleSelect()
+        {
+            currentBG   =   AppResources.getInstance().getResource("displayNavSelect");
+            repaint();
+        }
+        
+        private void toggleMove()
+        {
+            currentBG   =   AppResources.getInstance().getResource("displayNavMove");   
+            repaint();
+        }
+
+        private void toggleEdit()
+        {
+            currentBG   =   AppResources.getInstance().getResource("displayNavEdit");
+            repaint();
+        }
+        
+        @Override
+        public void actionPerformed(ActionEvent e) 
+        {
+            Object src  =   e.getSource();
+            
+            if(src == editBtn)
+                toggleEdit();
+            
+            else if(src == moveBtn)
+                toggleMove();
+            
+            else if(src == selectBtn)
+                toggleSelect();
+            
         }
     }
     

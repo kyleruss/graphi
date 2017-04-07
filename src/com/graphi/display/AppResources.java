@@ -82,6 +82,9 @@ public class AppResources
             resourceMap.put("viewTabIcon", getImage("viewTabIcon.png"));
             resourceMap.put("customizationTabIcon", getImage("customizationTabIcon.png"));
             resourceMap.put("displayNavBackground", getImage("displayNavBackground.png"));
+            resourceMap.put("displayNavSelect", getImage("displayNavSelect.png"));
+            resourceMap.put("displayNavMove", getImage("displayNavMove.png"));
+            resourceMap.put("displayNavEdit", getImage("displayNavEdit.png"));
         }
         
         catch(IOException e)
