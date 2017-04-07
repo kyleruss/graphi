@@ -43,12 +43,6 @@ public class AppResources
             resourceMap.put("clipIcon", getImage("clipboard.png"));
             resourceMap.put("saveIcon", getImage("new_file.png"));
             resourceMap.put("openIcon", getImage("open_icon.png"));
-            resourceMap.put("editBlackIcon", getImage("editblack.png"));
-            resourceMap.put("pointerIcon", getImage("pointer.png"));
-            resourceMap.put("moveIcon", getImage("move.png"));
-            resourceMap.put("moveSelectedIcon", getImage("move_selected.png"));
-            resourceMap.put("editSelectedIcon", getImage("editblack_selected.png"));
-            resourceMap.put("pointerSelectedIcon", getImage("pointer_selected.png"));
             resourceMap.put("graphIcon", getImage("graph.png"));
             resourceMap.put("tableIcon", getImage("table.png"));
             resourceMap.put("executeIcon", getImage("execute.png"));
