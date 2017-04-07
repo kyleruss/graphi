@@ -198,18 +198,24 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         
         private void toggleSelect()
         {
+            mouse.setMode(ModalGraphMouse.Mode.PICKING);
             currentBG   =   AppResources.getInstance().getResource("displayNavSelect");
             repaint();
+            
         }
         
         private void toggleMove()
         {
+            mouse.setMode(ModalGraphMouse.Mode.TRANSFORMING);
             currentBG   =   AppResources.getInstance().getResource("displayNavMove");   
             repaint();
+            
         }
 
         private void toggleEdit()
         {
+            mouse.setMode(ModalGraphMouse.Mode.EDITING);
+            mouse.remove(mouse.getPopupEditingPlugin());
             currentBG   =   AppResources.getInstance().getResource("displayNavEdit");
             repaint();
         }
