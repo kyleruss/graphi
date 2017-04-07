@@ -87,6 +87,9 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     public final String RECORD_CARD         =   "rec";
     public final String PLAYBACK_CARD       =   "pb";
     protected final int INITIAL_DELAY       =   500;
+    public static final int SELECT_MODE     =   0;
+    public static final int MOVE_MODE       =   1;   
+    public static final int EDIT_MODE       =   2;
     
     protected final VisualizationViewer<Node, Edge> gViewer;
     protected AggregateLayout<Node, Edge> gLayout;
@@ -151,12 +154,18 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         add(controlPanel, BorderLayout.SOUTH);
     }
     
+    public int getMouseMode()
+    {
+        return displayNavPanel.mode;
+    }
+    
     private class DisplayNavigationPanel extends JPanel implements ActionListener
     {
         private JButton moveBtn;
         private JButton selectBtn;
         private JButton editBtn;
         private BufferedImage currentBG;
+        private int mode;
         
         private DisplayNavigationPanel()
         {
@@ -166,7 +175,8 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
             moveBtn                 =   new JButton();
             selectBtn               =   new JButton();
             editBtn                 =   new JButton();
-            currentBG               =   AppResources.getInstance().getResource("displayNavBackground");
+            currentBG               =   AppResources.getInstance().getResource("displayNavSelect");
+            mode                    =   SELECT_MODE;
             
             ComponentUtils.setTransparentControl(moveBtn);
             ComponentUtils.setTransparentControl(selectBtn);
@@ -502,7 +512,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     @Override
     public void graphReleased(Object v, MouseEvent me)
     {
-        if(mainPanel.controlPanel.getModePanel().getEditCheck().isSelected())
+        if(getMouseMode() == EDIT_MODE)
         {
             mainPanel.screenPanel.dataPanel.loadNodes(mainPanel.data.getGraph());
             mainPanel.screenPanel.dataPanel.loadEdges(mainPanel.data.getGraph());
@@ -665,7 +675,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     @Override
     public void itemStateChanged(ItemEvent e)
     {
-        if(mainPanel.controlPanel.getModePanel().getSelectCheck().isSelected())
+        if(getMouseMode() == SELECT_MODE)
         {
             mainPanel.data.setSelectedItems(e.getItemSelectable().getSelectedObjects());
             updateSelectedComponents();

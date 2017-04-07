@@ -28,7 +28,6 @@ public class ControlPanel extends JPanel implements ActionListener
     protected ComputeControlPanel computePanel;
     protected GraphObjControlPanel gObjPanel;
     protected IOControlPanel ioPanel;
-    protected ModeControlPanel modePanel;
     protected ScriptControlPanel scriptPanel;
     protected SimulationControlPanel simulationPanel;
     protected TaskControlPanel taskPanel;
@@ -44,8 +43,7 @@ public class ControlPanel extends JPanel implements ActionListener
         initControls();
         mainPanel.getMenu().setMenuItemListener(this);
 
-        add(modePanel);
-        add(Box.createRigidArea(new Dimension(230, 30)));
+//        add(Box.createRigidArea(new Dimension(230, 30)));
         add(simulationPanel);
         add(Box.createRigidArea(new Dimension(230, 30)));
         add(ioPanel);
@@ -66,7 +64,6 @@ public class ControlPanel extends JPanel implements ActionListener
         computePanel    =   new ComputeControlPanel(this);
         gObjPanel       =   new GraphObjControlPanel(this);
         ioPanel         =   new IOControlPanel(this);
-        modePanel       =   new ModeControlPanel(this);
         scriptPanel     =   new ScriptControlPanel(this);
         simulationPanel =   new SimulationControlPanel(this);
         viewerPanel     =   new ViewerControlPanel(this);
@@ -172,11 +169,6 @@ public class ControlPanel extends JPanel implements ActionListener
     public IOControlPanel getIoPanel() 
     {
         return ioPanel;
-    }
-
-    public ModeControlPanel getModePanel() 
-    {
-        return modePanel;
     }
 
     public ScriptControlPanel getScriptPanel() 
