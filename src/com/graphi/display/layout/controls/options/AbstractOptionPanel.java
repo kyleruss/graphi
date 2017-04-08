@@ -10,7 +10,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import net.miginfocom.swing.MigLayout;
 
 public abstract class AbstractOptionPanel extends JPanel
 {
@@ -19,14 +21,17 @@ public abstract class AbstractOptionPanel extends JPanel
     
     protected AbstractOptionPanel()
     {
-        titleFont       =   new Font("Arial", Font.BOLD, 14);
+        setBorder(BorderFactory.createEmptyBorder(15, 15, 0, 0));
+        setLayout(new MigLayout("", "", "50"));
+        
+        titleFont       =   new Font("Arial", Font.PLAIN, 24);
         standardFont    =   new Font("Arial", Font.PLAIN, 14);   
     }
     
     protected void initLayout(int numSettings)
     {
         GridLayout layout   =   new GridLayout(numSettings, 2);
-        layout.setHgap(50);
+        //layout.setHgap(50);
         setLayout(layout);
     }
     
