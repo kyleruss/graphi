@@ -7,6 +7,7 @@
 package com.graphi.display.layout.controls;
 
 import com.graphi.display.AppResources;
+import com.graphi.display.layout.controls.ControlPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -64,7 +65,7 @@ public class ViewerControlPanel extends JPanel implements ActionListener
         add(wrapper);
     }
     
-    protected void showVertexBGChange()
+    public void showVertexBGChange()
     {
         Color selectedColour    =   JColorChooser.showDialog(null, "Choose vertex colour", Color.BLACK);
 
@@ -72,7 +73,7 @@ public class ViewerControlPanel extends JPanel implements ActionListener
             outer.getMainPanel().getScreenPanel().getGraphPanel().setVertexColour(selectedColour, null);
     }
 
-    protected void showEdgeBGChange()
+    public void showEdgeBGChange()
     {
         Color selectedColour    =   JColorChooser.showDialog(null, "Choose edge colour", Color.BLACK);
 
@@ -80,7 +81,7 @@ public class ViewerControlPanel extends JPanel implements ActionListener
             outer.getMainPanel().getScreenPanel().getGraphPanel().setEdgeColour(selectedColour, null);
     }
 
-    protected void showViewerBGChange()
+    public void showViewerBGChange()
     {
         Color selectedColour    =   JColorChooser.showDialog(null, "Choose viewer background colour", Color.WHITE);
 
