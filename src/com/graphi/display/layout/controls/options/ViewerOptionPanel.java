@@ -6,12 +6,8 @@
 
 package com.graphi.display.layout.controls.options;
 
-import java.awt.Dimension;
-import java.awt.Font;
-import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
-import net.miginfocom.swing.MigLayout;
 
 public class ViewerOptionPanel extends AbstractOptionPanel
 {

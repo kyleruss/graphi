@@ -31,7 +31,6 @@ public abstract class AbstractOptionPanel extends JPanel
     protected void initLayout(int numSettings)
     {
         GridLayout layout   =   new GridLayout(numSettings, 2);
-        //layout.setHgap(50);
         setLayout(layout);
     }
     

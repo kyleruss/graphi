@@ -7,6 +7,7 @@
 package com.graphi.display.layout;
 
 import com.graphi.display.AppResources;
+import com.graphi.display.layout.controls.options.AdvancedOptionPanel;
 import com.graphi.display.layout.controls.options.ViewerOptionPanel;
 import com.graphi.util.ComponentUtils;
 import java.awt.BorderLayout;
@@ -49,7 +50,7 @@ public class SettingsPanel extends MenuSceneTemplate
         private final int SETTINGS_WIDTH    =   700;
         private final int SETTINGS_HEIGHT   =   500;
         
-        private final AdvancedSettingsPanel advancedPanel;
+        private final AdvancedOptionPanel advancedPanel;
         private final CustomizationSettingsPanel customizationPanel;
         private final ViewerOptionPanel viewingPanel;
         private final SettingsControlPanel controlPanel;
@@ -60,7 +61,7 @@ public class SettingsPanel extends MenuSceneTemplate
             setBackground(Color.WHITE);
             setLayout(new BorderLayout());
             
-            advancedPanel       =   new AdvancedSettingsPanel();
+            advancedPanel       =   new AdvancedOptionPanel();
             customizationPanel  =   new CustomizationSettingsPanel();
             viewingPanel        =   new ViewerOptionPanel();
             controlPanel        =   new SettingsControlPanel();
@@ -125,19 +126,6 @@ public class SettingsPanel extends MenuSceneTemplate
             
             g.setColor(Color.WHITE);
             g.fillRect(0, 0, getWidth(), getHeight());
-        }
-        
-        private class AdvancedSettingsPanel extends JPanel
-        {
-            private AdvancedSettingsPanel()
-            {
-            }
-            
-            @Override
-            protected void paintComponent(Graphics g)
-            {
-                SettingsContentPanel.this.paintComponent(g);
-            }
         }
         
         private class CustomizationSettingsPanel extends JPanel
