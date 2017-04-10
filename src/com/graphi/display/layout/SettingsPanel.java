@@ -8,6 +8,7 @@ package com.graphi.display.layout;
 
 import com.graphi.display.AppResources;
 import com.graphi.display.layout.controls.options.AdvancedOptionPanel;
+import com.graphi.display.layout.controls.options.CustomizationOptionPanel;
 import com.graphi.display.layout.controls.options.ViewerOptionPanel;
 import com.graphi.util.ComponentUtils;
 import java.awt.BorderLayout;
@@ -22,7 +23,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
 public class SettingsPanel extends MenuSceneTemplate
@@ -51,7 +51,7 @@ public class SettingsPanel extends MenuSceneTemplate
         private final int SETTINGS_HEIGHT   =   500;
         
         private final AdvancedOptionPanel advancedPanel;
-        private final CustomizationSettingsPanel customizationPanel;
+        private final CustomizationOptionPanel customizationPanel;
         private final ViewerOptionPanel viewingPanel;
         private final SettingsControlPanel controlPanel;
         private final JTabbedPane settingsTabPane;
@@ -62,7 +62,7 @@ public class SettingsPanel extends MenuSceneTemplate
             setLayout(new BorderLayout());
             
             advancedPanel       =   new AdvancedOptionPanel();
-            customizationPanel  =   new CustomizationSettingsPanel();
+            customizationPanel  =   new CustomizationOptionPanel();
             viewingPanel        =   new ViewerOptionPanel();
             controlPanel        =   new SettingsControlPanel();
             settingsTabPane     =   new JTabbedPane();
@@ -118,28 +118,5 @@ public class SettingsPanel extends MenuSceneTemplate
                 
             }
         }
-        
-        @Override
-        protected void paintComponent(Graphics g)
-        {
-            super.paintComponent(g);
-            
-            g.setColor(Color.WHITE);
-            g.fillRect(0, 0, getWidth(), getHeight());
-        }
-        
-        private class CustomizationSettingsPanel extends JPanel
-        {
-            private CustomizationSettingsPanel()
-            {
-            }
-            
-            @Override
-            protected void paintComponent(Graphics g)
-            {
-                SettingsContentPanel.this.paintComponent(g);
-            }
-        }
-        
     }
 }
