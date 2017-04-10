@@ -6,6 +6,9 @@
 
 package com.graphi.display.layout.controls.options;
 
+import com.graphi.config.AppConfig;
+import com.graphi.config.ConfigManager;
+import edu.uci.ics.jung.graph.util.EdgeType;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -145,7 +148,29 @@ public class CustomizationOptionPanel extends AbstractOptionPanel implements Act
     @Override
     protected void loadOptions()
     {
+        AppConfig appConfig     =   ConfigManager.getInstance().getAppConfig();
+        displayBGPanel.setBackgroundColour(appConfig.getDisplayBackground());
+        nodeBGPanel.setBackgroundColour(appConfig.getNodeBackground());
+        edgeBGPanel.setBackgroundColour(appConfig.getEdgeBackground());
+        themeBox.setSelectedIndex(appConfig.getThemeType());
         
+        int edgeType    =   appConfig.getEdgeType() == EdgeType.UNDIRECTED? 0 : 1;
+        edgeTypeBox.setSelectedIndex(edgeType);
+        
+        boolean enableCustomRes     =   appConfig.isEnableCustomResolution();
+        enableResCheck.setSelected(enableCustomRes);
+        
+        if(enableCustomRes)
+        {
+            customWidthSpinner.setValue(appConfig.getCustomWindowWidth());
+            customHeightSpinner.setValue(appConfig.getCustomWindowHeight());
+        }
+        
+        else
+        {
+            customWidthSpinner.setEnabled(false);
+            customHeightSpinner.setEnabled(false);
+        }
     }
     
     @Override
@@ -153,10 +178,65 @@ public class CustomizationOptionPanel extends AbstractOptionPanel implements Act
     {
         switch(optionIndex)
         {
-            
+            case DISP_BG_INDEX: changeDisplayBackground(); break;
+            case NODE_BG_INDEX: changeNodeBackground(); break;
+            case EDGE_BG_INDEX: changeEdgeBackground(); break;
+            case THEME_INDEX: changeTheme(); break;
+            case EDGETYPE_INDEX: changeEdgeType(); break;
+            case CUSTOM_RES_INDEX: changeCustomRes(); break;
+            case WIND_WIDTH_INDEX: changeCustomDimensions(WIND_WIDTH_INDEX); break;
+            case WIND_HEIGHT_INDEX: changeCustomDimensions(WIND_HEIGHT_INDEX); break;
         }
     }
-
+    
+    public void changeDisplayBackground()
+    {
+        AppConfig appConfig     =   ConfigManager.getInstance().getAppConfig();
+        Color displayBGColor    =   displayBGPanel.getBackgroundColour();
+        appConfig.setDisplayBackground(displayBGColor);
+    }
+    
+    public void changeNodeBackground()
+    {
+        AppConfig appConfig =   ConfigManager.getInstance().getAppConfig();
+        Color displayBGColor    =   nodeBGPanel.getBackgroundColour();
+        appConfig.setDisplayBackground(displayBGColor);
+    }
+    
+    public void changeEdgeBackground()
+    {
+        AppConfig appConfig =   ConfigManager.getInstance().getAppConfig();
+        Color displayBGColor    =   edgeBGPanel.getBackgroundColour();
+        appConfig.setDisplayBackground(displayBGColor);
+    }
+    
+    public void changeTheme()
+    {
+        AppConfig appConfig =   ConfigManager.getInstance().getAppConfig();
+        appConfig.setThemeType(themeBox.getSelectedIndex());
+    }
+    
+    public void changeEdgeType()
+    {
+        AppConfig appConfig     =   ConfigManager.getInstance().getAppConfig();
+        EdgeType edgeType       =   edgeTypeBox.getSelectedIndex() == 0? EdgeType.UNDIRECTED : EdgeType.DIRECTED;
+        
+        appConfig.setEdgeType(edgeType);
+    }
+    
+    public void changeCustomRes()
+    {
+        AppConfig appConfig     =   ConfigManager.getInstance().getAppConfig();
+        appConfig.setEnableCustomResolution(enableResCheck.isSelected());
+    }
+    
+    public void changeCustomDimensions(int optionIndex)
+    {
+        AppConfig appConfig     =   ConfigManager.getInstance().getAppConfig();
+        JSpinner spinner        =   optionIndex == WIND_WIDTH_INDEX? customWidthSpinner : customHeightSpinner;
+        appConfig.setCustomWindowWidth((int) spinner.getValue());
+    }
+    
     public void toggleBackgroundChangeDisplay(int optionIndex)
     {
         BackgroundColourPanel selectedBGPanel;
@@ -200,7 +280,12 @@ public class CustomizationOptionPanel extends AbstractOptionPanel implements Act
             addOptionChanged(EDGETYPE_INDEX);
         
         else if(src == enableResCheck)
+        {
             addOptionChanged(CUSTOM_RES_INDEX);
+            boolean isSelected   =   enableResCheck.isSelected();
+            customWidthSpinner.setEnabled(isSelected);
+            customHeightSpinner.setEnabled(isSelected);
+        }
     }
 
     @Override
