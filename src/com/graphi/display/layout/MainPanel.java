@@ -11,6 +11,7 @@ import com.graphi.app.AppManager;
 import com.graphi.app.Consts;
 import com.graphi.display.MainMenu;
 import com.graphi.display.Window;
+import com.graphi.plugins.PluginManager;
 import com.graphi.util.GraphData;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -88,5 +89,10 @@ public class MainPanel extends JPanel
     public JFrame getFrame()
     {
         return frame;
+    }
+    
+    public static MainPanel getInstance()
+    {
+        return PluginManager.getInstance().getActivePlugin().getPanel();
     }
 }

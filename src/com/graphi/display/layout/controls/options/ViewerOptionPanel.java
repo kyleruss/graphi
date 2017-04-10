@@ -8,6 +8,7 @@ package com.graphi.display.layout.controls.options;
 
 import com.graphi.config.AppConfig;
 import com.graphi.config.ConfigManager;
+import com.graphi.display.layout.MainPanel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JCheckBox;
@@ -62,13 +63,19 @@ public class ViewerOptionPanel extends AbstractOptionPanel implements ActionList
     public void toggleNodeLabels()
     {
         AppConfig appConfig =   ConfigManager.getInstance().getAppConfig();
-        appConfig.setViewNodeLabels(nodeLabelsCheck.isSelected());
+        boolean showLabels  =   nodeLabelsCheck.isSelected();
+        
+        MainPanel.getInstance().getScreenPanel().getGraphPanel().showVertexLabels(showLabels);
+        appConfig.setViewNodeLabels(showLabels);
     }
     
     public void toggleEdgeLabels()
     {
         AppConfig appConfig =   ConfigManager.getInstance().getAppConfig();
-        appConfig.setViewEdgeLabels(edgeLabelsCheck.isSelected());
+        boolean showLabels  =   edgeLabelsCheck.isSelected();
+        
+        MainPanel.getInstance().getScreenPanel().getGraphPanel().showEdgeLabels(showLabels);
+        appConfig.setViewEdgeLabels(showLabels);
     }
     
     public void toggleDisplayVisuals()

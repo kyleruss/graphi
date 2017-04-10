@@ -8,6 +8,8 @@ package com.graphi.display.layout.controls.options;
 
 import com.graphi.config.AppConfig;
 import com.graphi.config.ConfigManager;
+import com.graphi.display.layout.MainPanel;
+import com.graphi.display.layout.ViewPort;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -192,22 +194,25 @@ public class CustomizationOptionPanel extends AbstractOptionPanel implements Act
     public void changeDisplayBackground()
     {
         AppConfig appConfig     =   ConfigManager.getInstance().getAppConfig();
-        Color displayBGColor    =   displayBGPanel.getBackgroundColour();
-        appConfig.setDisplayBackground(displayBGColor);
+        Color displayBGColour    =   displayBGPanel.getBackgroundColour();
+        MainPanel.getInstance().getScreenPanel().getGraphPanel().getGraphViewer().setBackground(displayBGColour);
+        appConfig.setDisplayBackground(displayBGColour);
     }
     
     public void changeNodeBackground()
     {
-        AppConfig appConfig =   ConfigManager.getInstance().getAppConfig();
-        Color displayBGColor    =   nodeBGPanel.getBackgroundColour();
-        appConfig.setDisplayBackground(displayBGColor);
+        AppConfig appConfig     =   ConfigManager.getInstance().getAppConfig();
+        Color nodeBGColour      =   nodeBGPanel.getBackgroundColour();
+        MainPanel.getInstance().getScreenPanel().getGraphPanel().setVertexColour(nodeBGColour, null);
+        appConfig.setDisplayBackground(nodeBGColour);
     }
     
     public void changeEdgeBackground()
     {
-        AppConfig appConfig =   ConfigManager.getInstance().getAppConfig();
-        Color displayBGColor    =   edgeBGPanel.getBackgroundColour();
-        appConfig.setDisplayBackground(displayBGColor);
+        AppConfig appConfig     =   ConfigManager.getInstance().getAppConfig();
+        Color edgeBGColour      =   edgeBGPanel.getBackgroundColour();
+        MainPanel.getInstance().getScreenPanel().getGraphPanel().setEdgeColour(edgeBGColour, null);
+        appConfig.setDisplayBackground(edgeBGColour);
     }
     
     public void changeTheme()
