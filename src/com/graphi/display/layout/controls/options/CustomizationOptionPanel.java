@@ -6,10 +6,15 @@
 
 package com.graphi.display.layout.controls.options;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
@@ -28,6 +33,7 @@ public class CustomizationOptionPanel extends AbstractOptionPanel
     private final JButton nodeBGButton;
     private final JButton edgeBGButton;
     private final JComboBox edgeTypeBox;
+    private final BackgroundColourPanel displayBGPanel, nodeBGPanel, edgeBGPanel;
     
     public CustomizationOptionPanel()
     {
@@ -39,6 +45,9 @@ public class CustomizationOptionPanel extends AbstractOptionPanel
         edgeBGButton        =   new JButton("Choose");
         customWidthSpinner  =   new JSpinner(new SpinnerNumberModel(800, 800, 1920, 1));
         customHeightSpinner =   new JSpinner(new SpinnerNumberModel(600, 600, 1080, 1));
+        displayBGPanel      =   new BackgroundColourPanel(Color.WHITE);
+        nodeBGPanel         =   new BackgroundColourPanel(Color.GREEN);
+        edgeBGPanel         =   new BackgroundColourPanel(Color.BLACK);
         
         JLabel enableResLabel   =   new JLabel("Enable custom resolution");
         JLabel themeLabel       =   new JLabel("Interface theme");
@@ -83,16 +92,67 @@ public class CustomizationOptionPanel extends AbstractOptionPanel
         add(heightLabel);
         add(customHeightSpinner, "wrap");
         
+        
         //Display background
+        JPanel displayBGWrapper     =     new JPanel();
+        displayBGWrapper.add(displayBGPanel);
+        displayBGWrapper.add(displayBGButton);
+        
         add(displayBGLabel);
-        add(displayBGButton, "wrap");
+        add(displayBGWrapper, "wrap");
+        
         
         //Node background
+        JPanel nodeBGWrapper        =   new JPanel();
+        nodeBGWrapper.add(nodeBGPanel);
+        nodeBGWrapper.add(nodeBGButton);
+        
         add(nodeBGLabel);
-        add(nodeBGButton, "wrap");
+        add(nodeBGWrapper, "wrap");
         
         //Edge background
+        JPanel edgeBGWrapper        =   new JPanel();
+        edgeBGWrapper.add(edgeBGPanel);
+        edgeBGWrapper.add(edgeBGButton);
+        
         add(edgeBGLabel);
-        add(edgeBGButton);
+        add(edgeBGWrapper);
+    }
+    
+    private class BackgroundColourPanel extends JPanel
+    {
+        private Color backgroundColour;
+        
+        private BackgroundColourPanel()
+        {
+            this(Color.BLACK);
+        }
+        
+        private BackgroundColourPanel(Color backgroundColour)
+        {
+            setPreferredSize(new Dimension(35, 35));
+            setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.GRAY));
+            
+            this.backgroundColour    =   backgroundColour;
+        }
+        
+        public Color getBackgroundColour()
+        {
+            return backgroundColour;
+        }
+        
+        public void setBackgroundColour(Color backgroundColour)
+        {
+            this.backgroundColour   =   backgroundColour;
+            repaint();
+        }
+        
+        @Override
+        protected void paintComponent(Graphics g)
+        {
+            super.paintComponent(g);
+            g.setColor(backgroundColour);
+            g.fillRect(0, 0, getWidth(), getHeight());
+        }
     }
 }
