@@ -7,12 +7,19 @@
 package com.graphi.display.layout.controls.options;
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-public class AdvancedOptionPanel extends AbstractOptionPanel
+public class AdvancedOptionPanel extends AbstractOptionPanel implements ActionListener
 {
+    private final int ENABLE_LOG_INDEX      =   0;
+    private final int ENABLE_DEBUG_INDEX    =   1;
+    private final int ENABLE_UPDATE_INDEX   =   2;
+    private final int EXPORT_DIR_INDEX      =   3;
+    
     private final JCheckBox enableLogCheck;
     private final JCheckBox enableUpdateCheck;
     private final JCheckBox enableDebugCheck;
@@ -44,6 +51,10 @@ public class AdvancedOptionPanel extends AbstractOptionPanel
         add(enableUpdateCheck, "wrap");
         add(exportLabel);
         add(exportDirField);
+        
+        enableLogCheck.addActionListener(this);
+        enableUpdateCheck.addActionListener(this);
+        enableDebugCheck.addActionListener(this);
     }
     
     @Override
@@ -56,5 +67,20 @@ public class AdvancedOptionPanel extends AbstractOptionPanel
     protected void handleOptionChanged(int optionIndex)
     {
         
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) 
+    {
+        Object src  =   e.getSource();
+        
+        if(src == enableLogCheck)
+            addOptionChanged(ENABLE_LOG_INDEX);
+        
+        else if(src == enableDebugCheck)
+            addOptionChanged(ENABLE_DEBUG_INDEX);
+        
+        else if(src == enableUpdateCheck)
+            addOptionChanged(ENABLE_UPDATE_INDEX);
     }
 }

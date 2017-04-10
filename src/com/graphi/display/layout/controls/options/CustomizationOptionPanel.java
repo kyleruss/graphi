@@ -179,17 +179,6 @@ public class CustomizationOptionPanel extends AbstractOptionPanel implements Act
         }
     }
 
-    
-    /*
-    themeBox.addActionListener(this);
-        edgeTypeBox.addActionListener(this);
-        displayBGButton.addActionListener(this);
-        nodeBGButton.addActionListener(this);
-        edgeBGButton.addActionListener(this);
-        enableResCheck.addActionListener(this);
-        customWidthSpinner.addChangeListener(this);
-        customHeightSpinner.addChangeListener(this);
-    */
     @Override
     public void actionPerformed(ActionEvent e) 
     {
