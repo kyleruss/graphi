@@ -45,4 +45,16 @@ public class AdvancedOptionPanel extends AbstractOptionPanel
         add(exportLabel);
         add(exportDirField);
     }
+    
+    @Override
+    protected void loadOptions()
+    {
+        
+    }
+    
+    @Override
+    protected void handleOptionChanged(int optionIndex)
+    {
+        
+    }
 }

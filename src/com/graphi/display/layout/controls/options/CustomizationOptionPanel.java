@@ -9,21 +9,35 @@ package com.graphi.display.layout.controls.options;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-public class CustomizationOptionPanel extends AbstractOptionPanel
+public class CustomizationOptionPanel extends AbstractOptionPanel implements ActionListener, ChangeListener
 {
     private final int THEME_CLASSIC     =   0;
     private final int THEME_DARK        =   1;
     private final int EDGE_UNDIRECTED   =   0;
     private final int EDGGE_DIRECTED    =   1;
+    
+    private final int THEME_INDEX       =   0;
+    private final int EDGETYPE_INDEX    =   1;
+    private final int CUSTOM_RES_INDEX  =   2;
+    private final int WIND_HEIGHT_INDEX =   3;
+    private final int WIND_WIDTH_INDEX  =   4;
+    private final int DISP_BG_INDEX     =   5;
+    private final int NODE_BG_INDEX     =   6;
+    private final int EDGE_BG_INDEX     =   7;
     
     private final JCheckBox enableResCheck;
     private final JSpinner customWidthSpinner;
@@ -46,7 +60,7 @@ public class CustomizationOptionPanel extends AbstractOptionPanel
         customWidthSpinner  =   new JSpinner(new SpinnerNumberModel(800, 800, 1920, 1));
         customHeightSpinner =   new JSpinner(new SpinnerNumberModel(600, 600, 1080, 1));
         displayBGPanel      =   new BackgroundColourPanel(Color.WHITE);
-        nodeBGPanel         =   new BackgroundColourPanel(Color.GREEN);
+        nodeBGPanel         =   new BackgroundColourPanel(Color.BLUE);
         edgeBGPanel         =   new BackgroundColourPanel(Color.BLACK);
         
         JLabel enableResLabel   =   new JLabel("Enable custom resolution");
@@ -117,6 +131,99 @@ public class CustomizationOptionPanel extends AbstractOptionPanel
         
         add(edgeBGLabel);
         add(edgeBGWrapper);
+        
+        themeBox.addActionListener(this);
+        edgeTypeBox.addActionListener(this);
+        displayBGButton.addActionListener(this);
+        nodeBGButton.addActionListener(this);
+        edgeBGButton.addActionListener(this);
+        enableResCheck.addActionListener(this);
+        customWidthSpinner.addChangeListener(this);
+        customHeightSpinner.addChangeListener(this);
+    }
+    
+    @Override
+    protected void loadOptions()
+    {
+        
+    }
+    
+    @Override
+    protected void handleOptionChanged(int optionIndex)
+    {
+        switch(optionIndex)
+        {
+            
+        }
+    }
+
+    public void toggleBackgroundChangeDisplay(int optionIndex)
+    {
+        BackgroundColourPanel selectedBGPanel;
+        
+        switch(optionIndex)
+        {
+            case DISP_BG_INDEX: selectedBGPanel =   displayBGPanel; break;
+            case NODE_BG_INDEX: selectedBGPanel =   nodeBGPanel; break;
+            case EDGE_BG_INDEX: selectedBGPanel =   edgeBGPanel; break;
+            default: return;
+        }
+        
+        Color currentColour     =   selectedBGPanel.getBackgroundColour();
+        Color selectedColour    =   JColorChooser.showDialog(null, "Choose background colour", currentColour);
+        
+        if(!selectedColour.equals(currentColour))
+        {
+            selectedBGPanel.setBackgroundColour(selectedColour);
+            addOptionChanged(optionIndex);
+        }
+    }
+
+    
+    /*
+    themeBox.addActionListener(this);
+        edgeTypeBox.addActionListener(this);
+        displayBGButton.addActionListener(this);
+        nodeBGButton.addActionListener(this);
+        edgeBGButton.addActionListener(this);
+        enableResCheck.addActionListener(this);
+        customWidthSpinner.addChangeListener(this);
+        customHeightSpinner.addChangeListener(this);
+    */
+    @Override
+    public void actionPerformed(ActionEvent e) 
+    {
+        Object src  =   e.getSource();
+        
+        if(src == displayBGButton)
+            toggleBackgroundChangeDisplay(DISP_BG_INDEX);
+        
+        else if(src == nodeBGButton)
+            toggleBackgroundChangeDisplay(NODE_BG_INDEX);
+        
+        else if(src == edgeBGButton)
+            toggleBackgroundChangeDisplay(EDGE_BG_INDEX);
+        
+        else if(src == themeBox)
+            addOptionChanged(THEME_INDEX);
+        
+        else if(src == edgeTypeBox)
+            addOptionChanged(EDGETYPE_INDEX);
+        
+        else if(src == enableResCheck)
+            addOptionChanged(CUSTOM_RES_INDEX);
+    }
+
+    @Override
+    public void stateChanged(ChangeEvent e) 
+    {
+        Object src  =   e.getSource();
+        
+        if(src == customWidthSpinner)
+            addOptionChanged(WIND_WIDTH_INDEX);
+        
+        else if(src == customHeightSpinner)
+            addOptionChanged(WIND_HEIGHT_INDEX);
     }
     
     private class BackgroundColourPanel extends JPanel

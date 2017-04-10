@@ -10,6 +10,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
@@ -18,6 +22,7 @@ public abstract class AbstractOptionPanel extends JPanel
 {
     protected Font titleFont;
     protected Font standardFont;
+    protected Set<Integer> optionsChanged;
     
     protected AbstractOptionPanel()
     {
@@ -26,7 +31,28 @@ public abstract class AbstractOptionPanel extends JPanel
         
         titleFont       =   new Font("Arial", Font.PLAIN, 24);
         standardFont    =   new Font("Arial", Font.PLAIN, 14);   
+        optionsChanged  =   new HashSet<>();
     }
+    
+    public void addOptionChanged(int optionIndex)
+    {
+        optionsChanged.add(optionIndex);
+    }
+    
+    public void clearOptions()
+    {
+        optionsChanged.clear();
+    }
+    
+    public void updateOptions()
+    {
+        for(int optionIndex : optionsChanged)
+            handleOptionChanged(optionIndex);
+    }
+    
+    protected abstract void loadOptions();
+    
+    protected abstract void handleOptionChanged(int optionIndex);
     
     protected void initLayout(int numSettings)
     {

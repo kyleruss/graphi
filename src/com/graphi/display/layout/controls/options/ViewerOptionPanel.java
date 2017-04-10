@@ -36,4 +36,16 @@ public class ViewerOptionPanel extends AbstractOptionPanel
         add(edgeLabel);
         add(edgeLabelsCheck, "wrap");
     }
+    
+    @Override
+    protected void loadOptions()
+    {
+        
+    }
+    
+    @Override
+    protected void handleOptionChanged(int optionIndex)
+    {
+        
+    }
 }
