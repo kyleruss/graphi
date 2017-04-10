@@ -6,6 +6,8 @@
 
 package com.graphi.display.layout.controls.options;
 
+import com.graphi.config.AppConfig;
+import com.graphi.config.ConfigManager;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -60,13 +62,25 @@ public class AdvancedOptionPanel extends AbstractOptionPanel implements ActionLi
     @Override
     protected void loadOptions()
     {
+        AppConfig appConfig =   ConfigManager.getInstance().getAppConfig();
         
+        enableLogCheck.setSelected(appConfig.isEnableLogging());
+        enableUpdateCheck.setSelected(appConfig.isEnableUpdating());
+        enableDebugCheck.setSelected(appConfig.isEnableDebugMode());
+        exportDirField.setText(appConfig.getExportDir());
     }
     
     @Override
     protected void handleOptionChanged(int optionIndex)
     {
+        AppConfig appConfig =   ConfigManager.getInstance().getAppConfig();
         
+        switch(optionIndex)
+        {
+            case ENABLE_LOG_INDEX: appConfig.setEnableLogging(enableLogCheck.isSelected()); break;
+            case ENABLE_DEBUG_INDEX: appConfig.setEnableDebugMode(enableDebugCheck.isSelected()); break;
+            case ENABLE_UPDATE_INDEX: appConfig.setEnableUpdating(enableUpdateCheck.isSelected()); break;
+        }
     }
 
     @Override

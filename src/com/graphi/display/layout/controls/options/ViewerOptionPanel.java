@@ -6,6 +6,8 @@
 
 package com.graphi.display.layout.controls.options;
 
+import com.graphi.config.AppConfig;
+import com.graphi.config.ConfigManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JCheckBox;
@@ -50,13 +52,40 @@ public class ViewerOptionPanel extends AbstractOptionPanel implements ActionList
     @Override
     protected void loadOptions()
     {
+        AppConfig appConfig =   ConfigManager.getInstance().getAppConfig();
         
+        nodeLabelsCheck.setSelected(appConfig.isViewNodeLabels());
+        edgeLabelsCheck.setSelected(appConfig.isViewEdgeLabels());
+        enableVisualsCheck.setSelected(appConfig.isDisplayVisuals());
+    }
+    
+    public void toggleNodeLabels()
+    {
+        AppConfig appConfig =   ConfigManager.getInstance().getAppConfig();
+        appConfig.setViewNodeLabels(nodeLabelsCheck.isSelected());
+    }
+    
+    public void toggleEdgeLabels()
+    {
+        AppConfig appConfig =   ConfigManager.getInstance().getAppConfig();
+        appConfig.setViewEdgeLabels(edgeLabelsCheck.isSelected());
+    }
+    
+    public void toggleDisplayVisuals()
+    {
+        AppConfig appConfig =   ConfigManager.getInstance().getAppConfig();
+        appConfig.setDisplayVisuals(enableVisualsCheck.isSelected());
     }
     
     @Override
     protected void handleOptionChanged(int optionIndex)
     {
-        
+        switch(optionIndex)
+        {
+            case ENABLE_VISUALS_INDEX: toggleDisplayVisuals(); break;
+            case NODE_LABEL_INDEX: toggleNodeLabels(); break;
+            case EDGE_LABEL_INDEX: toggleEdgeLabels(); break;
+        }
     }
 
     @Override
