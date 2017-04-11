@@ -21,15 +21,18 @@ public class PluginConfig implements Config
     //List of paths to plugins installed
     private List<String> loadedPluginPaths;
     
+    private String pluginsDirectory;
+    
     public PluginConfig(Document doc)
     {
         parseDocumentConfig(doc);
     }
     
-    public PluginConfig(int defaultIndex, List<String> loadedPluginPaths)
+    public PluginConfig(int defaultIndex, List<String> loadedPluginPaths, String pluginsDirectory)
     {
         this.defaultIndex       =   defaultIndex;
         this.loadedPluginPaths  =   loadedPluginPaths;
+        this.pluginsDirectory   =   pluginsDirectory;
     }
     
     @Override
@@ -37,14 +40,14 @@ public class PluginConfig implements Config
     {
         try
         {
-            int pluginIndex         =   ConfigManager.getIntegerConfig(document, "defaultPluginIndex");
-            NodeList loadPluginList =   document.getElementsByTagName("pluginFile");
+            pluginsDirectory        =   ConfigManager.getStringConfig(document, "plugin-directory");
+            defaultIndex            =   ConfigManager.getIntegerConfig(document, "default-plugin-index");
+            NodeList loadPluginList =   document.getElementsByTagName("plugin-file");
             List<String> paths      =   new ArrayList<>();
             
             for(int i = 0; i < loadPluginList.getLength(); i++)
                 paths.add(loadPluginList.item(i).getTextContent());
-            
-            this.defaultIndex       =   pluginIndex;
+
             this.loadedPluginPaths  =   paths;
         }
         
