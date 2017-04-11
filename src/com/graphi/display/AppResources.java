@@ -80,6 +80,7 @@ public class AppResources
             resourceMap.put("displayNavMove", getImage("displayNavMove.png"));
             resourceMap.put("displayNavEdit", getImage("displayNavEdit.png"));
             resourceMap.put("docsIcon", getImage("docsIcon.png"));
+            resourceMap.put("tickIcon", getImage("tickIcon.png"));
         }
         
         catch(IOException e)

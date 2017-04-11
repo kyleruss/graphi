@@ -14,6 +14,8 @@ import com.graphi.util.ComponentUtils;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -21,6 +23,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -47,8 +50,12 @@ public class PluginPanel extends MenuSceneTemplate
         }
     }
     
-    private class PluginContentPanel extends MenuSceneTemplate.SceneControlPanel
+    private class PluginContentPanel extends MenuSceneTemplate.SceneControlPanel implements ActionListener
     {
+        private final String STATUS_ACTIVE  =   "Active";
+        private final String STATUS_DEFAULT =   "Default";
+        private final String STATUS_LOADED  =   "Loaded";
+        
         private JTable pluginTable;
         private JButton addPluginBtn;
         private JButton defaultPluginBtn;
@@ -58,6 +65,7 @@ public class PluginPanel extends MenuSceneTemplate
         private DefaultTableModel pluginTableModel; 
         private JScrollPane pluginScrollPane;
         private int defaultRow;
+        private int activeRow;
         
         private PluginContentPanel()
         {
@@ -65,6 +73,7 @@ public class PluginPanel extends MenuSceneTemplate
             
             AppResources resources  =   AppResources.getInstance();
             defaultRow              =   0;
+            activeRow               =   0;
             pluginTableModel        =   new DefaultTableModel();
             pluginTable             =   new JTable(pluginTableModel);
             addPluginBtn            =   new JButton("Load plugin");
@@ -80,6 +89,7 @@ public class PluginPanel extends MenuSceneTemplate
             JPanel outerWrapper     =   new JPanel(new BorderLayout());
             JPanel btmCtrlWrapper   =   new JPanel();
             
+            pluginTableModel.addColumn("Status");
             pluginTableModel.addColumn("Name");
             pluginTableModel.addColumn("Path");
             pluginDirLabel.setIcon(new ImageIcon(resources.getResource("docsIcon")));
@@ -114,8 +124,86 @@ public class PluginPanel extends MenuSceneTemplate
             outerWrapper.add(btmCtrlWrapper, BorderLayout.SOUTH);
             add(outerWrapper);
             
+            savePluginsBtn.addActionListener(this);
+            addPluginBtn.addActionListener(this);
+            activatePluginBtn.addActionListener(this);
+            defaultPluginBtn.addActionListener(this);
         }
         
+        private void setDefaultPlugin()
+        {
+            int prevRow     =   defaultRow;
+            int selectedRow =   pluginTable.getSelectedRow();
+            
+            if(prevRow == selectedRow) return;
+            
+            if(selectedRow != -1)
+            {
+                if(prevRow == activeRow)
+                {
+                    pluginTable.setValueAt(STATUS_ACTIVE, prevRow, 0);
+                    pluginTable.setValueAt(STATUS_LOADED + ", " + STATUS_DEFAULT, selectedRow, 0);
+                }
+                
+                else
+                {
+                    pluginTable.setValueAt(STATUS_LOADED, prevRow, 0);
+                    
+                    if(selectedRow == activeRow)
+                        pluginTable.setValueAt(STATUS_ACTIVE + ", " + STATUS_DEFAULT, selectedRow, 0);
+                }
+                
+                defaultRow  =   selectedRow;
+            }
+            
+            else JOptionPane.showMessageDialog(null, "Please select a plugin");
+        }
+        
+        private void setActivePlugin()
+        {
+            int prevRow     =   activeRow;
+            int selectedRow =   pluginTable.getSelectedRow();
+            
+            if(prevRow == selectedRow) return;
+            
+            if(selectedRow != -1)
+            {
+                if(prevRow == defaultRow)
+                {
+                    pluginTable.setValueAt(STATUS_LOADED + ", " + STATUS_DEFAULT, prevRow, 0);
+                    pluginTable.setValueAt(STATUS_ACTIVE, selectedRow, 0);
+                }
+                
+                else 
+                {
+                    pluginTable.setValueAt(STATUS_LOADED, prevRow, 0);
+                    
+                    if(selectedRow == defaultRow)
+                        pluginTable.setValueAt(STATUS_ACTIVE + ", " + STATUS_DEFAULT, selectedRow, 0);
+                }
+                
+                    
+                
+                activeRow   =   selectedRow;
+            }
+            
+            else JOptionPane.showMessageDialog(null, "Please select a plugin");
+        }
+        
+        @Override
+        public void actionPerformed(ActionEvent e) 
+        {
+            Object src  =   e.getSource();
+            
+            if(src == savePluginsBtn)
+                updateConfig();
+            
+            else if(src == defaultPluginBtn)
+                setDefaultPlugin();
+            
+            else if(src == activatePluginBtn)
+                setActivePlugin();
+        }
     }
     
         public void initConfig()
@@ -125,8 +213,9 @@ public class PluginPanel extends MenuSceneTemplate
             panel.defaultRow            =   pluginConfig.getDefaultPluginIndex();
             panel.pluginDirField.setText(pluginConfig.getDefaultPluginPath());
             List<String> pluginPaths    =   pluginConfig.getLoadedPluginPaths();
+            String activeStr            =   panel.STATUS_ACTIVE + ", " + panel.STATUS_DEFAULT;
             panel.pluginTableModel.setRowCount(0);
-            panel.pluginTableModel.addRow(new String[] {"Default", "N/A"});
+            panel.pluginTableModel.addRow(new String[] {"", "Base", "N/A"});
             
             if(!pluginPaths.isEmpty())
             {
@@ -136,10 +225,12 @@ public class PluginPanel extends MenuSceneTemplate
                 for(String pluginName : pluginNames)
                 {
                     String pluginPath  =   pluginPaths.get(index);
-                    panel.pluginTableModel.addRow(new String[] { pluginName, pluginPath });
+                    panel.pluginTableModel.addRow(new String[] {index == panel.defaultRow? activeStr : "", pluginName, pluginPath });
                     index++;
                 }
             }
+            
+            else panel.pluginTableModel.setValueAt(activeStr, 0, 0);
         }
         
         public void updateConfig()
