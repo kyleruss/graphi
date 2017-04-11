@@ -31,7 +31,6 @@ public class ControlPanel extends JPanel implements ActionListener
     protected ScriptControlPanel scriptPanel;
     protected SimulationControlPanel simulationPanel;
     protected TaskControlPanel taskPanel;
-    protected ViewerControlPanel viewerPanel;
     protected final MainPanel mainPanel;
     
     public ControlPanel(MainPanel mainPanel) 
@@ -54,8 +53,6 @@ public class ControlPanel extends JPanel implements ActionListener
         add(Box.createRigidArea(new Dimension(230, 30)));
         add(computePanel);
         add(Box.createRigidArea(new Dimension(230, 30)));
-        add(viewerPanel);
-        add(Box.createRigidArea(new Dimension(230, 30)));
         add(scriptPanel);
     }
     
@@ -66,7 +63,6 @@ public class ControlPanel extends JPanel implements ActionListener
         ioPanel         =   new IOControlPanel(this);
         scriptPanel     =   new ScriptControlPanel(this);
         simulationPanel =   new SimulationControlPanel(this);
-        viewerPanel     =   new ViewerControlPanel(this);
         taskPanel       =   new TaskControlPanel(this);
     }
     
@@ -107,14 +103,14 @@ public class ControlPanel extends JPanel implements ActionListener
         else if(src == menu.getMenuItem("eLabelsItem"))
             mainPanel.getScreenPanel().getGraphPanel().showEdgeLabels(true);
 
-        else if(src == menu.getMenuItem("viewerBGItem"))
+        /*else if(src == menu.getMenuItem("viewerBGItem"))
             viewerPanel.showViewerBGChange();
 
         else if(src == menu.getMenuItem("edgeBGItem"))
             viewerPanel.showEdgeBGChange();
 
         else if(src == menu.getMenuItem("vertexBGItem"))
-            viewerPanel.showVertexBGChange();
+            viewerPanel.showVertexBGChange(); */
 
         else if(src == menu.getMenuItem("clearLogItem"))
             mainPanel.getScreenPanel().getOutputPanel().clearLog();
@@ -181,11 +177,6 @@ public class ControlPanel extends JPanel implements ActionListener
         return simulationPanel;
     }
 
-    public ViewerControlPanel getViewerPanel()
-    {
-        return viewerPanel;
-    }
-    
     public TaskControlPanel getTaskPanel()
     {
         return taskPanel;
