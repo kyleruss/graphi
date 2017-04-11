@@ -3,7 +3,7 @@
 <!-- Configure default plugin & plugins loaded on startup -->
 <plugin-config>
 	<!-- startupPlugins index of default start up plugin (-1 for no plugins) -->
-	<default-pluginIndex>-1</default-plugin-index>
+	<default-plugin-index>-1</default-plugin-index>
 
 	<!-- Default plugin directory path -->
 	<plugin-directory>data/plugins</plugin-directory>

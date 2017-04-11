@@ -9,15 +9,18 @@ package com.graphi.display.layout;
 import com.graphi.config.ConfigManager;
 import com.graphi.config.PluginConfig;
 import com.graphi.display.AppResources;
+import com.graphi.plugins.PluginManager;
 import com.graphi.util.ComponentUtils;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -54,12 +57,14 @@ public class PluginPanel extends MenuSceneTemplate
         private JTextField pluginDirField;
         private DefaultTableModel pluginTableModel; 
         private JScrollPane pluginScrollPane;
+        private int defaultRow;
         
         private PluginContentPanel()
         {
             setBackground(Color.WHITE);
             
             AppResources resources  =   AppResources.getInstance();
+            defaultRow              =   0;
             pluginTableModel        =   new DefaultTableModel();
             pluginTable             =   new JTable(pluginTableModel);
             addPluginBtn            =   new JButton("Load plugin");
@@ -108,11 +113,51 @@ public class PluginPanel extends MenuSceneTemplate
             outerWrapper.add(contentWrapper, BorderLayout.CENTER);
             outerWrapper.add(btmCtrlWrapper, BorderLayout.SOUTH);
             add(outerWrapper);
+            
+        }
+        
+    }
+    
+        public void initConfig()
+        {
+            PluginContentPanel panel    =   (PluginContentPanel) sceneControlPanel;
+            PluginConfig pluginConfig   =   ConfigManager.getInstance().getPluginConfig();
+            panel.defaultRow            =   pluginConfig.getDefaultPluginIndex();
+            panel.pluginDirField.setText(pluginConfig.getDefaultPluginPath());
+            List<String> pluginPaths    =   pluginConfig.getLoadedPluginPaths();
+            panel.pluginTableModel.setRowCount(0);
+            panel.pluginTableModel.addRow(new String[] {"Default", "N/A"});
+            
+            if(!pluginPaths.isEmpty())
+            {
+                Set<String> pluginNames     =   PluginManager.getInstance().getPlugins().keySet();
+                int index                   =   0;
+
+                for(String pluginName : pluginNames)
+                {
+                    String pluginPath  =   pluginPaths.get(index);
+                    panel.pluginTableModel.addRow(new String[] { pluginName, pluginPath });
+                    index++;
+                }
+            }
         }
         
         public void updateConfig()
         {
+            PluginContentPanel panel    =   (PluginContentPanel) sceneControlPanel;
             PluginConfig pluginConfig   =   ConfigManager.getInstance().getPluginConfig();
+            pluginConfig.setPluginDirectory(panel.pluginDirField.getText());
+            
+            if(panel.pluginTableModel.getRowCount() > 1)
+            {
+                List<String> pluginPathList =   new ArrayList<>();
+                for(int row = 0; row < panel.pluginTable.getRowCount(); row++)
+                    pluginPathList.add(panel.pluginTable.getValueAt(row, 1).toString());
+
+                pluginConfig.setLoadedPluginPaths(pluginPathList);
+            }
+            
+            
+            pluginConfig.setDefaultPluginIndex(panel.defaultRow);
         }
-    }
 }

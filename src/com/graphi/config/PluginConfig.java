@@ -68,6 +68,16 @@ public class PluginConfig implements Config
         return defaultIndex;
     }
     
+    public String getPluginDirectory()
+    {
+        return pluginsDirectory;
+    }
+    
+    public void setPluginDirectory(String pluginDirectory)
+    {
+        this.pluginsDirectory   =   pluginDirectory;
+    }
+    
     public String getDefaultPluginPath()
     {
         if(defaultIndex < 0 || defaultIndex > loadedPluginPaths.size())

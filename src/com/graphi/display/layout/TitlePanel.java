@@ -121,6 +121,12 @@ public class TitlePanel extends JPanel
             
             else if(src == settingsBtn)
                 ViewPort.getInstance().transitionScene(ViewPort.SETTINGS_SCENE);
+            
+            else if(src == pluginBtn)
+            {
+                ViewPort.getInstance().getPluginPanel().initConfig();
+                ViewPort.getInstance().setScene(ViewPort.PLUGINS_SCENE);
+            }
         }
     }
     
