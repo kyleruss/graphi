@@ -96,7 +96,7 @@ public class IOControlPanel extends JPanel implements ActionListener
     public void importPlugin()
     {
         File file               =   ComponentUtils.getFile(true, "Graphi .jar plugin", "jar");
-        Window.getInstance().getMenu().getPluginListMenu().loadPluginFile(file, PluginManager.getInstance(), AppManager.getInstance());
+        Window.getInstance().getMenu().getPluginListMenu().loadPluginFile(file);
     }
 
     public void exportGraph()

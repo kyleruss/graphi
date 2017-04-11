@@ -6,9 +6,12 @@
 
 package com.graphi.display.layout;
 
+import com.graphi.app.AppManager;
 import com.graphi.config.ConfigManager;
 import com.graphi.config.PluginConfig;
 import com.graphi.display.AppResources;
+import com.graphi.display.Window;
+import com.graphi.plugins.Plugin;
 import com.graphi.plugins.PluginManager;
 import com.graphi.util.ComponentUtils;
 import java.awt.BorderLayout;
@@ -16,6 +19,7 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -23,6 +27,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -190,6 +195,11 @@ public class PluginPanel extends MenuSceneTemplate
             else JOptionPane.showMessageDialog(null, "Please select a plugin");
         }
         
+        private void addPluginToList(String name, String path)
+        {
+            pluginTableModel.addRow(new String[] { STATUS_LOADED, name, path });
+        }
+        
         @Override
         public void actionPerformed(ActionEvent e) 
         {
@@ -203,52 +213,84 @@ public class PluginPanel extends MenuSceneTemplate
             
             else if(src == activatePluginBtn)
                 setActivePlugin();
+            
+            else if(src == addPluginBtn)
+                importPlugin();
         }
     }
     
-        public void initConfig()
-        {
-            PluginContentPanel panel    =   (PluginContentPanel) sceneControlPanel;
-            PluginConfig pluginConfig   =   ConfigManager.getInstance().getPluginConfig();
-            panel.defaultRow            =   pluginConfig.getDefaultPluginIndex();
-            panel.pluginDirField.setText(pluginConfig.getDefaultPluginPath());
-            List<String> pluginPaths    =   pluginConfig.getLoadedPluginPaths();
-            String activeStr            =   panel.STATUS_ACTIVE + ", " + panel.STATUS_DEFAULT;
-            panel.pluginTableModel.setRowCount(0);
-            panel.pluginTableModel.addRow(new String[] {"", "Base", "N/A"});
-            
-            if(!pluginPaths.isEmpty())
-            {
-                Set<String> pluginNames     =   PluginManager.getInstance().getPlugins().keySet();
-                int index                   =   0;
+    public void initConfig()
+    {
+        PluginContentPanel panel    =   (PluginContentPanel) sceneControlPanel;
+        PluginConfig pluginConfig   =   ConfigManager.getInstance().getPluginConfig();
+        panel.defaultRow            =   pluginConfig.getDefaultPluginIndex();
+        panel.pluginDirField.setText(pluginConfig.getDefaultPluginPath());
+        List<String> pluginPaths    =   pluginConfig.getLoadedPluginPaths();
+        String activeStr            =   panel.STATUS_ACTIVE + ", " + panel.STATUS_DEFAULT;
+        panel.pluginTableModel.setRowCount(0);
+        panel.pluginTableModel.addRow(new String[] {"", "Base", "N/A"});
 
-                for(String pluginName : pluginNames)
-                {
-                    String pluginPath  =   pluginPaths.get(index);
-                    panel.pluginTableModel.addRow(new String[] {index == panel.defaultRow? activeStr : "", pluginName, pluginPath });
-                    index++;
-                }
-            }
-            
-            else panel.pluginTableModel.setValueAt(activeStr, 0, 0);
-        }
-        
-        public void updateConfig()
+        if(!pluginPaths.isEmpty())
         {
-            PluginContentPanel panel    =   (PluginContentPanel) sceneControlPanel;
-            PluginConfig pluginConfig   =   ConfigManager.getInstance().getPluginConfig();
-            pluginConfig.setPluginDirectory(panel.pluginDirField.getText());
-            
-            if(panel.pluginTableModel.getRowCount() > 1)
-            {
-                List<String> pluginPathList =   new ArrayList<>();
-                for(int row = 0; row < panel.pluginTable.getRowCount(); row++)
-                    pluginPathList.add(panel.pluginTable.getValueAt(row, 1).toString());
+            Set<String> pluginNames     =   PluginManager.getInstance().getPlugins().keySet();
+            int index                   =   0;
 
-                pluginConfig.setLoadedPluginPaths(pluginPathList);
+            for(String pluginName : pluginNames)
+            {
+                String pluginPath  =   pluginPaths.get(index);
+                panel.pluginTableModel.addRow(new String[] {index == panel.defaultRow? activeStr : "", pluginName, pluginPath });
+                index++;
             }
-            
-            
-            pluginConfig.setDefaultPluginIndex(panel.defaultRow);
         }
+
+        else panel.pluginTableModel.setValueAt(activeStr, 0, 0);
+    }
+
+    public void updateConfig()
+    {
+        PluginContentPanel panel    =   (PluginContentPanel) sceneControlPanel;
+        PluginConfig pluginConfig   =   ConfigManager.getInstance().getPluginConfig();
+        pluginConfig.setPluginDirectory(panel.pluginDirField.getText());
+
+        if(panel.pluginTableModel.getRowCount() > 1)
+        {
+            List<String> pluginPathList =   new ArrayList<>();
+            for(int row = 0; row < panel.pluginTable.getRowCount(); row++)
+                pluginPathList.add(panel.pluginTable.getValueAt(row, 1).toString());
+
+            pluginConfig.setLoadedPluginPaths(pluginPathList);
+        }
+
+
+        pluginConfig.setDefaultPluginIndex(panel.defaultRow);
+    }
+    
+    public void importPlugin()
+    {
+        File file    =   ComponentUtils.getFile(true, "Graphi .jar plugin", "jar");
+        if(file == null) return;
+
+        PluginContentPanel panel    =   (PluginContentPanel) sceneControlPanel;
+        PluginManager pm            =   PluginManager.getInstance();
+        Plugin plugin               =   pm.fetchPlugin(file);
+        String defaultPath          =   ConfigManager.getInstance().getPluginConfig().getDefaultPluginPath();
+        boolean isDefaultPath       =   file.getPath().equals(defaultPath);
+
+        if(plugin == null)
+            JOptionPane.showMessageDialog(null, "Failed to load plugin");
+
+        else
+        {
+            if(pm.hasPlugin(plugin) && !isDefaultPath)
+                JOptionPane.showMessageDialog(null, "Plugin is already loaded");
+
+            else
+            {
+                panel.addPluginToList(plugin.getPluginName(), file.getPath());
+
+                if(!isDefaultPath)
+                    pm.addPlugin(plugin);
+            }
+        }
+    }
 }
