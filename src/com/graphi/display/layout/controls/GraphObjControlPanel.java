@@ -8,7 +8,7 @@ package com.graphi.display.layout.controls;
 
 import com.graphi.app.Consts;
 import com.graphi.display.AppResources;
-import com.graphi.util.ComponentUtils;
+import com.graphi.display.layout.util.ComponentUtils;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;

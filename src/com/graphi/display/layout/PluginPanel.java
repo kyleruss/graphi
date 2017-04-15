@@ -13,7 +13,7 @@ import com.graphi.display.AppResources;
 import com.graphi.display.Window;
 import com.graphi.plugins.Plugin;
 import com.graphi.plugins.PluginManager;
-import com.graphi.util.ComponentUtils;
+import com.graphi.display.layout.util.ComponentUtils;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;

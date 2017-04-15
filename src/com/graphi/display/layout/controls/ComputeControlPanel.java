@@ -8,7 +8,7 @@ package com.graphi.display.layout.controls;
 
 import com.graphi.app.Consts;
 import com.graphi.display.AppResources;
-import com.graphi.util.ComponentUtils;
+import com.graphi.display.layout.util.ComponentUtils;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;

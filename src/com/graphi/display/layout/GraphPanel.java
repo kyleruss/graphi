@@ -13,7 +13,7 @@ import com.graphi.config.ConfigManager;
 import com.graphi.sim.GraphPlayback;
 import com.graphi.sim.PlaybackEntry;
 import com.graphi.util.transformer.CentralityTransformer;
-import com.graphi.util.ComponentUtils;
+import com.graphi.display.layout.util.ComponentUtils;
 import com.graphi.util.Edge;
 import com.graphi.util.transformer.EdgeLabelTransformer;
 import com.graphi.util.GraphUtilities;

@@ -21,7 +21,7 @@ import com.graphi.io.TableExporter;
 import com.graphi.plugins.PluginManager;
 import com.graphi.sim.GraphPlayback;
 import com.graphi.tasks.TaskManager;
-import com.graphi.util.ComponentUtils;
+import com.graphi.display.layout.util.ComponentUtils;
 import com.graphi.util.Edge;
 import com.graphi.util.Node;
 import edu.uci.ics.jung.graph.Graph;

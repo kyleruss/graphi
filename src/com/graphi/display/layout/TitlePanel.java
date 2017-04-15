@@ -10,7 +10,7 @@ import com.graphi.display.AppResources;
 import com.graphi.app.AppManager;
 import com.graphi.app.Consts;
 import com.graphi.config.ConfigManager;
-import com.graphi.util.ComponentUtils;
+import com.graphi.display.layout.util.ComponentUtils;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;

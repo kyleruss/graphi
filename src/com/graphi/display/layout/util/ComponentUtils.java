@@ -4,7 +4,7 @@
 //  https://github.com/denkers/graphi
 //=========================================
 
-package com.graphi.util;
+package com.graphi.display.layout.util;
 
 import java.awt.Component;
 import java.io.File;
