@@ -6,7 +6,10 @@
 
 package com.graphi.io;
 
+import com.graphi.display.layout.MainPanel;
 import com.graphi.graph.GraphData;
+import com.graphi.plugins.PluginManager;
+import edu.uci.ics.jung.graph.Graph;
 import java.io.File;
 import java.io.Serializable;
 import javax.swing.JFileChooser;
@@ -15,7 +18,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class ProjectStore implements Serializable
 {
-    private GraphData graphData;
+    private Graph graph;
     private String output;
     private JTable computeTable;
     
@@ -24,9 +27,9 @@ public class ProjectStore implements Serializable
         this(null, null, null);
     }
     
-    public ProjectStore(GraphData graphData, String output, JTable computeTable)
+    public ProjectStore(Graph graph, String output, JTable computeTable)
     {
-        this.graphData          =   graphData;
+        this.graph              =   graph;
         this.output             =   output;
         this.computeTable       =   computeTable;
     }
@@ -39,11 +42,10 @@ public class ProjectStore implements Serializable
             Storage.saveObj(this, file);
     }
     
-    
     public static ProjectStore importProject()
     {
         File file               =   getFile(true);
-        ProjectStore instance   =   (ProjectStore) Storage.openObj(file, null);
+        ProjectStore instance   =   (ProjectStore) Storage.openObj(file, PluginManager.getInstance().getActiveClassLoader());
         
         return instance;
     }
@@ -60,14 +62,14 @@ public class ProjectStore implements Serializable
             return null;
     }
     
-    public GraphData getGraphData() 
+    public Graph getGraph() 
     {
-        return graphData;
+        return graph;
     }
 
-    public void setGraphData(GraphData graphData) 
+    public void setGraph(Graph graph) 
     {
-        this.graphData = graphData;
+        this.graph = graph;
     }
 
     public String getOutput() 
