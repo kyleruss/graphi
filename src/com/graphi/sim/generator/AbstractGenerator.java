@@ -8,8 +8,8 @@ package com.graphi.sim.generator;
 
 import com.graphi.app.AppManager;
 import com.graphi.plugins.PluginManager;
-import com.graphi.util.Edge;
-import com.graphi.util.Node;
+import com.graphi.graph.Edge;
+import com.graphi.graph.Node;
 import edu.uci.ics.jung.graph.Graph;
 import org.apache.commons.collections15.Factory;
 

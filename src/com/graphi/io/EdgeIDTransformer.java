@@ -6,7 +6,7 @@
 
 package com.graphi.io;
 
-import com.graphi.util.Edge;
+import com.graphi.graph.Edge;
 import org.apache.commons.collections15.Transformer;
 
 /**

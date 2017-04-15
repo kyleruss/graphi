@@ -6,9 +6,9 @@
 
 package com.graphi.io;
 
-import com.graphi.util.Edge;
+import com.graphi.graph.Edge;
 import com.graphi.util.factory.GraphObjFactory;
-import com.graphi.util.Node;
+import com.graphi.graph.Node;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.graph.util.EdgeType;

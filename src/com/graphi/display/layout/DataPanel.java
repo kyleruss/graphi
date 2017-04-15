@@ -6,9 +6,9 @@
 
 package com.graphi.display.layout;
 
-import com.graphi.util.Edge;
-import com.graphi.util.Node;
-import com.graphi.util.TableModelBean;
+import com.graphi.graph.Edge;
+import com.graphi.graph.Node;
+import com.graphi.graph.TableModelBean;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import java.awt.BorderLayout;

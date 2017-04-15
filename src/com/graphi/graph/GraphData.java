@@ -1,5 +1,5 @@
 
-package com.graphi.util;
+package com.graphi.graph;
 
 import com.graphi.util.factory.EdgeFactory;
 import com.graphi.util.factory.NodeFactory;

@@ -6,7 +6,7 @@
 
 package com.graphi.util.transformer;
 
-import com.graphi.util.Node;
+import com.graphi.graph.Node;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.util.List;

@@ -6,7 +6,7 @@
 
 package com.graphi.util.factory;
 
-import com.graphi.util.Node;
+import com.graphi.graph.Node;
 
 /**
  * Factory that creates a Node with auto/incremented ID

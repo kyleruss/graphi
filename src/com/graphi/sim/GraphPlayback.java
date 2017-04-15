@@ -6,7 +6,7 @@
 
 package com.graphi.sim;
 
-import com.graphi.util.TableModelBean;
+import com.graphi.graph.TableModelBean;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;

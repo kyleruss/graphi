@@ -4,7 +4,7 @@
 //  https://github.com/denkers/graphi
 //=========================================
 
-package com.graphi.util;
+package com.graphi.graph;
 
 import edu.uci.ics.jung.algorithms.cluster.EdgeBetweennessClusterer;
 import edu.uci.ics.jung.algorithms.filters.Filter;

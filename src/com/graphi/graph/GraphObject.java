@@ -4,7 +4,7 @@
 //  https://github.com/denkers/graphi
 //=========================================
 
-package com.graphi.util;
+package com.graphi.graph;
 
 import java.awt.Color;
 

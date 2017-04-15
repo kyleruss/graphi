@@ -8,7 +8,7 @@ package com.graphi.plugins;
 
 import com.graphi.app.AppManager;
 import com.graphi.display.layout.MainPanel;
-import com.graphi.util.GraphData;
+import com.graphi.graph.GraphData;
 import java.net.URLClassLoader;
 
 /**

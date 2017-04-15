@@ -1,5 +1,5 @@
 
-package com.graphi.util;
+package com.graphi.graph;
 
 import java.io.Serializable;
 import java.util.Vector;

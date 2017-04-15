@@ -6,7 +6,7 @@
 
 package com.graphi.util.transformer;
 
-import com.graphi.util.Edge;
+import com.graphi.graph.Edge;
 import java.text.DecimalFormat;
 import org.apache.commons.collections15.Transformer;
 

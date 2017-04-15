@@ -12,7 +12,7 @@ import com.graphi.app.Consts;
 import com.graphi.display.MainMenu;
 import com.graphi.display.Window;
 import com.graphi.plugins.PluginManager;
-import com.graphi.util.GraphData;
+import com.graphi.graph.GraphData;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import javax.swing.JFrame;

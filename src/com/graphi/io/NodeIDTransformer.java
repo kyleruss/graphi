@@ -6,7 +6,7 @@
 
 package com.graphi.io;
 
-import com.graphi.util.Node;
+import com.graphi.graph.Node;
 import org.apache.commons.collections15.Transformer;
 
 /**

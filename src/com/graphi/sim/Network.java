@@ -6,9 +6,9 @@
 
 package com.graphi.sim;
 
-import com.graphi.util.Edge;
-import com.graphi.util.GraphUtilities;
-import com.graphi.util.Node;
+import com.graphi.graph.Edge;
+import com.graphi.graph.GraphUtilities;
+import com.graphi.graph.Node;
 import edu.uci.ics.jung.algorithms.generators.random.KleinbergSmallWorldGenerator;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;

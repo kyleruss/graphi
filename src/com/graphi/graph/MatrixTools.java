@@ -4,7 +4,7 @@
 //  https://github.com/denkers/graphi
 //=========================================
 
-package com.graphi.util;
+package com.graphi.graph;
 
 import cern.colt.matrix.impl.SparseDoubleMatrix2D;
 import edu.uci.ics.jung.algorithms.scoring.VertexScorer;

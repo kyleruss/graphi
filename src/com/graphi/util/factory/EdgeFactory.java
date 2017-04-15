@@ -6,7 +6,7 @@
 
 package com.graphi.util.factory;
 
-import com.graphi.util.Edge;
+import com.graphi.graph.Edge;
 import java.util.Random;
 
 /**
