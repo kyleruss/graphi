@@ -6,7 +6,10 @@
 
 package com.graphi.io;
 
+import com.graphi.display.layout.DataPanel;
+import com.graphi.display.layout.GraphPanel;
 import com.graphi.display.layout.MainPanel;
+import com.graphi.display.layout.OutputPanel;
 import com.graphi.graph.GraphData;
 import com.graphi.plugins.PluginManager;
 import edu.uci.ics.jung.graph.Graph;
@@ -15,6 +18,7 @@ import java.io.Serializable;
 import javax.swing.JFileChooser;
 import javax.swing.JTable;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
 
 public class ProjectStore implements Serializable
 {
@@ -40,6 +44,38 @@ public class ProjectStore implements Serializable
         
         if(file != null)
             Storage.saveObj(this, file);
+    }
+    
+    public void initInstance()
+    {
+        MainPanel mainPanel     =   MainPanel.getInstance();
+        DataPanel dataPanel     =   mainPanel.getScreenPanel().getDataPanel();
+        
+        //Initialize system graph
+        if(graph != null)
+        {
+            GraphPanel graphPanel   =   mainPanel.getScreenPanel().getGraphPanel();
+            
+            graphPanel.getGraphLayout().setGraph(graph);
+            graphPanel.getGraphViewer().repaint();
+            dataPanel.loadNodes(graph);
+            dataPanel.loadEdges(graph);
+            mainPanel.getGraphData().setGraph(graph);
+        }
+        
+        //Initialize output
+        if(output != null && !output.equals(""))
+        {
+            OutputPanel outputPanel =   mainPanel.getScreenPanel().getOutputPanel();
+            outputPanel.setOutputText(output);
+        }
+        
+        //Initialize computation tables
+        if(computeTable != null)
+        {
+            DefaultTableModel model =   (DefaultTableModel) computeTable.getModel();
+            dataPanel.setComputationModel(model);
+        }
     }
     
     public static ProjectStore importProject()

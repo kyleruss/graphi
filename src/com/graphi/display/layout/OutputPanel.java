@@ -51,6 +51,18 @@ public class OutputPanel extends JPanel
         return outputArea;
     }
     
+    public void setOutputText(String text)
+    {
+        outputArea.setText(text);
+    }
+    
+    public void extendOutputText(String text)
+    {
+        String originalText =   outputArea.getText();
+        text                =   originalText + text;
+        outputArea.setText(text);
+    }
+    
     private class OutputControls extends JPanel implements ActionListener
     {
         private JButton exportBtn, importBtn, clearBtn;
