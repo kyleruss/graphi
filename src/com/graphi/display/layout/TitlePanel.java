@@ -11,6 +11,7 @@ import com.graphi.app.AppManager;
 import com.graphi.app.Consts;
 import com.graphi.config.ConfigManager;
 import com.graphi.display.layout.util.ComponentUtils;
+import com.graphi.io.ProjectStore;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -127,6 +128,12 @@ public class TitlePanel extends JPanel
                 ViewPort.getInstance().getPluginPanel().initConfig();
                 ViewPort.getInstance().setScene(ViewPort.PLUGINS_SCENE);
             }
+            
+            else if(src == openBtn)
+                ProjectStore.loadProject();
+            
+            else if(src == newBtn)
+                ProjectStore.newProject();
         }
     }
     

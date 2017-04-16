@@ -10,32 +10,33 @@ import com.graphi.display.layout.DataPanel;
 import com.graphi.display.layout.GraphPanel;
 import com.graphi.display.layout.MainPanel;
 import com.graphi.display.layout.OutputPanel;
-import com.graphi.graph.GraphData;
+import com.graphi.display.layout.ViewPort;
 import com.graphi.plugins.PluginManager;
 import edu.uci.ics.jung.graph.Graph;
+import edu.uci.ics.jung.graph.SparseMultigraph;
 import java.io.File;
 import java.io.Serializable;
 import javax.swing.JFileChooser;
-import javax.swing.JTable;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 public class ProjectStore implements Serializable
 {
     private Graph graph;
     private String output;
-    private JTable computeTable;
+    private TableModel computeTableModel;
     
     public ProjectStore()
     {
-        this(null, null, null);
+        this(new SparseMultigraph<>(), "", new DefaultTableModel());
     }
     
-    public ProjectStore(Graph graph, String output, JTable computeTable)
+    public ProjectStore(Graph graph, String output, TableModel computeTableModel)
     {
-        this.graph              =   graph;
-        this.output             =   output;
-        this.computeTable       =   computeTable;
+        this.graph                  =   graph;
+        this.output                 =   output;
+        this.computeTableModel      =   computeTableModel;
     }
     
     public void exportProject()
@@ -53,29 +54,40 @@ public class ProjectStore implements Serializable
         
         //Initialize system graph
         if(graph != null)
-        {
-            GraphPanel graphPanel   =   mainPanel.getScreenPanel().getGraphPanel();
-            
-            graphPanel.getGraphLayout().setGraph(graph);
-            graphPanel.getGraphViewer().repaint();
-            dataPanel.loadNodes(graph);
-            dataPanel.loadEdges(graph);
-            mainPanel.getGraphData().setGraph(graph);
-        }
+            initGraph();
         
         //Initialize output
         if(output != null && !output.equals(""))
-        {
-            OutputPanel outputPanel =   mainPanel.getScreenPanel().getOutputPanel();
-            outputPanel.setOutputText(output);
-        }
-        
+            initOutput();
+            
         //Initialize computation tables
-        if(computeTable != null)
-        {
-            DefaultTableModel model =   (DefaultTableModel) computeTable.getModel();
-            dataPanel.setComputationModel(model);
-        }
+        if(computeTableModel != null)
+            initTableModel();
+    }
+    
+    public void initGraph()
+    {
+        MainPanel mainPanel     =   MainPanel.getInstance();
+        DataPanel dataPanel     =   mainPanel.getScreenPanel().getDataPanel();
+        GraphPanel graphPanel   =   mainPanel.getScreenPanel().getGraphPanel();
+            
+        graphPanel.getGraphLayout().setGraph(graph);
+        graphPanel.getGraphViewer().repaint();
+        dataPanel.loadNodes(graph);
+        dataPanel.loadEdges(graph);
+        mainPanel.getGraphData().setGraph(graph);
+    }
+    
+    public void initOutput()
+    {
+        OutputPanel outputPanel =   MainPanel.getInstance().getScreenPanel().getOutputPanel();
+        outputPanel.setOutputText(output);
+    }
+    
+    public void initTableModel()
+    {
+        DataPanel dataPanel     =   MainPanel.getInstance().getScreenPanel().getDataPanel();
+        dataPanel.setComputationModel((DefaultTableModel) computeTableModel);
     }
     
     public static ProjectStore importProject()
@@ -84,6 +96,25 @@ public class ProjectStore implements Serializable
         ProjectStore instance   =   (ProjectStore) Storage.openObj(file, PluginManager.getInstance().getActiveClassLoader());
         
         return instance;
+    }
+    
+    public static ProjectStore loadProject()
+    {
+        ProjectStore project    =   importProject();
+        
+        if(project != null)
+        {
+            project.initInstance();
+            ViewPort.getInstance().transitionScene(ViewPort.MAIN_SCENE);
+        }
+        
+        return project;
+    }
+    
+    public static void newProject()
+    {
+        new ProjectStore().initInstance();
+        ViewPort.getInstance().transitionScene(ViewPort.MAIN_SCENE);
     }
     
     private static File getFile(boolean open)
@@ -118,14 +149,14 @@ public class ProjectStore implements Serializable
         this.output = output;
     }
 
-    public JTable getComputeTable() 
+    public TableModel getComputeTableModel() 
     {
-        return computeTable;
+        return computeTableModel;
     }
 
-    public void setComputeTable(JTable computeTable) 
+    public void setComputeTableModel(TableModel computeTableModel) 
     {
-        this.computeTable = computeTable;
+        this.computeTableModel = computeTableModel;
     }
     
     
