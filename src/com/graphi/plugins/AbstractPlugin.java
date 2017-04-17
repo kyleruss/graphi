@@ -19,24 +19,12 @@ public abstract class AbstractPlugin implements Plugin, Serializable
 {
     protected final String name;
     protected final String description;
-    protected MainPanel panel;
     private URLClassLoader loader;
     
     public AbstractPlugin(String name, String description)
     {
         this.name           =   name;
         this.description    =   description;
-    }
-    
-    /**
-     * Implementation should initialize the panel
-     * Plugins not using the default MainPanel should override & initialize their own panel
-     * @param appManager The parent AppManager that is passed to the MainPanel constructor for attachment
-     */
-    @Override
-    public void attachPanel()
-    {
-        panel   =   new MainPanel();
     }
     
     /**
@@ -55,35 +43,6 @@ public abstract class AbstractPlugin implements Plugin, Serializable
     public String getPluginDescription()
     {
         return description;
-    }
-
-    /**
-     * @return The plugins layout panel; Can be null if bad attachPanel() implementation
-     */
-    @Override
-    public MainPanel getPanel() 
-    {
-        return panel;
-    }
-    
-    /**
-     * Sets the plugin's layout panel active GraphData
-     * Useful when switching plugins to pass data among plugins
-     * @param data 
-     */
-    @Override
-    public void passData(GraphData data)
-    {
-        panel.setGraphData(data);
-    }
-    
-    /**
-     * @return The plugin's active GraphData
-     */
-    @Override
-    public GraphData getData()
-    {
-        return panel.getGraphData();
     }
 
     @Override

@@ -31,30 +31,6 @@ public interface Plugin
      */
     public String getPluginDescription();
     
-    /**
-     * Return a produced or maintained Layout for the plugin
-     * Initialized in attachPanel
-     * @return The plugins layout; Can return null 
-     */
-    public MainPanel getPanel();
-    
-    /**
-     * Responsible for initializing the Plugin's panel 
-     * @param appManager The parent AppManager passed to MainPanel constructor for attachment
-     */
-    public void attachPanel();
-    
-    /**
-     * Adds the GraphData to the Plugin's panel
-     * Allows the passing of graph data when changing plugins
-     * @param data 
-     */
-    public void passData(GraphData data);
-    
-    /**
-     * @return The Plugin panel's active graph data
-     */
-    public GraphData getData();
     
     /**
      * Set the plugin class loader

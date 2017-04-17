@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 
 public final class PluginManager
@@ -146,17 +145,17 @@ public final class PluginManager
 
         GraphData data  =   null;
         
-        if(activePlugin != null) 
-            data        =   activePlugin.getData();
+       /* if(activePlugin != null) 
+            data        =   activePlugin.getData(); */
         
         activePlugin    =   plugin;
-        activePlugin.attachPanel();
+     /*   activePlugin.attachPanel();
         
         if(data != null) 
-            activePlugin.passData(data);
+            activePlugin.passData(data); */
         
         ViewPort viewPort   =   ViewPort.getInstance();
-        viewPort.attachMainPanel(activePlugin.getPanel());
+    //    viewPort.attachMainPanel(activePlugin.getPanel());
         
         PluginsMenu pluginsMenu     =   Window.getInstance().getMenu().getPluginListMenu();
         String itemName             =   plugin.getPluginName().equals("Default")? "defaultPluginItem" : plugin.getPluginName();

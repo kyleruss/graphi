@@ -6,7 +6,7 @@
 
 package com.graphi.tasks;
 
-import com.graphi.app.AppManager;
+import com.graphi.display.layout.MainPanel;
 import com.graphi.plugins.PluginManager;
 import com.graphi.sim.generator.BerbasiGenerator;
 import com.graphi.sim.generator.KleinbergGenerator;
@@ -53,10 +53,9 @@ public class SimulateNetworkTask extends AbstractTask
         if(gen == null) 
             JOptionPane.showMessageDialog(null, "Invalid generator algorithm");
         else
-        {
-            PluginManager.getInstance().getActivePlugin()
-                    .getPanel().getControlPanel().getSimulationPanel()
-                    .showGeneratorSim(gen);
+        {           
+            MainPanel.getInstance().getControlPanel().getSimulationPanel()
+            .showGeneratorSim(gen);
         }
     }
     

@@ -10,7 +10,6 @@ import com.graphi.display.layout.controls.ControlPanel;
 import com.graphi.app.Consts;
 import com.graphi.display.MainMenu;
 import com.graphi.display.Window;
-import com.graphi.plugins.PluginManager;
 import com.graphi.graph.GraphData;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -93,6 +92,7 @@ public class MainPanel extends JPanel
     
     public static MainPanel getInstance()
     {
-        return PluginManager.getInstance().getActivePlugin().getPanel();
+        if(instance == null) instance   =   new MainPanel();
+        return instance;
     }
 }
