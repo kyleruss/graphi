@@ -325,13 +325,14 @@ public class DataPanel extends JPanel implements ActionListener
     public void addEdge()
     {
         EdgeAddPanel addPanel   =   new EdgeAddPanel();
+        GraphData data          =   MainPanel.getInstance().getData();
 
         int option  =   JOptionPane.showConfirmDialog(null, addPanel, "Add edge", JOptionPane.OK_CANCEL_OPTION);
 
         if(option == JOptionPane.OK_OPTION)
         {
             int id  =   (int) addPanel.idSpinner.getValue();
-            if(mainPanel.data.getEdges().containsKey(id))
+            if(data.getEdges().containsKey(id))
             {
                 JOptionPane.showMessageDialog(null, "Edge ID already exists");
                 return;
@@ -343,16 +344,16 @@ public class DataPanel extends JPanel implements ActionListener
             int eType           =   addPanel.edgeTypeBox.getSelectedIndex();
             EdgeType edgeType   =   (eType == 0)? EdgeType.UNDIRECTED : EdgeType.DIRECTED;
 
-            if(mainPanel.data.getNodes().containsKey(fromID) && mainPanel.data.getNodes().containsKey(toID))
+            if(data.getNodes().containsKey(fromID) && data.getNodes().containsKey(toID))
             {
                 Edge edge       =   new Edge(id, weight);
-                Node n1         =   mainPanel.data.getNodes().get(fromID);
-                Node n2         =   mainPanel.data.getNodes().get(toID);
+                Node n1         =   data.getNodes().get(fromID);
+                Node n2         =   data.getNodes().get(toID);
 
-                mainPanel.data.getEdges().put(id, edge);
-                mainPanel.data.getGraph().addEdge(edge, n1, n2, edgeType);
-                loadEdges(mainPanel.data.getGraph());
-                mainPanel.screenPanel.graphPanel.gViewer.repaint();
+                data.getEdges().put(id, edge);
+                data.getGraph().addEdge(edge, n1, n2, edgeType);
+                loadEdges(data.getGraph());
+                GraphPanel.getInstance().getGraphViewer().repaint();
             }
 
             else JOptionPane.showMessageDialog(null, "Vertex ID does not exist");
@@ -362,7 +363,9 @@ public class DataPanel extends JPanel implements ActionListener
     public void editEdge()
     {
         Edge editEdge;
-        Set<Edge> selectedEdges =   mainPanel.screenPanel.graphPanel.gViewer.getPickedEdgeState().getPicked();
+        Set<Edge> selectedEdges =   GraphPanel.getInstance().getGraphViewer().getPickedEdgeState().getPicked();
+        GraphData data          =   MainPanel.getInstance().getData();
+        
         if(selectedEdges.size() == 1)
             editEdge    =   selectedEdges.iterator().next();
         else
@@ -371,15 +374,15 @@ public class DataPanel extends JPanel implements ActionListener
             if(selectedRows.length == 1)
             {
                 int id      =   (int) edgeDataModel.getValueAt(selectedRows[0], 0);
-                editEdge    =   mainPanel.data.getEdges().get(id);
+                editEdge    =   data.getEdges().get(id);
             }
 
             else
             {
-                int id  =   getDialogID("Enter edge ID to edit", mainPanel.data.getEdges());
+                int id  =   getDialogID("Enter edge ID to edit", data.getEdges());
 
                 if(id != -1)
-                    editEdge    =   mainPanel.data.getEdges().get(id);
+                    editEdge    =   data.getEdges().get(id);
                 else
                     return;
             }
@@ -388,7 +391,7 @@ public class DataPanel extends JPanel implements ActionListener
         EdgeAddPanel editPanel  =   new EdgeAddPanel();
         editPanel.idSpinner.setValue(editEdge.getID());
         
-        Graph<Node, Edge> graph =   mainPanel.getData().getGraph();
+        Graph<Node, Edge> graph =   data.getGraph();
         Node sourceNode         =   graph.getSource(editEdge);
         Node destNode           =   graph.getDest(editEdge);
         EdgeType eType          =   graph.getEdgeType(editEdge);
@@ -406,21 +409,22 @@ public class DataPanel extends JPanel implements ActionListener
         {
             editEdge.setWeight((double) editPanel.weightSpinner.getValue());
 
-            Node from   =   mainPanel.data.getNodes().get(Integer.parseInt(editPanel.fromSpinner.getValue().toString()));
-            Node to     =   mainPanel.data.getNodes().get(Integer.parseInt(editPanel.toSpinner.getValue().toString()));
+            Node from   =   data.getNodes().get(Integer.parseInt(editPanel.fromSpinner.getValue().toString()));
+            Node to     =   data.getNodes().get(Integer.parseInt(editPanel.toSpinner.getValue().toString()));
 
-            mainPanel.data.getGraph().removeEdge(editEdge);
-            mainPanel.data.getGraph().addEdge(editEdge, from, to, eType);
+            graph.removeEdge(editEdge);
+            graph.addEdge(editEdge, from, to, eType);
 
-            loadEdges(mainPanel.data.getGraph());
-            mainPanel.screenPanel.graphPanel.gViewer.repaint();
+            loadEdges(graph);
+            GraphPanel.getInstance().getGraphViewer().repaint();
         }
     }
 
     public void removeEdge()
     {
-        Set<Edge> selectedEdges =   mainPanel.screenPanel.graphPanel.gViewer.getPickedEdgeState().getPicked();
-
+        Set<Edge> selectedEdges =   GraphPanel.getInstance().getGraphViewer().getPickedEdgeState().getPicked();
+        GraphData data          =   MainPanel.getInstance().getData();
+        
         if(selectedEdges.isEmpty())
         {
             int[] selectedRows  =   edgeTable.getSelectedRows();
@@ -429,19 +433,19 @@ public class DataPanel extends JPanel implements ActionListener
                 for(int row : selectedRows)
                 {
                     int id          =   (int) edgeDataModel.getValueAt(row, 0);
-                    Edge current    =   mainPanel.data.getEdges().remove(id);
-                    mainPanel.data.getGraph().removeEdge(current);
+                    Edge current    =   data.getEdges().remove(id);
+                    data.getGraph().removeEdge(current);
                 }
             }
 
             else
             {
-                int id  =   getDialogID("Enter edge ID to remove", mainPanel.data.getEdges());
+                int id  =   getDialogID("Enter edge ID to remove", data.getEdges());
 
                 if(id != -1)
                 {
-                    Edge removeEdge =   mainPanel.data.getEdges().remove(id);
-                    mainPanel.data.getGraph().removeEdge(removeEdge);
+                    Edge removeEdge =   data.getEdges().remove(id);
+                    data.getGraph().removeEdge(removeEdge);
                 }
 
                 else return;
@@ -452,13 +456,13 @@ public class DataPanel extends JPanel implements ActionListener
         {
             for(Edge edge : selectedEdges)
             {
-                mainPanel.data.getEdges().remove(edge.getID());
-                mainPanel.data.getGraph().removeEdge(edge);
+                data.getEdges().remove(edge.getID());
+                data.getGraph().removeEdge(edge);
             }
         }
 
-        loadEdges(mainPanel.data.getGraph());
-        mainPanel.screenPanel.graphPanel.gViewer.repaint();
+        loadEdges(data.getGraph());
+        GraphPanel.getInstance().getGraphViewer().repaint();
     }
 
     protected int getDialogID(String message, Map collection)
@@ -512,16 +516,6 @@ public class DataPanel extends JPanel implements ActionListener
         this.computationModel = computationModel;
         computeTable.setModel(computationModel);
         computeTable.tableChanged(new TableModelEvent(computationModel));
-    }
-
-    public MainPanel getMainPanel()
-    {
-        return mainPanel;
-    }
-
-    public void setMainPanel(MainPanel mainPanel) 
-    {
-        this.mainPanel = mainPanel;
     }
     
     public void setComputationContext(String context)
@@ -579,7 +573,7 @@ public class DataPanel extends JPanel implements ActionListener
             nameField      =   new JTextField();
 
             autoCheck.setSelected(true);
-            idSpinner.setValue(mainPanel.data.getNodeFactory().getLastID() + 1);
+            idSpinner.setValue(MainPanel.getInstance().getData().getNodeFactory().getLastID() + 1);
             idSpinner.setEnabled(false);
 
             add(new JLabel("ID "));
@@ -622,7 +616,7 @@ public class DataPanel extends JPanel implements ActionListener
             edgeTypeBox.addItem("Undirected");
             edgeTypeBox.addItem("Directed");
 
-            idSpinner.setValue(mainPanel.data.getEdgeFactory().getLastID() + 1);
+            idSpinner.setValue(MainPanel.getInstance().getData().getEdgeFactory().getLastID() + 1);
             idSpinner.setEnabled(false);
             autoCheck.setSelected(true);
             autoCheck.addActionListener(this);
