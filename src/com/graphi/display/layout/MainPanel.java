@@ -48,12 +48,7 @@ public class MainPanel extends JPanel
         controlScroll       =   new JScrollPane(controlPanel);
     }
     
-    public GraphData getGraphData()
-    {
-        return data;
-    }
-    
-    public void setGraphData(GraphData data)
+    public void setData(GraphData data)
     {
         this.data   =   data;
     }

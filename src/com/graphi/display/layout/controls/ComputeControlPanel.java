@@ -8,6 +8,8 @@ package com.graphi.display.layout.controls;
 
 import com.graphi.app.Consts;
 import com.graphi.display.AppResources;
+import com.graphi.display.layout.DataPanel;
+import com.graphi.display.layout.GraphPanel;
 import com.graphi.display.layout.util.ComponentUtils;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -39,11 +41,9 @@ public class ComputeControlPanel extends JPanel implements ActionListener
     protected ButtonGroup centralityOptions;
     protected JCheckBox centralityMorphCheck;
     protected JPanel wrapper;
-    private final ControlPanel outer;
     
-    public ComputeControlPanel(ControlPanel outer)
+    public ComputeControlPanel()
     {
-        this.outer  =   outer;
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createTitledBorder("Computation controls"));
         
@@ -104,12 +104,12 @@ public class ComputeControlPanel extends JPanel implements ActionListener
     protected void computeExecute()
     {
         int selectedIndex   =   computeBox.getSelectedIndex();
-        outer.getMainPanel().getScreenPanel().getDataPanel().clearComputeTable();
+        DataPanel.getInstance().clearComputeTable();
 
         switch(selectedIndex)
         {
-            case 0: outer.getMainPanel().getScreenPanel().getGraphPanel().showCluster();
-            case 1: outer.getMainPanel().getScreenPanel().getGraphPanel().showCentrality();
+            case 0: GraphPanel.getInstance().showCluster();
+            case 1: GraphPanel.getInstance().showCentrality();
         }
     }
     

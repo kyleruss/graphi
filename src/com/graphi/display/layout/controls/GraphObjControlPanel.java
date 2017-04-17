@@ -8,6 +8,7 @@ package com.graphi.display.layout.controls;
 
 import com.graphi.app.Consts;
 import com.graphi.display.AppResources;
+import com.graphi.display.layout.DataPanel;
 import com.graphi.display.layout.util.ComponentUtils;
 import java.awt.Color;
 import java.awt.Font;
@@ -28,11 +29,9 @@ public class GraphObjControlPanel extends JPanel implements ActionListener
     protected JRadioButton editVertexRadio, editEdgeRadio;
     protected JLabel selectedLabel;
     protected JButton gObjAddBtn, gObjEditBtn, gObjRemoveBtn;
-    private final ControlPanel outer;
     
-    public GraphObjControlPanel(ControlPanel outer)
+    public GraphObjControlPanel()
     {
-        this.outer  =   outer;
         setLayout(new GridLayout(3, 1));
         setBorder(BorderFactory.createTitledBorder("Graph object Controls"));
         setBackground(Consts.TRANSPARENT_COL);
@@ -77,29 +76,30 @@ public class GraphObjControlPanel extends JPanel implements ActionListener
     public void actionPerformed(ActionEvent e)
     {
         Object src = e.getSource();
+        DataPanel dataPanel =   DataPanel.getInstance();
         
         if(src == gObjAddBtn)
         {
             if(editVertexRadio.isSelected())
-                outer.getMainPanel().getScreenPanel().getDataPanel().addVertex();
+                dataPanel.addVertex();
             else
-                outer.getMainPanel().getScreenPanel().getDataPanel().addEdge();
+                dataPanel.addEdge();
         }
         
         else if(src == gObjEditBtn)
         {
             if(editVertexRadio.isSelected())
-                outer.getMainPanel().getScreenPanel().getDataPanel().editVertex();
+                dataPanel.editVertex();
             else
-                outer.getMainPanel().getScreenPanel().getDataPanel().editEdge();
+                dataPanel.editEdge();
         }
 
         else if(src == gObjRemoveBtn)
         {
             if(editVertexRadio.isSelected())
-                outer.getMainPanel().getScreenPanel().getDataPanel().removeVertex();
+                dataPanel.removeVertex();
             else
-                outer.getMainPanel().getScreenPanel().getDataPanel().removeEdge();
+                dataPanel.removeEdge();
         }
     }
 

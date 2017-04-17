@@ -253,7 +253,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     public void resetEntries()
     {
         gpRecEntries.removeAllItems();
-        MainPanel.getInstance().getGraphData().setGraph(new SparseMultigraph());
+        MainPanel.getInstance().getData().setGraph(new SparseMultigraph());
         reloadGraph();
     }
 
@@ -294,7 +294,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
 
                 if(selectVertex)
                 {
-                    Node node   =   MainPanel.getInstance().getGraphData().getNodes().get(gObjID);
+                    Node node   =   MainPanel.getInstance().getData().getNodes().get(gObjID);
                     if(node != null)
                     {
                         gViewer.getPickedVertexState().clear();
@@ -307,7 +307,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
 
                 else
                 {
-                    Edge edge   =   MainPanel.getInstance().getGraphData().getEdges().get(gObjID);
+                    Edge edge   =   MainPanel.getInstance().getData().getEdges().get(gObjID);
                     if(edge != null)
                     {
                         gViewer.getPickedVertexState().clear();

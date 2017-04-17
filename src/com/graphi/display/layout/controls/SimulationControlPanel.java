@@ -8,12 +8,16 @@ package com.graphi.display.layout.controls;
 
 import com.graphi.app.Consts;
 import com.graphi.display.AppResources;
+import com.graphi.display.layout.GraphPanel;
+import com.graphi.display.layout.MainPanel;
+import com.graphi.display.layout.ScreenPanel;
 import com.graphi.sim.Network;
 import com.graphi.sim.generator.BerbasiGenerator;
 import com.graphi.sim.generator.KleinbergGenerator;
 import com.graphi.sim.generator.NetworkGenerator;
 import com.graphi.sim.generator.RandomNetworkGenerator;
 import com.graphi.graph.Edge;
+import com.graphi.graph.GraphData;
 import com.graphi.graph.Node;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
@@ -45,11 +49,9 @@ public class SimulationControlPanel extends JPanel implements ActionListener
     protected JSpinner simTiesPSpinner;
     protected JLabel simTiesPLabel;
     protected JPanel wrapperPanel;
-    private final ControlPanel outer;
     
-    public SimulationControlPanel(ControlPanel outer)
+    public SimulationControlPanel()
     {
-        this.outer  =   outer;
         setLayout(new BorderLayout());
         
         genAlgorithmsBox        =   new JComboBox();
@@ -169,14 +171,15 @@ public class SimulationControlPanel extends JPanel implements ActionListener
     public void showGeneratorSim(final NetworkGenerator generator)
     {
         int genIndex    =   genAlgorithmsBox.getSelectedIndex();
-        outer.getMainPanel().getGraphData().getNodeFactory().setLastID(0);
-        outer.getMainPanel().getGraphData().getEdgeFactory().setLastID(0);
+        GraphData data  =   MainPanel.getInstance().getData();
+        data.getNodeFactory().setLastID(0);
+        data.getEdgeFactory().setLastID(0);
 
         
         Thread simThread   =   new Thread(()->
         {
             NetworkGenerator gen    =   generator;
-            outer.getMainPanel().getScreenPanel().displayTransition();
+            ScreenPanel.getInstance().displayTransition();
             
             if(gen == null)
             {
@@ -189,14 +192,14 @@ public class SimulationControlPanel extends JPanel implements ActionListener
             }
             
             Graph<Node, Edge> generatedGraph    =   gen != null? gen.generateNetwork() : new SparseMultigraph<>();
-            outer.getMainPanel().getGraphData().setGraph(generatedGraph);
+            data.setGraph(generatedGraph);
 
             if(simTiesCheck.isSelected())
-                Network.simulateInterpersonalTies(outer.getMainPanel().getGraphData().getGraph(), 
-                        outer.getMainPanel().getGraphData().getEdgeFactory(), (double) simTiesPSpinner.getValue());
+                Network.simulateInterpersonalTies(data.getGraph(), 
+                        data.getEdgeFactory(), (double) simTiesPSpinner.getValue());
 
-            outer.getMainPanel().getScreenPanel().getGraphPanel().reloadGraph();
-            outer.getMainPanel().getScreenPanel().displayGraph();
+            GraphPanel.getInstance().reloadGraph();
+            ScreenPanel.getInstance().displayGraph();
         });
         
         simThread.start();
@@ -230,8 +233,8 @@ public class SimulationControlPanel extends JPanel implements ActionListener
     
     public void resetSim()
     {
-        outer.getMainPanel().getGraphData().setGraph(new SparseMultigraph());
-        outer.getMainPanel().getScreenPanel().getGraphPanel().reloadGraph();
+        MainPanel.getInstance().getData().setGraph(new SparseMultigraph());
+        GraphPanel.getInstance().reloadGraph();
     }
 
     @Override

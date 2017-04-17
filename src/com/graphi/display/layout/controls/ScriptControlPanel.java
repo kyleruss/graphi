@@ -26,11 +26,9 @@ public class ScriptControlPanel extends JPanel implements ActionListener
     protected JButton displayCtrlsBtn;
     protected JLabel activeScriptLabel;
     protected JPanel wrapper;
-    private final ControlPanel outer;
     
-    public ScriptControlPanel(ControlPanel outer)
+    public ScriptControlPanel()
     {
-        this.outer      =   outer;
         setLayout(new BorderLayout());
         
         wrapper         =   new JPanel(new MigLayout("fillx"));
@@ -58,13 +56,13 @@ public class ScriptControlPanel extends JPanel implements ActionListener
     public void actionPerformed(ActionEvent e) 
     {
         Object src  =   e.getSource();
-        GraphPanel grapPanel    =   outer.getMainPanel().getScreenPanel().getGraphPanel();
+        GraphPanel grapPanel    =   GraphPanel.getInstance();
         
         if(src == displayCtrlsBtn)
             grapPanel.changePlaybackPanel(grapPanel.PLAYBACK_CARD);
 
         else if(src == recordCtrlsBtn)
-            grapPanel.changePlaybackPanel(outer.getMainPanel().getScreenPanel().getGraphPanel().RECORD_CARD);
+            grapPanel.changePlaybackPanel(grapPanel.RECORD_CARD);
     }
 
     public boolean isRecording() 

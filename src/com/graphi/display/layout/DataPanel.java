@@ -135,7 +135,7 @@ public class DataPanel extends JPanel implements ActionListener
         ArrayList<Node> vertices   =   new ArrayList<>(graph.getVertices());
         Collections.sort(vertices, (Node n1, Node n2) -> Integer.compare(n1.getID(), n2.getID()));
 
-        GraphData data  =   MainPanel.getInstance().getGraphData();
+        GraphData data  =   MainPanel.getInstance().getData();
         data.getNodeFactory().setLastID(0);
         data.getNodes().clear();
         SwingUtilities.invokeLater(() -> 
@@ -161,7 +161,7 @@ public class DataPanel extends JPanel implements ActionListener
         ArrayList<Edge> edges  =   new ArrayList<>(graph.getEdges());
         Collections.sort(edges, (Edge e1, Edge e2) -> Integer.compare(e1.getID(), e2.getID())); 
 
-        GraphData data  =   MainPanel.getInstance().getGraphData();
+        GraphData data  =   MainPanel.getInstance().getData();
         data.getEdges().clear();
 
         SwingUtilities.invokeLater(() ->
@@ -227,7 +227,7 @@ public class DataPanel extends JPanel implements ActionListener
     public void editVertex()
     {
         Node editNode;
-        GraphData data                  =   MainPanel.getInstance().getGraphData();
+        GraphData data                  =   MainPanel.getInstance().getData();
         Set<Node> selectedVertices      =   MainPanel.getInstance().getScreenPanel().getGraphPanel().getGraphViewer().getPickedVertexState().getPicked();
 
         if(selectedVertices.size() == 1)
