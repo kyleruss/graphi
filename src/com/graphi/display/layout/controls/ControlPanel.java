@@ -7,6 +7,7 @@
 package com.graphi.display.layout.controls;
 
 import com.graphi.display.MainMenu;
+import com.graphi.display.Window;
 import com.graphi.display.layout.MainPanel;
 import com.graphi.display.layout.ViewPort;
 import com.graphi.display.layout.util.PluginMenuListener;
@@ -40,9 +41,8 @@ public class ControlPanel extends JPanel implements ActionListener
 
         this.mainPanel  =   mainPanel;
         initControls();
-        mainPanel.getMenu().setMenuItemListener(this);
+        MainMenu.getInstance().setMenuItemListener(this);
 
-//        add(Box.createRigidArea(new Dimension(230, 30)));
         add(simulationPanel);
         add(Box.createRigidArea(new Dimension(230, 30)));
         add(ioPanel);
@@ -71,19 +71,20 @@ public class ControlPanel extends JPanel implements ActionListener
     {
         Object src  =   e.getSource();
 
-        MainMenu menu   =   mainPanel.getMenu();
+        MainMenu menu   =   MainMenu.getInstance();
+        JFrame frame    =   Window.getInstance().getFrame();
         
-        if(src == mainPanel.getMenu().getMenuItem("aboutItem"))
-            mainPanel.getMenu().showAbout();
+        if(src == menu.getMenuItem("aboutItem"))
+            menu.showAbout();
 
-        else if(src == mainPanel.getMenu().getMenuItem("exitItem"))
+        else if(src == menu.getMenuItem("exitItem"))
             System.exit(0);
 
         else if(src == menu.getMenuItem("miniItem"))
-            mainPanel.getFrame().setState(JFrame.ICONIFIED);
+            frame.setState(JFrame.ICONIFIED);
 
         else if(src == menu.getMenuItem("maxItem"))
-            mainPanel.getFrame().setExtendedState(JFrame.MAXIMIZED_BOTH);
+            frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         else if(src == menu.getMenuItem("importGraphItem"))
             ioPanel.importGraph();

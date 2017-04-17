@@ -34,6 +34,7 @@ public class MainMenu extends JMenuBar
     protected final JMenu pluginMenu;
     protected Map<String, JMenuItem> menuItems;
     protected PluginsMenu pluginsListMenu;
+    private static MainMenu instance;
 
     public MainMenu()
     {
@@ -207,5 +208,11 @@ public class MainMenu extends JMenuBar
     public JMenu getPluginMenu() 
     {
         return pluginMenu;
+    }
+    
+    public static MainMenu getInstance()
+    {
+        if(instance == null) instance = new MainMenu();
+        return instance;
     }
 }

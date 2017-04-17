@@ -8,12 +8,9 @@ package com.graphi.display.layout;
 
 import com.graphi.display.layout.controls.ControlPanel;
 import com.graphi.app.Consts;
-import com.graphi.display.MainMenu;
-import com.graphi.display.Window;
 import com.graphi.graph.GraphData;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -25,8 +22,6 @@ public class MainPanel extends JPanel
     protected JSplitPane splitPane;
     protected JScrollPane controlScroll;
     protected GraphData data;
-    protected MainMenu menu;
-    protected JFrame frame; 
     protected static MainPanel instance;
     
     public MainPanel()
@@ -34,8 +29,6 @@ public class MainPanel extends JPanel
         setPreferredSize(new Dimension(Consts.WINDOW_WIDTH, Consts.WINDOW_HEIGHT));
         setLayout(new BorderLayout());        
         
-        menu                =   Window.getInstance().getMenu();
-        frame               =   Window.getInstance().getFrame();
         data                =   new GraphData();
         initComponents();
 
@@ -78,16 +71,6 @@ public class MainPanel extends JPanel
     public GraphData getData()
     {
         return data;
-    }
-
-    public MainMenu getMenu()
-    {
-        return menu;
-    }
-    
-    public JFrame getFrame()
-    {
-        return frame;
     }
     
     public static MainPanel getInstance()
