@@ -7,7 +7,6 @@
 package com.graphi.display.layout;
 
 import com.graphi.display.layout.controls.ControlPanel;
-import com.graphi.app.AppManager;
 import com.graphi.app.Consts;
 import com.graphi.display.MainMenu;
 import com.graphi.display.Window;
@@ -29,8 +28,9 @@ public class MainPanel extends JPanel
     protected GraphData data;
     protected MainMenu menu;
     protected JFrame frame; 
+    protected static MainPanel instance;
     
-    public MainPanel(AppManager appManager)
+    public MainPanel()
     {
         setPreferredSize(new Dimension(Consts.WINDOW_WIDTH, Consts.WINDOW_HEIGHT));
         setLayout(new BorderLayout());        

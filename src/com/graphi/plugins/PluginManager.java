@@ -142,8 +142,6 @@ public final class PluginManager
     
     public void activatePlugin(Plugin plugin)
     {
-        AppManager appManager   =   AppManager.getInstance();
-        
         if(plugin == null) return;
 
         GraphData data  =   null;
@@ -152,7 +150,7 @@ public final class PluginManager
             data        =   activePlugin.getData();
         
         activePlugin    =   plugin;
-        activePlugin.attachPanel(appManager);
+        activePlugin.attachPanel();
         
         if(data != null) 
             activePlugin.passData(data);

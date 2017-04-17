@@ -6,7 +6,6 @@
 
 package com.graphi.plugins;
 
-import com.graphi.app.AppManager;
 import com.graphi.display.layout.MainPanel;
 import com.graphi.graph.GraphData;
 import java.net.URLClassLoader;
@@ -43,7 +42,7 @@ public interface Plugin
      * Responsible for initializing the Plugin's panel 
      * @param appManager The parent AppManager passed to MainPanel constructor for attachment
      */
-    public void attachPanel(AppManager appManager);
+    public void attachPanel();
     
     /**
      * Adds the GraphData to the Plugin's panel

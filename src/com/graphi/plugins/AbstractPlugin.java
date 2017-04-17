@@ -6,7 +6,6 @@
 
 package com.graphi.plugins;
 
-import com.graphi.app.AppManager;
 import com.graphi.display.layout.MainPanel;
 import com.graphi.graph.GraphData;
 import java.io.Serializable;
@@ -35,9 +34,9 @@ public abstract class AbstractPlugin implements Plugin, Serializable
      * @param appManager The parent AppManager that is passed to the MainPanel constructor for attachment
      */
     @Override
-    public void attachPanel(AppManager appManager)
+    public void attachPanel()
     {
-        panel   =   new MainPanel(appManager);
+        panel   =   new MainPanel();
     }
     
     /**

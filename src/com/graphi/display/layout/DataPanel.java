@@ -664,6 +664,4 @@ public class DataPanel extends JPanel implements ActionListener
     {
         return dataTabPane;
     }
-    
-    
 }
