@@ -10,11 +10,14 @@ import com.graphi.display.AppResources;
 import cern.colt.matrix.impl.SparseDoubleMatrix2D;
 import com.graphi.app.AppManager;
 import com.graphi.config.ConfigManager;
+import com.graphi.display.layout.controls.ComputeControlPanel;
+import com.graphi.display.layout.controls.ControlPanel;
 import com.graphi.sim.GraphPlayback;
 import com.graphi.sim.PlaybackEntry;
 import com.graphi.util.transformer.CentralityTransformer;
 import com.graphi.display.layout.util.ComponentUtils;
 import com.graphi.graph.Edge;
+import com.graphi.graph.GraphData;
 import com.graphi.util.transformer.EdgeLabelTransformer;
 import com.graphi.graph.GraphUtilities;
 import com.graphi.graph.MatrixTools;
@@ -97,7 +100,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     protected GraphPlayback gPlayback;
     protected JPanel gpControlsWrapper;
     protected JButton gpCtrlsClose;
-    protected PlaybackControlPanel controlPanel;
+    protected PlaybackControlPanel pbControlPanel;
 
     protected JPanel pbControls;
     protected JButton pbToggle;
@@ -141,8 +144,8 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         mouse.remove(mouse.getPopupEditingPlugin());
         gViewer.setGraphMouse(mouse);
         
-        controlPanel    =   new PlaybackControlPanel();
-        controlPanel.setVisible(false);
+        pbControlPanel    =   new PlaybackControlPanel();
+        pbControlPanel.setVisible(false);
         
         recordComputeCheck.setSelected(true);
         recordStateCheck.setSelected(true);
@@ -151,7 +154,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         gViewer.add(displayNavPanel);
         
         add(gViewer, BorderLayout.CENTER);
-        add(controlPanel, BorderLayout.SOUTH);
+        add(pbControlPanel, BorderLayout.SOUTH);
     }
     
     public int getMouseMode()
@@ -330,8 +333,8 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
 
     public void changePlaybackPanel(String card)
     {
-        if(!controlPanel.isVisible())
-            controlPanel.setPreviousState();
+        if(!pbControlPanel.isVisible())
+            pbControlPanel.setPreviousState();
             
         CardLayout cLayout  =   (CardLayout) gpControlsWrapper.getLayout();
         cLayout.show(gpControlsWrapper, card);
@@ -343,7 +346,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
             pbProgress.setMaximum(gPlayback.getSize() - 1); 
         }
 
-        controlPanel.setVisible(true);
+        pbControlPanel.setVisible(true);
     }
 
     protected final Timer PB_TIMER =   new Timer(INITIAL_DELAY, (ActionEvent e) -> 
@@ -561,36 +564,40 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
 
     public void showCluster()
     {
-        int numRemoved  =   (int) mainPanel.controlPanel.getComputePanel().getClusterEdgeRemoveSpinner().getValue();
-        boolean group   =   mainPanel.controlPanel.getComputePanel().getClusterTransformCheck().isSelected();
-        GraphUtilities.cluster(gLayout, mainPanel.data.getGraph(), numRemoved, group);
+        ControlPanel controlPanel   =   ControlPanel.getInstance();
+        int numRemoved              =   (int) controlPanel.getComputePanel().getClusterEdgeRemoveSpinner().getValue();
+        boolean group               =   controlPanel.getComputePanel().getClusterTransformCheck().isSelected();
+        GraphUtilities.cluster(gLayout, MainPanel.getInstance().getData().getGraph(), numRemoved, group);
         gViewer.repaint();
     }
 
     public void showCentrality()
     {
+        Graph graph                         =   MainPanel.getInstance().getData().getGraph();
+        ComputeControlPanel computePanel    =   ControlPanel.getInstance().getComputePanel();
+        
         Map<Node, Double> centrality;
-        if(mainPanel.data.getGraph().getVertexCount() <= 1) return;
+        if(graph.getVertexCount() <= 1) return;
 
-        SparseDoubleMatrix2D matrix =   GraphMatrixOperations.graphToSparseMatrix(mainPanel.data.getGraph());
-        int selectedCentrality      =   mainPanel.controlPanel.getComputePanel().getCentralityTypeBox().getSelectedIndex();
-        boolean transform           =   mainPanel.controlPanel.getComputePanel().getCentralityMorphCheck().isSelected();
+        SparseDoubleMatrix2D matrix =   GraphMatrixOperations.graphToSparseMatrix(graph);
+        int selectedCentrality      =   computePanel.getCentralityTypeBox().getSelectedIndex();
+        boolean transform           =   computePanel.getCentralityMorphCheck().isSelected();
         String prefix;
 
         switch(selectedCentrality)
         {
             case 0: 
-                centrality  =   MatrixTools.getScores(MatrixTools.powerIterationFull(matrix), mainPanel.data.getGraph());
+                centrality  =   MatrixTools.getScores(MatrixTools.powerIterationFull(matrix), graph);
                 prefix      =   "EigenVector";
                 break;
 
             case 1: 
-                centrality  =   MatrixTools.getScores(new ClosenessCentrality(mainPanel.data.getGraph(), new WeightTransformer()), mainPanel.data.getGraph());
+                centrality  =   MatrixTools.getScores(new ClosenessCentrality(graph, new WeightTransformer()), graph);
                 prefix      =   "Closeness";
                 break;
 
             case 2: 
-                centrality  =   MatrixTools.getScores(new BetweennessCentrality(mainPanel.data.getGraph(), new WeightTransformer()), mainPanel.data.getGraph());
+                centrality  =   MatrixTools.getScores(new BetweennessCentrality(graph, new WeightTransformer()), graph);
                 prefix      =   "Betweenness";
                 break; 
 
@@ -598,7 +605,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         }
 
 
-        Collection<Node> vertices     =   mainPanel.data.getGraph().getVertices();
+        Collection<Node> vertices     =   graph.getVertices();
         PriorityQueue<SimpleEntry<Node, Double>> scores = null;
 
         if(transform)
@@ -625,14 +632,14 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
             String output   =   MessageFormat.format("({0}) Vertex: {1}, Score: {2}", prefix, node.getID(), score);
             
             tModel.addRow(new Object[] { node.getID(), score });
-            ComponentUtils.sendToOutput(output, mainPanel.screenPanel.outputPanel.outputArea);
+            ComponentUtils.sendToOutput(output, OutputPanel.getInstance().getOutputArea());
 
             if(transform && scores != null)
                 scores.add(new SimpleEntry(node, score));
         }
         
-        mainPanel.screenPanel.dataPanel.setComputationModel(tModel);
-        mainPanel.screenPanel.dataPanel.setComputationContext(prefix + " centrality");
+        DataPanel.getInstance().setComputationModel(tModel);
+        DataPanel.getInstance().setComputationContext(prefix + " centrality");
         
         if(transform && scores != null)
         {
@@ -646,34 +653,37 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
                 entry.getKey().setFill(centralColours[i]);
             }
 
-            mainPanel.screenPanel.graphPanel.gViewer.getRenderContext().setVertexShapeTransformer(new CentralityTransformer(centralNodes, 3));
-            mainPanel.screenPanel.graphPanel.gViewer.repaint();
+            GraphPanel.getInstance().gViewer.getRenderContext().setVertexShapeTransformer(new CentralityTransformer(centralNodes, 3));
+            GraphPanel.getInstance().gViewer.repaint();
         }
     } 
 
 
     public void reloadGraph()
     {
-            gViewer.getPickedVertexState().clear();
+        DataPanel dataPanel     =   DataPanel.getInstance();
+        GraphData data          =   MainPanel.getInstance().getData();
+        
+        gViewer.getPickedVertexState().clear();
         gViewer.getPickedEdgeState().clear();
-        mainPanel.data.setSelectedItems(null);
+        data.setSelectedItems(null);
 
         if(ConfigManager.getInstance().getAppConfig().isDisplayVisuals())
         {
             gLayout.removeAll();
-            gLayout.setGraph(mainPanel.data.getGraph());
+            gLayout.setGraph(data.getGraph());
             gViewer.repaint();
         }
         
-        mainPanel.screenPanel.dataPanel.loadNodes(mainPanel.data.getGraph());
-        mainPanel.screenPanel.dataPanel.loadEdges(mainPanel.data.getGraph());
-        mainPanel.screenPanel.dataPanel.clearComputeTable();
+        dataPanel.loadNodes(data.getGraph());
+        dataPanel.loadEdges(data.getGraph());
+        dataPanel.clearComputeTable();
         
     }
 
     public void resetGraph()
     {
-        mainPanel.data.setGraph(new SparseMultigraph<>());
+        MainPanel.getInstance().getData().setGraph(new SparseMultigraph<>());
         reloadGraph();
     }
 
@@ -682,23 +692,24 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     {
         if(getMouseMode() == SELECT_MODE)
         {
-            mainPanel.data.setSelectedItems(e.getItemSelectable().getSelectedObjects());
+            MainPanel.getInstance().getData().setSelectedItems(e.getItemSelectable().getSelectedObjects());
             updateSelectedComponents();
         }
     }
     
     protected void updateSelectedComponents()
     {
-        JLabel selectedLabel    =   mainPanel.controlPanel.getgObjPanel().getSelectedLabel();
-        if(mainPanel.getGraphData().getSelectedItems() == null || mainPanel.getGraphData().getSelectedItems().length == 0)
+        GraphData data          =   MainPanel.getInstance().getData();
+        JLabel selectedLabel    =   ControlPanel.getInstance().getgObjPanel().getSelectedLabel();
+        if(data.getSelectedItems() == null || data.getSelectedItems().length == 0)
             selectedLabel.setText("None");
         else
         {
-            if(mainPanel.getGraphData().getSelectedItems().length > 1)
-                selectedLabel.setText(mainPanel.getGraphData().getSelectedItems().length + " objects");
+            if(data.getSelectedItems().length > 1)
+                selectedLabel.setText(data.getSelectedItems().length + " objects");
             else
             {
-                Object selectedObj  =   mainPanel.getGraphData().getSelectedItems()[0];
+                Object selectedObj  =   data.getSelectedItems()[0];
                 if(selectedObj instanceof Node)
                     selectedLabel.setText("Node (ID=" + ((Node) selectedObj).getID() + ")");
 
@@ -834,16 +845,16 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         
         public void setPreviousState()
         {
-            prevGraph   =   mainPanel.getGraphData().getGraph();
-            prevModel   =   mainPanel.getScreenPanel().getDataPanel().getCompModelBean();
+            prevGraph   =   MainPanel.getInstance().getData().getGraph();
+            prevModel   =   DataPanel.getInstance().getCompModelBean();
         }
         
         public void reloadPreviousState()
         {
             if(prevGraph != null && prevModel != null)
             {
-                mainPanel.getScreenPanel().getDataPanel().loadCompModelBean(prevModel);
-                mainPanel.getGraphData().setGraph(prevGraph);
+                DataPanel.getInstance().loadCompModelBean(prevModel);
+                MainPanel.getInstance().getData().setGraph(prevGraph);
                 reloadGraph();
             }
         }
@@ -894,7 +905,9 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
                     pbName.setText(entry.getName());
                     pbDate.setText(entry.getDateFormatted());
 
-                    mainPanel.data.setGraph(GraphUtilities.copyNewGraph(entry.getGraph(), recordStateCheck.isSelected()));
+                    MainPanel.getInstance().getData()
+                    .setGraph(GraphUtilities.copyNewGraph(entry.getGraph(), recordStateCheck.isSelected()));
+                    
                     reloadGraph();
                     showEntryComputationModel(entry);
                 }

@@ -25,6 +25,7 @@ public class OutputPanel extends JPanel
 {
     protected JTextArea outputArea;
     private OutputControls controls;
+    private static OutputPanel instance;
     
     public OutputPanel()
     {
@@ -102,5 +103,11 @@ public class OutputPanel extends JPanel
             else if(src == exportBtn)
                 ioPanel.exportLog();
         }
+    }
+    
+    public static OutputPanel getInstance()
+    {
+        if(instance == null) instance   =   new OutputPanel();
+        return instance;
     }
 }
