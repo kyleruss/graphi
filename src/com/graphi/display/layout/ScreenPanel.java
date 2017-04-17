@@ -28,13 +28,13 @@ public class ScreenPanel extends JPanel
     protected JTabbedPane tabPane;
     protected TransitionPanel transitionPanel;
     protected JPanel displayPanel;
+    private static ScreenPanel instance;
 
-    public ScreenPanel(MainPanel mainPanel)
+    public ScreenPanel()
     {            
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(15, 5, 5, 5));
         
-        this.mainPanel      =   mainPanel;
         displayPanel        =   new JPanel(new CardLayout());
         tabPane             =   new JTabbedPane();
         transitionPanel     =   new TransitionPanel();
@@ -114,5 +114,11 @@ public class ScreenPanel extends JPanel
     public OutputPanel getOutputPanel() 
     {
         return outputPanel;
+    }
+    
+    public static ScreenPanel getInstance()
+    {
+        if(instance == null) instance   =   new ScreenPanel();
+        return instance;
     }
 }

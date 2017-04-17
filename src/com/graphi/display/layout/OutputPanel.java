@@ -7,6 +7,8 @@
 package com.graphi.display.layout;
 
 import com.graphi.display.AppResources;
+import com.graphi.display.layout.controls.ControlPanel;
+import com.graphi.display.layout.controls.IOControlPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -23,12 +25,10 @@ public class OutputPanel extends JPanel
 {
     protected JTextArea outputArea;
     private OutputControls controls;
-    protected MainPanel mainPanel;
     
-    public OutputPanel(MainPanel mainPanel)
+    public OutputPanel()
     {
         setLayout(new BorderLayout());
-        this.mainPanel  =   mainPanel;
         outputArea      =   new JTextArea();
         controls        =   new OutputControls();
         outputArea.setBackground(Color.WHITE);
@@ -90,16 +90,17 @@ public class OutputPanel extends JPanel
         @Override
         public void actionPerformed(ActionEvent e) 
         {
-            Object src  =   e.getSource();
+            Object src              =   e.getSource();
+            IOControlPanel ioPanel  =   ControlPanel.getInstance().getIoPanel();
             
             if(src == clearBtn)
                 clearLog();
             
             else if(src == importBtn)
-                mainPanel.getControlPanel().getIoPanel().importLog();
+                ioPanel.importLog();
             
             else if(src == exportBtn)
-                mainPanel.getControlPanel().getIoPanel().exportLog();
+                ioPanel.exportLog();
         }
     }
 }

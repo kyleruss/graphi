@@ -7,6 +7,7 @@
 package com.graphi.display.layout;
 
 import com.graphi.graph.Edge;
+import com.graphi.graph.GraphData;
 import com.graphi.graph.Node;
 import com.graphi.graph.TableModelBean;
 import edu.uci.ics.jung.graph.Graph;
@@ -49,12 +50,11 @@ public class DataPanel extends JPanel implements ActionListener
     protected final JScrollPane vertexScroller, edgeScroller, computeScroller;
     protected JLabel comModelContextLabel;
     protected JButton comContextBtn;
-    protected MainPanel mainPanel;
+    private static DataPanel instance;
 
-    public DataPanel(MainPanel mainPanel)
+    public DataPanel()
     {
         setLayout(new BorderLayout());
-        this.mainPanel      =   mainPanel;
         dataTabPane         =   new JTabbedPane();
         initTables();
 
@@ -135,8 +135,9 @@ public class DataPanel extends JPanel implements ActionListener
         ArrayList<Node> vertices   =   new ArrayList<>(graph.getVertices());
         Collections.sort(vertices, (Node n1, Node n2) -> Integer.compare(n1.getID(), n2.getID()));
 
-        mainPanel.data.getNodeFactory().setLastID(0);
-        mainPanel.data.getNodes().clear();
+        GraphData data  =   MainPanel.getInstance().getGraphData();
+        data.getNodeFactory().setLastID(0);
+        data.getNodes().clear();
         SwingUtilities.invokeLater(() -> 
         {
             vertexDataModel.setRowCount(0);
@@ -145,11 +146,11 @@ public class DataPanel extends JPanel implements ActionListener
                 int vID         =   vertex.getID();
                 String vName    =   vertex.getName();
 
-                mainPanel.data.getNodes().put(vID, vertex);
+                data.getNodes().put(vID, vertex);
                 vertexDataModel.addRow(new Object[] { vID, vName });
 
-                if(vID > mainPanel.data.getNodeFactory().getLastID())
-                    mainPanel.data.getNodeFactory().setLastID(vID);
+                if(vID > data.getNodeFactory().getLastID())
+                    data.getNodeFactory().setLastID(vID);
                 
             }
         });
@@ -160,7 +161,8 @@ public class DataPanel extends JPanel implements ActionListener
         ArrayList<Edge> edges  =   new ArrayList<>(graph.getEdges());
         Collections.sort(edges, (Edge e1, Edge e2) -> Integer.compare(e1.getID(), e2.getID())); 
 
-        mainPanel.data.getEdges().clear();
+        GraphData data  =   MainPanel.getInstance().getGraphData();
+        data.getEdges().clear();
 
         SwingUtilities.invokeLater(() ->
         {
@@ -187,25 +189,27 @@ public class DataPanel extends JPanel implements ActionListener
                 else
                     n2_id   =   -1;
 
-                mainPanel.data.getEdges().put(eID, edge);
+                data.getEdges().put(eID, edge);
                 edgeDataModel.addRow(new Object[] { eID, n1_id, n2_id, weight, edgeType });
 
-                if(eID > mainPanel.data.getEdgeFactory().getLastID())
-                    mainPanel.data.getEdgeFactory().setLastID(eID);
+                if(eID > data.getEdgeFactory().getLastID())
+                    data.getEdgeFactory().setLastID(eID);
             }
         });
     }
 
     public void addVertex()
     {
-        VertexAddPanel addPanel    =   new VertexAddPanel();
+        MainPanel mainPanel         =   MainPanel.getInstance();
+        VertexAddPanel addPanel     =   new VertexAddPanel();
+        GraphData data              =   mainPanel.getData();
 
         int option  =   JOptionPane.showConfirmDialog(null, addPanel, "Add vertex", JOptionPane.OK_CANCEL_OPTION);
 
         if(option == JOptionPane.OK_OPTION)
         {
             int id      =   (int) addPanel.idSpinner.getValue();
-            if(mainPanel.data.getNodes().containsKey(id))
+            if(data.getNodes().containsKey(id))
             {
                 JOptionPane.showMessageDialog(null, "Vertex already exists");
                 return;
@@ -213,17 +217,18 @@ public class DataPanel extends JPanel implements ActionListener
 
             String name =   addPanel.nameField.getText();
             Node node   =   new Node(id, name);
-            mainPanel.data.getGraph().addVertex(node);
+            data.getGraph().addVertex(node);
             mainPanel.screenPanel.graphPanel.gViewer.repaint();
             loadNodes(mainPanel.data.getGraph());
-            mainPanel.data.getNodes().put(id, node);
+            data.getNodes().put(id, node);
         }
     }
 
     public void editVertex()
     {
         Node editNode;
-        Set<Node> selectedVertices      =   mainPanel.screenPanel.graphPanel.gViewer.getPickedVertexState().getPicked();
+        GraphData data                  =   MainPanel.getInstance().getGraphData();
+        Set<Node> selectedVertices      =   MainPanel.getInstance().getScreenPanel().getGraphPanel().getGraphViewer().getPickedVertexState().getPicked();
 
         if(selectedVertices.size() == 1)
             editNode = selectedVertices.iterator().next();
@@ -233,15 +238,15 @@ public class DataPanel extends JPanel implements ActionListener
             if(selectedRows.length == 1)
             {
                 int id      =   (int) vertexDataModel.getValueAt(selectedRows[0], 0);
-                editNode    =   mainPanel.data.getNodes().get(id);   
+                editNode    =   data.getNodes().get(id);   
             }
 
             else
             {
-                int id      =   getDialogID("Enter vertex ID to edit", mainPanel.data.getNodes());
+                int id      =   getDialogID("Enter vertex ID to edit", data.getNodes());
 
                 if(id != -1)
-                    editNode    =   mainPanel.data.getNodes().get(id);
+                    editNode    =   data.getNodes().get(id);
                 else
                     return;
             }
@@ -258,7 +263,7 @@ public class DataPanel extends JPanel implements ActionListener
         {
             editNode.setID((int) editPanel.idSpinner.getValue());
             editNode.setName(editPanel.nameField.getText());
-            loadNodes(mainPanel.data.getGraph());
+            loadNodes(data.getGraph());
         }
     }
 
@@ -266,19 +271,22 @@ public class DataPanel extends JPanel implements ActionListener
     {
         if(vertices.isEmpty()) return;
 
+        GraphData data  =   MainPanel.getInstance().getData();
         for(Node node : vertices)
         {
+            
             int id  =   node.getID();
-            mainPanel.data.getNodes().remove(id);
-            mainPanel.data.getGraph().removeVertex(node);
-            mainPanel.screenPanel.graphPanel.gViewer.repaint();
-            loadNodes(mainPanel.data.getGraph());
+            data.getNodes().remove(id);
+            data.getGraph().removeVertex(node);
+            MainPanel.getInstance().getScreenPanel().getGraphPanel().getGraphViewer().repaint();
+            loadNodes(data.getGraph());
         }
     }
 
     public void removeVertex()
     {
-        Set<Node> pickedNodes    =   mainPanel.screenPanel.graphPanel.gViewer.getPickedVertexState().getPicked();
+        MainPanel mainPanel         =   MainPanel.getInstance();
+        Set<Node> pickedNodes       =   mainPanel.screenPanel.graphPanel.gViewer.getPickedVertexState().getPicked();
         if(!pickedNodes.isEmpty())
             removeVertices(pickedNodes);
 
@@ -663,5 +671,11 @@ public class DataPanel extends JPanel implements ActionListener
     public JTabbedPane getDataTabPane() 
     {
         return dataTabPane;
+    }
+    
+    public static DataPanel getInstance()
+    {
+        if(instance == null) instance = new DataPanel();
+        return instance;
     }
 }

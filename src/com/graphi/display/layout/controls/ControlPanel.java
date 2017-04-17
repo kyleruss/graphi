@@ -32,14 +32,13 @@ public class ControlPanel extends JPanel implements ActionListener
     protected ScriptControlPanel scriptPanel;
     protected SimulationControlPanel simulationPanel;
     protected TaskControlPanel taskPanel;
-    protected final MainPanel mainPanel;
+    private static ControlPanel instance;
     
-    public ControlPanel(MainPanel mainPanel) 
+    public ControlPanel() 
     {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBorder(BorderFactory.createEmptyBorder(15, 0, 3, 8));
 
-        this.mainPanel  =   mainPanel;
         initControls();
         MainMenu.getInstance().setMenuItemListener(this);
 
@@ -71,8 +70,9 @@ public class ControlPanel extends JPanel implements ActionListener
     {
         Object src  =   e.getSource();
 
-        MainMenu menu   =   MainMenu.getInstance();
-        JFrame frame    =   Window.getInstance().getFrame();
+        MainMenu menu       =   MainMenu.getInstance();
+        MainPanel mainPanel =   MainPanel.getInstance();   
+        JFrame frame        =   Window.getInstance().getFrame();
         
         if(src == menu.getMenuItem("aboutItem"))
             menu.showAbout();
@@ -183,8 +183,9 @@ public class ControlPanel extends JPanel implements ActionListener
         return taskPanel;
     }
     
-    public MainPanel getMainPanel()
+    public static ControlPanel getInstance()
     {
-        return mainPanel;
+        if(instance == null) instance   =   new ControlPanel();
+        return instance;
     }
 }

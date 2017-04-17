@@ -112,18 +112,18 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     protected JTextField gpRecEntryName;
     protected DateComboBox gpRecDatePicker;
     protected JComboBox gpRecEntries;
-    protected MainPanel mainPanel;
     protected JCheckBox recordComputeCheck, recordStateCheck;
     private final DisplayNavigationPanel displayNavPanel;
+    private static GraphPanel instance;
 
-    public GraphPanel(MainPanel mainPanel)
+    public GraphPanel()
     {
         setLayout(new BorderLayout());
-        this.mainPanel  =   mainPanel;
-        gLayout         =   new AggregateLayout(new FRLayout(mainPanel.data.getGraph()));
-        gViewer         =   new VisualizationViewer<>(gLayout);
-        gPlayback       =   new GraphPlayback();
-        displayNavPanel =   new DisplayNavigationPanel();
+        MainPanel mainPanel =   MainPanel.getInstance();   
+        gLayout             =   new AggregateLayout(new FRLayout(mainPanel.data.getGraph()));
+        gViewer             =   new VisualizationViewer<>(gLayout);
+        gPlayback           =   new GraphPlayback();
+        displayNavPanel     =   new DisplayNavigationPanel();
 
         ScalingControl scaler   =   new CrossoverScalingControl();
         scaler.scale(gViewer, 0.7f, gViewer.getCenter());
@@ -250,7 +250,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     public void resetEntries()
     {
         gpRecEntries.removeAllItems();
-        mainPanel.getGraphData().setGraph(new SparseMultigraph());
+        MainPanel.getInstance().getGraphData().setGraph(new SparseMultigraph());
         reloadGraph();
     }
 
@@ -291,7 +291,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
 
                 if(selectVertex)
                 {
-                    Node node   =   mainPanel.getGraphData().getNodes().get(gObjID);
+                    Node node   =   MainPanel.getInstance().getGraphData().getNodes().get(gObjID);
                     if(node != null)
                     {
                         gViewer.getPickedVertexState().clear();
@@ -304,7 +304,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
 
                 else
                 {
-                    Edge edge   =   mainPanel.getGraphData().getEdges().get(gObjID);
+                    Edge edge   =   MainPanel.getInstance().getGraphData().getEdges().get(gObjID);
                     if(edge != null)
                     {
                         gViewer.getPickedVertexState().clear();
@@ -378,6 +378,8 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     public void addRecordedGraph(String entryName, Date date, boolean recordState, boolean recordTable, boolean newEntry)
     {
         PlaybackEntry entry;
+        MainPanel mainPanel =   MainPanel.getInstance();
+        
         if(newEntry)
         {
             Graph<Node, Edge> graph     =   GraphUtilities.copyNewGraph(mainPanel.data.getGraph(), recordState);
@@ -451,8 +453,9 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     
     protected void showComputationModel(TableModelBean bean)
     {
-        mainPanel.screenPanel.dataPanel.setComputationModel(bean == null? new DefaultTableModel() : bean.getModel());
-        mainPanel.screenPanel.dataPanel.setComputationContext(bean == null? null : bean.getDescription());
+        DataPanel dataPanel =   MainPanel.getInstance().getScreenPanel().getDataPanel();
+        dataPanel.setComputationModel(bean == null? new DefaultTableModel() : bean.getModel());
+        dataPanel.setComputationContext(bean == null? null : bean.getDescription());
     }
 
     protected void displayRecordedGraph()
@@ -465,7 +468,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
            {
                 gpRecEntryName.setText(entry.getName());
                 gpRecDatePicker.setDate(entry.getDate());
-                mainPanel.data.setGraph(GraphUtilities.copyNewGraph(entry.getGraph(), false));
+                MainPanel.getInstance().getData().setGraph(GraphUtilities.copyNewGraph(entry.getGraph(), false));
                 reloadGraph();
                 showEntryComputationModel(entry);
            }
@@ -514,15 +517,17 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     {
         if(getMouseMode() == EDIT_MODE)
         {
-            mainPanel.screenPanel.dataPanel.loadNodes(mainPanel.data.getGraph());
-            mainPanel.screenPanel.dataPanel.loadEdges(mainPanel.data.getGraph());
+            Graph graph         =   MainPanel.getInstance().getData().getGraph();
+            DataPanel dataPanel =   DataPanel.getInstance();
+            dataPanel.loadNodes(graph);
+            DataPanel.getInstance().loadEdges(graph);
         }
     }
 
     public void setVertexColour(Color colour, Collection<Node> vertices)
     {
         if(vertices == null)
-            vertices   =   mainPanel.data.getGraph().getVertices();
+            vertices   =   MainPanel.getInstance().getData().getGraph().getVertices();
 
         for(Node vertex : vertices)
             vertex.setFill(colour);
@@ -533,7 +538,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     public void setEdgeColour(Color colour, Collection<Edge> edges)
     {
         if(edges == null)
-            edges   =   mainPanel.data.getGraph().getEdges();
+            edges   =   MainPanel.getInstance().getData().getGraph().getEdges();
 
         for(Edge edge : edges)
             edge.setFill(colour);
@@ -895,5 +900,11 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
                 }
             }
         }
+    }
+    
+    public static GraphPanel getInstance()
+    {
+        if(instance == null) instance   =   new GraphPanel();
+        return instance;
     }
 }
