@@ -75,7 +75,7 @@ public class ProjectStore implements Serializable
         graphPanel.getGraphViewer().repaint();
         dataPanel.loadNodes(graph);
         dataPanel.loadEdges(graph);
-        mainPanel.getGraphData().setGraph(graph);
+        mainPanel.getData().setGraph(graph);
     }
     
     public void initOutput()

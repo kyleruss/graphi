@@ -24,7 +24,7 @@ public class ResetSimTask extends AbstractTask
     public void performTask() 
     {
         MainPanel mainPanel =   MainPanel.getInstance();
-        mainPanel.getGraphData().setGraph(new SparseMultigraph());
+        mainPanel.getData().setGraph(new SparseMultigraph());
         mainPanel.getScreenPanel().getGraphPanel().reloadGraph();
     }
 }

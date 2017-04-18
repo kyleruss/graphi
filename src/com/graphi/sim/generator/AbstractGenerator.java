@@ -28,12 +28,12 @@ public abstract class AbstractGenerator implements NetworkGenerator
     
     protected Factory<Node> getDefaultNodeFactory()
     {
-        return MainPanel.getInstance().getGraphData().getNodeFactory();
+        return MainPanel.getInstance().getData().getNodeFactory();
     }
     
     protected Factory<Edge> getDefaultEdgeFactory()
     {
-        return MainPanel.getInstance().getGraphData().getEdgeFactory();
+        return MainPanel.getInstance().getData().getEdgeFactory();
     }
     
     @Override

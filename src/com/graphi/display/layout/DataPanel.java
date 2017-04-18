@@ -12,6 +12,7 @@ import com.graphi.graph.Node;
 import com.graphi.graph.TableModelBean;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.util.EdgeType;
+import edu.uci.ics.jung.visualization.VisualizationViewer;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -218,7 +219,7 @@ public class DataPanel extends JPanel implements ActionListener
             String name =   addPanel.nameField.getText();
             Node node   =   new Node(id, name);
             data.getGraph().addVertex(node);
-            mainPanel.screenPanel.graphPanel.gViewer.repaint();
+            GraphPanel.getInstance().gViewer.repaint();
             loadNodes(mainPanel.data.getGraph());
             data.getNodes().put(id, node);
         }
@@ -228,7 +229,7 @@ public class DataPanel extends JPanel implements ActionListener
     {
         Node editNode;
         GraphData data                  =   MainPanel.getInstance().getData();
-        Set<Node> selectedVertices      =   MainPanel.getInstance().getScreenPanel().getGraphPanel().getGraphViewer().getPickedVertexState().getPicked();
+        Set<Node> selectedVertices      =   GraphPanel.getInstance().getGraphViewer().getPickedVertexState().getPicked();
 
         if(selectedVertices.size() == 1)
             editNode = selectedVertices.iterator().next();
@@ -271,14 +272,16 @@ public class DataPanel extends JPanel implements ActionListener
     {
         if(vertices.isEmpty()) return;
 
-        GraphData data  =   MainPanel.getInstance().getData();
+        GraphData data              =   MainPanel.getInstance().getData();
+        VisualizationViewer viewer  =   GraphPanel.getInstance().getGraphViewer();
+        
         for(Node node : vertices)
         {
             
             int id  =   node.getID();
             data.getNodes().remove(id);
             data.getGraph().removeVertex(node);
-            MainPanel.getInstance().getScreenPanel().getGraphPanel().getGraphViewer().repaint();
+            viewer.repaint();
             loadNodes(data.getGraph());
         }
     }
@@ -286,7 +289,9 @@ public class DataPanel extends JPanel implements ActionListener
     public void removeVertex()
     {
         MainPanel mainPanel         =   MainPanel.getInstance();
-        Set<Node> pickedNodes       =   mainPanel.screenPanel.graphPanel.gViewer.getPickedVertexState().getPicked();
+        VisualizationViewer viewer  =   GraphPanel.getInstance().getGraphViewer();
+        Set<Node> pickedNodes       =   viewer.getPickedVertexState().getPicked();
+        
         if(!pickedNodes.isEmpty())
             removeVertices(pickedNodes);
 
@@ -316,7 +321,7 @@ public class DataPanel extends JPanel implements ActionListener
                     Node removedNode    =   mainPanel.data.getNodes().remove(id);
                     mainPanel.data.getGraph().removeVertex(removedNode);
                     loadNodes(mainPanel.data.getGraph());
-                    mainPanel.screenPanel.graphPanel.gViewer.repaint();
+                    viewer.repaint();
                 }
             }
         }

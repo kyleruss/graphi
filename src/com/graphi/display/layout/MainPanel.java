@@ -17,8 +17,6 @@ import javax.swing.JSplitPane;
 
 public class MainPanel extends JPanel 
 {
-    protected ControlPanel controlPanel;
-    protected ScreenPanel screenPanel;
     protected JSplitPane splitPane;
     protected JScrollPane controlScroll;
     protected GraphData data;
@@ -34,7 +32,6 @@ public class MainPanel extends JPanel
 
         controlScroll.setBorder(null);
         controlScroll.getVerticalScrollBar().setUnitIncrement(25);
-        splitPane.setLeftComponent(screenPanel);
         splitPane.setRightComponent(controlScroll); 
         splitPane.setResizeWeight(Consts.MAIN_SPLIT_WG);
         add(splitPane, BorderLayout.CENTER);
@@ -42,25 +39,16 @@ public class MainPanel extends JPanel
     
     protected void initComponents()
     {
-        controlPanel        =   new ControlPanel(this);
-        screenPanel         =   new ScreenPanel(this);
-        splitPane           =   new JSplitPane();
-        controlScroll       =   new JScrollPane(controlPanel);
+        ControlPanel controlPanel   =   ControlPanel.getInstance();
+        ScreenPanel screenPanel     =   ScreenPanel.getInstance();
+        splitPane                   =   new JSplitPane();
+        controlScroll               =   new JScrollPane(controlPanel);
+        splitPane.setLeftComponent(screenPanel);
     }
     
     public void setData(GraphData data)
     {
         this.data   =   data;
-    }
-    
-    public ControlPanel getControlPanel() 
-    {
-        return controlPanel;
-    }
-
-    public ScreenPanel getScreenPanel() 
-    {
-        return screenPanel;
     }
 
     public GraphData getData()
