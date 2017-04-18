@@ -8,6 +8,7 @@ package com.graphi.display.layout.controls.options;
 
 import com.graphi.config.AppConfig;
 import com.graphi.config.ConfigManager;
+import com.graphi.display.layout.GraphPanel;
 import com.graphi.display.layout.MainPanel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -65,7 +66,7 @@ public class ViewerOptionPanel extends AbstractOptionPanel implements ActionList
         AppConfig appConfig =   ConfigManager.getInstance().getAppConfig();
         boolean showLabels  =   nodeLabelsCheck.isSelected();
         
-        MainPanel.getInstance().getScreenPanel().getGraphPanel().showVertexLabels(showLabels);
+        GraphPanel.getInstance().showVertexLabels(showLabels);
         appConfig.setViewNodeLabels(showLabels);
     }
     
@@ -74,7 +75,7 @@ public class ViewerOptionPanel extends AbstractOptionPanel implements ActionList
         AppConfig appConfig =   ConfigManager.getInstance().getAppConfig();
         boolean showLabels  =   edgeLabelsCheck.isSelected();
         
-        MainPanel.getInstance().getScreenPanel().getGraphPanel().showEdgeLabels(showLabels);
+        GraphPanel.getInstance().showEdgeLabels(showLabels);
         appConfig.setViewEdgeLabels(showLabels);
     }
     

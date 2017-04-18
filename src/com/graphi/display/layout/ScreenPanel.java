@@ -22,9 +22,6 @@ import javax.swing.Timer;
 public class ScreenPanel extends JPanel
 {
     protected MainPanel mainPanel;
-    protected DataPanel dataPanel;
-    protected GraphPanel graphPanel;
-    protected OutputPanel outputPanel;
     protected JTabbedPane tabPane;
     protected TransitionPanel transitionPanel;
     protected JPanel displayPanel;
@@ -35,12 +32,12 @@ public class ScreenPanel extends JPanel
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(15, 5, 5, 5));
         
-        displayPanel        =   new JPanel(new CardLayout());
-        tabPane             =   new JTabbedPane();
-        transitionPanel     =   new TransitionPanel();
-        dataPanel           =   new DataPanel(mainPanel);
-        graphPanel          =   new GraphPanel(mainPanel);
-        outputPanel         =   new OutputPanel(mainPanel);
+        displayPanel                    =   new JPanel(new CardLayout());
+        tabPane                         =   new JTabbedPane();
+        transitionPanel                 =   new TransitionPanel();
+        DataPanel dataPanel             =   DataPanel.getInstance();
+        GraphPanel graphPanel           =   GraphPanel.getInstance();
+        OutputPanel outputPanel         =   OutputPanel.getInstance();
         
         displayPanel.add(transitionPanel, Consts.DISPLAY_TRANSIT_CARD);
         displayPanel.add(graphPanel, Consts.DISPLAY_GRAPH_CARD);
@@ -101,21 +98,6 @@ public class ScreenPanel extends JPanel
         return mainPanel;
     }
 
-    public DataPanel getDataPanel() 
-    {
-        return dataPanel;
-    }
-
-    public GraphPanel getGraphPanel() 
-    {
-        return graphPanel;
-    }
-
-    public OutputPanel getOutputPanel() 
-    {
-        return outputPanel;
-    }
-    
     public static ScreenPanel getInstance()
     {
         if(instance == null) instance   =   new ScreenPanel();

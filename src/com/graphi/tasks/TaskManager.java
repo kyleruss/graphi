@@ -7,6 +7,7 @@
 package com.graphi.tasks;
 
 import com.graphi.display.layout.MainPanel;
+import com.graphi.display.layout.controls.ControlPanel;
 import com.graphi.io.Storage;
 import com.graphi.plugins.PluginManager;
 import java.io.File;
@@ -61,7 +62,7 @@ public class TaskManager
         PluginManager pluginManager =   PluginManager.getInstance();
         tasks   =   (TasksBean) Storage.openObj(file, pluginManager.getActiveClassLoader());
         
-        MainPanel.getInstance().getControlPanel().getTaskPanel().initTaskBean(tasks);
+        ControlPanel.getInstance().getTaskPanel().initTaskBean(tasks);
     }
     
     public void exportTasks(File file)

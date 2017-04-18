@@ -8,7 +8,10 @@ package com.graphi.display.layout.controls;
 
 import com.graphi.display.MainMenu;
 import com.graphi.display.Window;
+import com.graphi.display.layout.DataPanel;
+import com.graphi.display.layout.GraphPanel;
 import com.graphi.display.layout.MainPanel;
+import com.graphi.display.layout.OutputPanel;
 import com.graphi.display.layout.ViewPort;
 import com.graphi.display.layout.util.PluginMenuListener;
 import java.awt.Dimension;
@@ -57,12 +60,12 @@ public class ControlPanel extends JPanel implements ActionListener
     
     protected void initControls()
     {
-        computePanel    =   new ComputeControlPanel(this);
-        gObjPanel       =   new GraphObjControlPanel(this);
-        ioPanel         =   new IOControlPanel(this);
-        scriptPanel     =   new ScriptControlPanel(this);
-        simulationPanel =   new SimulationControlPanel(this);
-        taskPanel       =   new TaskControlPanel(this);
+        computePanel    =   new ComputeControlPanel();
+        gObjPanel       =   new GraphObjControlPanel();
+        ioPanel         =   new IOControlPanel();
+        scriptPanel     =   new ScriptControlPanel();
+        simulationPanel =   new SimulationControlPanel();
+        taskPanel       =   new TaskControlPanel();
     }
     
     @Override
@@ -70,9 +73,11 @@ public class ControlPanel extends JPanel implements ActionListener
     {
         Object src  =   e.getSource();
 
-        MainMenu menu       =   MainMenu.getInstance();
-        MainPanel mainPanel =   MainPanel.getInstance();   
-        JFrame frame        =   Window.getInstance().getFrame();
+        MainMenu menu           =   MainMenu.getInstance();
+        MainPanel mainPanel     =   MainPanel.getInstance();   
+        GraphPanel graphPanel   =   GraphPanel.getInstance();
+        DataPanel dataPanel     =   DataPanel.getInstance();
+        JFrame frame            =   Window.getInstance().getFrame();
         
         if(src == menu.getMenuItem("aboutItem"))
             menu.showAbout();
@@ -99,10 +104,10 @@ public class ControlPanel extends JPanel implements ActionListener
             ioPanel.exportLog();
 
         else if(src == menu.getMenuItem("vLabelsItem"))
-            mainPanel.getScreenPanel().getGraphPanel().showVertexLabels(true);
+            graphPanel.showVertexLabels(true);
 
         else if(src == menu.getMenuItem("eLabelsItem"))
-            mainPanel.getScreenPanel().getGraphPanel().showEdgeLabels(true);
+            graphPanel.showEdgeLabels(true);
 
         /*else if(src == menu.getMenuItem("viewerBGItem"))
             viewerPanel.showViewerBGChange();
@@ -114,34 +119,34 @@ public class ControlPanel extends JPanel implements ActionListener
             viewerPanel.showVertexBGChange(); */
 
         else if(src == menu.getMenuItem("clearLogItem"))
-            mainPanel.getScreenPanel().getOutputPanel().clearLog();
+            OutputPanel.getInstance().clearLog();
 
         else if(src == menu.getMenuItem("resetGraphItem"))
-            mainPanel.getScreenPanel().getGraphPanel().resetGraph();
+            graphPanel.resetGraph();
 
         else if(src == menu.getMenuItem("addVertexItem"))
-            mainPanel.getScreenPanel().getDataPanel().addVertex();
+            dataPanel.addVertex();
 
         else if(src == menu.getMenuItem("editVertexItem"))
-            mainPanel.getScreenPanel().getDataPanel().editVertex();
+            dataPanel.editVertex();
 
         else if(src == menu.getMenuItem("removeVertexItem"))
-            mainPanel.getScreenPanel().getDataPanel().removeVertex();
+            dataPanel.removeVertex();
 
         else if(src == menu.getMenuItem("addEdgeItem"))
-            mainPanel.getScreenPanel().getDataPanel().addEdge();
+            dataPanel.addEdge();
 
         else if(src == menu.getMenuItem("editEdgeItem"))
-            mainPanel.getScreenPanel().getDataPanel().editEdge();
+            dataPanel.editEdge();
 
         else if(src == menu.getMenuItem("removeEdgeItem"))
-            mainPanel.getScreenPanel().getDataPanel().removeEdge();
+            dataPanel.removeEdge();
 
         else if(src == menu.getMenuItem("loadPluginItem"))
             ioPanel.importPlugin();
         
         else if(src == menu.getMenuItem("searchObjectItem"))
-            mainPanel.getScreenPanel().getGraphPanel().searchGraphObject();
+            graphPanel.searchGraphObject();
         
         else if(src == menu.getMenuItem("mainMenuItem"))
             ViewPort.getInstance().setScene(ViewPort.TITLE_SCENE);

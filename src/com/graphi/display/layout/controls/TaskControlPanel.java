@@ -40,7 +40,6 @@ import net.miginfocom.swing.MigLayout;
 
 public class TaskControlPanel extends JPanel implements ActionListener
 {
-    private ControlPanel controlPanel;
     private JComboBox repeatBox;
     private TaskPopupPanel setupPanel, repeatPanel;
     private JPanel repeatManyPanel;
@@ -50,12 +49,11 @@ public class TaskControlPanel extends JPanel implements ActionListener
     private JPanel wrapper;
     private JSpinner repeatCountSpinner;
     
-    public TaskControlPanel(ControlPanel controlPanel)
+    public TaskControlPanel()
     {
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createTitledBorder("Task controls"));
         
-        this.controlPanel   =   controlPanel;
         wrapper             =   new JPanel(new MigLayout("fillx"));
         setupPanel          =   new TaskPopupPanel();
         repeatPanel         =   new TaskPopupPanel();

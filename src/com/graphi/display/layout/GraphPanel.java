@@ -395,8 +395,8 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
             
             if(recordTable)
             {
-                DefaultTableModel tModel    =   mainPanel.screenPanel.dataPanel.computationModel;
-                String context              =   mainPanel.screenPanel.dataPanel.getComputationContext();
+                DefaultTableModel tModel    =   DataPanel.getInstance().computationModel;
+                String context              =   DataPanel.getInstance().getComputationContext();
                 entry.setComputationModel(new TableModelBean(tModel, context));
             }
 
@@ -456,7 +456,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     
     protected void showComputationModel(TableModelBean bean)
     {
-        DataPanel dataPanel =   MainPanel.getInstance().getScreenPanel().getDataPanel();
+        DataPanel dataPanel =   DataPanel.getInstance();
         dataPanel.setComputationModel(bean == null? new DefaultTableModel() : bean.getModel());
         dataPanel.setComputationContext(bean == null? null : bean.getDescription());
     }

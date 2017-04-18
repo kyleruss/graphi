@@ -50,7 +50,7 @@ public class ProjectStore implements Serializable
     public void initInstance()
     {
         MainPanel mainPanel     =   MainPanel.getInstance();
-        DataPanel dataPanel     =   mainPanel.getScreenPanel().getDataPanel();
+        DataPanel dataPanel     =   DataPanel.getInstance();
         
         //Initialize system graph
         if(graph != null)
@@ -68,8 +68,8 @@ public class ProjectStore implements Serializable
     public void initGraph()
     {
         MainPanel mainPanel     =   MainPanel.getInstance();
-        DataPanel dataPanel     =   mainPanel.getScreenPanel().getDataPanel();
-        GraphPanel graphPanel   =   mainPanel.getScreenPanel().getGraphPanel();
+        DataPanel dataPanel     =   DataPanel.getInstance();
+        GraphPanel graphPanel   =   GraphPanel.getInstance();
             
         graphPanel.getGraphLayout().setGraph(graph);
         graphPanel.getGraphViewer().repaint();
@@ -80,13 +80,13 @@ public class ProjectStore implements Serializable
     
     public void initOutput()
     {
-        OutputPanel outputPanel =   MainPanel.getInstance().getScreenPanel().getOutputPanel();
+        OutputPanel outputPanel =   OutputPanel.getInstance();
         outputPanel.setOutputText(output);
     }
     
     public void initTableModel()
     {
-        DataPanel dataPanel     =   MainPanel.getInstance().getScreenPanel().getDataPanel();
+        DataPanel dataPanel     =   DataPanel.getInstance();
         dataPanel.setComputationModel((DefaultTableModel) computeTableModel);
     }
     

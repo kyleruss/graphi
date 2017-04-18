@@ -8,6 +8,7 @@ package com.graphi.tasks;
 
 import com.graphi.app.AppManager;
 import com.graphi.display.layout.MainPanel;
+import com.graphi.display.layout.controls.ControlPanel;
 import com.graphi.plugins.PluginManager;
 import java.io.File;
 
@@ -33,6 +34,6 @@ public class ExportTableTask extends AbstractTask
         int tableIndex  =   Integer.parseInt(getProperty("Table index"));
         File file       =   new File(fileName);
         
-        MainPanel.getInstance().getControlPanel().getIoPanel().exportTable(tableIndex, file);
+        ControlPanel.getInstance().getIoPanel().exportTable(tableIndex, file);
     }
 }
