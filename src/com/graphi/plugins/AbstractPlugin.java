@@ -69,6 +69,9 @@ public abstract class AbstractPlugin implements Plugin, Serializable
         this.displayHandler =   displayHandler;
     }
     
+    @Override
+    public abstract void onEvent(int eventCode);
+    
     /**
      * Tests if two plugins have the same name
      * Plugin name's are not unique and can be the same for different vendors

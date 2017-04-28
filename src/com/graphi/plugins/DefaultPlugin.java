@@ -18,4 +18,7 @@ public class DefaultPlugin extends AbstractPlugin
     {
         super("Default", "Default plugin");
     }
+
+    @Override
+    public void onEvent(int eventCode) {}
 }
