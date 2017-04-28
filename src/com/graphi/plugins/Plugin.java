@@ -31,6 +31,7 @@ public interface Plugin
      */
     public String getPluginDescription();
     
+    public PluginDisplayHandler getDisplayHandler();
     
     /**
      * Set the plugin class loader

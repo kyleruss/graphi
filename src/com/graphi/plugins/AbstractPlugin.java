@@ -19,6 +19,7 @@ public abstract class AbstractPlugin implements Plugin, Serializable
 {
     protected final String name;
     protected final String description;
+    protected PluginDisplayHandler displayHandler;
     private URLClassLoader loader;
     
     public AbstractPlugin(String name, String description)
@@ -57,7 +58,16 @@ public abstract class AbstractPlugin implements Plugin, Serializable
         this.loader = loader;
     }
     
+    @Override
+    public PluginDisplayHandler getDisplayHandler()
+    {
+        return displayHandler;
+    }
     
+    public void setDisplayHandler(PluginDisplayHandler displayHandler)
+    {
+        this.displayHandler =   displayHandler;
+    }
     
     /**
      * Tests if two plugins have the same name
