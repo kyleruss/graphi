@@ -18,6 +18,7 @@ import com.graphi.util.transformer.CentralityTransformer;
 import com.graphi.display.layout.util.ComponentUtils;
 import com.graphi.graph.Edge;
 import com.graphi.graph.GraphData;
+import com.graphi.graph.GraphDataManager;
 import com.graphi.util.transformer.EdgeLabelTransformer;
 import com.graphi.graph.GraphUtilities;
 import com.graphi.graph.MatrixTools;
@@ -122,8 +123,8 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     public GraphPanel()
     {
         setLayout(new BorderLayout());
-        MainPanel mainPanel =   MainPanel.getInstance();   
-        gLayout             =   new AggregateLayout(new FRLayout(mainPanel.data.getGraph()));
+        GraphData graphData =   GraphDataManager.getGraphDataInstance();
+        gLayout             =   new AggregateLayout(new FRLayout(graphData.getGraph()));
         gViewer             =   new VisualizationViewer<>(gLayout);
         gPlayback           =   new GraphPlayback();
         displayNavPanel     =   new DisplayNavigationPanel();
@@ -138,7 +139,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         gViewer.getPickedVertexState().addItemListener(this);
         gViewer.getPickedEdgeState().addItemListener(this);
 
-        mouse       =   new EditingModalGraphMouse(gViewer.getRenderContext(), mainPanel.data.getNodeFactory(), mainPanel.data.getEdgeFactory());
+        mouse       =   new EditingModalGraphMouse(gViewer.getRenderContext(), graphData.getNodeFactory(), graphData.getEdgeFactory());
         mouse.setMode(ModalGraphMouse.Mode.PICKING);
         gViewer.addGraphMouseListener(this);
         mouse.remove(mouse.getPopupEditingPlugin());

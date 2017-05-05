@@ -21,7 +21,6 @@ import javax.swing.Timer;
 
 public class ScreenPanel extends JPanel
 {
-    protected MainPanel mainPanel;
     protected JTabbedPane tabPane;
     protected TransitionPanel transitionPanel;
     protected JPanel displayPanel;
@@ -93,11 +92,6 @@ public class ScreenPanel extends JPanel
         return displayPanel;
     }
     
-    public MainPanel getMainPanel() 
-    {
-        return mainPanel;
-    }
-
     public static ScreenPanel getInstance()
     {
         if(instance == null) instance   =   new ScreenPanel();

@@ -11,6 +11,7 @@ import com.graphi.display.layout.util.ComponentUtils;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -56,8 +57,9 @@ public abstract class MenuSceneTemplate extends JPanel
             titleLabel.setForeground(Color.DARK_GRAY);
             titleLabel.setIcon(new ImageIcon(resources.getResource("settingsTitleIcon")));
             titleLabel.setIconTextGap(20);
-            JPanel titleWrapper =   new JPanel();
+            JPanel titleWrapper =   new JPanel(new FlowLayout(FlowLayout.LEFT));
             titleWrapper.setBackground(Color.WHITE);
+            titleWrapper.add(Box.createRigidArea(new Dimension(100, 0)));
             titleWrapper.add(titleLabel);
             
             add(Box.createRigidArea(new Dimension(1, 50)), BorderLayout.NORTH);

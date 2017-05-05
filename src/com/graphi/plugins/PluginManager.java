@@ -48,7 +48,6 @@ public final class PluginManager
     //Uses the user specified default or the base plugin
     private void initDefaultPlugin()
     {
-        AppManager appManager           =   AppManager.getInstance();
         AbstractPlugin basePlugin       =   new DefaultPlugin();
         addPlugin(basePlugin);
         Window.getInstance().getMenu().getPluginListMenu().addPluginMenuItem("defaultPluginItem", new JMenuItem("Default"));
