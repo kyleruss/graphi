@@ -6,16 +6,15 @@
 
 package com.graphi.display.layout;
 
-import com.graphi.app.AppManager;
 import com.graphi.config.ConfigManager;
 import com.graphi.config.PluginConfig;
 import com.graphi.display.AppResources;
-import com.graphi.display.Window;
 import com.graphi.plugins.Plugin;
 import com.graphi.plugins.PluginManager;
 import com.graphi.display.layout.util.ComponentUtils;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,7 +26,6 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -66,6 +64,7 @@ public class PluginPanel extends MenuSceneTemplate
         private JButton defaultPluginBtn;
         private JButton activatePluginBtn;
         private JButton savePluginsBtn;
+        private JButton aboutPluginBtn;
         private JTextField pluginDirField;
         private DefaultTableModel pluginTableModel; 
         private JScrollPane pluginScrollPane;
@@ -81,18 +80,29 @@ public class PluginPanel extends MenuSceneTemplate
             activeRow               =   0;
             pluginTableModel        =   new DefaultTableModel();
             pluginTable             =   new JTable(pluginTableModel);
-            addPluginBtn            =   new JButton("Load plugin");
-            defaultPluginBtn        =   new JButton("Set default");
-            activatePluginBtn       =   new JButton("Activate plugin");
+            addPluginBtn            =   new JButton("");
+            defaultPluginBtn        =   new JButton("");
+            aboutPluginBtn          =   new JButton("");
+            activatePluginBtn       =   new JButton("");
             pluginScrollPane        =   new JScrollPane(pluginTable);   
             savePluginsBtn          =   new JButton(new ImageIcon(resources.getResource("saveLargeBtn")));
             pluginDirField          =   new JTextField();
             JLabel pluginDirLabel   =   new JLabel("Plugin Directory");
-            JPanel controlWrapper   =   new JPanel(new GridLayout(3, 1));
+            JPanel controlWrapper   =   new JPanel(new GridLayout(4, 1));
             JPanel contentWrapper   =   new JPanel(new BorderLayout());
             JPanel pluginDirWrapper =   new JPanel(new BorderLayout());
             JPanel outerWrapper     =   new JPanel(new BorderLayout());
             JPanel btmCtrlWrapper   =   new JPanel();
+            
+            addPluginBtn.setIcon(new ImageIcon(resources.getResource("pluginOpenIcon")));
+            defaultPluginBtn.setIcon(new ImageIcon(resources.getResource("pluginDefaultIcon")));
+            aboutPluginBtn.setIcon(new ImageIcon(resources.getResource("pluginInfoIcon")));
+            activatePluginBtn.setIcon(new ImageIcon(resources.getResource("pluginActivateIcon")));
+            
+            addPluginBtn.setToolTipText("Load plugin");
+            defaultPluginBtn.setToolTipText("Set default");
+            aboutPluginBtn.setToolTipText("About plugin");
+            activatePluginBtn.setToolTipText("Activate plugin");
             
             pluginTableModel.addColumn("Status");
             pluginTableModel.addColumn("Name");
@@ -102,6 +112,7 @@ public class PluginPanel extends MenuSceneTemplate
             pluginDirLabel.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
             outerWrapper.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
             pluginDirWrapper.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+            contentWrapper.setPreferredSize(new Dimension(500, 400));
             
             addPluginBtn.setFocusable(false);
             defaultPluginBtn.setFocusable(false);
@@ -120,6 +131,7 @@ public class PluginPanel extends MenuSceneTemplate
             controlWrapper.add(addPluginBtn);
             controlWrapper.add(activatePluginBtn);
             controlWrapper.add(defaultPluginBtn);
+            controlWrapper.add(aboutPluginBtn);
             
             contentWrapper.add(pluginScrollPane, BorderLayout.CENTER);
             contentWrapper.add(controlWrapper, BorderLayout.EAST);

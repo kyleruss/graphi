@@ -81,6 +81,10 @@ public class AppResources
             resourceMap.put("displayNavEdit", getImage("displayNavEdit.png"));
             resourceMap.put("docsIcon", getImage("docsIcon.png"));
             resourceMap.put("tickIcon", getImage("tickIcon.png"));
+            resourceMap.put("pluginActivateIcon", getImage("pluginActivateIcon.png"));
+            resourceMap.put("pluginOpenIcon", getImage("pluginOpenIcon.png"));
+            resourceMap.put("pluginDefaultIcon", getImage("pluginDefaultIcon.png"));
+            resourceMap.put("pluginInfoIcon", getImage("pluginInfoIcon.png"));
         }
         
         catch(IOException e)
