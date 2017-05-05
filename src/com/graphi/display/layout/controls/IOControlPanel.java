@@ -24,6 +24,7 @@ import com.graphi.tasks.TaskManager;
 import com.graphi.display.layout.util.ComponentUtils;
 import com.graphi.graph.Edge;
 import com.graphi.graph.GraphData;
+import com.graphi.graph.GraphDataManager;
 import com.graphi.graph.Node;
 import edu.uci.ics.jung.graph.Graph;
 import java.awt.Color;
@@ -100,7 +101,7 @@ public class IOControlPanel extends JPanel implements ActionListener
     {
         File file           =   ComponentUtils.getFile(false, "Graphi .graph, adjacency matrix .txt, .gml, graphML .xml", "graph", "txt", "gml", "xml");
         String extension    =   ComponentUtils.getFileExtension(file);
-        Graph graph         =   MainPanel.getInstance().getData().getGraph();
+        Graph graph         =   GraphDataManager.getGraphDataInstance().getGraph();
         
         if(file != null && graph != null)
         {
@@ -122,7 +123,7 @@ public class IOControlPanel extends JPanel implements ActionListener
     {
         File file           =   ComponentUtils.getFile(true, "Graphi .graph, adjacency matrix .txt, .gml, graphML .xml", "graph", "txt", "gml", "xml");
         String extension    =   ComponentUtils.getFileExtension(file);   
-        GraphData data      =   MainPanel.getInstance().getData();
+        GraphData data      =   GraphDataManager.getGraphDataInstance();
 
         if(file != null)
         {
@@ -222,7 +223,7 @@ public class IOControlPanel extends JPanel implements ActionListener
 
     protected void initCurrentNodes()
     {
-        GraphData data  =   MainPanel.getInstance().getData();
+        GraphData data  =   GraphDataManager.getGraphDataInstance();
         if(data.getGraph() == null) return;
 
         data.getNodes().clear();
@@ -233,7 +234,7 @@ public class IOControlPanel extends JPanel implements ActionListener
 
     protected void initCurrentEdges()
     {
-        GraphData data  =   MainPanel.getInstance().getData();
+        GraphData data  =   GraphDataManager.getGraphDataInstance();
         if(data.getGraph() == null) return;
 
        data.getEdges().clear();

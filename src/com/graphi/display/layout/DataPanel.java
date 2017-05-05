@@ -8,6 +8,7 @@ package com.graphi.display.layout;
 
 import com.graphi.graph.Edge;
 import com.graphi.graph.GraphData;
+import com.graphi.graph.GraphDataManager;
 import com.graphi.graph.Node;
 import com.graphi.graph.TableModelBean;
 import edu.uci.ics.jung.graph.Graph;
@@ -136,7 +137,7 @@ public class DataPanel extends JPanel implements ActionListener
         ArrayList<Node> vertices   =   new ArrayList<>(graph.getVertices());
         Collections.sort(vertices, (Node n1, Node n2) -> Integer.compare(n1.getID(), n2.getID()));
 
-        GraphData data  =   MainPanel.getInstance().getData();
+        GraphData data  =   GraphDataManager.getGraphDataInstance();
         data.getNodeFactory().setLastID(0);
         data.getNodes().clear();
         SwingUtilities.invokeLater(() -> 
@@ -162,7 +163,7 @@ public class DataPanel extends JPanel implements ActionListener
         ArrayList<Edge> edges  =   new ArrayList<>(graph.getEdges());
         Collections.sort(edges, (Edge e1, Edge e2) -> Integer.compare(e1.getID(), e2.getID())); 
 
-        GraphData data  =   MainPanel.getInstance().getData();
+        GraphData data  =   GraphDataManager.getGraphDataInstance();
         data.getEdges().clear();
 
         SwingUtilities.invokeLater(() ->
@@ -201,9 +202,8 @@ public class DataPanel extends JPanel implements ActionListener
 
     public void addVertex()
     {
-        MainPanel mainPanel         =   MainPanel.getInstance();
         VertexAddPanel addPanel     =   new VertexAddPanel();
-        GraphData data              =   mainPanel.getData();
+        GraphData data              =   GraphDataManager.getGraphDataInstance();
 
         int option  =   JOptionPane.showConfirmDialog(null, addPanel, "Add vertex", JOptionPane.OK_CANCEL_OPTION);
 
@@ -220,7 +220,7 @@ public class DataPanel extends JPanel implements ActionListener
             Node node   =   new Node(id, name);
             data.getGraph().addVertex(node);
             GraphPanel.getInstance().gViewer.repaint();
-            loadNodes(mainPanel.data.getGraph());
+            loadNodes(data.getGraph());
             data.getNodes().put(id, node);
         }
     }
@@ -228,7 +228,7 @@ public class DataPanel extends JPanel implements ActionListener
     public void editVertex()
     {
         Node editNode;
-        GraphData data                  =   MainPanel.getInstance().getData();
+        GraphData data                  =   GraphDataManager.getGraphDataInstance();
         Set<Node> selectedVertices      =   GraphPanel.getInstance().getGraphViewer().getPickedVertexState().getPicked();
 
         if(selectedVertices.size() == 1)
@@ -272,7 +272,7 @@ public class DataPanel extends JPanel implements ActionListener
     {
         if(vertices.isEmpty()) return;
 
-        GraphData data              =   MainPanel.getInstance().getData();
+        GraphData data              =   GraphDataManager.getGraphDataInstance();
         VisualizationViewer viewer  =   GraphPanel.getInstance().getGraphViewer();
         
         for(Node node : vertices)
@@ -288,9 +288,9 @@ public class DataPanel extends JPanel implements ActionListener
 
     public void removeVertex()
     {
-        MainPanel mainPanel         =   MainPanel.getInstance();
         VisualizationViewer viewer  =   GraphPanel.getInstance().getGraphViewer();
         Set<Node> pickedNodes       =   viewer.getPickedVertexState().getPicked();
+        GraphData graphData         =   GraphDataManager.getGraphDataInstance();
         
         if(!pickedNodes.isEmpty())
             removeVertices(pickedNodes);
@@ -304,7 +304,7 @@ public class DataPanel extends JPanel implements ActionListener
                 for(int row : selectedRows)
                 {
                     int id          =   (int) vertexDataModel.getValueAt(row, 0);
-                    Node current    =   mainPanel.data.getNodes().get(id);
+                    Node current    =   graphData.getNodes().get(id);
 
                     if(current != null)
                         selectedNodes.add(current);
@@ -315,12 +315,12 @@ public class DataPanel extends JPanel implements ActionListener
 
             else
             {
-                int id  =   getDialogID("Enter vertex ID to remove", mainPanel.data.getNodes());
+                int id  =   getDialogID("Enter vertex ID to remove", graphData.getNodes());
                 if(id != -1)
                 {
-                    Node removedNode    =   mainPanel.data.getNodes().remove(id);
-                    mainPanel.data.getGraph().removeVertex(removedNode);
-                    loadNodes(mainPanel.data.getGraph());
+                    Node removedNode    =   graphData.getNodes().remove(id);
+                    graphData.getGraph().removeVertex(removedNode);
+                    loadNodes(graphData.getGraph());
                     viewer.repaint();
                 }
             }
@@ -330,7 +330,7 @@ public class DataPanel extends JPanel implements ActionListener
     public void addEdge()
     {
         EdgeAddPanel addPanel   =   new EdgeAddPanel();
-        GraphData data          =   MainPanel.getInstance().getData();
+        GraphData data          =   GraphDataManager.getGraphDataInstance();
 
         int option  =   JOptionPane.showConfirmDialog(null, addPanel, "Add edge", JOptionPane.OK_CANCEL_OPTION);
 
@@ -369,7 +369,7 @@ public class DataPanel extends JPanel implements ActionListener
     {
         Edge editEdge;
         Set<Edge> selectedEdges =   GraphPanel.getInstance().getGraphViewer().getPickedEdgeState().getPicked();
-        GraphData data          =   MainPanel.getInstance().getData();
+        GraphData data          =   GraphDataManager.getGraphDataInstance();
         
         if(selectedEdges.size() == 1)
             editEdge    =   selectedEdges.iterator().next();
@@ -428,7 +428,7 @@ public class DataPanel extends JPanel implements ActionListener
     public void removeEdge()
     {
         Set<Edge> selectedEdges =   GraphPanel.getInstance().getGraphViewer().getPickedEdgeState().getPicked();
-        GraphData data          =   MainPanel.getInstance().getData();
+        GraphData data          =   GraphDataManager.getGraphDataInstance();
         
         if(selectedEdges.isEmpty())
         {
@@ -578,7 +578,7 @@ public class DataPanel extends JPanel implements ActionListener
             nameField      =   new JTextField();
 
             autoCheck.setSelected(true);
-            idSpinner.setValue(MainPanel.getInstance().getData().getNodeFactory().getLastID() + 1);
+            idSpinner.setValue(GraphDataManager.getGraphDataInstance().getNodeFactory().getLastID() + 1);
             idSpinner.setEnabled(false);
 
             add(new JLabel("ID "));
@@ -621,7 +621,7 @@ public class DataPanel extends JPanel implements ActionListener
             edgeTypeBox.addItem("Undirected");
             edgeTypeBox.addItem("Directed");
 
-            idSpinner.setValue(MainPanel.getInstance().getData().getEdgeFactory().getLastID() + 1);
+            idSpinner.setValue(GraphDataManager.getGraphDataInstance().getEdgeFactory().getLastID() + 1);
             idSpinner.setEnabled(false);
             autoCheck.setSelected(true);
             autoCheck.addActionListener(this);

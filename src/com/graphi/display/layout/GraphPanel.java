@@ -254,7 +254,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     public void resetEntries()
     {
         gpRecEntries.removeAllItems();
-        MainPanel.getInstance().getData().setGraph(new SparseMultigraph());
+        GraphDataManager.getGraphDataInstance().setGraph(new SparseMultigraph());
         reloadGraph();
     }
 
@@ -295,7 +295,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
 
                 if(selectVertex)
                 {
-                    Node node   =   MainPanel.getInstance().getData().getNodes().get(gObjID);
+                    Node node   =   GraphDataManager.getGraphDataInstance().getNodes().get(gObjID);
                     if(node != null)
                     {
                         gViewer.getPickedVertexState().clear();
@@ -308,7 +308,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
 
                 else
                 {
-                    Edge edge   =   MainPanel.getInstance().getData().getEdges().get(gObjID);
+                    Edge edge   =   GraphDataManager.getGraphDataInstance().getEdges().get(gObjID);
                     if(edge != null)
                     {
                         gViewer.getPickedVertexState().clear();
@@ -386,7 +386,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         
         if(newEntry)
         {
-            Graph<Node, Edge> graph     =   GraphUtilities.copyNewGraph(mainPanel.data.getGraph(), recordState);
+            Graph<Node, Edge> graph     =   GraphUtilities.copyNewGraph(GraphDataManager.getGraphDataInstance().getGraph(), recordState);
 
 
             if(entryName.equals(""))
@@ -411,7 +411,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
             entry   =   (PlaybackEntry) gpRecEntries.getSelectedItem();
             entry.setName(gpRecEntryName.getText());
             entry.setDate(gpRecDatePicker.getDate());
-            entry.setGraph(GraphUtilities.copyNewGraph(mainPanel.data.getGraph(), recordStateCheck.isSelected()));
+            entry.setGraph(GraphUtilities.copyNewGraph(GraphDataManager.getGraphDataInstance().getGraph(), recordStateCheck.isSelected()));
         }
     }
 
@@ -472,7 +472,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
            {
                 gpRecEntryName.setText(entry.getName());
                 gpRecDatePicker.setDate(entry.getDate());
-                MainPanel.getInstance().getData().setGraph(GraphUtilities.copyNewGraph(entry.getGraph(), false));
+                GraphDataManager.getGraphDataInstance().setGraph(GraphUtilities.copyNewGraph(entry.getGraph(), false));
                 reloadGraph();
                 showEntryComputationModel(entry);
            }
@@ -521,7 +521,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     {
         if(getMouseMode() == EDIT_MODE)
         {
-            Graph graph         =   MainPanel.getInstance().getData().getGraph();
+            Graph graph         =   GraphDataManager.getGraphDataInstance().getGraph();
             DataPanel dataPanel =   DataPanel.getInstance();
             dataPanel.loadNodes(graph);
             DataPanel.getInstance().loadEdges(graph);
@@ -531,7 +531,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     public void setVertexColour(Color colour, Collection<Node> vertices)
     {
         if(vertices == null)
-            vertices   =   MainPanel.getInstance().getData().getGraph().getVertices();
+            vertices   =   GraphDataManager.getGraphDataInstance().getGraph().getVertices();
 
         for(Node vertex : vertices)
             vertex.setFill(colour);
@@ -542,7 +542,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     public void setEdgeColour(Color colour, Collection<Edge> edges)
     {
         if(edges == null)
-            edges   =   MainPanel.getInstance().getData().getGraph().getEdges();
+            edges   =   GraphDataManager.getGraphDataInstance().getGraph().getEdges();
 
         for(Edge edge : edges)
             edge.setFill(colour);
@@ -568,13 +568,13 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         ControlPanel controlPanel   =   ControlPanel.getInstance();
         int numRemoved              =   (int) controlPanel.getComputePanel().getClusterEdgeRemoveSpinner().getValue();
         boolean group               =   controlPanel.getComputePanel().getClusterTransformCheck().isSelected();
-        GraphUtilities.cluster(gLayout, MainPanel.getInstance().getData().getGraph(), numRemoved, group);
+        GraphUtilities.cluster(gLayout, GraphDataManager.getGraphDataInstance().getGraph(), numRemoved, group);
         gViewer.repaint();
     }
 
     public void showCentrality()
     {
-        Graph graph                         =   MainPanel.getInstance().getData().getGraph();
+        Graph graph                         =   GraphDataManager.getGraphDataInstance().getGraph();
         ComputeControlPanel computePanel    =   ControlPanel.getInstance().getComputePanel();
         
         Map<Node, Double> centrality;
@@ -663,7 +663,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     public void reloadGraph()
     {
         DataPanel dataPanel     =   DataPanel.getInstance();
-        GraphData data          =   MainPanel.getInstance().getData();
+        GraphData data          =   GraphDataManager.getGraphDataInstance();
         
         gViewer.getPickedVertexState().clear();
         gViewer.getPickedEdgeState().clear();
@@ -684,7 +684,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
 
     public void resetGraph()
     {
-        MainPanel.getInstance().getData().setGraph(new SparseMultigraph<>());
+        GraphDataManager.getGraphDataInstance().setGraph(new SparseMultigraph<>());
         reloadGraph();
     }
 
@@ -693,14 +693,14 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     {
         if(getMouseMode() == SELECT_MODE)
         {
-            MainPanel.getInstance().getData().setSelectedItems(e.getItemSelectable().getSelectedObjects());
+            GraphDataManager.getGraphDataInstance().setSelectedItems(e.getItemSelectable().getSelectedObjects());
             updateSelectedComponents();
         }
     }
     
     protected void updateSelectedComponents()
     {
-        GraphData data          =   MainPanel.getInstance().getData();
+        GraphData data          =   GraphDataManager.getGraphDataInstance();
         JLabel selectedLabel    =   ControlPanel.getInstance().getgObjPanel().getSelectedLabel();
         if(data.getSelectedItems() == null || data.getSelectedItems().length == 0)
             selectedLabel.setText("None");
@@ -846,7 +846,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         
         public void setPreviousState()
         {
-            prevGraph   =   MainPanel.getInstance().getData().getGraph();
+            prevGraph   =   GraphDataManager.getGraphDataInstance().getGraph();
             prevModel   =   DataPanel.getInstance().getCompModelBean();
         }
         
@@ -855,7 +855,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
             if(prevGraph != null && prevModel != null)
             {
                 DataPanel.getInstance().loadCompModelBean(prevModel);
-                MainPanel.getInstance().getData().setGraph(prevGraph);
+                GraphDataManager.getGraphDataInstance().setGraph(prevGraph);
                 reloadGraph();
             }
         }
@@ -906,7 +906,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
                     pbName.setText(entry.getName());
                     pbDate.setText(entry.getDateFormatted());
 
-                    MainPanel.getInstance().getData()
+                    GraphDataManager.getGraphDataInstance()
                     .setGraph(GraphUtilities.copyNewGraph(entry.getGraph(), recordStateCheck.isSelected()));
                     
                     reloadGraph();

@@ -10,6 +10,7 @@ import com.graphi.app.AppManager;
 import com.graphi.display.layout.MainPanel;
 import com.graphi.plugins.PluginManager;
 import com.graphi.graph.Edge;
+import com.graphi.graph.GraphDataManager;
 import com.graphi.graph.Node;
 import edu.uci.ics.jung.graph.Graph;
 import org.apache.commons.collections15.Factory;
@@ -28,12 +29,12 @@ public abstract class AbstractGenerator implements NetworkGenerator
     
     protected Factory<Node> getDefaultNodeFactory()
     {
-        return MainPanel.getInstance().getData().getNodeFactory();
+        return GraphDataManager.getGraphDataInstance().getNodeFactory();
     }
     
     protected Factory<Edge> getDefaultEdgeFactory()
     {
-        return MainPanel.getInstance().getData().getEdgeFactory();
+        return GraphDataManager.getGraphDataInstance().getEdgeFactory();
     }
     
     @Override

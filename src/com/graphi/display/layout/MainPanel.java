@@ -19,7 +19,6 @@ public class MainPanel extends JPanel
 {
     protected JSplitPane splitPane;
     protected JScrollPane controlScroll;
-    protected GraphData data;
     protected static MainPanel instance;
     
     public MainPanel()
@@ -27,7 +26,6 @@ public class MainPanel extends JPanel
         setPreferredSize(new Dimension(Consts.WINDOW_WIDTH, Consts.WINDOW_HEIGHT));
         setLayout(new BorderLayout());        
         
-        data                =   new GraphData();
         initComponents();
 
         controlScroll.setBorder(null);
@@ -44,16 +42,6 @@ public class MainPanel extends JPanel
         splitPane                   =   new JSplitPane();
         controlScroll               =   new JScrollPane(controlPanel);
         splitPane.setLeftComponent(screenPanel);
-    }
-    
-    public void setData(GraphData data)
-    {
-        this.data   =   data;
-    }
-
-    public GraphData getData()
-    {
-        return data;
     }
     
     public static MainPanel getInstance()

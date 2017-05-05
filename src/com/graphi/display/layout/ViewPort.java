@@ -71,8 +71,7 @@ public class ViewPort extends JPanel
     private void initMainScene()
     {
         mainScenePanel  =   new JPanel(new BorderLayout());
-        MainPanel.getInstance();
-        //mainScenePanel.add(MainPanel.getInstance());
+        mainScenePanel.add(MainPanel.getInstance());
         add(mainScenePanel, MAIN_SCENE);
     }
     

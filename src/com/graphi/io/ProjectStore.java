@@ -11,6 +11,7 @@ import com.graphi.display.layout.GraphPanel;
 import com.graphi.display.layout.MainPanel;
 import com.graphi.display.layout.OutputPanel;
 import com.graphi.display.layout.ViewPort;
+import com.graphi.graph.GraphDataManager;
 import com.graphi.plugins.PluginManager;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
@@ -75,7 +76,7 @@ public class ProjectStore implements Serializable
         graphPanel.getGraphViewer().repaint();
         dataPanel.loadNodes(graph);
         dataPanel.loadEdges(graph);
-        mainPanel.getData().setGraph(graph);
+        GraphDataManager.getGraphDataInstance().setGraph(graph);
     }
     
     public void initOutput()

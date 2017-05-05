@@ -18,6 +18,7 @@ import com.graphi.sim.generator.NetworkGenerator;
 import com.graphi.sim.generator.RandomNetworkGenerator;
 import com.graphi.graph.Edge;
 import com.graphi.graph.GraphData;
+import com.graphi.graph.GraphDataManager;
 import com.graphi.graph.Node;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
@@ -171,7 +172,7 @@ public class SimulationControlPanel extends JPanel implements ActionListener
     public void showGeneratorSim(final NetworkGenerator generator)
     {
         int genIndex    =   genAlgorithmsBox.getSelectedIndex();
-        GraphData data  =   MainPanel.getInstance().getData();
+        GraphData data  =   GraphDataManager.getGraphDataInstance();
         data.getNodeFactory().setLastID(0);
         data.getEdgeFactory().setLastID(0);
 
@@ -233,7 +234,7 @@ public class SimulationControlPanel extends JPanel implements ActionListener
     
     public void resetSim()
     {
-        MainPanel.getInstance().getData().setGraph(new SparseMultigraph());
+        GraphDataManager.getGraphDataInstance().setGraph(new SparseMultigraph());
         GraphPanel.getInstance().reloadGraph();
     }
 
