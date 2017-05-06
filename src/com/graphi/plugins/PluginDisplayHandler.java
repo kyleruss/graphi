@@ -14,5 +14,7 @@ public interface PluginDisplayHandler
     
     public void attachDisplay();
     
+    public void destroyDisplay();
+    
     public List<String> getPluginResources();
 }

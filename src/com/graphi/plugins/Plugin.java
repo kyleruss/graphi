@@ -17,9 +17,10 @@ import java.net.URLClassLoader;
  */
 public interface Plugin
 {
-    public static final int ONLOAD_EVENT    =   0;
-    public static final int ONDESTROY_EVENT =   1;
-    public static final int ONSHOW_DISPLAY  =   2;
+    public static final int ONLOAD_EVENT                =   0;
+    public static final int ONDESTROY_PLUGIN_EVENT      =   1;
+    public static final int ONSHOW_DISPLAY_EVENT        =   2;
+    public static final int ONDESTROY_DISPLAY_EVENT     =   3;
     
     /**
      * Return the produced or maintained  plugin name
