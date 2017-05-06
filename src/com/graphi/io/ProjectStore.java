@@ -13,6 +13,8 @@ import com.graphi.display.layout.OutputPanel;
 import com.graphi.display.layout.ViewPort;
 import com.graphi.graph.GraphDataManager;
 import com.graphi.plugins.PluginManager;
+import com.graphi.tasks.TaskManager;
+import com.graphi.tasks.TasksBean;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import java.io.File;
@@ -27,17 +29,19 @@ public class ProjectStore implements Serializable
     private Graph graph;
     private String output;
     private TableModel computeTableModel;
+    private TasksBean tasksBean;
     
     public ProjectStore()
     {
-        this(new SparseMultigraph<>(), "", new DefaultTableModel());
+        this(new SparseMultigraph<>(), "", new DefaultTableModel(), new TasksBean());
     }
     
-    public ProjectStore(Graph graph, String output, TableModel computeTableModel)
+    public ProjectStore(Graph graph, String output, TableModel computeTableModel, TasksBean tasksBean)
     {
         this.graph                  =   graph;
         this.output                 =   output;
         this.computeTableModel      =   computeTableModel;
+        this.tasksBean              =   tasksBean;
     }
     
     public void exportProject()
@@ -50,9 +54,6 @@ public class ProjectStore implements Serializable
     
     public void initInstance()
     {
-        MainPanel mainPanel     =   MainPanel.getInstance();
-        DataPanel dataPanel     =   DataPanel.getInstance();
-        
         //Initialize system graph
         if(graph != null)
             initGraph();
@@ -64,11 +65,14 @@ public class ProjectStore implements Serializable
         //Initialize computation tables
         if(computeTableModel != null)
             initTableModel();
+        
+        //Initialize task bean
+        if(tasksBean != null)
+            initTasksBean();
     }
     
     public void initGraph()
     {
-        MainPanel mainPanel     =   MainPanel.getInstance();
         DataPanel dataPanel     =   DataPanel.getInstance();
         GraphPanel graphPanel   =   GraphPanel.getInstance();
             
@@ -89,6 +93,12 @@ public class ProjectStore implements Serializable
     {
         DataPanel dataPanel     =   DataPanel.getInstance();
         dataPanel.setComputationModel((DefaultTableModel) computeTableModel);
+    }
+    
+    public void initTasksBean()
+    {
+        TaskManager taskManager =   TaskManager.getInstance();
+        taskManager.importTasksFromBean(tasksBean);
     }
     
     public static ProjectStore importProject()
@@ -159,7 +169,14 @@ public class ProjectStore implements Serializable
     {
         this.computeTableModel = computeTableModel;
     }
-    
-    
-    
+
+    public TasksBean getTasksBean() 
+    {
+        return tasksBean;
+    }
+
+    public void setTasksBean(TasksBean tasksBean) 
+    {
+        this.tasksBean = tasksBean;
+    }
 }

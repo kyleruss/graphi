@@ -57,6 +57,12 @@ public class TaskManager
         availTaskList.add(task);
     }
     
+    public void importTasksFromBean(TasksBean tasks)
+    {
+        this.tasks      =   tasks;
+        ControlPanel.getInstance().getTaskPanel().initTaskBean(tasks);
+    }
+    
     public void importTasks(File file)
     {
         PluginManager pluginManager =   PluginManager.getInstance();
