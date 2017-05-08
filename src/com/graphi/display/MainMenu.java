@@ -25,13 +25,17 @@ import javax.swing.SwingConstants;
 public class MainMenu extends JMenuBar
 {
     protected final JMenu fileMenu;
+    protected final JMenu dataMenu;
+    protected final JMenu graphMenu;
+    protected final JMenu pluginMenu;
+    protected final JMenu viewMenu;
+    protected final JMenu aboutMenu;
+    
     protected final JMenu helpMenu;
     protected final JMenu optionsMenu;
-    protected final JMenu graphMenu;
     protected final JMenu loggingMenu;
     protected final JMenu vertexMenu, edgeMenu;
-    protected final JMenu viewMenu;
-    protected final JMenu pluginMenu;
+    protected final JMenu exportTableMenu;
     protected Map<String, JMenuItem> menuItems;
     protected PluginsMenu pluginsListMenu;
     private static MainMenu instance;
@@ -40,14 +44,18 @@ public class MainMenu extends JMenuBar
     {
         menuItems           =   new HashMap<>();
         fileMenu            =   new JMenu("File");
+        graphMenu           =   new JMenu("Graph");
+        viewMenu            =   new JMenu("View");
+        pluginMenu          =   new JMenu("Plugin");
+        dataMenu            =   new JMenu("Data");
+        aboutMenu           =   new JMenu("About");
+        exportTableMenu     =   new JMenu("Export table");  
+        
         optionsMenu         =   new JMenu("Options");
         helpMenu            =   new JMenu("About");
-        graphMenu           =   new JMenu("Graph");
         loggingMenu         =   new JMenu("Log");
         vertexMenu          =   new JMenu("Vertex");
         edgeMenu            =   new JMenu("Edge");
-        viewMenu            =   new JMenu("View");
-        pluginMenu          =   new JMenu("Plugin");
         pluginsListMenu     =   new PluginsMenu();
         
         //----------------------------------------------------------------------
@@ -56,36 +64,62 @@ public class MainMenu extends JMenuBar
         //- Menu items are stored in the menuItems map for later indexing
         //- Use getMenuItem for access to an item
         
+        //File menu items
         addMenuItem("mainMenuItem", new JMenuItem("Menu"), fileMenu);
+        addMenuItem("settingsItem", new JMenuItem("Settings"), fileMenu);
+        addMenuItem("newProjectItem", new JMenuItem("New Project"), fileMenu);
+        addMenuItem("openProjectItem", new JMenuItem("Open Project"), fileMenu);
         addMenuItem("miniItem", new JMenuItem("Minimize"), fileMenu);
         addMenuItem("maxItem", new JMenuItem("Maximize"), fileMenu);
         addMenuItem("exitItem", new JMenuItem("Exit"), fileMenu);
-        addMenuItem("aboutItem", new JMenuItem("Author"), helpMenu);
+        
+        //Graph menu items
         addMenuItem("importGraphItem", new JMenuItem("Import Graph"), graphMenu);
         addMenuItem("exportGraphItem", new JMenuItem("Export Graph"), graphMenu);
-        addMenuItem("importLogItem", new JMenuItem("Import Log"), loggingMenu);
-        addMenuItem("exportLogItem", new JMenuItem("Export Log"), loggingMenu);
-        addMenuItem("vLabelsItem", new JMenuItem("Vertex labels"), viewMenu);
-        addMenuItem("eLabelsItem", new JMenuItem("Eedge labels"), viewMenu);
-        addMenuItem("viewerBGItem", new JMenuItem("Change viewer background"), optionsMenu);
-        addMenuItem("edgeBGItem", new JMenuItem("Change edge fill"), optionsMenu);
-        addMenuItem("vertexBGItem", new JMenuItem("Change Vertex fill"), optionsMenu);
-        addMenuItem("clearLogItem", new JMenuItem("Clear"), loggingMenu);
         addMenuItem("resetGraphItem", new JMenuItem("Reset"), graphMenu);
+        
+        //Vertex sub menu items
         addMenuItem("addVertexItem", new JMenuItem("Add"), vertexMenu);
         addMenuItem("editVertexItem", new JMenuItem("Edit"), vertexMenu);
         addMenuItem("removeVertexItem", new JMenuItem("Remove"), vertexMenu);
+        
+        //Edge  sub menu items
         addMenuItem("addEdgeItem", new JMenuItem("Add"), edgeMenu);
         addMenuItem("editEdgeItem", new JMenuItem("Edit"), edgeMenu);
         addMenuItem("removeEdgeItem", new JMenuItem("Remove"), edgeMenu);
-        addMenuItem("searchObjectItem", new JMenuItem("Search", KeyEvent.VK_S), graphMenu);
+        
+        //Data menu items
+        addMenuItem("searchObjectItem", new JMenuItem("Search", KeyEvent.VK_S), dataMenu);
+        addMenuItem("exportLogItem", new JMenuItem("Export Log"), dataMenu);
+        addMenuItem("clearLogItem", new JMenuItem("Clear"), dataMenu);
+        
+        //Export table menu items
+        addMenuItem("exportVerticesItem", new JMenuItem("Vertices table"), exportTableMenu);
+        addMenuItem("exportEdgesItem", new JMenuItem("Edges table"), exportTableMenu);
+        addMenuItem("exportComputationsItem", new JMenuItem("Computations table"), exportTableMenu);
+        
+        //View menu items
+        addMenuItem("showToolsItem", new JMenuItem("Tools"), viewMenu);
+        addMenuItem("showVisuals", new JMenuItem("Visuals"), viewMenu);
+        addMenuItem("vLabelsItem", new JMenuItem("Vertex labels"), viewMenu);
+        addMenuItem("eLabelsItem", new JMenuItem("Edge labels"), viewMenu);
+        
+        
+        //About menu items
+        addMenuItem("aboutItem", new JMenuItem("Author"), aboutMenu);
+        addMenuItem("documentationItem", new JMenuItem("Documentation"), aboutMenu);
+        addMenuItem("licenseItem", new JMenuItem("License"), aboutMenu);
+        addMenuItem("repositoryItem", new JMenuItem("Repository"), aboutMenu);
+        
         //----------------------------------------------------------------------
         
         graphMenu.add(vertexMenu);
         graphMenu.add(edgeMenu);
+        dataMenu.add(exportTableMenu);
         pluginMenu.add(pluginsListMenu);
         pluginMenu.addSeparator();
-        addMenuItem("loadPluginItem", new JMenuItem("Load"), pluginMenu);
+        addMenuItem("loadPluginItem", new JMenuItem("Import plugin"), pluginMenu);
+        addMenuItem("managePluginsItem", new JMenuItem("Manage plugins"), pluginMenu);
         
         add(fileMenu);
         add(graphMenu);
