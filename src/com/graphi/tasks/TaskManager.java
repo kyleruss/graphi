@@ -7,7 +7,7 @@
 package com.graphi.tasks;
 
 import com.graphi.display.layout.MainPanel;
-import com.graphi.display.layout.controls.ControlPanel;
+import com.graphi.display.layout.ControlPanel;
 import com.graphi.io.Storage;
 import com.graphi.plugins.PluginManager;
 import java.io.File;

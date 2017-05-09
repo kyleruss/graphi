@@ -7,7 +7,6 @@
 package com.graphi.display.layout;
 
 import com.graphi.display.AppResources;
-import com.graphi.display.layout.controls.ControlPanel;
 import com.graphi.display.layout.controls.IOControlPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;

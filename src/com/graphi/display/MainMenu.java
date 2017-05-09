@@ -31,9 +31,6 @@ public class MainMenu extends JMenuBar
     protected final JMenu viewMenu;
     protected final JMenu aboutMenu;
     
-    protected final JMenu helpMenu;
-    protected final JMenu optionsMenu;
-    protected final JMenu loggingMenu;
     protected final JMenu vertexMenu, edgeMenu;
     protected final JMenu exportTableMenu;
     protected Map<String, JMenuItem> menuItems;
@@ -51,9 +48,6 @@ public class MainMenu extends JMenuBar
         aboutMenu           =   new JMenu("About");
         exportTableMenu     =   new JMenu("Export table");  
         
-        optionsMenu         =   new JMenu("Options");
-        helpMenu            =   new JMenu("About");
-        loggingMenu         =   new JMenu("Log");
         vertexMenu          =   new JMenu("Vertex");
         edgeMenu            =   new JMenu("Edge");
         pluginsListMenu     =   new PluginsMenu();
@@ -123,11 +117,10 @@ public class MainMenu extends JMenuBar
         
         add(fileMenu);
         add(graphMenu);
-        add(loggingMenu);
-        add(viewMenu);
-        add(optionsMenu);
-        add(helpMenu);
         add(pluginMenu);
+        add(dataMenu);
+        add(viewMenu);
+        add(aboutMenu);
     }
     
     public void showAbout()
@@ -203,25 +196,9 @@ public class MainMenu extends JMenuBar
         return fileMenu;
     }
 
-    @Override
-    public JMenu getHelpMenu() 
-    {
-        return helpMenu;
-    }
-
-    public JMenu getOptionsMenu() 
-    {
-        return optionsMenu;
-    }
-
     public JMenu getGraphMenu() 
     {
         return graphMenu;
-    }
-
-    public JMenu getLoggingMenu() 
-    {
-        return loggingMenu;
     }
 
     public JMenu getVertexMenu() 

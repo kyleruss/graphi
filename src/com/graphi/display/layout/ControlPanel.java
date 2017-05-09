@@ -4,7 +4,7 @@
 //  https://github.com/denkers/graphi
 //=========================================
 
-package com.graphi.display.layout.controls;
+package com.graphi.display.layout;
 
 import com.graphi.display.MainMenu;
 import com.graphi.display.Window;
@@ -13,6 +13,12 @@ import com.graphi.display.layout.GraphPanel;
 import com.graphi.display.layout.MainPanel;
 import com.graphi.display.layout.OutputPanel;
 import com.graphi.display.layout.ViewPort;
+import com.graphi.display.layout.controls.ComputeControlPanel;
+import com.graphi.display.layout.controls.GraphObjControlPanel;
+import com.graphi.display.layout.controls.IOControlPanel;
+import com.graphi.display.layout.controls.ScriptControlPanel;
+import com.graphi.display.layout.controls.SimulationControlPanel;
+import com.graphi.display.layout.controls.TaskControlPanel;
 import com.graphi.display.layout.util.PluginMenuListener;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;

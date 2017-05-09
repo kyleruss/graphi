@@ -6,6 +6,7 @@
 
 package com.graphi.display.layout.controls;
 
+import com.graphi.display.layout.ControlPanel;
 import com.graphi.app.Consts;
 import com.graphi.display.Window;
 import com.graphi.display.AppResources;

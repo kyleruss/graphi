@@ -7,7 +7,7 @@
 package com.graphi.tasks;
 
 import com.graphi.display.layout.MainPanel;
-import com.graphi.display.layout.controls.ControlPanel;
+import com.graphi.display.layout.ControlPanel;
 import com.graphi.sim.generator.BerbasiGenerator;
 import com.graphi.sim.generator.KleinbergGenerator;
 import com.graphi.sim.generator.NetworkGenerator;

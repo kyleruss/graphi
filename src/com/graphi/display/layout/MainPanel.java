@@ -6,7 +6,6 @@
 
 package com.graphi.display.layout;
 
-import com.graphi.display.layout.controls.ControlPanel;
 import com.graphi.app.Consts;
 import com.graphi.graph.GraphData;
 import java.awt.BorderLayout;
