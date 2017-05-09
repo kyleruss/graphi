@@ -6,6 +6,8 @@
 
 package com.graphi.display;
 
+import com.graphi.display.layout.controls.MenuActionListener;
+import com.graphi.display.layout.util.PluginMenuListener;
 import com.sun.glass.events.KeyEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -30,6 +32,9 @@ public class MainMenu extends JMenuBar
     protected final JMenu pluginMenu;
     protected final JMenu viewMenu;
     protected final JMenu aboutMenu;
+    
+    protected ActionListener pluginMenuListener;
+    protected ActionListener defaultMenuListener;
     
     protected final JMenu vertexMenu, edgeMenu;
     protected final JMenu exportTableMenu;
@@ -138,6 +143,16 @@ public class MainMenu extends JMenuBar
         JOptionPane.showMessageDialog(null, aboutPanel, "Graphi - Author", JOptionPane.INFORMATION_MESSAGE);
     }
     
+    public void setPluginMenuListener(ActionListener listener)
+    {
+        pluginMenuListener  =   listener;
+    }
+    
+    public void addPluginItemMenuListener(JMenuItem pluginMenuItem)
+    {
+        pluginMenuItem.addActionListener(pluginMenuListener);
+    }
+    
     /**
      * Adds a menu item to a menu and to the menuItems map 
      * @param name The key name used when added to the menuItems map
@@ -174,6 +189,8 @@ public class MainMenu extends JMenuBar
      */
     public void setMenuItemListener(ActionListener listener)
     {
+        defaultMenuListener =   listener;
+        
         for(JMenuItem item : menuItems.values())
         {
             for(ActionListener otherListener : item.getActionListeners())
