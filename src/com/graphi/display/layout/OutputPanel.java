@@ -56,6 +56,11 @@ public class OutputPanel extends JPanel
         outputArea.setText(text);
     }
     
+    public String getOutput()
+    {
+        return outputArea.getText();
+    }
+    
     public void extendOutputText(String text)
     {
         String originalText =   outputArea.getText();

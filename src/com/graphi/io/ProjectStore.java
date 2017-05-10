@@ -11,6 +11,7 @@ import com.graphi.display.layout.GraphPanel;
 import com.graphi.display.layout.MainPanel;
 import com.graphi.display.layout.OutputPanel;
 import com.graphi.display.layout.ViewPort;
+import com.graphi.graph.GraphData;
 import com.graphi.graph.GraphDataManager;
 import com.graphi.plugins.PluginManager;
 import com.graphi.tasks.TaskManager;
@@ -120,6 +121,17 @@ public class ProjectStore implements Serializable
         }
         
         return project;
+    }
+    
+    public static void saveProject()
+    {
+        Graph graph                     =   GraphDataManager.getGraphDataInstance().getGraph();
+        String output                   =   OutputPanel.getInstance().getOutput();
+        TableModel computeTableModel    =   DataPanel.getInstance().getComputationModel();
+        TasksBean tasksBean             =   TaskManager.getInstance().getTasks();
+        ProjectStore project            =   new ProjectStore(graph, output, computeTableModel, tasksBean);
+        
+        project.exportProject();
     }
     
     public static void newProject()

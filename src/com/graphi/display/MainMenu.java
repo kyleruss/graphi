@@ -68,6 +68,7 @@ public class MainMenu extends JMenuBar
         addMenuItem("settingsItem", new JMenuItem("Settings"), fileMenu);
         addMenuItem("newProjectItem", new JMenuItem("New Project"), fileMenu);
         addMenuItem("openProjectItem", new JMenuItem("Open Project"), fileMenu);
+        addMenuItem("saveProjectItem", new JMenuItem("Save Project"), fileMenu);
         addMenuItem("miniItem", new JMenuItem("Minimize"), fileMenu);
         addMenuItem("maxItem", new JMenuItem("Maximize"), fileMenu);
         addMenuItem("exitItem", new JMenuItem("Exit"), fileMenu);

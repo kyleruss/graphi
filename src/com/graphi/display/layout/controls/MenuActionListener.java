@@ -13,6 +13,7 @@ import com.graphi.display.layout.DataPanel;
 import com.graphi.display.layout.GraphPanel;
 import com.graphi.display.layout.OutputPanel;
 import com.graphi.display.layout.ViewPort;
+import com.graphi.io.ProjectStore;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
@@ -96,6 +97,14 @@ public class MenuActionListener implements ActionListener
         
         else if(src == menu.getMenuItem("mainMenuItem"))
             ViewPort.getInstance().setScene(ViewPort.TITLE_SCENE);
-
+        
+        else if(src == menu.getMenuItem("newProjectItem"))
+            ProjectStore.newProject();
+        
+        else if(src == menu.getMenuItem("openProjectItem"))
+            ProjectStore.loadProject();
+        
+        else if(src == menu.getMenuItem("saveProjectItem"))
+            ProjectStore.saveProject();
     }
 }
