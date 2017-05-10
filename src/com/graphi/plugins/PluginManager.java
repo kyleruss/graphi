@@ -9,6 +9,7 @@ package com.graphi.plugins;
 import com.graphi.config.PluginConfig;
 import com.graphi.app.AppManager;
 import com.graphi.config.ConfigManager;
+import com.graphi.display.MainMenu;
 import com.graphi.display.PluginsMenu;
 import com.graphi.display.Window;
 import com.graphi.display.layout.ViewPort;
@@ -40,7 +41,7 @@ public final class PluginManager
     private PluginManager()
     {
         plugins             =   new HashMap<>();
-        Window.getInstance().getMenu().getPluginListMenu().initPluginMenuListener(this);
+        MainMenu.getInstance().getPluginListMenu().initPluginMenuListener(this);
         initDefaultPlugin();
     }
     
@@ -50,7 +51,7 @@ public final class PluginManager
     {
         AbstractPlugin basePlugin       =   new DefaultPlugin();
         addPlugin(basePlugin);
-        Window.getInstance().getMenu().getPluginListMenu().addPluginMenuItem("defaultPluginItem", new JMenuItem("Default"));
+        MainMenu.getInstance().getPluginListMenu().addPluginMenuItem("defaultPluginItem", new JMenuItem("Default"));
         
         Plugin defaultPlugin;
         PluginConfig config             =   ConfigManager.getInstance().getPluginConfig();
@@ -156,7 +157,7 @@ public final class PluginManager
         ViewPort viewPort   =   ViewPort.getInstance();
     //    viewPort.attachMainPanel(activePlugin.getPanel());
         
-        PluginsMenu pluginsMenu     =   Window.getInstance().getMenu().getPluginListMenu();
+        PluginsMenu pluginsMenu     =   MainMenu.getInstance().getPluginListMenu();
         String itemName             =   plugin.getPluginName().equals("Default")? "defaultPluginItem" : plugin.getPluginName();
         
         JMenuItem item              =    pluginsMenu.getPluginMenuItem(itemName);

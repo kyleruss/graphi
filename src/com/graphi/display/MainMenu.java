@@ -42,7 +42,7 @@ public class MainMenu extends JMenuBar
     protected PluginsMenu pluginsListMenu;
     private static MainMenu instance;
 
-    public MainMenu()
+    private MainMenu()
     {
         menuItems           =   new HashMap<>();
         fileMenu            =   new JMenu("File");
@@ -126,6 +126,8 @@ public class MainMenu extends JMenuBar
         add(dataMenu);
         add(viewMenu);
         add(aboutMenu);
+        
+        initDefaultListeners();
     }
     
     public void showAbout()
@@ -141,6 +143,12 @@ public class MainMenu extends JMenuBar
         aboutPanel.add(repoLabel);
 
         JOptionPane.showMessageDialog(null, aboutPanel, "Graphi - Author", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    public void initDefaultListeners()
+    {
+        setMenuItemListener(new MenuActionListener());
+        setPluginMenuListener(new PluginMenuListener());
     }
     
     public void setPluginMenuListener(ActionListener listener)

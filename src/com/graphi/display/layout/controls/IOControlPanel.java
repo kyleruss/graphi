@@ -10,6 +10,7 @@ import com.graphi.display.layout.ControlPanel;
 import com.graphi.app.Consts;
 import com.graphi.display.Window;
 import com.graphi.display.AppResources;
+import com.graphi.display.MainMenu;
 import com.graphi.display.layout.DataPanel;
 import com.graphi.display.layout.GraphPanel;
 import com.graphi.display.layout.MainPanel;
@@ -95,7 +96,7 @@ public class IOControlPanel extends JPanel implements ActionListener
     public void importPlugin()
     {
         File file               =   ComponentUtils.getFile(true, "Graphi .jar plugin", "jar");
-        Window.getInstance().getMenu().getPluginListMenu().loadPluginFile(file);
+        MainMenu.getInstance().getPluginListMenu().loadPluginFile(file);
     }
 
     public void exportGraph()

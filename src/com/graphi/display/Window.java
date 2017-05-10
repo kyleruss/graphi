@@ -22,7 +22,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 public final class Window
 {
-    private final MainMenu menu; //The applications frame menu bar (JMenuBar)
     private final JFrame frame; //The active Graphi frame 
     private static Window instance; //Only Window instance, see getWindowInstance() for initialization
     
@@ -30,7 +29,6 @@ public final class Window
     {
         initLookAndFeel();
         
-        menu            =   new MainMenu();
         String title    =   "Graphi " + ConfigManager.getInstance().getVersionConfig().getVersion();
         frame           =   new JFrame(title);
        
@@ -46,18 +44,11 @@ public final class Window
     }
     
     /**
-    * @return The app frame menu bar (JMenuBar)
-    */
-    public MainMenu getMenu()
-    {
-        return menu;
-    }
-    
-    /**
     * Sets the frames menu bar to the initialized MainMenu: Window.menu 
     */
     private void initMenu()
     {
+        MainMenu menu   =   MainMenu.getInstance();
         frame.setJMenuBar(menu);
     }
     

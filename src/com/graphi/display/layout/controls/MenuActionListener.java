@@ -16,13 +16,17 @@ import com.graphi.display.layout.ViewPort;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
+import javax.swing.JMenuItem;
 
 public class MenuActionListener implements ActionListener
 {
+    
+    public MenuActionListener() {}
+    
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        Object src  =   e.getSource();
+        JMenuItem src              =   (JMenuItem) e.getSource();
 
         MainMenu menu           =   MainMenu.getInstance();
         GraphPanel graphPanel   =   GraphPanel.getInstance();
@@ -59,15 +63,6 @@ public class MenuActionListener implements ActionListener
 
         else if(src == menu.getMenuItem("eLabelsItem"))
             graphPanel.showEdgeLabels(true);
-
-        /*else if(src == menu.getMenuItem("viewerBGItem"))
-            viewerPanel.showViewerBGChange();
-
-        else if(src == menu.getMenuItem("edgeBGItem"))
-            viewerPanel.showEdgeBGChange();
-
-        else if(src == menu.getMenuItem("vertexBGItem"))
-            viewerPanel.showVertexBGChange(); */
 
         else if(src == menu.getMenuItem("clearLogItem"))
             OutputPanel.getInstance().clearLog();
