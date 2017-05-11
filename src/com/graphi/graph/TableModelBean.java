@@ -14,7 +14,7 @@ public class TableModelBean implements Serializable
     
     public TableModelBean()
     {
-        this(null);
+        this(new DefaultTableModel());
     }
     
     public TableModelBean(DefaultTableModel model)
@@ -52,16 +52,20 @@ public class TableModelBean implements Serializable
     public void prepareImport()
     {
         model   =   new DefaultTableModel();
-        for(int i = 0; i < columns.size(); i++)
-            model.addColumn(columns.get(i));
         
-        for(int i = 0; i < modelData.size(); i++)
+        if(columns != null && modelData != null)
         {
-            Vector otherVector  =   (Vector) modelData.get(i);
-            model.addRow(otherVector);
-        }
+            for(int i = 0; i < columns.size(); i++)
+                model.addColumn(columns.get(i));
 
-        modelData   =   null;
-        columns     =   null;
+            for(int i = 0; i < modelData.size(); i++)
+            {
+                Vector otherVector  =   (Vector) modelData.get(i);
+                model.addRow(otherVector);
+            }
+
+            modelData   =   null;
+            columns     =   null;
+        }
     }
 }
