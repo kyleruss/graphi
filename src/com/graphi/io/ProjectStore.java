@@ -8,10 +8,8 @@ package com.graphi.io;
 
 import com.graphi.display.layout.DataPanel;
 import com.graphi.display.layout.GraphPanel;
-import com.graphi.display.layout.MainPanel;
 import com.graphi.display.layout.OutputPanel;
 import com.graphi.display.layout.ViewPort;
-import com.graphi.graph.GraphData;
 import com.graphi.graph.GraphDataManager;
 import com.graphi.graph.TableModelBean;
 import com.graphi.plugins.PluginManager;
@@ -23,8 +21,6 @@ import java.io.File;
 import java.io.Serializable;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 public class ProjectStore implements Serializable
 {

@@ -7,12 +7,14 @@
 package com.graphi.display.layout;
 
 import com.graphi.display.AppResources;
+import com.graphi.display.layout.controls.options.AbstractOptionPanel;
 import com.graphi.display.layout.controls.options.AdvancedOptionPanel;
 import com.graphi.display.layout.controls.options.CustomizationOptionPanel;
 import com.graphi.display.layout.controls.options.ViewerOptionPanel;
 import com.graphi.display.layout.util.ComponentUtils;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -109,6 +111,18 @@ public class SettingsPanel extends MenuSceneTemplate
                 ComponentUtils.setTransparentControl(saveSettingsBtn);
                 
                 add(saveSettingsBtn);
+                saveSettingsBtn.addActionListener(this);
+            }
+            
+            private void saveSettings()
+            {
+                Component selected  =   settingsTabPane.getSelectedComponent();
+                
+                if(selected != null)
+                {
+                    AbstractOptionPanel selectedOptionPanel =   (AbstractOptionPanel) selected;
+                    selectedOptionPanel.updateOptions();
+                }
             }
 
             @Override
@@ -116,6 +130,8 @@ public class SettingsPanel extends MenuSceneTemplate
             {
                 Object src  =   e.getSource();
                 
+                if(src == saveSettingsBtn)
+                    saveSettings();
             }
         }
     }

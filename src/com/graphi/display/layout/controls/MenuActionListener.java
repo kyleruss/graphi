@@ -106,5 +106,8 @@ public class MenuActionListener implements ActionListener
         
         else if(src == menu.getMenuItem("saveProjectItem"))
             ProjectStore.saveProject();
+        
+        else if(src == menu.getMenuItem("settingsItem"))
+            ViewPort.getInstance().transitionScene(ViewPort.SETTINGS_SCENE);
     }
 }
