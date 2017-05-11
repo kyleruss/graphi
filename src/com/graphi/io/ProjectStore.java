@@ -13,6 +13,7 @@ import com.graphi.display.layout.OutputPanel;
 import com.graphi.display.layout.ViewPort;
 import com.graphi.graph.GraphData;
 import com.graphi.graph.GraphDataManager;
+import com.graphi.graph.TableModelBean;
 import com.graphi.plugins.PluginManager;
 import com.graphi.tasks.TaskManager;
 import com.graphi.tasks.TasksBean;
@@ -29,28 +30,20 @@ public class ProjectStore implements Serializable
 {
     private Graph graph;
     private String output;
-    private TableModel computeTableModel;
+    private TableModelBean computeTableBean;
     private TasksBean tasksBean;
     
     public ProjectStore()
     {
-        this(new SparseMultigraph<>(), "", new DefaultTableModel(), new TasksBean());
+        this(new SparseMultigraph<>(), "", new TableModelBean(), new TasksBean());
     }
     
-    public ProjectStore(Graph graph, String output, TableModel computeTableModel, TasksBean tasksBean)
+    public ProjectStore(Graph graph, String output, TableModelBean computeTableBean, TasksBean tasksBean)
     {
         this.graph                  =   graph;
         this.output                 =   output;
-        this.computeTableModel      =   computeTableModel;
+        this.computeTableBean       =   computeTableBean;
         this.tasksBean              =   tasksBean;
-    }
-    
-    public void exportProject()
-    {
-        File file   =   getFile(false);
-        
-        if(file != null)
-            Storage.saveObj(this, file);
     }
     
     public void initInstance()
@@ -64,7 +57,7 @@ public class ProjectStore implements Serializable
             initOutput();
             
         //Initialize computation tables
-        if(computeTableModel != null)
+        if(computeTableBean != null)
             initTableModel();
         
         //Initialize task bean
@@ -93,13 +86,22 @@ public class ProjectStore implements Serializable
     public void initTableModel()
     {
         DataPanel dataPanel     =   DataPanel.getInstance();
-        dataPanel.setComputationModel((DefaultTableModel) computeTableModel);
+        computeTableBean.prepareImport();
+        dataPanel.setComputationModel(computeTableBean.getModel());
     }
     
     public void initTasksBean()
     {
         TaskManager taskManager =   TaskManager.getInstance();
         taskManager.importTasksFromBean(tasksBean);
+    }
+    
+    public void exportProject()
+    {
+        File file   =   getFile(false);
+        
+        if(file != null)
+            Storage.saveObj(this, file);
     }
     
     public static ProjectStore importProject()
@@ -127,9 +129,11 @@ public class ProjectStore implements Serializable
     {
         Graph graph                     =   GraphDataManager.getGraphDataInstance().getGraph();
         String output                   =   OutputPanel.getInstance().getOutput();
-        TableModel computeTableModel    =   DataPanel.getInstance().getComputationModel();
+        TableModelBean tableBean        =   new TableModelBean(DataPanel.getInstance().getComputationModel());
+        tableBean.prepareExport();
+        
         TasksBean tasksBean             =   TaskManager.getInstance().getTasks();
-        ProjectStore project            =   new ProjectStore(graph, output, computeTableModel, tasksBean);
+        ProjectStore project            =   new ProjectStore(graph, output, tableBean, tasksBean);
         
         project.exportProject();
     }
@@ -143,7 +147,9 @@ public class ProjectStore implements Serializable
     private static File getFile(boolean open)
     {
         JFileChooser fileChooser        =   new JFileChooser();
-        FileNameExtensionFilter filter  =   new FileNameExtensionFilter("Graphi project file", "gproject");    
+        FileNameExtensionFilter filter  =   new FileNameExtensionFilter("Graphi gproj file", "gproj");    
+        fileChooser.setFileFilter(filter);
+        
         int option                      =   open? fileChooser.showOpenDialog(null) : fileChooser.showSaveDialog(null);
         
         if(option == JFileChooser.APPROVE_OPTION)
@@ -172,14 +178,14 @@ public class ProjectStore implements Serializable
         this.output = output;
     }
 
-    public TableModel getComputeTableModel() 
+    public TableModelBean getComputeTableBean() 
     {
-        return computeTableModel;
+        return computeTableBean;
     }
 
-    public void setComputeTableModel(TableModel computeTableModel) 
+    public void setComputeTableBean(TableModelBean computeTableBean) 
     {
-        this.computeTableModel = computeTableModel;
+        this.computeTableBean = computeTableBean;
     }
 
     public TasksBean getTasksBean() 

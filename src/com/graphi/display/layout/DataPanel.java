@@ -27,6 +27,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -94,6 +95,22 @@ public class DataPanel extends JPanel implements ActionListener
         dataTabPane.addTab("Computation table", compTabWrapper);
         
         add(dataTabPane);
+    }
+    
+    public Vector getComputeTableData()
+    {
+        return computationModel.getDataVector();
+    }
+    
+    public Vector getComputeTableColumns()
+    {
+        int columnCount     =   computationModel.getColumnCount();
+        Vector columns      =   new Vector(columnCount);
+        
+        for(int i = 0; i < columnCount; i++)
+            columns.add(computationModel.getColumnName(i));
+        
+        return columns;
     }
     
     private void initTables()

@@ -12,6 +12,11 @@ public class TableModelBean implements Serializable
     private Vector modelData;
     private Vector columns;
     
+    public TableModelBean()
+    {
+        this(null);
+    }
+    
     public TableModelBean(DefaultTableModel model)
     {
         this(model, "None");
