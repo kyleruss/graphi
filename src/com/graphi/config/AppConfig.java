@@ -80,18 +80,13 @@ public class AppConfig implements Config
     {
         try
         {
-            DocumentBuilderFactory docFac   =   DocumentBuilderFactory.newInstance();
-            DocumentBuilder docBuilder      =   docFac.newDocumentBuilder();
-            Document doc                    =   docBuilder.newDocument();
+            Document doc                    =   ConfigManager.generateDocument();
             Element rootElement             =   doc.createElement("app-version");
-            Element advancedSettingsElement =   doc.createElement("advanced-settings");
-            Element viewSettingsElement     =   doc.createElement("view-settings");
-            Element customSettingsElement   =   doc.createElement("customization-settings");
+            Element advancedSettingsElement =   ConfigManager.attachBodyElement(doc, rootElement, "advanced-settings");
+            Element viewSettingsElement     =   ConfigManager.attachBodyElement(doc, rootElement, "view-settings");
+            Element customSettingsElement   =   ConfigManager.attachBodyElement(doc, rootElement, "customization-settings");
 
             doc.appendChild(rootElement);
-            rootElement.appendChild(advancedSettingsElement);
-            rootElement.appendChild(viewSettingsElement);
-            rootElement.appendChild(customSettingsElement);
             
             //Advanced settings
             ConfigManager.createConfigTextElement(doc, advancedSettingsElement, "enable-logging", enableLogging);

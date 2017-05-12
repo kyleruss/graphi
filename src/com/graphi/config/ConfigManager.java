@@ -145,6 +145,23 @@ public class ConfigManager
         transformer.transform(src, res);
     }
     
+    public static Document generateDocument() throws ParserConfigurationException
+    {
+        DocumentBuilderFactory docFac   =   DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder      =   docFac.newDocumentBuilder();
+        Document doc                    =   docBuilder.newDocument();
+        
+        return doc;
+    }
+    
+    public static Element attachBodyElement(Document doc, Element parent, String name)
+    {
+        Element element =   doc.createElement(name);
+        parent.appendChild(element);
+        
+        return element;
+    }
+    
     public static ConfigManager createInstance()
     {
         if(instance == null) instance   =   new ConfigManager();

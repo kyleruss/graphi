@@ -6,10 +6,12 @@
 
 package com.graphi.config;
 
+import com.graphi.app.Consts;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 
@@ -58,6 +60,29 @@ public class PluginConfig implements Config
     }
     
     @Override
+    public void saveConfig() 
+    {
+        try
+        {
+            Document doc        =   ConfigManager.generateDocument();
+            Element rootElement =   doc.createElement("plugin-config");
+
+            ConfigManager.createConfigTextElement(doc, rootElement, "default-plugin-index", defaultIndex);
+            ConfigManager.createConfigTextElement(doc, rootElement, "plugin-directory", pluginsDirectory);
+            ConfigManager.attachBodyElement(doc, rootElement, "startup-plugins");
+            doc.appendChild(rootElement);
+            
+            
+            ConfigManager.saveConfig(doc, Consts.PLUGIN_CONF_FILE);
+        }
+        
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null, "Failed to save settings");
+        }
+    }
+    
+    @Override
     public String getConfigName()
     {
         return "pluginConfig";
@@ -100,5 +125,4 @@ public class PluginConfig implements Config
     {
         this.loadedPluginPaths  =   paths;
     }
-    
 }

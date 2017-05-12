@@ -22,6 +22,7 @@ public class UpdaterVersionConfig implements Config
         parseDocumentConfig(document);
     }
     
+    
     @Override
     public void parseDocumentConfig(Document document) 
     {
@@ -40,6 +41,9 @@ public class UpdaterVersionConfig implements Config
             JOptionPane.showMessageDialog(null, "[Error] Failed to read version config");
         }
     }
+    
+     @Override
+    public void saveConfig() {}
 
     public String getBuildID()
     {
