@@ -179,6 +179,7 @@ public class CustomizationOptionPanel extends AbstractOptionPanel implements Act
     @Override
     protected void handleOptionChanged(int optionIndex)
     {
+        System.out.println(optionIndex);
         switch(optionIndex)
         {
             case DISP_BG_INDEX: changeDisplayBackground(); break;
@@ -258,7 +259,7 @@ public class CustomizationOptionPanel extends AbstractOptionPanel implements Act
         Color currentColour     =   selectedBGPanel.getBackgroundColour();
         Color selectedColour    =   JColorChooser.showDialog(null, "Choose background colour", currentColour);
         
-        if(!selectedColour.equals(currentColour))
+        if(selectedColour != null && !selectedColour.equals(currentColour))
         {
             selectedBGPanel.setBackgroundColour(selectedColour);
             addOptionChanged(optionIndex);

@@ -20,6 +20,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -56,6 +58,7 @@ public class SettingsPanel extends MenuSceneTemplate
         private final CustomizationOptionPanel customizationPanel;
         private final ViewerOptionPanel viewingPanel;
         private final SettingsControlPanel controlPanel;
+        private final List<AbstractOptionPanel> optionPanels;
         private final JTabbedPane settingsTabPane;
         
         private SettingsContentPanel()
@@ -68,7 +71,11 @@ public class SettingsPanel extends MenuSceneTemplate
             viewingPanel        =   new ViewerOptionPanel();
             controlPanel        =   new SettingsControlPanel();
             settingsTabPane     =   new JTabbedPane();
+            optionPanels        =   new ArrayList<>();
             
+            optionPanels.add(customizationPanel);
+            optionPanels.add(viewingPanel);
+            optionPanels.add(advancedPanel);
             
             AppResources resources  =   AppResources.getInstance();
             JLabel customTabLabel   =   new JLabel("Customization", JLabel.CENTER);
@@ -116,12 +123,10 @@ public class SettingsPanel extends MenuSceneTemplate
             
             private void saveSettings()
             {
-                Component selected  =   settingsTabPane.getSelectedComponent();
-                
-                if(selected != null)
+                for(AbstractOptionPanel optionPanel : optionPanels)
                 {
-                    AbstractOptionPanel selectedOptionPanel =   (AbstractOptionPanel) selected;
-                    selectedOptionPanel.updateOptions();
+                    optionPanel.updateOptions();
+                    optionPanel.clearOptions();
                 }
             }
 

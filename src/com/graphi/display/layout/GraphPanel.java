@@ -132,7 +132,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         scaler.scale(gViewer, 0.7f, gViewer.getCenter());
         gViewer.scaleToLayout(scaler); 
 
-        gViewer.setBackground(Color.WHITE);
+        gViewer.setBackground(ConfigManager.getInstance().getAppConfig().getDisplayBackground());
         gViewer.getRenderContext().setVertexFillPaintTransformer(new ObjectFillTransformer<>(gViewer.getPickedVertexState()));
         gViewer.getRenderContext().setEdgeDrawPaintTransformer(new ObjectFillTransformer(gViewer.getPickedEdgeState()));
         gViewer.getPickedVertexState().addItemListener(this);
