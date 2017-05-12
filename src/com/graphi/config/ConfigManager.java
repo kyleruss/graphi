@@ -13,7 +13,15 @@ import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 /**
@@ -102,6 +110,39 @@ public class ConfigManager
     public static int getIntegerConfig(Document doc, String name)
     {
         return Integer.parseInt(doc.getElementsByTagName(name).item(0).getTextContent());
+    }
+    
+    public static Element createConfigTextElement(Document doc, Element parentElement, String nodeName, Object content)
+    {
+        Element element     =   doc.createElement(nodeName);
+        String textContent  =   "";
+        
+        if(content != null)
+        {
+            if(content instanceof Boolean)
+            {
+                boolean boolContent =   (Boolean) content;
+                textContent         =   boolContent? "true" : "false";
+            }
+            
+            else textContent        =   content.toString();
+        }
+        
+        element.appendChild(doc.createTextNode(textContent));
+        parentElement.appendChild(element);
+        
+        return element;
+    }
+    
+    public static void saveConfig(Document doc, String path) throws TransformerConfigurationException, TransformerException
+    {
+        TransformerFactory tFactory     =   TransformerFactory.newInstance();
+        Transformer transformer         =   tFactory.newTransformer();
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+
+        DOMSource src                   =   new DOMSource(doc);
+        StreamResult res                =   new StreamResult(new File(path));
+        transformer.transform(src, res);
     }
     
     public static ConfigManager createInstance()

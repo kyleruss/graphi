@@ -20,4 +20,6 @@ public interface Config
      * @return The name of the config document name
      */
     public String getConfigName();
+    
+    public void saveConfig();
 }

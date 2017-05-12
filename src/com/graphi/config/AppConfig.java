@@ -6,9 +6,15 @@
 
 package com.graphi.config;
 
+import com.graphi.app.Consts;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import java.awt.Color;
+import java.io.IOException;
+import javax.swing.JOptionPane;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class AppConfig implements Config
 {
@@ -67,6 +73,54 @@ public class AppConfig implements Config
         displayBackground       =   Color.decode(ConfigManager.getStringConfig(document, "display-background"));
         nodeBackground          =   Color.decode(ConfigManager.getStringConfig(document, "node-background"));
         edgeBackground          =   Color.decode(ConfigManager.getStringConfig(document, "edge-background"));
+    }
+    
+    @Override
+    public void saveConfig() 
+    {
+        try
+        {
+            DocumentBuilderFactory docFac   =   DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder      =   docFac.newDocumentBuilder();
+            Document doc                    =   docBuilder.newDocument();
+            Element rootElement             =   doc.createElement("app-version");
+            Element advancedSettingsElement =   doc.createElement("advanced-settings");
+            Element viewSettingsElement     =   doc.createElement("view-settings");
+            Element customSettingsElement   =   doc.createElement("customization-settings");
+
+            doc.appendChild(rootElement);
+            rootElement.appendChild(advancedSettingsElement);
+            rootElement.appendChild(viewSettingsElement);
+            rootElement.appendChild(customSettingsElement);
+            
+            //Advanced settings
+            ConfigManager.createConfigTextElement(doc, advancedSettingsElement, "enable-logging", enableLogging);
+            ConfigManager.createConfigTextElement(doc, advancedSettingsElement, "enable-updating", enableUpdating);
+            ConfigManager.createConfigTextElement(doc, advancedSettingsElement, "enable-debug-mode", enableDebugMode);
+            ConfigManager.createConfigTextElement(doc, advancedSettingsElement, "export-dir", exportDir);
+            
+            //View settings
+            ConfigManager.createConfigTextElement(doc, viewSettingsElement, "view-node-labels", viewNodeLabels);
+            ConfigManager.createConfigTextElement(doc, viewSettingsElement, "view-edge-labels", viewEdgeLabels);
+            ConfigManager.createConfigTextElement(doc, viewSettingsElement, "display-visuals", displayVisuals);
+            
+            //Customization settings
+            ConfigManager.createConfigTextElement(doc, customSettingsElement, "enable-custom-res", enableCustomResolution);
+            ConfigManager.createConfigTextElement(doc, customSettingsElement, "custom-width", customWindowWidth);
+            ConfigManager.createConfigTextElement(doc, customSettingsElement, "custom-height", customWindowHeight);
+            ConfigManager.createConfigTextElement(doc, customSettingsElement, "theme-type", themeType);
+            ConfigManager.createConfigTextElement(doc, customSettingsElement, "display-background", displayBackground);
+            ConfigManager.createConfigTextElement(doc, customSettingsElement, "node-background", nodeBackground);
+            ConfigManager.createConfigTextElement(doc, customSettingsElement, "edge-background", edgeBackground);
+            ConfigManager.createConfigTextElement(doc, customSettingsElement, "edge-type", edgeType);
+            
+            ConfigManager.saveConfig(doc, Consts.APP_CONF_FILE);
+        }
+        
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null, "Failed to save settings");
+        }
     }
     
     @Override
