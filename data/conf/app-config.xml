@@ -1,27 +1,24 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<app-config>
-	<advanced-settings>
-		<enable-logging>false</enable-logging>
-		<enable-updating>false</enable-updating>
-		<enable-debug-mode>false</enable-debug-mode>
-		<export-dir></export-dir>
-	</advanced-settings>
-
-	<view-settings>
-		<view-node-labels>false</view-node-labels>
-		<view-edge-labels>false</view-edge-labels>
-		<display-visuals>true</display-visuals>
-	</view-settings>
-
-	<customization-settings>
-		<enable-custom-res>false</enable-custom-res>
-		<custom-width>900</custom-width>
-		<custom-height>900</custom-height>
-		<theme-type>0</theme-type>
-		<display-background>#FFF</display-background>
-		<node-background>#009933</node-background>
-		<edge-background>#000</edge-background>
-		<edge-type>0</edge-type>
-	</customization-settings>
-</app-config>
-
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<app-version>
+<advanced-settings>
+<enable-logging>false</enable-logging>
+<enable-updating>false</enable-updating>
+<enable-debug-mode>false</enable-debug-mode>
+<export-dir/>
+</advanced-settings>
+<view-settings>
+<view-node-labels>false</view-node-labels>
+<view-edge-labels>false</view-edge-labels>
+<display-visuals>true</display-visuals>
+</view-settings>
+<customization-settings>
+<enable-custom-res>false</enable-custom-res>
+<custom-width>900</custom-width>
+<custom-height>900</custom-height>
+<theme-type>0</theme-type>
+<display-background>#FFFFFF</display-background>
+<node-background>#FFFFFF</node-background>
+<edge-background>#FFFFFF</edge-background>
+<edge-type>DIRECTED</edge-type>
+</customization-settings>
+</app-version>

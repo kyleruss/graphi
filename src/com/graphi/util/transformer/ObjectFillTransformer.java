@@ -1,7 +1,11 @@
 
 package com.graphi.util.transformer;
 
+import com.graphi.config.AppConfig;
+import com.graphi.config.ConfigManager;
+import com.graphi.graph.Edge;
 import com.graphi.graph.GraphObject;
+import com.graphi.graph.Node;
 import edu.uci.ics.jung.visualization.picking.PickedInfo;
 import java.awt.Color;
 import java.awt.Paint;
@@ -39,7 +43,21 @@ public class ObjectFillTransformer<T extends GraphObject> implements Transformer
         if(pickedInfo.isPicked(obj))
             return selectedColour;
         else
-            return obj.getFill();
+        {
+            Color objFill       =   obj.getFill();
+            AppConfig appConfig =   ConfigManager.getInstance().getAppConfig();
+            
+            if(objFill != null)
+                return obj.getFill();
+            
+            else if(obj instanceof Node)
+                return appConfig.getNodeBackground();
+            
+            else if(obj instanceof Edge)
+                return appConfig.getEdgeBackground();
+            
+            else return Color.BLACK;
+        }
     }
     
     /**

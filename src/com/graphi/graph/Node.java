@@ -6,7 +6,6 @@
 
 package com.graphi.graph;
 
-import com.graphi.app.Consts;
 import java.awt.Color;
 import java.io.Serializable;
 
@@ -29,7 +28,7 @@ public class Node implements Serializable, GraphObject<Node>
     
     public Node(int id, String name)
     {
-        this(id, name, Consts.DEFAULT_NODE_COLOUR);
+        this(id, name, null);
     }
     
     public Node(int id, String name, Color fill)

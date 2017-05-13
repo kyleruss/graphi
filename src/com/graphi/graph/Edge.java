@@ -20,7 +20,7 @@ public class Edge implements Serializable, GraphObject<Edge>
     
     public Edge()
     {
-        this(0, 0.0);
+        this(0);
     }
     
     public Edge(int id)
@@ -31,7 +31,7 @@ public class Edge implements Serializable, GraphObject<Edge>
     public Edge(int id, double weight)
     {
         this.id         =   id;        
-        fill            =   Consts.DEFAULT_EDGE_COLOUR;
+        fill            =   null;
         setWeight(weight);
     }
     

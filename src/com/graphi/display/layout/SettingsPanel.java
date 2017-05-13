@@ -6,6 +6,7 @@
 
 package com.graphi.display.layout;
 
+import com.graphi.config.ConfigManager;
 import com.graphi.display.AppResources;
 import com.graphi.display.layout.controls.options.AbstractOptionPanel;
 import com.graphi.display.layout.controls.options.AdvancedOptionPanel;
@@ -123,11 +124,19 @@ public class SettingsPanel extends MenuSceneTemplate
             
             private void saveSettings()
             {
+                boolean hasUpdates  =   false;
                 for(AbstractOptionPanel optionPanel : optionPanels)
                 {
-                    optionPanel.updateOptions();
-                    optionPanel.clearOptions();
+                    if(optionPanel.hasUpdates())
+                    {
+                        hasUpdates  =   true;
+                        optionPanel.updateOptions();
+                        optionPanel.clearOptions();
+                    }
                 }
+                
+                if(hasUpdates)
+                    ConfigManager.getInstance().getAppConfig().saveConfig();
             }
 
             @Override

@@ -6,6 +6,7 @@
 
 package com.graphi.display.layout.util;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -101,5 +102,10 @@ public class ComponentUtils
         control.setFocusable(false);
         control.setContentAreaFilled(false);
         control.setOpaque(false);
+    }
+    
+    public String colourToHex(Color colour)
+    {
+        return String.format("#%02X%02X%02X", colour.getRed(), colour.getGreen(), colour.getBlue());
     }
 }

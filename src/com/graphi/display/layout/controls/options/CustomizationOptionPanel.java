@@ -146,6 +146,8 @@ public class CustomizationOptionPanel extends AbstractOptionPanel implements Act
         enableResCheck.addActionListener(this);
         customWidthSpinner.addChangeListener(this);
         customHeightSpinner.addChangeListener(this);
+        
+        loadOptions();
     }
     
     @Override
@@ -179,7 +181,6 @@ public class CustomizationOptionPanel extends AbstractOptionPanel implements Act
     @Override
     protected void handleOptionChanged(int optionIndex)
     {
-        System.out.println(optionIndex);
         switch(optionIndex)
         {
             case DISP_BG_INDEX: changeDisplayBackground(); break;

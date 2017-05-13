@@ -44,6 +44,11 @@ public abstract class AbstractOptionPanel extends JPanel
         optionsChanged.clear();
     }
     
+    public boolean hasUpdates()
+    {
+        return !optionsChanged.isEmpty();
+    }
+    
     public void updateOptions()
     {
         for(int optionIndex : optionsChanged)
