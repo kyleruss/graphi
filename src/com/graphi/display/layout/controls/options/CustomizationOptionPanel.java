@@ -11,6 +11,9 @@ import com.graphi.config.ConfigManager;
 import com.graphi.display.layout.GraphPanel;
 import com.graphi.display.layout.MainPanel;
 import com.graphi.display.layout.ViewPort;
+import com.graphi.graph.Edge;
+import com.graphi.graph.GraphDataManager;
+import com.graphi.graph.Node;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -206,16 +209,22 @@ public class CustomizationOptionPanel extends AbstractOptionPanel implements Act
     {
         AppConfig appConfig     =   ConfigManager.getInstance().getAppConfig();
         Color nodeBGColour      =   nodeBGPanel.getBackgroundColour();
-        GraphPanel.getInstance().setVertexColour(nodeBGColour, null);
-        appConfig.setDisplayBackground(nodeBGColour);
+        
+        if(GraphDataManager.getGraphDataInstance().getSelectedItems().length > 0)
+            GraphPanel.getInstance().setSelectedObjectColour(nodeBGColour, Node.class);
+        else
+            appConfig.setNodeBackground(nodeBGColour);
     }
     
     public void changeEdgeBackground()
     {
         AppConfig appConfig     =   ConfigManager.getInstance().getAppConfig();
         Color edgeBGColour      =   edgeBGPanel.getBackgroundColour();
-        GraphPanel.getInstance().setEdgeColour(edgeBGColour, null);
-        appConfig.setDisplayBackground(edgeBGColour);
+        
+        if(GraphDataManager.getGraphDataInstance().getSelectedItems().length > 0)
+            GraphPanel.getInstance().setSelectedObjectColour(edgeBGColour, Edge.class);
+        else
+            appConfig.setEdgeBackground(edgeBGColour);
     }
     
     public void changeTheme()

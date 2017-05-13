@@ -18,6 +18,7 @@ import com.graphi.display.layout.util.ComponentUtils;
 import com.graphi.graph.Edge;
 import com.graphi.graph.GraphData;
 import com.graphi.graph.GraphDataManager;
+import com.graphi.graph.GraphObject;
 import com.graphi.util.transformer.EdgeLabelTransformer;
 import com.graphi.graph.GraphUtilities;
 import com.graphi.graph.MatrixTools;
@@ -40,6 +41,7 @@ import edu.uci.ics.jung.visualization.control.EditingModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.GraphMouseListener;
 import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.ScalingControl;
+import edu.uci.ics.jung.visualization.picking.PickedInfo;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -160,6 +162,16 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     public int getMouseMode()
     {
         return displayNavPanel.mode;
+    }
+    
+    public PickedInfo<Node> getSelectedNodes()
+    {
+        return gViewer.getPickedVertexState();
+    }
+
+    public PickedInfo<Edge> getSelectedEdges()
+    {
+        return gViewer.getPickedEdgeState();
     }
     
     private class DisplayNavigationPanel extends JPanel implements ActionListener
@@ -536,6 +548,20 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
             vertex.setFill(colour);
 
         gViewer.repaint();
+    }
+    
+    public void setSelectedObjectColour(Color colour, Class obj)
+    {
+        if(obj != null)
+        {
+            Object[] selectedObjects  =   GraphDataManager.getGraphDataInstance().getSelectedItems();
+            
+            for(Object selectedObj : selectedObjects)
+            {
+                if(selectedObj.getClass() == obj)
+                    ((GraphObject) selectedObj).setFill(colour);
+            }
+        }
     }
 
     public void setEdgeColour(Color colour, Collection<Edge> edges)
