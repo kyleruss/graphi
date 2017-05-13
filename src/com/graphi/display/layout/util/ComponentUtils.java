@@ -104,7 +104,7 @@ public class ComponentUtils
         control.setOpaque(false);
     }
     
-    public String colourToHex(Color colour)
+    public static String colourToHex(Color colour)
     {
         return String.format("#%02X%02X%02X", colour.getRed(), colour.getGreen(), colour.getBlue());
     }

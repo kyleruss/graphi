@@ -16,7 +16,7 @@
 <custom-width>900</custom-width>
 <custom-height>900</custom-height>
 <theme-type>0</theme-type>
-<display-background>#FFFFFF</display-background>
+<display-background>#FF0066</display-background>
 <node-background>#FFFFFF</node-background>
 <edge-background>#FFFFFF</edge-background>
 <edge-type>DIRECTED</edge-type>

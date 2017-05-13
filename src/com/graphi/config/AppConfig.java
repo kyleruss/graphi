@@ -7,6 +7,7 @@
 package com.graphi.config;
 
 import com.graphi.app.Consts;
+import com.graphi.display.layout.util.ComponentUtils;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import java.awt.Color;
 import java.io.IOException;
@@ -104,9 +105,9 @@ public class AppConfig implements Config
             ConfigManager.createConfigTextElement(doc, customSettingsElement, "custom-width", customWindowWidth);
             ConfigManager.createConfigTextElement(doc, customSettingsElement, "custom-height", customWindowHeight);
             ConfigManager.createConfigTextElement(doc, customSettingsElement, "theme-type", themeType);
-            ConfigManager.createConfigTextElement(doc, customSettingsElement, "display-background", displayBackground);
-            ConfigManager.createConfigTextElement(doc, customSettingsElement, "node-background", nodeBackground);
-            ConfigManager.createConfigTextElement(doc, customSettingsElement, "edge-background", edgeBackground);
+            ConfigManager.createConfigTextElement(doc, customSettingsElement, "display-background", ComponentUtils.colourToHex(displayBackground));
+            ConfigManager.createConfigTextElement(doc, customSettingsElement, "node-background", ComponentUtils.colourToHex(nodeBackground));
+            ConfigManager.createConfigTextElement(doc, customSettingsElement, "edge-background", ComponentUtils.colourToHex(edgeBackground));
             ConfigManager.createConfigTextElement(doc, customSettingsElement, "edge-type", edgeType);
             
             ConfigManager.saveConfig(doc, Consts.APP_CONF_FILE);
