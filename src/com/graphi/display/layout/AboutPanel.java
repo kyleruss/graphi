@@ -28,6 +28,12 @@ public class AboutPanel extends MenuSceneTemplate
         add(sceneTitlePanel, BorderLayout.NORTH);
         add(sceneControlPanel, BorderLayout.CENTER);
     }
+
+    @Override
+    public void onSceneLoad() 
+    {
+        activateMenuItem(MenuSceneTemplate.ABOUT_ITEM);
+    }
     
     private class AboutTitlePanel extends MenuSceneTemplate.SceneTitlePanel
     {

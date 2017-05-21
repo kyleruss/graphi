@@ -43,6 +43,12 @@ public class PluginPanel extends MenuSceneTemplate
         add(sceneTitlePanel, BorderLayout.NORTH);
         add(sceneControlPanel, BorderLayout.CENTER);
     }
+
+    @Override
+    public void onSceneLoad()
+    {
+        activateMenuItem(MenuSceneTemplate.PLUGINS_ITEM);
+    }
     
     private class PluginTitlePanel extends MenuSceneTemplate.SceneTitlePanel
     {

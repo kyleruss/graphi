@@ -27,6 +27,10 @@ import javax.swing.JPopupMenu;
 
 public abstract class MenuSceneTemplate extends JPanel
 {
+    public static final int OPTIONS_ITEM    =   0;
+    public static final int PLUGINS_ITEM    =   1;
+    public static final int ABOUT_ITEM      =   2;
+    
     protected SceneTitlePanel sceneTitlePanel;
     protected SceneControlPanel sceneControlPanel;
     
@@ -36,13 +40,34 @@ public abstract class MenuSceneTemplate extends JPanel
         setLayout(new BorderLayout());
     }
     
+    public abstract void onSceneLoad();
+    
+    public void activateMenuItem(int itemIndex)
+    {
+        switch (itemIndex) 
+        {
+            case OPTIONS_ITEM:
+                sceneTitlePanel.setActiveItem(sceneTitlePanel.optionsItem);
+                break;
+            case PLUGINS_ITEM:
+                sceneTitlePanel.setActiveItem(sceneTitlePanel.pluginItem);
+                break;
+            case ABOUT_ITEM:
+                sceneTitlePanel.setActiveItem(sceneTitlePanel.aboutItem);
+                break;
+            default:
+                break;
+        }
+    }
+    
     protected class SceneTitlePanel extends JPanel
     {
         protected JLabel titleLabel;
         protected JButton menuButton;
         protected TitleControlListener controlListener;
         protected JPopupMenu popupMenu;
-        protected JMenuItem mainMenuItem, graphControlsItem, optionsItem, pluginItem;
+        protected JMenuItem mainMenuItem, graphControlsItem, optionsItem, pluginItem, aboutItem;
+        protected JMenuItem activeMenuItem;
         
         protected SceneTitlePanel()
         {
@@ -65,17 +90,19 @@ public abstract class MenuSceneTemplate extends JPanel
             graphControlsItem   =   new JMenuItem("Controls");
             optionsItem         =   new JMenuItem("Options");
             pluginItem          =   new JMenuItem("Plugins");
+            aboutItem           =   new JMenuItem("About");
             
             popupMenu.add(mainMenuItem);
             popupMenu.add(graphControlsItem);
             popupMenu.add(optionsItem);
             popupMenu.add(pluginItem);
+            popupMenu.add(aboutItem);
             
             mainMenuItem.addActionListener(controlListener);
             graphControlsItem.addActionListener(controlListener);
             optionsItem.addActionListener(controlListener);
             pluginItem.addActionListener(controlListener);
-            
+            aboutItem.addActionListener(controlListener);
             
             titleLabel  =   new JLabel();
             titleLabel.setFont(new Font("Arial", Font.BOLD, 72));
@@ -89,6 +116,15 @@ public abstract class MenuSceneTemplate extends JPanel
             add(Box.createRigidArea(new Dimension(1, 50)), BorderLayout.NORTH);
             add(homeBtnWrapper, BorderLayout.WEST);
             add(titleWrapper, BorderLayout.CENTER);
+        }
+        
+        private void setActiveItem(JMenuItem menuItem)
+        {
+            if(activeMenuItem != null)
+                activeMenuItem.setEnabled(true);
+            
+            activeMenuItem  =   menuItem;
+            activeMenuItem.setEnabled(false);
         }
 
         private class TitleControlListener extends MouseAdapter implements ActionListener
@@ -110,6 +146,9 @@ public abstract class MenuSceneTemplate extends JPanel
                 
                 else if(src == pluginItem)
                     viewPort.setScene(ViewPort.PLUGINS_SCENE);
+                
+                else if(src == aboutItem)
+                    viewPort.setScene(ViewPort.ABOUT_SCENE);
             }
             
             @Override

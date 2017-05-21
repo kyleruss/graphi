@@ -40,6 +40,12 @@ public class SettingsPanel extends MenuSceneTemplate
         add(sceneTitlePanel, BorderLayout.NORTH);
         add(sceneControlPanel, BorderLayout.CENTER);
     }
+
+    @Override
+    public void onSceneLoad()
+    {
+        activateMenuItem(MenuSceneTemplate.OPTIONS_ITEM);
+    }
     
     private class SettingsTitlePanel extends MenuSceneTemplate.SceneTitlePanel
     {

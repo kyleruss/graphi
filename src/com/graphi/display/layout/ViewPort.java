@@ -9,6 +9,7 @@ package com.graphi.display.layout;
 import com.graphi.app.Consts;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import javax.swing.BorderFactory;
@@ -114,6 +115,14 @@ public class ViewPort extends JPanel
     {
         CardLayout layout   =   (CardLayout) getLayout();
         layout.show(this, sceneName);
+
+        switch(sceneName)
+        {
+            case ViewPort.PLUGINS_SCENE: pluginsPanel.onSceneLoad(); break;
+            case ViewPort.ABOUT_SCENE: aboutPanel.onSceneLoad(); break;
+            case ViewPort.SETTINGS_SCENE: settingsPanel.onSceneLoad(); break;
+        }
+
     }
     
     public TitlePanel getTitlePanel()
