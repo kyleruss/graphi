@@ -15,11 +15,15 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 
 public abstract class MenuSceneTemplate extends JPanel
 {
@@ -35,7 +39,10 @@ public abstract class MenuSceneTemplate extends JPanel
     protected class SceneTitlePanel extends JPanel
     {
         protected JLabel titleLabel;
-        private JButton homeBtn;
+        protected JButton menuButton;
+        protected TitleControlListener controlListener;
+        protected JPopupMenu popupMenu;
+        protected JMenuItem mainMenuItem, graphControlsItem, optionsItem, pluginItem;
         
         protected SceneTitlePanel()
         {
@@ -43,19 +50,36 @@ public abstract class MenuSceneTemplate extends JPanel
             setLayout(new BorderLayout());
             
             AppResources resources  =   AppResources.getInstance();
-            homeBtn     =   new JButton();
-            homeBtn.setIcon(new ImageIcon(resources.getResource("homeIcon")));
-            homeBtn.addActionListener(new TitleControlListener());
-            ComponentUtils.setTransparentControl(homeBtn);
+            controlListener =   new TitleControlListener();   
+            menuButton      =   new JButton();
+            menuButton.setIcon(new ImageIcon(resources.getResource("menuIcon")));
+            menuButton.addMouseListener(controlListener);
+            ComponentUtils.setTransparentControl(menuButton);
             
             JPanel homeBtnWrapper   =   new JPanel();
             homeBtnWrapper.setBackground(Color.WHITE);
-            homeBtnWrapper.add(homeBtn);
+            homeBtnWrapper.add(menuButton);
+            
+            popupMenu           =   new JPopupMenu();
+            mainMenuItem        =   new JMenuItem("Menu");
+            graphControlsItem   =   new JMenuItem("Controls");
+            optionsItem         =   new JMenuItem("Options");
+            pluginItem          =   new JMenuItem("Plugins");
+            
+            popupMenu.add(mainMenuItem);
+            popupMenu.add(graphControlsItem);
+            popupMenu.add(optionsItem);
+            popupMenu.add(pluginItem);
+            
+            mainMenuItem.addActionListener(controlListener);
+            graphControlsItem.addActionListener(controlListener);
+            optionsItem.addActionListener(controlListener);
+            pluginItem.addActionListener(controlListener);
+            
             
             titleLabel  =   new JLabel();
             titleLabel.setFont(new Font("Arial", Font.BOLD, 72));
             titleLabel.setForeground(Color.DARK_GRAY);
-            titleLabel.setIcon(new ImageIcon(resources.getResource("settingsTitleIcon")));
             titleLabel.setIconTextGap(20);
             JPanel titleWrapper =   new JPanel(new FlowLayout(FlowLayout.LEFT));
             titleWrapper.setBackground(Color.WHITE);
@@ -66,16 +90,35 @@ public abstract class MenuSceneTemplate extends JPanel
             add(homeBtnWrapper, BorderLayout.WEST);
             add(titleWrapper, BorderLayout.CENTER);
         }
-        
-        private class TitleControlListener implements ActionListener
+
+        private class TitleControlListener extends MouseAdapter implements ActionListener
         {
             @Override
             public void actionPerformed(ActionEvent e) 
             {
+                Object src          =   e.getSource();
+                ViewPort viewPort   =   ViewPort.getInstance();   
+                
+                if(src == mainMenuItem)
+                    viewPort.setScene(ViewPort.TITLE_SCENE);
+                
+                else if(src == graphControlsItem)
+                    viewPort.setScene(ViewPort.MAIN_SCENE);
+                
+                else if(src == optionsItem)
+                    viewPort.setScene(ViewPort.SETTINGS_SCENE);
+                
+                else if(src == pluginItem)
+                    viewPort.setScene(ViewPort.PLUGINS_SCENE);
+            }
+            
+            @Override
+            public void mousePressed(MouseEvent e)
+            {
                 Object src  =   e.getSource();
                 
-                if(src == homeBtn)
-                    ViewPort.getInstance().setScene(ViewPort.TITLE_SCENE);
+                if(src == menuButton)
+                    popupMenu.show(e.getComponent(), e.getX(), e.getY());
             }
         }
     }
