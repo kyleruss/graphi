@@ -94,6 +94,7 @@ public class CustomizationOptionPanel extends AbstractOptionPanel implements Act
         edgeBGLabel.setFont(titleFont);
         widthLabel.setFont(titleFont);
         heightLabel.setFont(titleFont);
+        selectedBGLabel.setFont(titleFont);
         
         themeBox.addItem("Classic");
         themeBox.addItem("Dark");
@@ -144,7 +145,7 @@ public class CustomizationOptionPanel extends AbstractOptionPanel implements Act
         edgeBGWrapper.add(edgeBGButton);
         
         add(edgeBGLabel);
-        add(edgeBGWrapper);
+        add(edgeBGWrapper, "wrap");
         
         //Selected background
         JPanel selectedBGWrapper    =   new JPanel();

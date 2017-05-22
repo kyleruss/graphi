@@ -4,9 +4,8 @@
 //  https://github.com/denkers/graphi
 //=========================================
 
-package com.graphi.display;
+package com.graphi.display.menu;
 
-import com.graphi.display.layout.controls.MenuActionListener;
 import com.graphi.display.layout.util.PluginMenuListener;
 import com.sun.glass.events.KeyEvent;
 import java.awt.event.ActionListener;

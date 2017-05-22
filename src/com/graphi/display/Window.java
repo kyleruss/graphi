@@ -6,6 +6,7 @@
 
 package com.graphi.display;
 
+import com.graphi.display.menu.MainMenu;
 import com.graphi.app.Consts;
 import com.graphi.config.ConfigManager;
 import com.graphi.display.layout.ViewPort;

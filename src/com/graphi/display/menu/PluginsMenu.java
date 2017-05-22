@@ -4,7 +4,7 @@
 //  https://github.com/denkers/graphi
 //=========================================
 
-package com.graphi.display;
+package com.graphi.display.menu;
 
 import com.graphi.app.Consts;
 import com.graphi.config.ConfigManager;

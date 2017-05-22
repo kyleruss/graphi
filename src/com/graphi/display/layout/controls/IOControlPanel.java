@@ -10,7 +10,7 @@ import com.graphi.display.layout.ControlPanel;
 import com.graphi.app.Consts;
 import com.graphi.display.Window;
 import com.graphi.display.AppResources;
-import com.graphi.display.MainMenu;
+import com.graphi.display.menu.MainMenu;
 import com.graphi.display.layout.DataPanel;
 import com.graphi.display.layout.GraphPanel;
 import com.graphi.display.layout.MainPanel;

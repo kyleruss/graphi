@@ -11,7 +11,7 @@ import cern.colt.matrix.impl.SparseDoubleMatrix2D;
 import com.graphi.app.AppManager;
 import com.graphi.config.AppConfig;
 import com.graphi.config.ConfigManager;
-import com.graphi.display.MainMenu;
+import com.graphi.display.menu.MainMenu;
 import com.graphi.display.layout.controls.ComputeControlPanel;
 import com.graphi.sim.GraphPlayback;
 import com.graphi.sim.PlaybackEntry;

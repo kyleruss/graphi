@@ -40,9 +40,9 @@ public class ViewPort extends JPanel
         setLayout(new CardLayout());
         setPreferredSize(new Dimension(Consts.WINDOW_WIDTH, Consts.WINDOW_HEIGHT));
 
+        initMainScene();
         initTitlePanel();       
         initSettingsPanel();
-        initMainScene();
         initTitlePanel();    
         initPluginPanel();
         initAboutPanel();
