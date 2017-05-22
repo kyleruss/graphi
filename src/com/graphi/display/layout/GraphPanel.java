@@ -556,6 +556,19 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         gViewer.repaint();
     }
     
+    public void setSelectionColour(Color colour)
+    {
+        if(colour == null)
+        {
+            colour  =   JColorChooser.showDialog(null, "Choose fill colour", Color.BLACK);
+            if(colour == null) return;
+        }
+        
+        AppConfig appConfig =   ConfigManager.getInstance().getAppConfig();
+        appConfig.setSelectedBackground(colour);
+        gViewer.repaint();
+    }
+    
     public void setSelectedObjectColour(Color colour, Class obj)
     {
         if(obj != null)

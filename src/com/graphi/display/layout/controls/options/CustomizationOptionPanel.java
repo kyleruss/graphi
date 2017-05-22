@@ -47,6 +47,7 @@ public class CustomizationOptionPanel extends AbstractOptionPanel implements Act
     private final int DISP_BG_INDEX     =   5;
     private final int NODE_BG_INDEX     =   6;
     private final int EDGE_BG_INDEX     =   7;
+    private final int SELECT_BG_INDEX   =   8;
     
     private final JCheckBox enableResCheck;
     private final JSpinner customWidthSpinner;
@@ -55,8 +56,9 @@ public class CustomizationOptionPanel extends AbstractOptionPanel implements Act
     private final JButton displayBGButton;
     private final JButton nodeBGButton;
     private final JButton edgeBGButton;
+    private final JButton selectedBGButton;
     private final JComboBox edgeTypeBox;
-    private final BackgroundColourPanel displayBGPanel, nodeBGPanel, edgeBGPanel;
+    private final BackgroundColourPanel displayBGPanel, nodeBGPanel, edgeBGPanel, selectedBGPanel;
     
     public CustomizationOptionPanel()
     {
@@ -66,16 +68,19 @@ public class CustomizationOptionPanel extends AbstractOptionPanel implements Act
         displayBGButton     =   new JButton("Choose");
         nodeBGButton        =   new JButton("Choose");
         edgeBGButton        =   new JButton("Choose");
+        selectedBGButton    =   new JButton("Choose");
         customWidthSpinner  =   new JSpinner(new SpinnerNumberModel(800, 800, 1920, 1));
         customHeightSpinner =   new JSpinner(new SpinnerNumberModel(600, 600, 1080, 1));
         displayBGPanel      =   new BackgroundColourPanel(Color.WHITE);
         nodeBGPanel         =   new BackgroundColourPanel(Color.BLUE);
         edgeBGPanel         =   new BackgroundColourPanel(Color.BLACK);
+        selectedBGPanel     =   new BackgroundColourPanel(Color.BLACK);
         
         JLabel enableResLabel   =   new JLabel("Enable custom resolution");
         JLabel themeLabel       =   new JLabel("Interface theme");
         JLabel edgeLabel        =   new JLabel("Default edge type");
         JLabel displayBGLabel   =   new JLabel("Display background");
+        JLabel selectedBGLabel  =   new JLabel("Selection background");
         JLabel nodeBGLabel      =   new JLabel("Node background");
         JLabel edgeBGLabel      =   new JLabel("Edge background");
         JLabel widthLabel       =   new JLabel("Window width");
@@ -141,11 +146,20 @@ public class CustomizationOptionPanel extends AbstractOptionPanel implements Act
         add(edgeBGLabel);
         add(edgeBGWrapper);
         
+        //Selected background
+        JPanel selectedBGWrapper    =   new JPanel();
+        selectedBGWrapper.add(selectedBGPanel);
+        selectedBGWrapper.add(selectedBGButton);
+        
+        add(selectedBGLabel);
+        add(selectedBGWrapper);
+        
         themeBox.addActionListener(this);
         edgeTypeBox.addActionListener(this);
         displayBGButton.addActionListener(this);
         nodeBGButton.addActionListener(this);
         edgeBGButton.addActionListener(this);
+        selectedBGButton.addActionListener(this);
         enableResCheck.addActionListener(this);
         customWidthSpinner.addChangeListener(this);
         customHeightSpinner.addChangeListener(this);
@@ -160,6 +174,7 @@ public class CustomizationOptionPanel extends AbstractOptionPanel implements Act
         displayBGPanel.setBackgroundColour(appConfig.getDisplayBackground());
         nodeBGPanel.setBackgroundColour(appConfig.getNodeBackground());
         edgeBGPanel.setBackgroundColour(appConfig.getEdgeBackground());
+        selectedBGPanel.setBackgroundColour(appConfig.getSelectedBackground());
         themeBox.setSelectedIndex(appConfig.getThemeType());
         
         int edgeType    =   appConfig.getEdgeType() == EdgeType.UNDIRECTED? 0 : 1;
@@ -194,7 +209,14 @@ public class CustomizationOptionPanel extends AbstractOptionPanel implements Act
             case CUSTOM_RES_INDEX: changeCustomRes(); break;
             case WIND_WIDTH_INDEX: changeCustomDimensions(WIND_WIDTH_INDEX); break;
             case WIND_HEIGHT_INDEX: changeCustomDimensions(WIND_HEIGHT_INDEX); break;
+            case SELECT_BG_INDEX: changeSelectedBackground(); break;
         }
+    }
+    
+    public void changeSelectedBackground()
+    {
+        Color selectedBGColour  =   selectedBGPanel.getBackgroundColour();
+        GraphPanel.getInstance().setSelectionColour(selectedBGColour);
     }
     
     public void changeDisplayBackground()
@@ -207,24 +229,14 @@ public class CustomizationOptionPanel extends AbstractOptionPanel implements Act
     
     public void changeNodeBackground()
     {
-        AppConfig appConfig     =   ConfigManager.getInstance().getAppConfig();
         Color nodeBGColour      =   nodeBGPanel.getBackgroundColour();
-        
-        if(GraphDataManager.getGraphDataInstance().getSelectedItems().length > 0)
-            GraphPanel.getInstance().setSelectedObjectColour(nodeBGColour, Node.class);
-        else
-            appConfig.setNodeBackground(nodeBGColour);
+        GraphPanel.getInstance().setSelectedObjectColour(nodeBGColour, Node.class);
     }
     
     public void changeEdgeBackground()
     {
-        AppConfig appConfig     =   ConfigManager.getInstance().getAppConfig();
         Color edgeBGColour      =   edgeBGPanel.getBackgroundColour();
-        
-        if(GraphDataManager.getGraphDataInstance().getSelectedItems().length > 0)
-            GraphPanel.getInstance().setSelectedObjectColour(edgeBGColour, Edge.class);
-        else
-            appConfig.setEdgeBackground(edgeBGColour);
+        GraphPanel.getInstance().setSelectedObjectColour(edgeBGColour, Edge.class);
     }
     
     public void changeTheme()

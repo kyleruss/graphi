@@ -48,6 +48,7 @@ public class AppConfig implements Config
     private Color displayBackground;
     private Color nodeBackground;
     private Color edgeBackground;
+    private Color selectedBackground;
     private EdgeType edgeType;
     
     //-----------------------------------
@@ -74,6 +75,7 @@ public class AppConfig implements Config
         displayBackground       =   Color.decode(ConfigManager.getStringConfig(document, "display-background"));
         nodeBackground          =   Color.decode(ConfigManager.getStringConfig(document, "node-background"));
         edgeBackground          =   Color.decode(ConfigManager.getStringConfig(document, "edge-background"));
+        selectedBackground      =   Color.decode(ConfigManager.getStringConfig(document, "selected-background"));
     }
     
     @Override
@@ -108,6 +110,7 @@ public class AppConfig implements Config
             ConfigManager.createConfigTextElement(doc, customSettingsElement, "display-background", ComponentUtils.colourToHex(displayBackground));
             ConfigManager.createConfigTextElement(doc, customSettingsElement, "node-background", ComponentUtils.colourToHex(nodeBackground));
             ConfigManager.createConfigTextElement(doc, customSettingsElement, "edge-background", ComponentUtils.colourToHex(edgeBackground));
+            ConfigManager.createConfigTextElement(doc, customSettingsElement, "selected-background", ComponentUtils.colourToHex(edgeBackground));
             ConfigManager.createConfigTextElement(doc, customSettingsElement, "edge-type", edgeType);
             
             ConfigManager.saveConfig(doc, Consts.APP_CONF_FILE);
@@ -278,5 +281,15 @@ public class AppConfig implements Config
     public void setEdgeType(EdgeType edgeType) 
     {
         this.edgeType = edgeType;
+    }
+    
+    public Color getSelectedBackground()
+    {
+        return selectedBackground;
+    }
+    
+    public void setSelectedBackground(Color selectedBackground)
+    {
+        this.selectedBackground =   selectedBackground;
     }
 }

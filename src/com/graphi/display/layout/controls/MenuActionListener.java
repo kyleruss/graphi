@@ -120,5 +120,8 @@ public class MenuActionListener implements ActionListener
         
         else if(src == menu.getMenuItem("edgeColourItem"))
             graphPanel.setSelectedObjectColour(null, Edge.class);
+        
+        else if(src == menu.getMenuItem("selectColourItem"))
+            graphPanel.setSelectionColour(null);
     }
 }

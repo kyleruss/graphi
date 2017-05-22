@@ -40,12 +40,13 @@ public class ObjectFillTransformer<T extends GraphObject> implements Transformer
     @Override
     public Paint transform(T obj)
     {
+        AppConfig appConfig =   ConfigManager.getInstance().getAppConfig();
+        
         if(pickedInfo.isPicked(obj))
-            return selectedColour;
+            return appConfig.getSelectedBackground();
         else
         {
             Color objFill       =   obj.getFill();
-            AppConfig appConfig =   ConfigManager.getInstance().getAppConfig();
             
             if(objFill != null)
                 return obj.getFill();

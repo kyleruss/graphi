@@ -19,6 +19,7 @@
 <display-background>#6666FF</display-background>
 <node-background>#FF0033</node-background>
 <edge-background>#FFFFFF</edge-background>
+<selected-background>#000000</selected-background>
 <edge-type>DIRECTED</edge-type>
 </customization-settings>
 </app-version>
