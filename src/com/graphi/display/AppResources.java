@@ -85,6 +85,15 @@ public class AppResources
             resourceMap.put("pluginOpenIcon", getImage("pluginOpenIcon.png"));
             resourceMap.put("pluginDefaultIcon", getImage("pluginDefaultIcon.png"));
             resourceMap.put("pluginInfoIcon", getImage("pluginInfoIcon.png"));
+            resourceMap.put("toolbarSaveIcon", getImage("toolbarSave.png"));
+            resourceMap.put("toolbarOpenIcon", getImage("toolbarOpen.png"));
+            resourceMap.put("toolbarNewIcon", getImage("toolbarNew.png"));
+            resourceMap.put("toolbarClearIcon", getImage("toolbarClear.png"));
+            resourceMap.put("toolbarSearchIcon", getImage("toolbarSearch.png"));
+            resourceMap.put("toolbarExecuteIcon", getImage("toolbarExecute.png"));
+            resourceMap.put("toolbarRecordIcon", getImage("toolbarRecord.png"));
+            resourceMap.put("toolbarPlayIcon", getImage("toolbarPlay.png"));
+            resourceMap.put("toolbarTasksIcon", getImage("toolbarTasks.png"));
         }
         
         catch(IOException e)
