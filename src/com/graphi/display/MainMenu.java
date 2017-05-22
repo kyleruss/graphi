@@ -38,6 +38,7 @@ public class MainMenu extends JMenuBar
     
     protected final JMenu vertexMenu, edgeMenu;
     protected final JMenu exportTableMenu;
+    protected final JMenu customizationMenu;
     protected Map<String, JMenuItem> menuItems;
     protected PluginsMenu pluginsListMenu;
     private static MainMenu instance;
@@ -52,7 +53,7 @@ public class MainMenu extends JMenuBar
         dataMenu            =   new JMenu("Data");
         aboutMenu           =   new JMenu("About");
         exportTableMenu     =   new JMenu("Export table");  
-        
+        customizationMenu   =   new JMenu("Customization");
         vertexMenu          =   new JMenu("Vertex");
         edgeMenu            =   new JMenu("Edge");
         pluginsListMenu     =   new PluginsMenu();
@@ -88,6 +89,11 @@ public class MainMenu extends JMenuBar
         addMenuItem("editEdgeItem", new JMenuItem("Edit"), edgeMenu);
         addMenuItem("removeEdgeItem", new JMenuItem("Remove"), edgeMenu);
         
+        //Customization sub menu items
+        addMenuItem("vertexColourItem", new JMenuItem("Vertex colour"), customizationMenu);
+        addMenuItem("edgeColourItem", new JMenuItem("Edge colour"), customizationMenu);
+        addMenuItem("selectColourItem", new JMenuItem("Selection colour"), customizationMenu);
+        
         //Data menu items
         addMenuItem("searchObjectItem", new JMenuItem("Search", KeyEvent.VK_S), dataMenu);
         addMenuItem("exportLogItem", new JMenuItem("Export Log"), dataMenu);
@@ -113,6 +119,7 @@ public class MainMenu extends JMenuBar
         
         //----------------------------------------------------------------------
         
+        graphMenu.add(customizationMenu);
         graphMenu.add(vertexMenu);
         graphMenu.add(edgeMenu);
         dataMenu.add(exportTableMenu);

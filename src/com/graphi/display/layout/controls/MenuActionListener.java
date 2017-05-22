@@ -15,6 +15,8 @@ import com.graphi.display.layout.DataPanel;
 import com.graphi.display.layout.GraphPanel;
 import com.graphi.display.layout.OutputPanel;
 import com.graphi.display.layout.ViewPort;
+import com.graphi.graph.Edge;
+import com.graphi.graph.Node;
 import com.graphi.io.ProjectStore;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -112,5 +114,11 @@ public class MenuActionListener implements ActionListener
         
         else if(src == menu.getMenuItem("settingsItem"))
             ViewPort.getInstance().transitionScene(ViewPort.SETTINGS_SCENE);
+        
+        else if(src == menu.getMenuItem("vertexColourItem"))
+            graphPanel.setSelectedObjectColour(null, Node.class);
+        
+        else if(src == menu.getMenuItem("edgeColourItem"))
+            graphPanel.setSelectedObjectColour(null, Edge.class);
     }
 }

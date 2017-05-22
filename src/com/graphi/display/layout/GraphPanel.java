@@ -74,6 +74,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -399,7 +400,6 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     public void addRecordedGraph(String entryName, Date date, boolean recordState, boolean recordTable, boolean newEntry)
     {
         PlaybackEntry entry;
-        MainPanel mainPanel =   MainPanel.getInstance();
         
         if(newEntry)
         {
@@ -560,13 +560,32 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     {
         if(obj != null)
         {
+            if(colour == null)
+            {
+                colour  =   JColorChooser.showDialog(null, "Choose fill colour", Color.BLACK);
+                if(colour == null) return;
+            }
+            
             Object[] selectedObjects  =   GraphDataManager.getGraphDataInstance().getSelectedItems();
             
-            for(Object selectedObj : selectedObjects)
+            if(selectedObjects == null || selectedObjects.length == 0)
             {
-                if(selectedObj.getClass() == obj)
-                    ((GraphObject) selectedObj).setFill(colour);
+                AppConfig appConfig =   ConfigManager.getInstance().getAppConfig();
+                
+                if(obj == Node.class) appConfig.setNodeBackground(colour);
+                else if(obj == Edge.class) appConfig.setEdgeBackground(colour);
             }
+            
+            else
+            {
+                for(Object selectedObj : selectedObjects)
+                {
+                    if(selectedObj.getClass() == obj)
+                        ((GraphObject) selectedObj).setFill(colour);
+                }
+            }
+            
+            gViewer.repaint();
         }
     }
 
