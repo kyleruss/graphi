@@ -6,6 +6,8 @@
 
 package com.graphi.display.layout.controls;
 
+import com.graphi.config.AppConfig;
+import com.graphi.config.ConfigManager;
 import com.graphi.display.MainMenu;
 import com.graphi.display.Window;
 import com.graphi.display.layout.ControlPanel;
@@ -32,6 +34,7 @@ public class MenuActionListener implements ActionListener
         MainMenu menu           =   MainMenu.getInstance();
         GraphPanel graphPanel   =   GraphPanel.getInstance();
         DataPanel dataPanel     =   DataPanel.getInstance();
+        AppConfig appConfig     =   ConfigManager.getInstance().getAppConfig();
         IOControlPanel ioPanel  =   ControlPanel.getInstance().getIoPanel();
         JFrame frame            =   Window.getInstance().getFrame();
         
@@ -60,10 +63,10 @@ public class MenuActionListener implements ActionListener
             ioPanel.exportLog();
 
         else if(src == menu.getMenuItem("vLabelsItem"))
-            graphPanel.showObjectLabels(true, true);
+            graphPanel.showObjectLabels(!appConfig.isViewNodeLabels(), true);
 
         else if(src == menu.getMenuItem("eLabelsItem"))
-            graphPanel.showObjectLabels(true, false);
+            graphPanel.showObjectLabels(!appConfig.isViewEdgeLabels(), false);
 
         else if(src == menu.getMenuItem("clearLogItem"))
             OutputPanel.getInstance().clearLog();
