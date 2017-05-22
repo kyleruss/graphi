@@ -7,6 +7,7 @@
 package com.graphi.display.layout;
 
 import com.graphi.app.Consts;
+import com.graphi.display.menu.ControlToolbar;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import javax.swing.JButton;
@@ -21,6 +22,7 @@ public class MainPanel extends JPanel
 {
     protected JSplitPane splitPane;
     protected JScrollPane controlScroll;
+    protected ControlToolbar controlToolbar;
     protected static MainPanel instance;
     
     public MainPanel()
@@ -35,15 +37,7 @@ public class MainPanel extends JPanel
         splitPane.setRightComponent(controlScroll); 
         splitPane.setResizeWeight(Consts.MAIN_SPLIT_WG);
         
-        JToolBar topControlBar  =   new JToolBar();
-        JButton testBtn         =   new JButton("test");
-        JButton testBtn2        =   new JButton("test2");
-        JButton testBtn3        =   new JButton("test3");
-        topControlBar.add(testBtn);
-        topControlBar.add(testBtn2);
-        topControlBar.add(testBtn3);
-        
-        add(topControlBar, BorderLayout.NORTH);
+        add(controlToolbar, BorderLayout.NORTH);
         add(splitPane, BorderLayout.CENTER);
     }
     
@@ -51,6 +45,7 @@ public class MainPanel extends JPanel
     {
         ControlPanel controlPanel   =   ControlPanel.getInstance();
         ScreenPanel screenPanel     =   ScreenPanel.getInstance();
+        controlToolbar              =   new ControlToolbar();
         splitPane                   =   new JSplitPane();
         controlScroll               =   new JScrollPane(controlPanel);
         splitPane.setLeftComponent(screenPanel);

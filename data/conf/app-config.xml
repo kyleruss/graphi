@@ -16,10 +16,10 @@
 <custom-width>900</custom-width>
 <custom-height>900</custom-height>
 <theme-type>0</theme-type>
-<display-background>#6666FF</display-background>
+<display-background>#FFFFFF</display-background>
 <node-background>#FF0033</node-background>
 <edge-background>#FFFFFF</edge-background>
-<selected-background>#000000</selected-background>
+<selected-background>#FFFFFF</selected-background>
 <edge-type>DIRECTED</edge-type>
 </customization-settings>
 </app-version>
