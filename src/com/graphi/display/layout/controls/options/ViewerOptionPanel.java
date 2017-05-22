@@ -66,7 +66,7 @@ public class ViewerOptionPanel extends AbstractOptionPanel implements ActionList
         AppConfig appConfig =   ConfigManager.getInstance().getAppConfig();
         boolean showLabels  =   nodeLabelsCheck.isSelected();
         
-        GraphPanel.getInstance().showVertexLabels(showLabels);
+        GraphPanel.getInstance().showObjectLabels(showLabels, true);
         appConfig.setViewNodeLabels(showLabels);
     }
     
@@ -75,7 +75,7 @@ public class ViewerOptionPanel extends AbstractOptionPanel implements ActionList
         AppConfig appConfig =   ConfigManager.getInstance().getAppConfig();
         boolean showLabels  =   edgeLabelsCheck.isSelected();
         
-        GraphPanel.getInstance().showEdgeLabels(showLabels);
+        GraphPanel.getInstance().showObjectLabels(showLabels, false);
         appConfig.setViewEdgeLabels(showLabels);
     }
     

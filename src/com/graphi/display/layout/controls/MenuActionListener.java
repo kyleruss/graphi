@@ -60,10 +60,10 @@ public class MenuActionListener implements ActionListener
             ioPanel.exportLog();
 
         else if(src == menu.getMenuItem("vLabelsItem"))
-            graphPanel.showVertexLabels(true);
+            graphPanel.showObjectLabels(true, true);
 
         else if(src == menu.getMenuItem("eLabelsItem"))
-            graphPanel.showEdgeLabels(true);
+            graphPanel.showObjectLabels(true, false);
 
         else if(src == menu.getMenuItem("clearLogItem"))
             OutputPanel.getInstance().clearLog();

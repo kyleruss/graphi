@@ -6,6 +6,7 @@
 
 package com.graphi.util.transformer;
 
+import com.graphi.config.ConfigManager;
 import com.graphi.graph.Edge;
 import java.text.DecimalFormat;
 import org.apache.commons.collections15.Transformer;
@@ -31,7 +32,7 @@ public class EdgeLabelTransformer implements Transformer<Edge, String>
     @Override
     public String transform(Edge edge)
     {
-        if(showLabels)
+        if(ConfigManager.getInstance().getAppConfig().isViewEdgeLabels())
         {
             DecimalFormat formatter =   new DecimalFormat("#.##");
             return formatter.format(edge.getWeight());

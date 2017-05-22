@@ -9,7 +9,9 @@ package com.graphi.display.layout;
 import com.graphi.display.AppResources;
 import cern.colt.matrix.impl.SparseDoubleMatrix2D;
 import com.graphi.app.AppManager;
+import com.graphi.config.AppConfig;
 import com.graphi.config.ConfigManager;
+import com.graphi.display.MainMenu;
 import com.graphi.display.layout.controls.ComputeControlPanel;
 import com.graphi.sim.GraphPlayback;
 import com.graphi.sim.PlaybackEntry;
@@ -74,6 +76,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -139,6 +142,9 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         gViewer.getRenderContext().setEdgeDrawPaintTransformer(new ObjectFillTransformer(gViewer.getPickedEdgeState()));
         gViewer.getPickedVertexState().addItemListener(this);
         gViewer.getPickedEdgeState().addItemListener(this);
+        gViewer.getRenderContext().setVertexLabelTransformer(new VertexLabelTransformer(false));
+        gViewer.getRenderContext().setEdgeLabelTransformer(new EdgeLabelTransformer(false));
+        
 
         mouse       =   new EditingModalGraphMouse(gViewer.getRenderContext(), graphData.getNodeFactory(), graphData.getEdgeFactory());
         mouse.setMode(ModalGraphMouse.Mode.PICKING);
@@ -575,16 +581,20 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         gViewer.repaint();
     }
 
-    public void showVertexLabels(boolean show)
+    public void showObjectLabels(boolean show, boolean changeVertexLabels)
     {
-        gViewer.getRenderContext().setVertexLabelTransformer(new VertexLabelTransformer(show));
-        gViewer.repaint();
-    }
+        AppConfig appConfig =   ConfigManager.getInstance().getAppConfig();
 
-    public void showEdgeLabels(boolean show)
-    {
-        gViewer.getRenderContext().setEdgeLabelTransformer(new EdgeLabelTransformer(show));
+        if(changeVertexLabels) appConfig.setViewNodeLabels(show);
+        else appConfig.setViewEdgeLabels(show);
+        
         gViewer.repaint();
+
+        JMenuItem menu    =   MainMenu.getInstance().getMenuItem(changeVertexLabels? "vLabelsItem" : "eLabelsItem");
+        if(show)
+            menu.setIcon(new ImageIcon(AppResources.getInstance().getResource("tickIcon")));
+        else
+            menu.setIcon(null);
     }
 
 

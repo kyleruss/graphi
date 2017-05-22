@@ -6,6 +6,7 @@
 
 package com.graphi.util.transformer;
 
+import com.graphi.config.ConfigManager;
 import com.graphi.graph.Node;
 import org.apache.commons.collections15.Transformer;
 
@@ -30,7 +31,7 @@ public class VertexLabelTransformer implements Transformer<Node, String>
     @Override
     public String transform(Node node)
     {
-        if(showLabels)
+        if(ConfigManager.getInstance().getAppConfig().isViewNodeLabels())
             return "" + node.getID();
         else
             return "";
