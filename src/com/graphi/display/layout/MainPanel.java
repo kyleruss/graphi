@@ -10,13 +10,9 @@ import com.graphi.app.Consts;
 import com.graphi.display.menu.ControlToolbar;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import javax.swing.JButton;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.JToolBar;
 
 public class MainPanel extends JPanel 
 {

@@ -69,6 +69,16 @@ public class ControlToolbar extends JToolBar implements ActionListener
         add(tasksBtn);
         add(recordBtn);
         add(playBtn);
+        
+        newBtn.addActionListener(this);
+        openBtn.addActionListener(this);
+        saveBtn.addActionListener(this);
+        clearBtn.addActionListener(this);
+        searchBtn.addActionListener(this);
+        executeBtn.addActionListener(this);
+        tasksBtn.addActionListener(this);
+        recordBtn.addActionListener(this);
+        playBtn.addActionListener(this);
     }
     
     

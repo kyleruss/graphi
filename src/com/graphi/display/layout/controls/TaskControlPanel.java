@@ -15,6 +15,7 @@ import com.graphi.tasks.TaskManager;
 import com.graphi.tasks.TasksBean;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,6 +34,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
@@ -103,19 +105,19 @@ public class TaskControlPanel extends JPanel implements ActionListener
         List<Task> setupTasks   =   bean.getSetupTasks();
         
         
-        setupPanel.taskListPanel.resetOptions();
+   /*     setupPanel.taskListPanel.resetOptions();
         repeatPanel.taskListPanel.resetOptions();
         
         for(Task task : repeatTasks)
             repeatPanel.taskListPanel.addOption(task, "");
         
         for(Task task : setupTasks)
-            setupPanel.taskListPanel.addOption(task, "");
+            setupPanel.taskListPanel.addOption(task, ""); */
     }
     
     public void executeActions(boolean setup, int n)
     {
-        List taskList           =   setup? setupPanel.taskListPanel.getValues(0) : repeatPanel.taskListPanel.getValues(0);
+       /* List taskList           =   setup? setupPanel.taskListPanel.getValues(0) : repeatPanel.taskListPanel.getValues(0);
         
         for(int i = 0; i < n; i++)
         {
@@ -124,7 +126,7 @@ public class TaskControlPanel extends JPanel implements ActionListener
                 Task task   =   (Task) taskList.get(j);
                 task.performTask();
             }
-        }
+        } */
     }
     
     public void runRepeat()
@@ -170,14 +172,14 @@ public class TaskControlPanel extends JPanel implements ActionListener
     
     protected void addOption(String name)
     {
-        setupPanel.taskListPanel.optionsBox.addItem(name);
-        repeatPanel.taskListPanel.optionsBox.addItem(name);
+    //    setupPanel.taskListPanel.optionsBox.addItem(name);
+      //  repeatPanel.taskListPanel.optionsBox.addItem(name);
     }
     
     protected void removeOption(String name)
     {
-        setupPanel.taskListPanel.optionsBox.removeItem(name);
-        repeatPanel.taskListPanel.optionsBox.removeItem(name);
+    //    setupPanel.taskListPanel.optionsBox.removeItem(name);
+      //  repeatPanel.taskListPanel.optionsBox.removeItem(name);
     }
 
     @Override
@@ -204,16 +206,17 @@ public class TaskControlPanel extends JPanel implements ActionListener
         private final String T_LIST_CARD    =   "t_list";
         private final String T_PROP_CARD    =   "t_prop";
         
-        private TaskOptionPanel taskListPanel;
+        private TaskOptionPanel taskOptionPanel;
         private TaskPropertiesPanel taskPropPanel;
         
         public TaskPopupPanel()
         {
             setLayout(new CardLayout());
-            taskListPanel   =   new TaskOptionPanel();
-            taskPropPanel   =   new TaskPropertiesPanel();
+            taskOptionPanel      =   new TaskOptionPanel();
+            taskPropPanel        =   new TaskPropertiesPanel();
             
-            add(taskListPanel, T_LIST_CARD);
+            
+            add(taskOptionPanel, T_LIST_CARD);
             add(taskPropPanel, T_PROP_CARD);
         }
         
@@ -233,16 +236,29 @@ public class TaskControlPanel extends JPanel implements ActionListener
             cLayout.show(this, cardName);
         }
         
-        private class TaskOptionPanel extends OptionsManagePanel implements ActionListener
+        private class TaskOptionPanel extends JPanel implements ActionListener
         {
             private JButton addButton;
             private JComboBox optionsBox;
+            private TaskPropertiesPanel taskPropPanel;
+            private TaskListPanel setupTaskListPanel, repeatableTaskListPanel;
+            private JTabbedPane taskTypeTabPane;
 
             public TaskOptionPanel()
             {
-                addButton       =   new JButton("Add task");
-                optionsBox      =   new JComboBox();
+                setLayout(new BorderLayout());
+                //setBackground(Consts.PRESET_COL);
+                
+                addButton               =   new JButton("Add task");
+                optionsBox              =   new JComboBox();
+                taskTypeTabPane         =   new JTabbedPane();
+                setupTaskListPanel      =   new TaskListPanel();
+                repeatableTaskListPanel =   new TaskListPanel();   
                 addButton.setIcon(new ImageIcon(AppResources.getInstance().getResource("addIcon")));
+                
+                taskTypeTabPane.add("Setup", setupTaskListPanel);
+                taskTypeTabPane.add("Repeatables", repeatableTaskListPanel);
+               // taskTypeTabPane.setBackground(Consts.PRESET_COL);
 
                 JPanel topControlsPanel =   new JPanel(new BorderLayout());
                 topControlsPanel.add(optionsBox, BorderLayout.CENTER);
@@ -250,19 +266,10 @@ public class TaskControlPanel extends JPanel implements ActionListener
                 add(topControlsPanel, BorderLayout.NORTH);
                 initOptions();
 
-                taskTableModel.addColumn("");
-                taskTableModel.addColumn("");
-                taskTable.getColumnModel().getColumn(1).setMaxWidth(60);
-                taskTable.getColumnModel().getColumn(2).setMaxWidth(60);
-                taskTable.getColumnModel().getColumn(3).setMaxWidth(60);
                 
-                 ButtonColumn settingsBtnCol    =   new ButtonColumn(taskTable, new SettingsItemListener(), 2, 
-                    new ImageIcon(AppResources.getInstance().getResource("settingsIcon")));
-                 
-                 ButtonColumn helpBtnCol        =   new ButtonColumn(taskTable, new HelpItemListener(), 3, 
-                    new ImageIcon(AppResources.getInstance().getResource("helpIcon")));
-
-                attachTable();
+                taskTypeTabPane.add("Setup", setupTaskListPanel);
+                taskTypeTabPane.add("Repeatables", repeatableTaskListPanel);
+                add(taskTypeTabPane, BorderLayout.CENTER);
                 addButton.addActionListener(this);
             }
 
@@ -277,9 +284,11 @@ public class TaskControlPanel extends JPanel implements ActionListener
             {
                 try
                 {
-                    Task task       =   (Task) optionsBox.getSelectedItem();
-                    Task nTask      =   task.getClass().newInstance();
-                    addOption(nTask, "");
+                    Task task                       =   (Task) optionsBox.getSelectedItem();
+                    Task nTask                      =   task.getClass().newInstance();
+                    TaskListPanel selectedTaskPanel =   (TaskListPanel) taskTypeTabPane.getSelectedComponent();
+                    
+                    selectedTaskPanel.addOption(nTask, "");
                     
                     TasksBean tasks =   TaskManager.getInstance().getTasks();
                     
@@ -294,38 +303,60 @@ public class TaskControlPanel extends JPanel implements ActionListener
                     JOptionPane.showMessageDialog(null, "Error failed to create new task");
                 }
             }
-
-            @Override
-            protected ImageIcon getItemIcon() 
-            {
-                return new ImageIcon(AppResources.getInstance().getResource("executeIcon"));
-            }
-
-            private class SettingsItemListener extends AbstractAction
-            {
-                @Override
-                public void actionPerformed(ActionEvent e) 
-                {
-                    int row     =   Integer.valueOf(e.getActionCommand());
-                    Task task   =   (Task) taskTable.getValueAt(row, 0);
-                    taskPropPanel.setTaskNameTitle(task.getTaskName());
-                    taskPropPanel.setActiveTask(task);
-                    showTaskProperties();
-                }
-            }
             
-            private class HelpItemListener extends AbstractAction
+            private class TaskListPanel extends OptionsManagePanel
             {
-
-                @Override
-                public void actionPerformed(ActionEvent e) 
+                public TaskListPanel()
                 {
-                    int row     =   Integer.valueOf(e.getActionCommand());
-                    Task task   =   (Task) taskTable.getValueAt(row, 0);
-                    String name =   task.getTaskName();
-                    String desc =   task.getTaskDescription();
-                    
-                    JOptionPane.showMessageDialog(null, desc, "About task: " + name, JOptionPane.INFORMATION_MESSAGE);
+                    outerWrapper.setBackground(Color.WHITE);
+                    taskTableModel.addColumn("");
+                    taskTableModel.addColumn("");
+                    taskTable.getColumnModel().getColumn(1).setMaxWidth(60);
+                    taskTable.getColumnModel().getColumn(2).setMaxWidth(60);
+                    taskTable.getColumnModel().getColumn(3).setMaxWidth(60);
+
+                     ButtonColumn settingsBtnCol    =   new ButtonColumn(taskTable, new SettingsItemListener(), 2, 
+                        new ImageIcon(AppResources.getInstance().getResource("settingsIcon")));
+
+                     ButtonColumn helpBtnCol        =   new ButtonColumn(taskTable, new HelpItemListener(), 3, 
+                        new ImageIcon(AppResources.getInstance().getResource("helpIcon")));
+
+                    tableWrapper.setBorder(null);
+                    attachTable();
+                }
+                
+                @Override
+                protected ImageIcon getItemIcon() 
+                {
+                    return new ImageIcon(AppResources.getInstance().getResource("executeIcon"));
+                }
+
+                private class SettingsItemListener extends AbstractAction
+                {
+                    @Override
+                    public void actionPerformed(ActionEvent e) 
+                    {
+                        int row     =   Integer.valueOf(e.getActionCommand());
+                        Task task   =   (Task) taskTable.getValueAt(row, 0);
+                        taskPropPanel.setTaskNameTitle(task.getTaskName());
+                        taskPropPanel.setActiveTask(task);
+                        showTaskProperties();
+                    }
+                }
+                
+                private class HelpItemListener extends AbstractAction
+                {
+
+                    @Override
+                    public void actionPerformed(ActionEvent e) 
+                    {
+                        int row     =   Integer.valueOf(e.getActionCommand());
+                        Task task   =   (Task) taskTable.getValueAt(row, 0);
+                        String name =   task.getTaskName();
+                        String desc =   task.getTaskDescription();
+
+                        JOptionPane.showMessageDialog(null, desc, "About task: " + name, JOptionPane.INFORMATION_MESSAGE);
+                    }
                 }
             }
         }
