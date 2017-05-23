@@ -116,7 +116,13 @@ public class ComponentUtils
     public static JButton generateDropdownButton(JPopupMenu popupMenu, String text, ImageIcon icon)
     {
         char arrowChar      =   '\u25BE';
-        String arrowText    =   text.length() > 0? (text + " " + arrowChar) : ("" + arrowChar);
+        String arrowText;
+        
+        if(text != null)
+            arrowText   =   text.length() > 0? (text + " " + arrowChar) : ("" + arrowChar);
+        else
+            arrowText   =   "";
+        
         JButton btn         =   new JButton(arrowText);
         btn.setIcon(icon);
         
