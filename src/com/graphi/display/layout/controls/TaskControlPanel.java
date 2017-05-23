@@ -9,6 +9,7 @@ package com.graphi.display.layout.controls;
 import com.graphi.app.Consts;
 import com.graphi.display.AppResources;
 import com.graphi.display.layout.util.ButtonColumn;
+import com.graphi.display.layout.util.ComponentUtils;
 import com.graphi.display.layout.util.OptionsManagePanel;
 import com.graphi.tasks.Task;
 import com.graphi.tasks.TaskManager;
@@ -29,14 +30,17 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 
@@ -45,9 +49,11 @@ public class TaskControlPanel extends JPanel implements ActionListener
     private JComboBox repeatBox;
     private TaskPopupPanel taskPopupPanel;
     private JPanel repeatManyPanel;
-    private JRadioButton setupRadio, repeatablesRadio;
-    private ButtonGroup taskBtnGroup;
+    //private JRadioButton setupRadio, repeatablesRadio;
+    //private ButtonGroup taskBtnGroup;
     private JButton taskButton, runButton;
+    private JPopupMenu executePopupMenu;
+    private JMenuItem execSetupBtn, execRepeatBtn;
     private JPanel wrapper;
     private JSpinner repeatCountSpinner;
     
@@ -59,17 +65,16 @@ public class TaskControlPanel extends JPanel implements ActionListener
         wrapper             =   new JPanel(new MigLayout("fillx"));
         taskPopupPanel      =   new TaskPopupPanel();
         taskButton          =   new JButton("Tasks");
-        runButton           =   new JButton("Run");
+        executePopupMenu    =   new JPopupMenu();
+        runButton           =   ComponentUtils.generateDropdownButton(executePopupMenu, "Run", null);
         repeatManyPanel     =   new JPanel(new MigLayout("fillx"));
         repeatBox           =   new JComboBox();
+        execSetupBtn        =   new JMenuItem("Setup tasks");
+        execRepeatBtn       =   new JMenuItem("Repeatable tasks");
         repeatCountSpinner  =   new JSpinner(new SpinnerNumberModel(1, 1, 100, 1));
-        setupRadio          =   new JRadioButton("Setup");
-        repeatablesRadio    =   new JRadioButton("Repeatables");
-        taskBtnGroup        =   new ButtonGroup();
-        
-        taskBtnGroup.add(setupRadio);
-        taskBtnGroup.add(repeatablesRadio);
-        setupRadio.setSelected(true);
+       
+        executePopupMenu.add(execSetupBtn);
+        executePopupMenu.add(execRepeatBtn);
         
         repeatManyPanel.add(new JLabel("Repeat count"));
         repeatManyPanel.add(repeatCountSpinner, "al center");
@@ -83,19 +88,14 @@ public class TaskControlPanel extends JPanel implements ActionListener
         wrapper.add(repeatBox, "wrap");
         wrapper.add(repeatManyPanel, "al center, span 2, wrap");
         
-        JPanel radioWrapper =   new JPanel();
-        radioWrapper.setBackground(Consts.PRESET_COL);
-        radioWrapper.add(setupRadio);
-        radioWrapper.add(repeatablesRadio);
-        
-        wrapper.add(radioWrapper, "al center, span 2, wrap");
         wrapper.add(taskButton, "al right");
         wrapper.add(runButton);
         add(wrapper);
         
         taskButton.addActionListener(this);
-        runButton.addActionListener(this);
         repeatBox.addActionListener(this);
+        execSetupBtn.addActionListener(this);
+        execRepeatBtn.addActionListener(this);
     }
     
     public void initTaskBean(TasksBean bean)
@@ -176,13 +176,11 @@ public class TaskControlPanel extends JPanel implements ActionListener
         else if(src == repeatBox)
             repeatManyPanel.setVisible(repeatBox.getSelectedIndex() == 0);
         
-        else if(src == runButton)
-        {
-            if(setupRadio.isSelected())
-                executeActions(true, 1);
-            
-            else runRepeat();
-        }
+        else if(src == execSetupBtn)
+            executeActions(true, 1);
+        
+        else if(src == execRepeatBtn)
+            runRepeat();
     }
     
     private class TaskPopupPanel extends JPanel

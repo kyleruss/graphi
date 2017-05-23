@@ -8,12 +8,16 @@ package com.graphi.display.layout.util;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
@@ -107,5 +111,24 @@ public class ComponentUtils
     public static String colourToHex(Color colour)
     {
         return String.format("#%02X%02X%02X", colour.getRed(), colour.getGreen(), colour.getBlue());
+    }
+    
+    public static JButton generateDropdownButton(JPopupMenu popupMenu, String text, ImageIcon icon)
+    {
+        char arrowChar      =   '\u25BE';
+        String arrowText    =   text.length() > 0? (text + " " + arrowChar) : ("" + arrowChar);
+        JButton btn         =   new JButton(arrowText);
+        btn.setIcon(icon);
+        
+        btn.addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mousePressed(MouseEvent e)
+            {
+                popupMenu.show(e.getComponent(), e.getX(), e.getY());
+            }
+        });
+        
+        return btn;
     }
 }
