@@ -101,7 +101,6 @@ public abstract class OptionsManagePanel extends JPanel
         }
     }
     
-
     private class TaskLabelCellRenderer implements TableCellRenderer
     {
         @Override

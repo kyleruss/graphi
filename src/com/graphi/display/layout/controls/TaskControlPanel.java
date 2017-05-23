@@ -43,7 +43,7 @@ import net.miginfocom.swing.MigLayout;
 public class TaskControlPanel extends JPanel implements ActionListener
 {
     private JComboBox repeatBox;
-    private TaskPopupPanel setupPanel, repeatPanel;
+    private TaskPopupPanel taskPopupPanel;
     private JPanel repeatManyPanel;
     private JRadioButton setupRadio, repeatablesRadio;
     private ButtonGroup taskBtnGroup;
@@ -57,8 +57,7 @@ public class TaskControlPanel extends JPanel implements ActionListener
         setBorder(BorderFactory.createTitledBorder("Task controls"));
         
         wrapper             =   new JPanel(new MigLayout("fillx"));
-        setupPanel          =   new TaskPopupPanel();
-        repeatPanel         =   new TaskPopupPanel();
+        taskPopupPanel      =   new TaskPopupPanel();
         taskButton          =   new JButton("Tasks");
         runButton           =   new JButton("Run");
         repeatManyPanel     =   new JPanel(new MigLayout("fillx"));
@@ -101,23 +100,23 @@ public class TaskControlPanel extends JPanel implements ActionListener
     
     public void initTaskBean(TasksBean bean)
     {
-        List<Task> repeatTasks  =   bean.getRepeatableTasks();
-        List<Task> setupTasks   =   bean.getSetupTasks();
-        
-        
-   /*     setupPanel.taskListPanel.resetOptions();
-        repeatPanel.taskListPanel.resetOptions();
+        List<Task> repeatTasks              =   bean.getRepeatableTasks();
+        List<Task> setupTasks               =   bean.getSetupTasks();
+        OptionsManagePanel setupTaskList    =   taskPopupPanel.taskOptionPanel.setupTaskListPanel;
+        OptionsManagePanel repeatTaskList   =   taskPopupPanel.taskOptionPanel.repeatableTaskListPanel;
         
         for(Task task : repeatTasks)
-            repeatPanel.taskListPanel.addOption(task, "");
+            setupTaskList.addOption(task, "");
         
         for(Task task : setupTasks)
-            setupPanel.taskListPanel.addOption(task, ""); */
+            repeatTaskList.addOption(task, ""); 
     }
     
     public void executeActions(boolean setup, int n)
     {
-       /* List taskList           =   setup? setupPanel.taskListPanel.getValues(0) : repeatPanel.taskListPanel.getValues(0);
+        OptionsManagePanel setupTaskList    =   taskPopupPanel.taskOptionPanel.setupTaskListPanel;
+        OptionsManagePanel repeatTaskList   =   taskPopupPanel.taskOptionPanel.repeatableTaskListPanel;
+        List taskList           =   setup? setupTaskList.getValues(0) : repeatTaskList.getValues(0);
         
         for(int i = 0; i < n; i++)
         {
@@ -126,7 +125,7 @@ public class TaskControlPanel extends JPanel implements ActionListener
                 Task task   =   (Task) taskList.get(j);
                 task.performTask();
             }
-        } */
+        } 
     }
     
     public void runRepeat()
@@ -145,41 +144,26 @@ public class TaskControlPanel extends JPanel implements ActionListener
         return TaskManager.getInstance().getAvailTaskList().size();
     }
     
-    public void showTasksDialog(boolean isSetup)
+    public void showTasksDialog()
     {
-        TaskPopupPanel panel;
-        String title;
-        
-        if(isSetup)
-        {
-            panel   =   setupPanel;
-            title   =   "Manage setup tasks";
-        }
-        
-        else
-        {
-            panel   =   repeatPanel;
-            title   =   "Manage repeat tasks";
-        }
-        
-        int option  =   JOptionPane.showConfirmDialog(null, panel, title, JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+       
+        String title    =   "Manage tasks";   
+        int option      =   JOptionPane.showConfirmDialog(null, taskPopupPanel, title, JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
         
         if(option == JOptionPane.OK_OPTION)
-            panel.taskPropPanel.saveTaskProperties();
+            taskPopupPanel.taskPropPanel.saveTaskProperties();
         
-        panel.taskPropPanel.resetProperties();
+        taskPopupPanel.taskPropPanel.resetProperties();
     }
     
     protected void addOption(String name)
     {
-    //    setupPanel.taskListPanel.optionsBox.addItem(name);
-      //  repeatPanel.taskListPanel.optionsBox.addItem(name);
+        taskPopupPanel.taskOptionPanel.optionsBox.addItem(name);
     }
     
     protected void removeOption(String name)
     {
-    //    setupPanel.taskListPanel.optionsBox.removeItem(name);
-      //  repeatPanel.taskListPanel.optionsBox.removeItem(name);
+        taskPopupPanel.taskOptionPanel.optionsBox.removeItem(name);
     }
 
     @Override
@@ -187,7 +171,7 @@ public class TaskControlPanel extends JPanel implements ActionListener
     {
         Object src  =   e.getSource();
         if(src == taskButton)
-            showTasksDialog(setupRadio.isSelected());
+            showTasksDialog();
         
         else if(src == repeatBox)
             repeatManyPanel.setVisible(repeatBox.getSelectedIndex() == 0);
@@ -212,9 +196,8 @@ public class TaskControlPanel extends JPanel implements ActionListener
         public TaskPopupPanel()
         {
             setLayout(new CardLayout());
-            taskOptionPanel      =   new TaskOptionPanel();
             taskPropPanel        =   new TaskPropertiesPanel();
-            
+            taskOptionPanel      =   new TaskOptionPanel();
             
             add(taskOptionPanel, T_LIST_CARD);
             add(taskPropPanel, T_PROP_CARD);
@@ -240,14 +223,12 @@ public class TaskControlPanel extends JPanel implements ActionListener
         {
             private JButton addButton;
             private JComboBox optionsBox;
-            private TaskPropertiesPanel taskPropPanel;
             private TaskListPanel setupTaskListPanel, repeatableTaskListPanel;
             private JTabbedPane taskTypeTabPane;
 
             public TaskOptionPanel()
             {
                 setLayout(new BorderLayout());
-                //setBackground(Consts.PRESET_COL);
                 
                 addButton               =   new JButton("Add task");
                 optionsBox              =   new JComboBox();
@@ -258,7 +239,6 @@ public class TaskControlPanel extends JPanel implements ActionListener
                 
                 taskTypeTabPane.add("Setup", setupTaskListPanel);
                 taskTypeTabPane.add("Repeatables", repeatableTaskListPanel);
-               // taskTypeTabPane.setBackground(Consts.PRESET_COL);
 
                 JPanel topControlsPanel =   new JPanel(new BorderLayout());
                 topControlsPanel.add(optionsBox, BorderLayout.CENTER);
@@ -292,7 +272,7 @@ public class TaskControlPanel extends JPanel implements ActionListener
                     
                     TasksBean tasks =   TaskManager.getInstance().getTasks();
                     
-                    if(setupRadio.isSelected())
+                    if(taskTypeTabPane.getSelectedIndex() == 0)
                         tasks.addSetupTask(nTask);
                     else
                         tasks.addRepeatableTask(nTask);
