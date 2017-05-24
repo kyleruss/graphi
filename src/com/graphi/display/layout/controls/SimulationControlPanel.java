@@ -169,7 +169,7 @@ public class SimulationControlPanel extends JPanel implements ActionListener
         gLayout.show(genPanel, card);
     }
     
-    public void showGeneratorSim(final NetworkGenerator generator)
+    public void executeGeneratorSim(final NetworkGenerator generator)
     {
         int genIndex    =   genAlgorithmsBox.getSelectedIndex();
         GraphData data  =   GraphDataManager.getGraphDataInstance();
@@ -247,7 +247,7 @@ public class SimulationControlPanel extends JPanel implements ActionListener
             showSimPanel();
          
         else if(src == executeGeneratorBtn)
-            showGeneratorSim(null);
+            executeGeneratorSim(null);
 
         else if(src == resetGeneratorBtn)
             resetSim();

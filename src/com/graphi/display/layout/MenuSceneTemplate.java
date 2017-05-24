@@ -75,17 +75,15 @@ public abstract class MenuSceneTemplate extends JPanel
             setLayout(new BorderLayout());
             
             AppResources resources  =   AppResources.getInstance();
-            controlListener =   new TitleControlListener();   
-            menuButton      =   new JButton();
-            menuButton.setIcon(new ImageIcon(resources.getResource("menuIcon")));
-            menuButton.addMouseListener(controlListener);
+            controlListener         =   new TitleControlListener();   
+            popupMenu               =   new JPopupMenu();
+            menuButton              =   ComponentUtils.generateDropdownButton(popupMenu, null, new ImageIcon(resources.getResource("menuIcon")));
             ComponentUtils.setTransparentControl(menuButton);
             
             JPanel homeBtnWrapper   =   new JPanel();
             homeBtnWrapper.setBackground(Color.WHITE);
             homeBtnWrapper.add(menuButton);
             
-            popupMenu           =   new JPopupMenu();
             mainMenuItem        =   new JMenuItem("Menu");
             graphControlsItem   =   new JMenuItem("Controls");
             optionsItem         =   new JMenuItem("Options");
@@ -127,7 +125,7 @@ public abstract class MenuSceneTemplate extends JPanel
             activeMenuItem.setEnabled(false);
         }
 
-        private class TitleControlListener extends MouseAdapter implements ActionListener
+        private class TitleControlListener implements ActionListener
         {
             @Override
             public void actionPerformed(ActionEvent e) 
@@ -149,15 +147,6 @@ public abstract class MenuSceneTemplate extends JPanel
                 
                 else if(src == aboutItem)
                     viewPort.setScene(ViewPort.ABOUT_SCENE);
-            }
-            
-            @Override
-            public void mousePressed(MouseEvent e)
-            {
-                Object src  =   e.getSource();
-                
-                if(src == menuButton)
-                    popupMenu.show(e.getComponent(), e.getX(), e.getY());
             }
         }
     }

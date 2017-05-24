@@ -55,7 +55,7 @@ public class SimulateNetworkTask extends AbstractTask
         else
         {           
             ControlPanel.getInstance().getSimulationPanel()
-            .showGeneratorSim(gen);
+            .executeGeneratorSim(gen);
         }
     }
     

@@ -93,8 +93,8 @@ import net.miginfocom.swing.MigLayout;
 
 public class GraphPanel extends JPanel implements ItemListener, GraphMouseListener
 {
-    public final String RECORD_CARD         =   "rec";
-    public final String PLAYBACK_CARD       =   "pb";
+    public static final String RECORD_CARD         =   "rec";
+    public static final String PLAYBACK_CARD       =   "pb";
     protected final int INITIAL_DELAY       =   500;
     public static final int SELECT_MODE     =   0;
     public static final int MOVE_MODE       =   1;   
@@ -376,7 +376,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
             togglePlayback();
     });
 
-    protected void startPlayback()
+    public void startPlayback()
     {
         pbProgress.setMinimum(0);
         pbProgress.setMaximum(gPlayback.getSize() - 1);
@@ -392,7 +392,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         PB_TIMER.setDelay((int) pbProgressSpeed.getValue());
     }
 
-    protected void stopPlayback()
+    public void stopPlayback()
     {
         PB_TIMER.stop();
     }
@@ -444,7 +444,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         addRecordedGraph(name, date, recordState, recordTable, newEntry);
     }
 
-    protected void togglePlayback()
+    public void togglePlayback()
     {
         if(pbPlaying)
         {

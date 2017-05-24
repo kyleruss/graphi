@@ -7,7 +7,11 @@
 package com.graphi.display.menu;
 
 import com.graphi.display.AppResources;
+import com.graphi.display.layout.ControlPanel;
+import com.graphi.display.layout.GraphPanel;
+import com.graphi.display.layout.OutputPanel;
 import com.graphi.display.layout.util.ComponentUtils;
+import com.graphi.io.ProjectStore;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
@@ -28,15 +32,17 @@ public class ControlToolbar extends JToolBar implements ActionListener
     private JButton playBtn;
     private JButton tasksBtn;
     
-    private JPopupMenu clearPopupMenu, executePopupMenu;
+    private JPopupMenu clearPopupMenu, executePopupMenu, tasksPopupMenu;
     private JMenuItem clearLogItem, clearDisplayItem;
-    private JMenuItem execTasksItem, execGeneratorItem, execCompItem;
+    private JMenuItem execGeneratorItem, execCompItem;
+    private JMenuItem execSetupTasksItem, execRepeatTasksItem, showTasksItem;
     
     public ControlToolbar()
     {
         AppResources resources  =   AppResources.getInstance();
         clearPopupMenu          =   new JPopupMenu();
         executePopupMenu        =   new JPopupMenu();
+        tasksPopupMenu          =   new JPopupMenu();
         saveBtn                 =   new JButton(new ImageIcon(resources.getResource("toolbarSaveIcon")));
         newBtn                  =   new JButton(new ImageIcon(resources.getResource("toolbarNewIcon")));
         openBtn                 =   new JButton(new ImageIcon(resources.getResource("toolbarOpenIcon")));
@@ -45,19 +51,23 @@ public class ControlToolbar extends JToolBar implements ActionListener
         executeBtn              =   ComponentUtils.generateDropdownButton(executePopupMenu, null, new ImageIcon(resources.getResource("toolbarExecuteIcon")));
         recordBtn               =   new JButton(new ImageIcon(resources.getResource("toolbarRecordIcon")));
         playBtn                 =   new JButton(new ImageIcon(resources.getResource("toolbarPlayIcon")));
-        tasksBtn                =   new JButton(new ImageIcon(resources.getResource("toolbarTasksIcon")));
+        tasksBtn                =   ComponentUtils.generateDropdownButton(tasksPopupMenu, null, new ImageIcon(resources.getResource("toolbarTasksIcon")));
         
         clearLogItem            =   new JMenuItem("Clear Log");
         clearDisplayItem        =   new JMenuItem("Clear Display");
-        execTasksItem           =   new JMenuItem("Run Tasks");
         execGeneratorItem       =   new JMenuItem("Run Network Generator");
         execCompItem            =   new JMenuItem("Run Computations");
+        execSetupTasksItem      =   new JMenuItem("Run Setup Tasks");
+        execRepeatTasksItem     =   new JMenuItem("Run Repeatable Tasks");
+        showTasksItem           =   new JMenuItem("Manage Tasks");
         
         clearPopupMenu.add(clearDisplayItem);
         clearPopupMenu.add(clearLogItem);
-        executePopupMenu.add(execTasksItem);
         executePopupMenu.add(execGeneratorItem);
         executePopupMenu.add(execCompItem);
+        tasksPopupMenu.add(showTasksItem);
+        tasksPopupMenu.add(execSetupTasksItem);
+        tasksPopupMenu.add(execRepeatTasksItem);
         
         newBtn.setToolTipText("New Project");
         saveBtn.setToolTipText("Save Project");
@@ -102,15 +112,61 @@ public class ControlToolbar extends JToolBar implements ActionListener
         playBtn.addActionListener(this);
         clearLogItem.addActionListener(this);
         clearDisplayItem.addActionListener(this);
-        execTasksItem.addActionListener(this);
         execGeneratorItem.addActionListener(this);
         execCompItem.addActionListener(this);
+        execSetupTasksItem.addActionListener(this);
+        execRepeatTasksItem.addActionListener(this);
+        showTasksItem.addActionListener(this);
     }
     
     
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        Object src  =   e.getSource();
+        Object src                  =   e.getSource();
+        ControlPanel controlPanel   =   ControlPanel.getInstance();  
+        GraphPanel graphPanel       =   GraphPanel.getInstance();
+        
+        if(src == newBtn)
+            ProjectStore.newProject();
+        
+        else if(src == saveBtn)
+            ProjectStore.saveProject();
+        
+        else if(src == openBtn)
+            ProjectStore.loadProject();
+        
+        else if(src == clearLogItem)
+            OutputPanel.getInstance().clearLog();
+        
+        else if(src == clearDisplayItem)
+            controlPanel.getSimulationPanel().resetSim();
+        
+        else if(src == execGeneratorItem)
+            controlPanel.getSimulationPanel().executeGeneratorSim(null);
+        
+        else if(src == searchBtn)
+            graphPanel.searchGraphObject();
+        
+        else if(src == showTasksItem)
+            controlPanel.getTaskPanel().showTasksDialog();
+        
+        else if(src == execSetupTasksItem)
+            controlPanel.getTaskPanel().executeActions(true, 1);
+        
+        else if(src == execRepeatTasksItem)
+            controlPanel.getTaskPanel().runRepeat();
+        
+        else if(src == recordBtn)
+        {
+            graphPanel.changePlaybackPanel(GraphPanel.RECORD_CARD);
+            graphPanel.addRecordedGraph();
+        }
+        
+        else if(src == playBtn)
+        {
+            graphPanel.changePlaybackPanel(GraphPanel.PLAYBACK_CARD);
+            graphPanel.togglePlayback();
+        }
     }
 }
