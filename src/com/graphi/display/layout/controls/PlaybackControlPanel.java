@@ -73,6 +73,7 @@ public  class PlaybackControlPanel extends JPanel implements ActionListener, Cha
         pbProgressSpeed =   new JSpinner(new SpinnerNumberModel(0, 0, 10000, 1));
         pbName          =   new JLabel("N/A");
         pbDate          =   new JLabel("N/A");
+        gPlayback       =   new GraphPlayback();
         pbPlaying       =   false;
 
         pbToggle.setIcon(new ImageIcon(AppResources.getInstance().getResource("playIcon")));
@@ -89,9 +90,6 @@ public  class PlaybackControlPanel extends JPanel implements ActionListener, Cha
 
         pbName.setFont(new Font("Arial", Font.BOLD, 12));
         pbDate.setFont(new Font("Arial", Font.BOLD, 12));
-
-        recordComputeCheck.setSelected(true);
-        recordStateCheck.setSelected(true);
 
         JPanel pbInnerWrapper   =   new JPanel();
         pbInnerWrapper.add(pbToggle);
@@ -158,6 +156,9 @@ public  class PlaybackControlPanel extends JPanel implements ActionListener, Cha
         gpRecRemoveBtn.addActionListener(this);
         gpRecEntries.addActionListener(this);
         gpCtrlsClose.addActionListener(this);
+        
+        recordComputeCheck.setSelected(true);
+        recordStateCheck.setSelected(true);
     }
 
     public void setPreviousState()
@@ -317,91 +318,91 @@ public  class PlaybackControlPanel extends JPanel implements ActionListener, Cha
     });
 
     public void startPlayback()
-{
-    pbProgress.setMinimum(0);
-    pbProgress.setMaximum(gPlayback.getSize() - 1);
-
-    if(pbProgress.getValue() == pbProgress.getMaximum())
     {
-        gPlayback.setIndex(0);
-        pbProgress.setValue(0);
-    }
+        pbProgress.setMinimum(0);
+        pbProgress.setMaximum(gPlayback.getSize() - 1);
 
-    PB_TIMER.setRepeats(true);
-    PB_TIMER.start();
-    PB_TIMER.setDelay((int) pbProgressSpeed.getValue());
-}
-
-public void stopPlayback()
-{
-    PB_TIMER.stop();
-}
-
-public void addRecordedGraph(String entryName, Date date, boolean recordState, boolean recordTable, boolean newEntry)
-{
-    PlaybackEntry entry;
-
-    if(newEntry)
-    {
-        Graph<Node, Edge> graph     =   GraphUtilities.copyNewGraph(GraphDataManager.getGraphDataInstance().getGraph(), recordState);
-
-
-        if(entryName.equals(""))
-            entry   =   new PlaybackEntry(graph, date);
-        else
-            entry   =   new PlaybackEntry(graph, date, entryName);
-
-        if(recordTable)
+        if(pbProgress.getValue() == pbProgress.getMaximum())
         {
-            DefaultTableModel tModel    =   DataPanel.getInstance().getComputationModel();
-            String context              =   DataPanel.getInstance().getComputationContext();
-            entry.setComputationModel(new TableModelBean(tModel, context));
+            gPlayback.setIndex(0);
+            pbProgress.setValue(0);
         }
 
-        gPlayback.add(entry);
-        gpRecEntries.addItem(entry);
-        gpRecEntryName.setText("");
+        PB_TIMER.setRepeats(true);
+        PB_TIMER.start();
+        PB_TIMER.setDelay((int) pbProgressSpeed.getValue());
     }
 
-    else
+    public void stopPlayback()
     {
-        entry   =   (PlaybackEntry) gpRecEntries.getSelectedItem();
-        entry.setName(gpRecEntryName.getText());
-        entry.setDate(gpRecDatePicker.getDate());
-        entry.setGraph(GraphUtilities.copyNewGraph(GraphDataManager.getGraphDataInstance().getGraph(), recordStateCheck.isSelected()));
+        PB_TIMER.stop();
     }
-}
 
-public void addRecordedGraph()
-{
-    int selectedIndex   =   gpRecEntries.getSelectedIndex();
-    Date date           =   gpRecDatePicker.getDate();
-    String name         =   gpRecEntryName.getText();
-    boolean recordState =   recordStateCheck.isSelected();
-    boolean recordTable =   recordComputeCheck.isSelected();
-    boolean newEntry    =   selectedIndex == 0;
-
-    addRecordedGraph(name, date, recordState, recordTable, newEntry);
-}
-
-public void togglePlayback()
-{
-    if(pbPlaying)
+    public void addRecordedGraph(String entryName, Date date, boolean recordState, boolean recordTable, boolean newEntry)
     {
-        pbPlaying = false;
-        pbToggle.setIcon(new ImageIcon(AppResources.getInstance().getResource("playIcon")));
-        pbToggle.setText("Play");
-        stopPlayback();
+        PlaybackEntry entry;
+
+        if(newEntry)
+        {
+            Graph<Node, Edge> graph     =   GraphUtilities.copyNewGraph(GraphDataManager.getGraphDataInstance().getGraph(), recordState);
+
+
+            if(entryName.equals(""))
+                entry   =   new PlaybackEntry(graph, date);
+            else
+                entry   =   new PlaybackEntry(graph, date, entryName);
+
+            if(recordTable)
+            {
+                DefaultTableModel tModel    =   DataPanel.getInstance().getComputationModel();
+                String context              =   DataPanel.getInstance().getComputationContext();
+                entry.setComputationModel(new TableModelBean(tModel, context));
+            }
+
+            gPlayback.add(entry);
+            gpRecEntries.addItem(entry);
+            gpRecEntryName.setText("");
+        }
+
+        else
+        {
+            entry   =   (PlaybackEntry) gpRecEntries.getSelectedItem();
+            entry.setName(gpRecEntryName.getText());
+            entry.setDate(gpRecDatePicker.getDate());
+            entry.setGraph(GraphUtilities.copyNewGraph(GraphDataManager.getGraphDataInstance().getGraph(), recordStateCheck.isSelected()));
+        }
     }
 
-    else
+    public void addRecordedGraph()
     {
-        pbPlaying = true;
-        pbToggle.setIcon(new ImageIcon(AppResources.getInstance().getResource("stopIcon")));
-        pbToggle.setText("Stop");
-        startPlayback();
+        int selectedIndex   =   gpRecEntries.getSelectedIndex();
+        Date date           =   gpRecDatePicker.getDate();
+        String name         =   gpRecEntryName.getText();
+        boolean recordState =   recordStateCheck.isSelected();
+        boolean recordTable =   recordComputeCheck.isSelected();
+        boolean newEntry    =   selectedIndex == 0;
+
+        addRecordedGraph(name, date, recordState, recordTable, newEntry);
     }
-}
+
+    public void togglePlayback()
+    {
+        if(pbPlaying)
+        {
+            pbPlaying = false;
+            pbToggle.setIcon(new ImageIcon(AppResources.getInstance().getResource("playIcon")));
+            pbToggle.setText("Play");
+            stopPlayback();
+        }
+
+        else
+        {
+            pbPlaying = true;
+            pbToggle.setIcon(new ImageIcon(AppResources.getInstance().getResource("stopIcon")));
+            pbToggle.setText("Stop");
+            startPlayback();
+        }
+    }
 
     @Override
     public void stateChanged(ChangeEvent e) 
