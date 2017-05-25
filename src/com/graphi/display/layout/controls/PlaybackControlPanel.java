@@ -1,3 +1,9 @@
+//=========================================
+//  Kyle Russell
+//  AUT University 2015
+//  https://github.com/denkers/graphi
+//=========================================
+
 package com.graphi.display.layout.controls;
 
 import com.graphi.display.AppResources;
@@ -27,6 +33,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
@@ -282,13 +289,24 @@ public  class PlaybackControlPanel extends JPanel implements ActionListener, Cha
 
         CardLayout cLayout  =   (CardLayout) gpControlsWrapper.getLayout();
         cLayout.show(gpControlsWrapper, card);
+        AppResources resources  =   AppResources.getInstance();
+        JMenuItem playbackItem  =   MainMenu.getInstance().getMenuItem("showPlaybackItem");
+        JMenuItem recordItem    =   MainMenu.getInstance().getMenuItem("showRecordingItem");
+        
+        playbackItem.setIcon(null);
+        recordItem.setIcon(null);
+        
 
         if(card.equals(PLAYBACK_CARD))
         {
             pbProgress.setMinimum(0);
             pbProgress.setValue(0);
             pbProgress.setMaximum(gPlayback.getSize() - 1); 
+            playbackItem.setIcon(new ImageIcon(resources.getResource("tickIcon")));
         }
+        
+        else
+            recordItem.setIcon(new ImageIcon(resources.getResource("tickIcon")));
 
         setVisible(true);
     }

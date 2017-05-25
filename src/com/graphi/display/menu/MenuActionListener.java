@@ -128,11 +128,18 @@ public class MenuActionListener implements ActionListener
         
         else if(src == menu.getMenuItem("showRecordingItem"))
         {
-            //if(menu.getMenuItem("showRecordingItem").getIcon() != null)
-            graphPanel.getPlaybackPanel().changePanelCard(PlaybackControlPanel.RECORD_CARD);
+            if(menu.getMenuItem("showRecordingItem").getIcon() != null)
+                graphPanel.getPlaybackPanel().closeControls();
+            else
+                graphPanel.getPlaybackPanel().changePanelCard(PlaybackControlPanel.RECORD_CARD);
         }
         
         else if(src == menu.getMenuItem("showPlaybackItem"))
-            graphPanel.getPlaybackPanel().changePanelCard(PlaybackControlPanel.PLAYBACK_CARD);
+        {
+            if(menu.getMenuItem("showPlaybackItem").getIcon() != null)
+                graphPanel.getPlaybackPanel().closeControls();
+            else
+                graphPanel.getPlaybackPanel().changePanelCard(PlaybackControlPanel.PLAYBACK_CARD);
+        }
     }
 }
