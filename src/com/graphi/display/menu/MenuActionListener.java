@@ -124,5 +124,14 @@ public class MenuActionListener implements ActionListener
         
         else if(src == menu.getMenuItem("selectColourItem"))
             graphPanel.setSelectionColour(null);
+        
+        else if(src == menu.getMenuItem("showRecordingItem"))
+        {
+            //if(menu.getMenuItem("showRecordingItem").getIcon() != null)
+            graphPanel.changePlaybackPanel(GraphPanel.RECORD_CARD);
+        }
+        
+        else if(src == menu.getMenuItem("showPlaybackItem"))
+            graphPanel.changePlaybackPanel(GraphPanel.PLAYBACK_CARD);
     }
 }

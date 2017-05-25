@@ -479,7 +479,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         dataPanel.setComputationContext(bean == null? null : bean.getDescription());
     }
 
-    protected void displayRecordedGraph()
+    public void displayRecordedGraph()
     {
        int selectedIndex    =   gpRecEntries.getSelectedIndex();
        if(selectedIndex != 0)
@@ -931,6 +931,9 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         {
             setVisible(false);
             reloadPreviousState();
+            MainMenu menu   =   MainMenu.getInstance();
+            menu.getMenuItem("showRecordingItem").setIcon(null);
+            menu.getMenuItem("showPlaybackItem").setIcon(null);
         }
         
         @Override

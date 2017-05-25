@@ -38,6 +38,7 @@ public class MainMenu extends JMenuBar
     protected final JMenu vertexMenu, edgeMenu;
     protected final JMenu exportTableMenu;
     protected final JMenu customizationMenu;
+    protected final JMenu visualsSubMenu;
     protected Map<String, JMenuItem> menuItems;
     protected PluginsMenu pluginsListMenu;
     private static MainMenu instance;
@@ -55,6 +56,7 @@ public class MainMenu extends JMenuBar
         customizationMenu   =   new JMenu("Customization");
         vertexMenu          =   new JMenu("Vertex");
         edgeMenu            =   new JMenu("Edge");
+        visualsSubMenu      =   new JMenu("Visuals");
         pluginsListMenu     =   new PluginsMenu();
         
         //----------------------------------------------------------------------
@@ -105,9 +107,11 @@ public class MainMenu extends JMenuBar
         
         //View menu items
         addMenuItem("showToolsItem", new JMenuItem("Tools"), viewMenu);
-        addMenuItem("showVisuals", new JMenuItem("Visuals"), viewMenu);
-        addMenuItem("vLabelsItem", new JMenuItem("Vertex labels"), viewMenu);
-        addMenuItem("eLabelsItem", new JMenuItem("Edge labels"), viewMenu);
+        addMenuItem("showRecordingItem", new JMenuItem("Recording Controls"), viewMenu);
+        addMenuItem("showPlaybackItem", new JMenuItem("Playback Controls"), viewMenu);
+        addMenuItem("showVisuals", new JMenuItem("Show Display"), visualsSubMenu);
+        addMenuItem("vLabelsItem", new JMenuItem("Vertex labels"), visualsSubMenu);
+        addMenuItem("eLabelsItem", new JMenuItem("Edge labels"), visualsSubMenu);
         
         
         //About menu items
@@ -118,6 +122,7 @@ public class MainMenu extends JMenuBar
         
         //----------------------------------------------------------------------
         
+        viewMenu.add(visualsSubMenu);
         graphMenu.add(customizationMenu);
         graphMenu.add(vertexMenu);
         graphMenu.add(edgeMenu);
