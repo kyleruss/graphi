@@ -13,6 +13,7 @@ import com.graphi.config.AppConfig;
 import com.graphi.config.ConfigManager;
 import com.graphi.display.menu.MainMenu;
 import com.graphi.display.layout.controls.ComputeControlPanel;
+import com.graphi.display.layout.controls.PlaybackControlPanel;
 import com.graphi.sim.GraphPlayback;
 import com.graphi.sim.PlaybackEntry;
 import com.graphi.util.transformer.CentralityTransformer;
@@ -93,17 +94,17 @@ import net.miginfocom.swing.MigLayout;
 
 public class GraphPanel extends JPanel implements ItemListener, GraphMouseListener
 {
-    public static final String RECORD_CARD         =   "rec";
+   /*  public static final String RECORD_CARD         =   "rec";
     public static final String PLAYBACK_CARD       =   "pb";
-    protected final int INITIAL_DELAY       =   500;
+    protected final int INITIAL_DELAY       =   500; */
     public static final int SELECT_MODE     =   0;
     public static final int MOVE_MODE       =   1;   
     public static final int EDIT_MODE       =   2;
     
-    protected final VisualizationViewer<Node, Edge> gViewer;
-    protected AggregateLayout<Node, Edge> gLayout;
-    protected EditingModalGraphMouse mouse;
-    protected GraphPlayback gPlayback;
+    private final VisualizationViewer<Node, Edge> gViewer;
+    private AggregateLayout<Node, Edge> gLayout;
+    private EditingModalGraphMouse mouse;
+   /* protected GraphPlayback gPlayback;
     protected JPanel gpControlsWrapper;
     protected JButton gpCtrlsClose;
     protected PlaybackControlPanel pbControlPanel;
@@ -121,7 +122,9 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     protected JTextField gpRecEntryName;
     protected DateComboBox gpRecDatePicker;
     protected JComboBox gpRecEntries;
-    protected JCheckBox recordComputeCheck, recordStateCheck;
+    protected JCheckBox recordComputeCheck, recordStateCheck; */
+    
+    private PlaybackControlPanel playbackControlPanel;
     private final DisplayNavigationPanel displayNavPanel;
     private static GraphPanel instance;
 
@@ -131,7 +134,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         GraphData graphData =   GraphDataManager.getGraphDataInstance();
         gLayout             =   new AggregateLayout(new FRLayout(graphData.getGraph()));
         gViewer             =   new VisualizationViewer<>(gLayout);
-        gPlayback           =   new GraphPlayback();
+        //gPlayback           =   new GraphPlayback();
         displayNavPanel     =   new DisplayNavigationPanel();
 
         ScalingControl scaler   =   new CrossoverScalingControl();
@@ -153,17 +156,17 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         mouse.remove(mouse.getPopupEditingPlugin());
         gViewer.setGraphMouse(mouse);
         
-        pbControlPanel    =   new PlaybackControlPanel();
-        pbControlPanel.setVisible(false);
+        playbackControlPanel    =   new PlaybackControlPanel();
+        playbackControlPanel.setVisible(false);
         
-        recordComputeCheck.setSelected(true);
-        recordStateCheck.setSelected(true);
+   //     recordComputeCheck.setSelected(true);
+     //   recordStateCheck.setSelected(true);
         
         gViewer.setLayout(new FlowLayout(FlowLayout.RIGHT));
         gViewer.add(displayNavPanel);
         
         add(gViewer, BorderLayout.CENTER);
-        add(pbControlPanel, BorderLayout.SOUTH);
+        add(playbackControlPanel, BorderLayout.SOUTH);
     }
     
     public int getMouseMode()
@@ -269,7 +272,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         }
     }
     
-    public void resetEntries()
+    /*public void resetEntries()
     {
         gpRecEntries.removeAllItems();
         GraphDataManager.getGraphDataInstance().setGraph(new SparseMultigraph());
@@ -286,7 +289,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
             gpRecEntries.addItem(entry);
 
         gpRecEntries.setSelectedIndex(0);
-    }
+    } */
     
     public void searchGraphObject()
     {
@@ -350,7 +353,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         gViewer.repaint();
     }
 
-    public void changePlaybackPanel(String card)
+   /* public void changePlaybackPanel(String card)
     {
         if(!pbControlPanel.isVisible())
             pbControlPanel.setPreviousState();
@@ -395,9 +398,9 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     public void stopPlayback()
     {
         PB_TIMER.stop();
-    }
+    } */
     
-    public void addRecordedGraph(String entryName, Date date, boolean recordState, boolean recordTable, boolean newEntry)
+  /*  public void addRecordedGraph(String entryName, Date date, boolean recordState, boolean recordTable, boolean newEntry)
     {
         PlaybackEntry entry;
         
@@ -430,7 +433,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
             entry.setDate(gpRecDatePicker.getDate());
             entry.setGraph(GraphUtilities.copyNewGraph(GraphDataManager.getGraphDataInstance().getGraph(), recordStateCheck.isSelected()));
         }
-    }
+    } 
 
     public void addRecordedGraph()
     {
@@ -477,7 +480,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         DataPanel dataPanel =   DataPanel.getInstance();
         dataPanel.setComputationModel(bean == null? new DefaultTableModel() : bean.getModel());
         dataPanel.setComputationContext(bean == null? null : bean.getDescription());
-    }
+    } 
 
     public void displayRecordedGraph()
     {
@@ -525,7 +528,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
             gpRecEntryName.setText("");
             gpRecDatePicker.setDate(new Date());
         }
-    }
+    } */
 
     @Override
     public void graphClicked(Object v, MouseEvent me) {}
@@ -803,7 +806,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         return mouse;
     }
 
-    public GraphPlayback getGraphPlayback()
+    /*public GraphPlayback getGraphPlayback()
     {
         return gPlayback;
     }
@@ -811,9 +814,9 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     public void setGraphPlayback(GraphPlayback gPlayback)
     {
         this.gPlayback  =   gPlayback;
-    }
+    } */
     
-    private class PlaybackControlPanel extends JPanel implements ActionListener, ChangeListener
+   /* private class PlaybackControlPanel extends JPanel implements ActionListener, ChangeListener
     {
         private Graph<Node, Edge> prevGraph;
         private TableModelBean prevModel;
@@ -984,7 +987,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
                 }
             }
         }
-    }
+    } */
     
     public static GraphPanel getInstance()
     {
