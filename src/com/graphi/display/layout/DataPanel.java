@@ -236,7 +236,7 @@ public class DataPanel extends JPanel implements ActionListener
             String name =   addPanel.nameField.getText();
             Node node   =   new Node(id, name);
             data.getGraph().addVertex(node);
-            GraphPanel.getInstance().gViewer.repaint();
+            GraphPanel.getInstance().getGraphViewer().repaint();
             loadNodes(data.getGraph());
             data.getNodes().put(id, node);
         }

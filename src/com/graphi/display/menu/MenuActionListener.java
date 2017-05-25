@@ -16,6 +16,7 @@ import com.graphi.display.layout.GraphPanel;
 import com.graphi.display.layout.OutputPanel;
 import com.graphi.display.layout.ViewPort;
 import com.graphi.display.layout.controls.IOControlPanel;
+import com.graphi.display.layout.controls.PlaybackControlPanel;
 import com.graphi.graph.Edge;
 import com.graphi.graph.Node;
 import com.graphi.io.ProjectStore;
@@ -128,10 +129,10 @@ public class MenuActionListener implements ActionListener
         else if(src == menu.getMenuItem("showRecordingItem"))
         {
             //if(menu.getMenuItem("showRecordingItem").getIcon() != null)
-            graphPanel.changePlaybackPanel(GraphPanel.RECORD_CARD);
+            graphPanel.getPlaybackPanel().changePanelCard(PlaybackControlPanel.RECORD_CARD);
         }
         
         else if(src == menu.getMenuItem("showPlaybackItem"))
-            graphPanel.changePlaybackPanel(GraphPanel.PLAYBACK_CARD);
+            graphPanel.getPlaybackPanel().changePanelCard(PlaybackControlPanel.PLAYBACK_CARD);
     }
 }

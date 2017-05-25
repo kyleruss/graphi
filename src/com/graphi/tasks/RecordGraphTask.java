@@ -9,6 +9,7 @@ package com.graphi.tasks;
 import com.graphi.app.AppManager;
 import com.graphi.display.layout.GraphPanel;
 import com.graphi.display.layout.MainPanel;
+import com.graphi.display.layout.controls.PlaybackControlPanel;
 import com.graphi.plugins.PluginManager;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,12 +30,13 @@ public class RecordGraphTask extends AbstractTask
     {
         try
         {
-            SimpleDateFormat parser =   new SimpleDateFormat("EEE MMM d HH:mm:ss zzz yyyy");
-            Date date               =   parser.parse(getProperty("Entry date"));
-            String entryName        =   (String) getProperty("Entry name");
-            boolean recordState     =   getProperty("Record state").equalsIgnoreCase("true");
-            boolean recordTable     =   getProperty("Record table").equalsIgnoreCase("true");
-            GraphPanel.getInstance().addRecordedGraph(entryName, date, recordState, recordTable, true);
+            SimpleDateFormat parser         =   new SimpleDateFormat("EEE MMM d HH:mm:ss zzz yyyy");
+            Date date                       =   parser.parse(getProperty("Entry date"));
+            String entryName                =   (String) getProperty("Entry name");
+            boolean recordState             =   getProperty("Record state").equalsIgnoreCase("true");
+            boolean recordTable             =   getProperty("Record table").equalsIgnoreCase("true");
+            PlaybackControlPanel pbPanel    =   GraphPanel.getInstance().getPlaybackPanel();
+            pbPanel.addRecordedGraph(entryName, date, recordState, recordTable, true);
         }
         
         catch(ParseException e)

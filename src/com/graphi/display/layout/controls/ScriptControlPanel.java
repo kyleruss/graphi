@@ -55,14 +55,14 @@ public class ScriptControlPanel extends JPanel implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e) 
     {
-        Object src  =   e.getSource();
-        GraphPanel grapPanel    =   GraphPanel.getInstance();
+        Object src                      =   e.getSource();
+        PlaybackControlPanel pbPanel    =   GraphPanel.getInstance().getPlaybackPanel();
         
         if(src == displayCtrlsBtn)
-            grapPanel.changePlaybackPanel(grapPanel.PLAYBACK_CARD);
+            pbPanel.changePanelCard(PlaybackControlPanel.PLAYBACK_CARD);
 
         else if(src == recordCtrlsBtn)
-            grapPanel.changePlaybackPanel(grapPanel.RECORD_CARD);
+            pbPanel.changePanelCard(PlaybackControlPanel.RECORD_CARD);
     }
 
     public boolean isRecording() 

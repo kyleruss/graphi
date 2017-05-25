@@ -274,7 +274,7 @@ public  class PlaybackControlPanel extends JPanel implements ActionListener, Cha
         gpRecEntries.setSelectedIndex(0);
     }
 
-    public void changePlaybackPanel(String card)
+    public void changePanelCard(String card)
     {
         if(!isVisible())
             setPreviousState();

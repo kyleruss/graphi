@@ -27,7 +27,7 @@ public class DisplayNavigationPanel extends JPanel implements ActionListener
     private BufferedImage currentBG;
     private int mode;
 
-    private DisplayNavigationPanel()
+    public DisplayNavigationPanel()
     {
         setPreferredSize(new Dimension(120, 150));
         setLayout(new BorderLayout());
@@ -89,6 +89,11 @@ public class DisplayNavigationPanel extends JPanel implements ActionListener
         mouse.remove(mouse.getPopupEditingPlugin());
         currentBG   =   AppResources.getInstance().getResource("displayNavEdit");
         repaint();
+    }
+    
+    public int getMouseMode()
+    {
+        return mode;
     }
 
     @Override

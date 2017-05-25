@@ -10,6 +10,7 @@ import com.graphi.display.AppResources;
 import com.graphi.display.layout.ControlPanel;
 import com.graphi.display.layout.GraphPanel;
 import com.graphi.display.layout.OutputPanel;
+import com.graphi.display.layout.controls.PlaybackControlPanel;
 import com.graphi.display.layout.util.ComponentUtils;
 import com.graphi.io.ProjectStore;
 import java.awt.event.ActionEvent;
@@ -159,14 +160,16 @@ public class ControlToolbar extends JToolBar implements ActionListener
         
         else if(src == recordBtn)
         {
-            graphPanel.changePlaybackPanel(GraphPanel.RECORD_CARD);
-            graphPanel.addRecordedGraph();
+            PlaybackControlPanel pbPanel    =   GraphPanel.getInstance().getPlaybackPanel();
+            pbPanel.changePanelCard(PlaybackControlPanel.RECORD_CARD);
+            pbPanel.addRecordedGraph();
         }
         
         else if(src == playBtn)
         {
-            graphPanel.changePlaybackPanel(GraphPanel.PLAYBACK_CARD);
-            graphPanel.togglePlayback();
+            PlaybackControlPanel pbPanel    =   GraphPanel.getInstance().getPlaybackPanel();
+            pbPanel.changePanelCard(PlaybackControlPanel.PLAYBACK_CARD);
+            pbPanel.togglePlayback();
         }
     }
 }

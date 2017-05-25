@@ -162,21 +162,21 @@ public class IOControlPanel extends JPanel implements ActionListener
 
     public void importScript()
     {
-        File file   =   ComponentUtils.getFile(true, "Graphi .gscript file", "gscript");
+        File file                       =   ComponentUtils.getFile(true, "Graphi .gscript file", "gscript");
+        PlaybackControlPanel pbPanel    =   GraphPanel.getInstance().getPlaybackPanel();
+        
         if(file != null)
         {
-            GraphPanel graphPanel   =   GraphPanel.getInstance();
-            
-            graphPanel.setGraphPlayback(
+            pbPanel.setGraphPlayback(
                     (GraphPlayback) Storage.openObj(file, PluginManager.getInstance().getActiveClassLoader()));
             
-            if(graphPanel.getGraphPlayback() == null) return;
+            if(pbPanel.getGraphPlayback() == null) return;
             
-            graphPanel.getGraphPlayback().prepareIO(false);
+            pbPanel.getGraphPlayback().prepareIO(false);
             
             currentStorageLabel.setText(file.getName());
             ControlPanel.getInstance().getScriptPanel().getActiveScriptLabel().setText(file.getName());
-            graphPanel.addPlaybackEntries();
+            pbPanel.addPlaybackEntries();
 
         }
     }
@@ -184,10 +184,12 @@ public class IOControlPanel extends JPanel implements ActionListener
     public void exportScript()
     {
         File file   =   ComponentUtils.getFile(false, "Graphi .gscript file", "gscript");
+        PlaybackControlPanel pbPanel    =   GraphPanel.getInstance().getPlaybackPanel();
+        
         if(file != null)
         {
-            GraphPanel.getInstance().getGraphPlayback().prepareIO(true);
-            Storage.saveObj(GraphPanel.getInstance().getGraphPlayback(), file);
+            pbPanel.getGraphPlayback().prepareIO(true);
+            Storage.saveObj(pbPanel.getGraphPlayback(), file);
         }
     }
     

@@ -22,7 +22,7 @@ public class ClearEntriesTask extends AbstractTask
     @Override
     public void performTask() 
     {
-        GraphPanel.getInstance().removeAllRecordedEntries();
+        GraphPanel.getInstance().getPlaybackPanel().removeAllRecordedEntries();
     }
     
 }

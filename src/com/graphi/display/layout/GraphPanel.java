@@ -13,6 +13,7 @@ import com.graphi.config.AppConfig;
 import com.graphi.config.ConfigManager;
 import com.graphi.display.menu.MainMenu;
 import com.graphi.display.layout.controls.ComputeControlPanel;
+import com.graphi.display.layout.controls.DisplayNavigationPanel;
 import com.graphi.display.layout.controls.PlaybackControlPanel;
 import com.graphi.sim.GraphPlayback;
 import com.graphi.sim.PlaybackEntry;
@@ -169,11 +170,6 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         add(playbackControlPanel, BorderLayout.SOUTH);
     }
     
-    public int getMouseMode()
-    {
-        return displayNavPanel.mode;
-    }
-    
     public PickedInfo<Node> getSelectedNodes()
     {
         return gViewer.getPickedVertexState();
@@ -184,7 +180,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
         return gViewer.getPickedEdgeState();
     }
     
-    private class DisplayNavigationPanel extends JPanel implements ActionListener
+  /*  private class DisplayNavigationPanel extends JPanel implements ActionListener
     {
         private JButton moveBtn;
         private JButton selectBtn;
@@ -270,7 +266,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
                 toggleSelect();
             
         }
-    }
+    } */
     
     /*public void resetEntries()
     {
@@ -539,7 +535,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     @Override
     public void graphReleased(Object v, MouseEvent me)
     {
-        if(getMouseMode() == EDIT_MODE)
+        if(displayNavPanel.getMouseMode() == EDIT_MODE)
         {
             Graph graph         =   GraphDataManager.getGraphDataInstance().getGraph();
             DataPanel dataPanel =   DataPanel.getInstance();
@@ -761,7 +757,7 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
     @Override
     public void itemStateChanged(ItemEvent e)
     {
-        if(getMouseMode() == SELECT_MODE)
+        if(displayNavPanel.getMouseMode() == SELECT_MODE)
         {
             GraphDataManager.getGraphDataInstance().setSelectedItems(e.getItemSelectable().getSelectedObjects());
             updateSelectedComponents();
@@ -789,6 +785,16 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
                     selectedLabel.setText("Edge (ID=" + ((Edge) selectedObj).getID() + ")");
             }
         }
+    }
+    
+    public DisplayNavigationPanel getDisplayNavPanel()
+    {
+        return displayNavPanel;
+    }
+    
+    public PlaybackControlPanel getPlaybackPanel()
+    {
+        return playbackControlPanel;
     }
     
     public VisualizationViewer<Node, Edge> getGraphViewer() 
