@@ -6,8 +6,6 @@
 
 package com.graphi.plugins;
 
-import com.graphi.display.layout.MainPanel;
-import com.graphi.graph.GraphData;
 import java.net.URLClassLoader;
 
 /**

@@ -7,11 +7,9 @@
 package com.graphi.plugins;
 
 import com.graphi.config.PluginConfig;
-import com.graphi.app.AppManager;
 import com.graphi.config.ConfigManager;
 import com.graphi.display.menu.MainMenu;
 import com.graphi.display.menu.PluginsMenu;
-import com.graphi.display.Window;
 import com.graphi.display.layout.ViewPort;
 import com.graphi.graph.GraphData;
 import java.io.File;
@@ -134,6 +132,7 @@ public final class PluginManager
 
         catch(IOException | ClassNotFoundException | InstantiationException | IllegalAccessException e)
         {
+            e.printStackTrace();
             System.out.println("[Error] " + e.getMessage());
             return null;
         }

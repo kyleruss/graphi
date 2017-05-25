@@ -6,8 +6,6 @@
 
 package com.graphi.plugins;
 
-import com.graphi.display.layout.MainPanel;
-import com.graphi.graph.GraphData;
 import java.io.Serializable;
 import java.net.URLClassLoader;
 
@@ -17,16 +15,17 @@ import java.net.URLClassLoader;
  */
 public abstract class AbstractPlugin implements Plugin, Serializable
 {
-    protected final String name;
-    protected final String description;
+    protected String name;
+    protected String description;
     protected PluginDisplayHandler displayHandler;
     private URLClassLoader loader;
-    
-    public AbstractPlugin(String name, String description)
+
+    public AbstractPlugin()
     {
-        this.name           =   name;
-        this.description    =   description;
+        initPluginDetails();
     }
+    
+    public abstract void initPluginDetails();
     
     /**
      * @return The String name of the plugin

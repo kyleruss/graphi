@@ -14,11 +14,16 @@ package com.graphi.plugins;
  */
 public class DefaultPlugin extends AbstractPlugin
 {
-    public DefaultPlugin() 
-    {
-        super("Default", "Default plugin");
-    }
-
+    public DefaultPlugin() {}
+    
+    
     @Override
     public void onEvent(int eventCode) {}
+
+    @Override
+    public void initPluginDetails() 
+    {
+        name        =   "Default";
+        description =   "Default Plugin";
+    }
 }
