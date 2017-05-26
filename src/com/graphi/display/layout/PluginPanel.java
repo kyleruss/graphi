@@ -285,7 +285,7 @@ public class PluginPanel extends MenuSceneTemplate
                 }
                 
                 activeRow               =   selectedRow;
-                String pluginName       =   (String) pluginTable.getValueAt(activeRow, 0);
+                String pluginName       =   (String) pluginTable.getValueAt(activeRow, 1);
                 PluginsMenu pluginMenu  =   MainMenu.getInstance().getPluginListMenu();
                 
                 pluginMenu.setActivePluginItem(pluginMenu.getPluginMenuItem(pluginName));
@@ -327,7 +327,7 @@ public class PluginPanel extends MenuSceneTemplate
         PluginContentPanel panel    =   (PluginContentPanel) sceneControlPanel;
         PluginConfig pluginConfig   =   ConfigManager.getInstance().getPluginConfig();
         panel.defaultRow            =   pluginConfig.getDefaultPluginIndex();
-        panel.pluginDirField.setText(pluginConfig.getDefaultPluginPath());
+        panel.pluginDirField.setText(pluginConfig.getPluginDirectory());
         List<String> pluginPaths    =   pluginConfig.getLoadedPluginPaths();
         String activeStr            =   panel.STATUS_ACTIVE + ", " + panel.STATUS_DEFAULT;
         panel.pluginTableModel.setRowCount(0);
