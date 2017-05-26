@@ -122,10 +122,10 @@ public class PluginsMenu extends JMenu
             }
 
             activePluginItem.setIcon(null);
+            activePluginItem    =   item;
+            activePluginItem.setIcon(new ImageIcon(activeTickIcon));
         }
 
-        activePluginItem    =   item;
-        activePluginItem.setIcon(new ImageIcon(activeTickIcon));
     }
     
     public void initPluginMenuListener()

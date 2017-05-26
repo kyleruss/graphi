@@ -13,9 +13,11 @@ import com.graphi.plugins.Plugin;
 import com.graphi.plugins.PluginManager;
 import com.graphi.display.layout.util.ComponentUtils;
 import com.graphi.display.menu.MainMenu;
+import com.graphi.display.menu.PluginsMenu;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,6 +35,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import net.miginfocom.swing.MigLayout;
 
 public class PluginPanel extends MenuSceneTemplate
 {
@@ -75,6 +78,7 @@ public class PluginPanel extends MenuSceneTemplate
         private JTextField pluginDirField;
         private DefaultTableModel pluginTableModel; 
         private JScrollPane pluginScrollPane;
+        private PluginDetailsPanel pluginDetailsPanel;
         private int defaultRow;
         private int activeRow;
         
@@ -85,7 +89,7 @@ public class PluginPanel extends MenuSceneTemplate
             AppResources resources  =   AppResources.getInstance();
             defaultRow              =   0;
             activeRow               =   0;
-            pluginTableModel        =   new DefaultTableModel();
+            pluginTableModel        =   new PluginTableModel();
             pluginTable             =   new JTable(pluginTableModel);
             addPluginBtn            =   new JButton("");
             defaultPluginBtn        =   new JButton("");
@@ -152,6 +156,78 @@ public class PluginPanel extends MenuSceneTemplate
             addPluginBtn.addActionListener(this);
             activatePluginBtn.addActionListener(this);
             defaultPluginBtn.addActionListener(this);
+            aboutPluginBtn.addActionListener(this);
+        }
+        
+        private class PluginTableModel extends DefaultTableModel
+        {
+            @Override
+            public boolean isCellEditable(int row, int column)
+            {
+                return false;
+            }
+        }
+        
+        private class PluginDetailsPanel extends JPanel
+        {
+            private JLabel pluginNameLabel;
+            private JLabel pluginPathLabel;
+            private JLabel pluginStatusLabel;
+            private JLabel pluginDescriptionLabel;
+            
+            private PluginDetailsPanel()
+            {
+                setLayout(new MigLayout());
+                
+                pluginNameLabel         =   new JLabel();
+                pluginPathLabel         =   new JLabel();
+                pluginStatusLabel       =   new JLabel();
+                pluginDescriptionLabel  =   new JLabel();
+                
+                JLabel nameLabel        =   new JLabel("Plugin Name:");
+                JLabel pathLabel        =   new JLabel("Location:");
+                JLabel statusLabel      =   new JLabel("Status:");
+                JLabel descLabel        =   new JLabel("Description:");
+                Font labelTitleFont     =   new Font("Arial", Font.BOLD, 12);
+                
+                nameLabel.setFont(labelTitleFont);
+                pathLabel.setFont(labelTitleFont);
+                statusLabel.setFont(labelTitleFont);
+                descLabel.setFont(labelTitleFont);
+                
+                add(nameLabel);
+                add(pluginNameLabel, "wrap");
+                add(pathLabel);
+                add(pluginPathLabel, "wrap");
+                add(statusLabel);
+                add(pluginStatusLabel, "wrap");
+                add(descLabel);
+                add(pluginDescriptionLabel);
+            }
+        }
+        
+        public void showPluginDetails()
+        {
+            int selectedRow =   pluginTable.getSelectedRow();
+            
+            if(selectedRow != -1)
+            {
+                if(pluginDetailsPanel == null) pluginDetailsPanel   =   new PluginDetailsPanel();
+
+                String pluginStatus =   (String) pluginTable.getValueAt(selectedRow, 0);
+                String pluginName   =   (selectedRow == 0)? "Default" : (String) pluginTable.getValueAt(selectedRow, 1);
+                String pluginPath   =   (String) pluginTable.getValueAt(selectedRow, 2);
+                String pluginDesc   =   PluginManager.getInstance().getPlugin(pluginName).getPluginDescription();
+                
+                pluginDetailsPanel.pluginNameLabel.setText(pluginName);
+                pluginDetailsPanel.pluginStatusLabel.setText(pluginStatus);
+                pluginDetailsPanel.pluginPathLabel.setText(pluginPath);
+                pluginDetailsPanel.pluginDescriptionLabel.setText(pluginDesc);
+                
+                JOptionPane.showMessageDialog(null, pluginDetailsPanel, "Plugin Details", JOptionPane.INFORMATION_MESSAGE);
+            }
+            
+            else JOptionPane.showMessageDialog(null, "Please select a plugin");
         }
         
         private void setDefaultPlugin()
@@ -204,10 +280,15 @@ public class PluginPanel extends MenuSceneTemplate
                     
                     if(selectedRow == defaultRow)
                         pluginTable.setValueAt(STATUS_ACTIVE + ", " + STATUS_DEFAULT, selectedRow, 0);
+                    else
+                       pluginTable.setValueAt(STATUS_ACTIVE, selectedRow, 0); 
                 }
                 
-                activeRow           =   selectedRow;
-                String pluginName   =   (String) pluginTable.getValueAt(activeRow, 0);
+                activeRow               =   selectedRow;
+                String pluginName       =   (String) pluginTable.getValueAt(activeRow, 0);
+                PluginsMenu pluginMenu  =   MainMenu.getInstance().getPluginListMenu();
+                
+                pluginMenu.setActivePluginItem(pluginMenu.getPluginMenuItem(pluginName));
                 PluginManager.getInstance().activatePlugin(pluginName);
             }
             
@@ -235,6 +316,9 @@ public class PluginPanel extends MenuSceneTemplate
             
             else if(src == addPluginBtn)
                 importPlugin();
+            
+            else if(src == aboutPluginBtn)
+                showPluginDetails();
         }
     }
     

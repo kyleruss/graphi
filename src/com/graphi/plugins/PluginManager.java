@@ -56,8 +56,11 @@ public final class PluginManager
         int defaultPluginIndex          =   config.getDefaultPluginIndex();
         
         //No user specified default, use base
-        if(defaultPluginIndex == -1)
+        if(defaultPluginIndex == 0)
+        {
             defaultPlugin = basePlugin;
+            addPlugin(defaultPlugin);
+        }
         
         //Use user specified default plugin
         else
@@ -69,13 +72,17 @@ public final class PluginManager
             if(defaultPlugin == null)
                 defaultPlugin = basePlugin;
             
-            else
-                addPlugin(defaultPlugin);
+            addPlugin(defaultPlugin);
         }
 
         ViewPort.getInstance().getPluginPanel().initConfig();
         //Window.getInstance().getMenu().getPluginListMenu().loadConfigPlugins(this, appManager);
         activatePluginObject(defaultPlugin);
+    }
+    
+    public Plugin getPlugin(String name)
+    {
+        return plugins.get(name);
     }
     
     public Plugin fetchPlugin(File file)
