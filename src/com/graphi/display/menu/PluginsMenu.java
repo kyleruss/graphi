@@ -62,15 +62,27 @@ public class PluginsMenu extends JMenu
     /**
      * Adds plugin menu item to the menu and to the pluginMenuItems map
      * @param name Name of the plugin or key of the plugin menu item in map
+     */
+    public void addPluginMenuItem(String name)
+    {
+        addPluginMenuItem(name, new JMenuItem(name));
+    }
+    
+    /**
+     * Adds plugin menu item to the menu and to the pluginMenuItems map
+     * @param name Name of the plugin or key of the plugin menu item in map
      * @param item An item to add to the menu
      */
     public void addPluginMenuItem(String name, JMenuItem item)
     {
-        pluginMenuItems.put(name, item);
-        add(item);
-        revalidate();
+        if(!pluginMenuItems.containsKey(name))
+        {
+            pluginMenuItems.put(name, item);
+            add(item);
+            revalidate();
         
-        item.addActionListener(listener);
+            item.addActionListener(listener);
+        }
     }
     
     /**

@@ -12,6 +12,7 @@ import com.graphi.display.AppResources;
 import com.graphi.plugins.Plugin;
 import com.graphi.plugins.PluginManager;
 import com.graphi.display.layout.util.ComponentUtils;
+import com.graphi.display.menu.MainMenu;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -305,7 +306,8 @@ public class PluginPanel extends MenuSceneTemplate
             else
             {
                 panel.addPluginToList(plugin.getPluginName(), file.getPath());
-
+                MainMenu.getInstance().getPluginListMenu().addPluginMenuItem(plugin.getPluginName());
+                
                 if(!isDefaultPath)
                     pm.addPlugin(plugin);
             }
