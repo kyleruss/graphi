@@ -20,6 +20,6 @@ public class PluginMenuListener implements ActionListener
     {
         JMenuItem item      =   (JMenuItem) e.getSource();
         String pluginName   =   item.getText();
-        PluginManager.getInstance().activePlugin(pluginName);
+        PluginManager.getInstance().activatePlugin(pluginName);
     }
 }

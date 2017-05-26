@@ -39,7 +39,7 @@ public final class PluginManager
     private PluginManager()
     {
         plugins             =   new HashMap<>();
-        MainMenu.getInstance().getPluginListMenu().initPluginMenuListener(this);
+        MainMenu.getInstance().getPluginListMenu().initPluginMenuListener();
         initDefaultPlugin();
     }
     
@@ -75,7 +75,7 @@ public final class PluginManager
 
         ViewPort.getInstance().getPluginPanel().initConfig();
         //Window.getInstance().getMenu().getPluginListMenu().loadConfigPlugins(this, appManager);
-        activatePlugin(defaultPlugin);
+        activatePluginObject(defaultPlugin);
     }
     
     public Plugin fetchPlugin(File file)
@@ -138,7 +138,7 @@ public final class PluginManager
         }
     }
     
-    public void activatePlugin(Plugin plugin)
+    public void activatePluginObject(Plugin plugin)
     {
         if(plugin == null) return;
 
@@ -163,12 +163,12 @@ public final class PluginManager
         pluginsMenu.setActivePluginItem(item);
     }
     
-    public void activePlugin(String pluginName)
+    public void activatePlugin(String pluginName)
     {
         Plugin plugin   =   plugins.get(pluginName);
         
         if(plugin != null && !activePlugin.equals(plugin))
-            activatePlugin(plugin);
+            activatePluginObject(plugin);
     }
     
     public Plugin getActivePlugin()

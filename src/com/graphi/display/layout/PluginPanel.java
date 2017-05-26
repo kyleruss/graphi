@@ -205,9 +205,9 @@ public class PluginPanel extends MenuSceneTemplate
                         pluginTable.setValueAt(STATUS_ACTIVE + ", " + STATUS_DEFAULT, selectedRow, 0);
                 }
                 
-                    
-                
-                activeRow   =   selectedRow;
+                activeRow           =   selectedRow;
+                String pluginName   =   (String) pluginTable.getValueAt(activeRow, 0);
+                PluginManager.getInstance().activatePlugin(pluginName);
             }
             
             else JOptionPane.showMessageDialog(null, "Please select a plugin");

@@ -10,6 +10,7 @@ import com.graphi.app.Consts;
 import com.graphi.config.ConfigManager;
 import com.graphi.plugins.Plugin;
 import com.graphi.config.PluginConfig;
+import com.graphi.display.layout.util.PluginMenuListener;
 import com.graphi.plugins.PluginManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -115,9 +116,9 @@ public class PluginsMenu extends JMenu
         activePluginItem.setIcon(new ImageIcon(activeTickIcon));
     }
     
-    public void initPluginMenuListener(PluginManager pluginManager)
+    public void initPluginMenuListener()
     {
-        if(listener == null)  listener =   new PluginMenuListener(pluginManager);
+        if(listener == null)  listener =   new PluginMenuListener();
     }
     
     public void loadConfigPlugins()
@@ -154,29 +155,6 @@ public class PluginsMenu extends JMenu
                 if(!isDefaultPath)
                     pm.addPlugin(plugin);
             }
-        }
-    }
-    
-    private class PluginMenuListener implements ActionListener
-    {
-        private final PluginManager pluginManager;
-
-        public PluginMenuListener(PluginManager pluginManager)
-        {
-            this.pluginManager  =   pluginManager;
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e)
-        {
-            JMenuItem item      =   (JMenuItem) e.getSource();
-            String pluginName   =   item.getText();
-            pluginManager.activePlugin(pluginName);
-        }
-
-        public PluginManager getPluginManager() 
-        {
-            return pluginManager;
         }
     }
 }
