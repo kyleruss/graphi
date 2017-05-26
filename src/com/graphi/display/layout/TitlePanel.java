@@ -12,6 +12,7 @@ import com.graphi.app.Consts;
 import com.graphi.config.ConfigManager;
 import com.graphi.display.layout.util.ComponentUtils;
 import com.graphi.io.ProjectStore;
+import com.graphi.plugins.PluginManager;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -125,7 +126,7 @@ public class TitlePanel extends JPanel
             
             else if(src == pluginBtn)
             {
-                ViewPort.getInstance().getPluginPanel().initConfig();
+                ViewPort.getInstance().getPluginPanel().initConfig(PluginManager.getInstance());
                 ViewPort.getInstance().setScene(ViewPort.PLUGINS_SCENE);
             }
             

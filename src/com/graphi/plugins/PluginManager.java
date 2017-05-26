@@ -75,8 +75,8 @@ public final class PluginManager
             addPlugin(defaultPlugin);
         }
 
-        ViewPort.getInstance().getPluginPanel().initConfig();
-        //Window.getInstance().getMenu().getPluginListMenu().loadConfigPlugins(this, appManager);
+        MainMenu.getInstance().getPluginListMenu().loadConfigPlugins(this);
+        ViewPort.getInstance().getPluginPanel().initConfig(this);
         activatePluginObject(defaultPlugin);
     }
     

@@ -322,7 +322,7 @@ public class PluginPanel extends MenuSceneTemplate
         }
     }
     
-    public void initConfig()
+    public void initConfig(PluginManager pluginManager)
     {
         PluginContentPanel panel    =   (PluginContentPanel) sceneControlPanel;
         PluginConfig pluginConfig   =   ConfigManager.getInstance().getPluginConfig();
@@ -331,17 +331,22 @@ public class PluginPanel extends MenuSceneTemplate
         List<String> pluginPaths    =   pluginConfig.getLoadedPluginPaths();
         String activeStr            =   panel.STATUS_ACTIVE + ", " + panel.STATUS_DEFAULT;
         panel.pluginTableModel.setRowCount(0);
-        panel.pluginTableModel.addRow(new String[] {"", "Base", "N/A"});
+        panel.pluginTableModel.addRow(new String[] {panel.defaultRow == 0? activeStr : "Loaded", "Base", "N/A"});
 
         if(!pluginPaths.isEmpty())
         {
-            Set<String> pluginNames     =   PluginManager.getInstance().getPlugins().keySet();
-            int index                   =   0;
+            Set<String> pluginNames     =   pluginManager.getPlugins().keySet();
+            int index                   =   -1;
 
             for(String pluginName : pluginNames)
             {
-                String pluginPath  =   pluginPaths.get(index);
-                panel.pluginTableModel.addRow(new String[] {index == panel.defaultRow? activeStr : "", pluginName, pluginPath });
+                if(index >= 0)
+                {
+                    String pluginPath  =   pluginPaths.get(index);
+                    boolean isDefault   =  (index + 1) == panel.defaultRow;
+                    panel.pluginTableModel.addRow(new String[] {isDefault? activeStr : "Loaded", pluginName, pluginPath });
+                }
+                
                 index++;
             }
         }

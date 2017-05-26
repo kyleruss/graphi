@@ -133,20 +133,20 @@ public class PluginsMenu extends JMenu
         if(listener == null)  listener =   new PluginMenuListener();
     }
     
-    public void loadConfigPlugins()
+    public void loadConfigPlugins(PluginManager pluginManager)
     {
         PluginConfig config =   ConfigManager.getInstance().getPluginConfig();
         List<String> paths  =   config.getLoadedPluginPaths();
 
         for(int i = 0; i < paths.size(); i++)
-            loadPluginFile(new File(paths.get(i)));
+            loadPluginFile(new File(paths.get(i)), pluginManager);
     }
     
-    public void loadPluginFile(File file)
+    public void loadPluginFile(File file, PluginManager pluginManager)
     {
         if(file == null) return;
 
-        PluginManager pm        =   PluginManager.getInstance();
+        PluginManager pm        =   pluginManager == null? PluginManager.getInstance() : pluginManager;
         Plugin plugin           =   pm.fetchPlugin(file);
         String defaultPath      =   ConfigManager.getInstance().getPluginConfig().getDefaultPluginPath();
         boolean isDefaultPath   =   file.getPath().equals(defaultPath);
