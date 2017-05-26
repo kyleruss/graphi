@@ -114,18 +114,16 @@ public class PluginsMenu extends JMenu
     public void setActivePluginItem(JMenuItem item)
     {
         if(activePluginItem != null)
-        {
-            if(activePluginItem == item)
-            {
-                JOptionPane.showMessageDialog(null, "This plugin is already active");
-                return;
-            }
-
             activePluginItem.setIcon(null);
-            activePluginItem    =   item;
-            activePluginItem.setIcon(new ImageIcon(activeTickIcon));
+        
+        else if(activePluginItem == item)
+        {
+            JOptionPane.showMessageDialog(null, "This plugin is already active");
+            return;
         }
-
+        
+        activePluginItem    =   item;
+        activePluginItem.setIcon(new ImageIcon(activeTickIcon));
     }
     
     public void initPluginMenuListener()

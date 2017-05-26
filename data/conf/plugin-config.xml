@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <plugin-config>
 <default-plugin-index>0</default-plugin-index>
-<plugin-directory/>
+<plugin-directory>data/plugins</plugin-directory>
 <startup-plugins>
 <plugin-file>/home/denker/workspace/projects/graphi-research-plugin/dist/graphi-research-plugin.jar</plugin-file>
 </startup-plugins>
