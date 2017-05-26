@@ -1,17 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<!-- Configure default plugin & plugins loaded on startup -->
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <plugin-config>
-	<!-- startupPlugins index of default start up plugin (0 for no plugins) -->
-	<default-plugin-index>0</default-plugin-index>
-
-	<!-- Default plugin directory path -->
-	<plugin-directory>data/plugins</plugin-directory>
-
-	<!-- Plugins to load on start up -->
-	<startup-plugins>
-		<!-- Example: <plugin-file>(path to graphi plugin file)</plugin-file> -->
-		<!--<plugin-file>/home/denker/workspace/projects/graphi-suic-plugin/target/suicideintent-1.0.jar</plugin-file> -->
-	</startup-plugins>
+<default-plugin-index>0</default-plugin-index>
+<plugin-directory/>
+<startup-plugins>
+<plugin-file>/home/denker/workspace/projects/graphi-research-plugin/dist/graphi-research-plugin.jar</plugin-file>
+</startup-plugins>
 </plugin-config>
-

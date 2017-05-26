@@ -69,7 +69,11 @@ public class PluginConfig implements Config
 
             ConfigManager.createConfigTextElement(doc, rootElement, "default-plugin-index", defaultIndex);
             ConfigManager.createConfigTextElement(doc, rootElement, "plugin-directory", pluginsDirectory);
-            ConfigManager.attachBodyElement(doc, rootElement, "startup-plugins");
+            Element pluginsElement  =   ConfigManager.attachBodyElement(doc, rootElement, "startup-plugins");
+            
+            for(String path : loadedPluginPaths)
+                ConfigManager.createConfigTextElement(doc, pluginsElement, "plugin-file", path);
+            
             doc.appendChild(rootElement);
             
             

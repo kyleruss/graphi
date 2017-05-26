@@ -358,14 +358,15 @@ public class PluginPanel extends MenuSceneTemplate
         if(panel.pluginTableModel.getRowCount() > 1)
         {
             List<String> pluginPathList =   new ArrayList<>();
-            for(int row = 0; row < panel.pluginTable.getRowCount(); row++)
-                pluginPathList.add(panel.pluginTable.getValueAt(row, 1).toString());
+            for(int row = 1; row < panel.pluginTable.getRowCount(); row++)
+                pluginPathList.add(panel.pluginTable.getValueAt(row, 2).toString());
 
             pluginConfig.setLoadedPluginPaths(pluginPathList);
         }
 
 
         pluginConfig.setDefaultPluginIndex(panel.defaultRow);
+        pluginConfig.saveConfig();
     }
     
     public void importPlugin()
