@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 public final class PluginManager
 {
@@ -139,8 +140,7 @@ public final class PluginManager
 
         catch(IOException | ClassNotFoundException | InstantiationException | IllegalAccessException e)
         {
-            e.printStackTrace();
-            System.out.println("[Error] " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "[Error] Failed to load plugin file");
             return null;
         }
     }
@@ -148,20 +148,15 @@ public final class PluginManager
     public void activatePluginObject(Plugin plugin)
     {
         if(plugin == null) return;
-
-        GraphData data  =   null;
         
-       /* if(activePlugin != null) 
-            data        =   activePlugin.getData(); */
+        //Dectivate and clean up current plugin
+        activePlugin.onEvent(Plugin.ONDESTROY_DISPLAY_EVENT);
+        activePlugin.onEvent(Plugin.ONDEACTIVATE_PLUGIN_EVENT);
         
+        //Activate and display current plugin
         activePlugin    =   plugin;
-     /*   activePlugin.attachPanel();
-        
-        if(data != null) 
-            activePlugin.passData(data); */
-        
-        ViewPort viewPort   =   ViewPort.getInstance();
-    //    viewPort.attachMainPanel(activePlugin.getPanel());
+        activePlugin.onEvent(Plugin.ONACTIVATE_EVENT);
+        activePlugin.onEvent(Plugin.ONSHOW_DISPLAY_EVENT);
         
         PluginsMenu pluginsMenu     =   MainMenu.getInstance().getPluginListMenu();
         String itemName             =   plugin.getPluginName().equals("Default")? "defaultPluginItem" : plugin.getPluginName();
@@ -191,7 +186,10 @@ public final class PluginManager
     public void addPlugin(Plugin plugin)
     {
         if(plugin != null)
+        {
             plugins.put(plugin.getPluginName(), plugin);
+            plugin.onEvent(Plugin.ONLOAD_EVENT);
+        }
     }
     
     public boolean hasPlugin(Plugin plugin)
