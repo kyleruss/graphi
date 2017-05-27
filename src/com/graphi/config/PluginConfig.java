@@ -59,31 +59,24 @@ public class PluginConfig implements Config
         }
     }
     
+    
     @Override
-    public void saveConfig() 
+    public void saveConfig() throws Exception
     {
-        try
-        {
-            Document doc        =   ConfigManager.generateDocument();
-            Element rootElement =   doc.createElement("plugin-config");
+        Document doc        =   ConfigManager.generateDocument();
+        Element rootElement =   doc.createElement("plugin-config");
 
-            ConfigManager.createConfigTextElement(doc, rootElement, "default-plugin-index", defaultIndex);
-            ConfigManager.createConfigTextElement(doc, rootElement, "plugin-directory", pluginsDirectory);
-            Element pluginsElement  =   ConfigManager.attachBodyElement(doc, rootElement, "startup-plugins");
-            
-            for(String path : loadedPluginPaths)
-                ConfigManager.createConfigTextElement(doc, pluginsElement, "plugin-file", path);
-            
-            doc.appendChild(rootElement);
-            
-            
-            ConfigManager.saveConfig(doc, Consts.PLUGIN_CONF_FILE);
-        }
-        
-        catch(Exception e)
-        {
-            JOptionPane.showMessageDialog(null, "Failed to save settings");
-        }
+        ConfigManager.createConfigTextElement(doc, rootElement, "default-plugin-index", defaultIndex);
+        ConfigManager.createConfigTextElement(doc, rootElement, "plugin-directory", pluginsDirectory);
+        Element pluginsElement  =   ConfigManager.attachBodyElement(doc, rootElement, "startup-plugins");
+
+        for(String path : loadedPluginPaths)
+            ConfigManager.createConfigTextElement(doc, pluginsElement, "plugin-file", path);
+
+        doc.appendChild(rootElement);
+
+
+        ConfigManager.saveConfig(doc, Consts.PLUGIN_CONF_FILE);
     }
     
     @Override

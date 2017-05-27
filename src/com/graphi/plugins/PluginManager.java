@@ -150,8 +150,11 @@ public final class PluginManager
         if(plugin == null) return;
         
         //Dectivate and clean up current plugin
-        activePlugin.onEvent(Plugin.ONDESTROY_DISPLAY_EVENT);
-        activePlugin.onEvent(Plugin.ONDEACTIVATE_PLUGIN_EVENT);
+        if(activePlugin != null)
+        {
+            activePlugin.onEvent(Plugin.ONDESTROY_DISPLAY_EVENT);
+            activePlugin.onEvent(Plugin.ONDEACTIVATE_PLUGIN_EVENT);
+        }
         
         //Activate and display current plugin
         activePlugin    =   plugin;

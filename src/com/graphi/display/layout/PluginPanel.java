@@ -6,6 +6,7 @@
 
 package com.graphi.display.layout;
 
+import com.graphi.app.Consts;
 import com.graphi.config.ConfigManager;
 import com.graphi.config.PluginConfig;
 import com.graphi.display.AppResources;
@@ -34,6 +35,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 
@@ -68,6 +71,8 @@ public class PluginPanel extends MenuSceneTemplate
         private final String STATUS_ACTIVE  =   "Active";
         private final String STATUS_DEFAULT =   "Default";
         private final String STATUS_LOADED  =   "Loaded";
+        private final String SAVE_SUCCESS   =   "Plugin settings saved";
+        private final String SAVE_FAIL      =   "Failed to save plugin settings";
         
         private JTable pluginTable;
         private JButton addPluginBtn;
@@ -79,6 +84,7 @@ public class PluginPanel extends MenuSceneTemplate
         private DefaultTableModel pluginTableModel; 
         private JScrollPane pluginScrollPane;
         private PluginDetailsPanel pluginDetailsPanel;
+        private JLabel saveStatusLabel;
         private int defaultRow;
         private int activeRow;
         
@@ -95,6 +101,7 @@ public class PluginPanel extends MenuSceneTemplate
             defaultPluginBtn        =   new JButton("");
             aboutPluginBtn          =   new JButton("");
             activatePluginBtn       =   new JButton("");
+            saveStatusLabel         =   new JLabel();
             pluginScrollPane        =   new JScrollPane(pluginTable);   
             savePluginsBtn          =   new JButton(new ImageIcon(resources.getResource("saveLargeBtn")));
             pluginDirField          =   new JTextField();
@@ -103,7 +110,7 @@ public class PluginPanel extends MenuSceneTemplate
             JPanel contentWrapper   =   new JPanel(new BorderLayout());
             JPanel pluginDirWrapper =   new JPanel(new BorderLayout());
             JPanel outerWrapper     =   new JPanel(new BorderLayout());
-            JPanel btmCtrlWrapper   =   new JPanel();
+            JPanel btmCtrlWrapper   =   new JPanel(new BorderLayout());
             
             addPluginBtn.setIcon(new ImageIcon(resources.getResource("pluginOpenIcon")));
             defaultPluginBtn.setIcon(new ImageIcon(resources.getResource("pluginDefaultIcon")));
@@ -123,7 +130,17 @@ public class PluginPanel extends MenuSceneTemplate
             pluginDirLabel.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
             outerWrapper.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
             pluginDirWrapper.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+            btmCtrlWrapper.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
             contentWrapper.setPreferredSize(new Dimension(500, 400));
+            
+            saveStatusLabel.setFont(new Font("Arial", Font.BOLD, 18));
+            saveStatusLabel.setVisible(false);
+            JPanel statusWrapper    =   new JPanel();
+            statusWrapper.setBackground(Color.WHITE);
+            statusWrapper.add(saveStatusLabel);
+            btmCtrlWrapper.add(statusWrapper, BorderLayout.SOUTH);
+            
+            
             
             addPluginBtn.setFocusable(false);
             defaultPluginBtn.setFocusable(false);
@@ -157,6 +174,27 @@ public class PluginPanel extends MenuSceneTemplate
             activatePluginBtn.addActionListener(this);
             defaultPluginBtn.addActionListener(this);
             aboutPluginBtn.addActionListener(this);
+        }
+        
+        private void showStatusLabel(boolean success)
+        {
+            AppResources resources  =   AppResources.getInstance();
+            String resourceName     =   success? "statusTickMedium" : "statusXMedium";
+            
+            saveStatusLabel.setIcon(new ImageIcon(resources.getResource(resourceName)));
+            saveStatusLabel.setText(success? SAVE_SUCCESS : SAVE_FAIL);
+            saveStatusLabel.setVisible(true);
+            
+            SwingUtilities.invokeLater(()->
+            {
+                Timer timer =   new Timer(1500, (ActionEvent e) -> 
+                {
+                    saveStatusLabel.setVisible(false);
+                });
+
+                timer.setRepeats(false);
+                timer.start();
+            });
         }
         
         private class PluginTableModel extends DefaultTableModel
@@ -356,22 +394,31 @@ public class PluginPanel extends MenuSceneTemplate
 
     public void updateConfig()
     {
-        PluginContentPanel panel    =   (PluginContentPanel) sceneControlPanel;
-        PluginConfig pluginConfig   =   ConfigManager.getInstance().getPluginConfig();
-        pluginConfig.setPluginDirectory(panel.pluginDirField.getText());
-
-        if(panel.pluginTableModel.getRowCount() > 1)
+        try
         {
-            List<String> pluginPathList =   new ArrayList<>();
-            for(int row = 1; row < panel.pluginTable.getRowCount(); row++)
-                pluginPathList.add(panel.pluginTable.getValueAt(row, 2).toString());
+            PluginContentPanel panel    =   (PluginContentPanel) sceneControlPanel;
+            PluginConfig pluginConfig   =   ConfigManager.getInstance().getPluginConfig();
+            pluginConfig.setPluginDirectory(panel.pluginDirField.getText());
 
-            pluginConfig.setLoadedPluginPaths(pluginPathList);
+            if(panel.pluginTableModel.getRowCount() > 1)
+            {
+                List<String> pluginPathList =   new ArrayList<>();
+                for(int row = 1; row < panel.pluginTable.getRowCount(); row++)
+                    pluginPathList.add(panel.pluginTable.getValueAt(row, 2).toString());
+
+                pluginConfig.setLoadedPluginPaths(pluginPathList);
+            }
+
+
+            pluginConfig.setDefaultPluginIndex(panel.defaultRow);
+            pluginConfig.saveConfig();
+            ((PluginContentPanel) sceneControlPanel).showStatusLabel(true);
         }
-
-
-        pluginConfig.setDefaultPluginIndex(panel.defaultRow);
-        pluginConfig.saveConfig();
+        
+        catch(Exception e)
+        {
+            ((PluginContentPanel) sceneControlPanel).showStatusLabel(false);
+        }
     }
     
     public void importPlugin()

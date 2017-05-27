@@ -21,5 +21,5 @@ public interface Config
      */
     public String getConfigName();
     
-    public void saveConfig();
+    public void saveConfig() throws Exception;
 }

@@ -94,6 +94,8 @@ public class AppResources
             resourceMap.put("toolbarRecordIcon", getImage("toolbarRecord.png"));
             resourceMap.put("toolbarPlayIcon", getImage("toolbarPlay.png"));
             resourceMap.put("toolbarTasksIcon", getImage("toolbarTasks.png"));
+            resourceMap.put("statusTickMedium", getImage("statusTickMedium.png"));
+            resourceMap.put("statusXMedium", getImage("statusXMedium.png"));
         }
         
         catch(IOException e)
