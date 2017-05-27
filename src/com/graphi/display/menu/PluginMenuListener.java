@@ -4,7 +4,7 @@
 //  https://github.com/denkers/graphi
 //=========================================
 
-package com.graphi.display.layout.util;
+package com.graphi.display.menu;
 
 import com.graphi.plugins.PluginManager;
 import java.awt.event.ActionEvent;

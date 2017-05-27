@@ -6,7 +6,6 @@
 
 package com.graphi.display.menu;
 
-import com.graphi.display.layout.util.PluginMenuListener;
 import com.sun.glass.events.KeyEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;

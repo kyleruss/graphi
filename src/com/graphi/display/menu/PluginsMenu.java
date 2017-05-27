@@ -10,7 +10,6 @@ import com.graphi.app.Consts;
 import com.graphi.config.ConfigManager;
 import com.graphi.plugins.Plugin;
 import com.graphi.config.PluginConfig;
-import com.graphi.display.layout.util.PluginMenuListener;
 import com.graphi.plugins.PluginManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
