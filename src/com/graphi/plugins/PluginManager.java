@@ -66,7 +66,7 @@ public final class PluginManager
         else
         {
             List<String> pluginPaths    =   config.getLoadedPluginPaths();
-            String defaultPluginPath    =   pluginPaths.get(defaultPluginIndex);
+            String defaultPluginPath    =   pluginPaths.get(defaultPluginIndex - 1);
             defaultPlugin               =   fetchPlugin(new File(defaultPluginPath));
             
             if(defaultPlugin == null)

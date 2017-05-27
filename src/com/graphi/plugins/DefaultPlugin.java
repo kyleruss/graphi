@@ -26,4 +26,13 @@ public class DefaultPlugin extends AbstractPlugin
         name        =   "Default";
         description =   "Default Plugin";
     }
+
+    @Override
+    public void onPluginLoad() {}
+
+    @Override
+    public void onPluginActivate() {}
+
+    @Override
+    public void onPluginDeactivate() {}
 }

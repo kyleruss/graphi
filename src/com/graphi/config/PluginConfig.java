@@ -112,7 +112,7 @@ public class PluginConfig implements Config
         if(defaultIndex <= 0 || defaultIndex > loadedPluginPaths.size())
             return null;
         else
-            return loadedPluginPaths.get(defaultIndex);
+            return loadedPluginPaths.get(defaultIndex - 1);
     }
     
     public List<String> getLoadedPluginPaths()

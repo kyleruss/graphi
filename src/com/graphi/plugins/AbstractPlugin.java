@@ -68,8 +68,53 @@ public abstract class AbstractPlugin implements Plugin, Serializable
         this.displayHandler =   displayHandler;
     }
     
+    public abstract void onPluginLoad();
+    
+    public abstract void onPluginActivate();
+    
+    public abstract void onPluginDeactivate();
+    
+    public void onPluginDisplayShow()
+    {
+        if(displayHandler != null)
+            displayHandler.attachDisplay();
+    }
+    
+    public void onPluginDisplayHide()
+    {
+        if(displayHandler != null)
+            displayHandler.destroyDisplay();
+    }
+    
     @Override
-    public abstract void onEvent(int eventCode);
+    public void onEvent(int eventCode)
+    {
+        switch (eventCode) 
+        {
+            case Plugin.ONACTIVATE_EVENT:
+                onPluginActivate();
+                break;
+                
+            case Plugin.ONDEACTIVATE_PLUGIN_EVENT:
+                onPluginDeactivate();
+                break;
+                
+            case Plugin.ONLOAD_EVENT:
+                onPluginLoad();
+                break;
+                
+            case Plugin.ONSHOW_DISPLAY_EVENT:
+                onPluginDisplayShow();
+                break;
+                
+            case Plugin.ONDESTROY_DISPLAY_EVENT:
+                onPluginDisplayHide();
+                break;
+                
+            default: break;
+        }
+            
+    }
     
     /**
      * Tests if two plugins have the same name
