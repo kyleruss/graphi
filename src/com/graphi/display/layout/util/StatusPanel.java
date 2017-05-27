@@ -24,9 +24,16 @@ public class StatusPanel extends JPanel
     
     public StatusPanel()
     {
+        this("", "");
+    }
+    
+    public StatusPanel(String successText, String failText)
+    {
         setBackground(Color.WHITE);
-        statusLabel =   new JLabel();
-        delay       =   1500;
+        statusLabel         =   new JLabel();
+        delay               =   1500;
+        this.successText    =   successText;
+        this.failText       =   failText;
         statusLabel.setFont(new Font("Arial", Font.BOLD, 18));
         statusLabel.setVisible(false);
         

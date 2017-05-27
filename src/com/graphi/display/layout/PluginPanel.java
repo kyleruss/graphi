@@ -13,6 +13,7 @@ import com.graphi.display.AppResources;
 import com.graphi.plugins.Plugin;
 import com.graphi.plugins.PluginManager;
 import com.graphi.display.layout.util.ComponentUtils;
+import com.graphi.display.layout.util.StatusPanel;
 import com.graphi.display.menu.MainMenu;
 import com.graphi.display.menu.PluginsMenu;
 import java.awt.BorderLayout;
@@ -84,7 +85,7 @@ public class PluginPanel extends MenuSceneTemplate
         private DefaultTableModel pluginTableModel; 
         private JScrollPane pluginScrollPane;
         private PluginDetailsPanel pluginDetailsPanel;
-        private JLabel saveStatusLabel;
+        private StatusPanel statusPanel;
         private int defaultRow;
         private int activeRow;
         
@@ -101,7 +102,7 @@ public class PluginPanel extends MenuSceneTemplate
             defaultPluginBtn        =   new JButton("");
             aboutPluginBtn          =   new JButton("");
             activatePluginBtn       =   new JButton("");
-            saveStatusLabel         =   new JLabel();
+            statusPanel             =   new StatusPanel(SAVE_SUCCESS, SAVE_FAIL);
             pluginScrollPane        =   new JScrollPane(pluginTable);   
             savePluginsBtn          =   new JButton(new ImageIcon(resources.getResource("saveLargeBtn")));
             pluginDirField          =   new JTextField();
@@ -132,15 +133,7 @@ public class PluginPanel extends MenuSceneTemplate
             pluginDirWrapper.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
             btmCtrlWrapper.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
             contentWrapper.setPreferredSize(new Dimension(500, 400));
-            
-            saveStatusLabel.setFont(new Font("Arial", Font.BOLD, 18));
-            saveStatusLabel.setVisible(false);
-            JPanel statusWrapper    =   new JPanel();
-            statusWrapper.setBackground(Color.WHITE);
-            statusWrapper.add(saveStatusLabel);
-            btmCtrlWrapper.add(statusWrapper, BorderLayout.SOUTH);
-            
-            
+            btmCtrlWrapper.add(statusPanel, BorderLayout.SOUTH);
             
             addPluginBtn.setFocusable(false);
             defaultPluginBtn.setFocusable(false);
@@ -176,26 +169,6 @@ public class PluginPanel extends MenuSceneTemplate
             aboutPluginBtn.addActionListener(this);
         }
         
-        private void showStatusLabel(boolean success)
-        {
-            AppResources resources  =   AppResources.getInstance();
-            String resourceName     =   success? "statusTickMedium" : "statusXMedium";
-            
-            saveStatusLabel.setIcon(new ImageIcon(resources.getResource(resourceName)));
-            saveStatusLabel.setText(success? SAVE_SUCCESS : SAVE_FAIL);
-            saveStatusLabel.setVisible(true);
-            
-            SwingUtilities.invokeLater(()->
-            {
-                Timer timer =   new Timer(1500, (ActionEvent e) -> 
-                {
-                    saveStatusLabel.setVisible(false);
-                });
-
-                timer.setRepeats(false);
-                timer.start();
-            });
-        }
         
         private class PluginTableModel extends DefaultTableModel
         {
@@ -412,12 +385,12 @@ public class PluginPanel extends MenuSceneTemplate
 
             pluginConfig.setDefaultPluginIndex(panel.defaultRow);
             pluginConfig.saveConfig();
-            ((PluginContentPanel) sceneControlPanel).showStatusLabel(true);
+            ((PluginContentPanel) sceneControlPanel).statusPanel.showStatusLabel(true);
         }
         
         catch(Exception e)
         {
-            ((PluginContentPanel) sceneControlPanel).showStatusLabel(false);
+            ((PluginContentPanel) sceneControlPanel).statusPanel.showStatusLabel(false);
         }
     }
     

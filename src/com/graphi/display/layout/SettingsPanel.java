@@ -13,12 +13,11 @@ import com.graphi.display.layout.controls.options.AdvancedOptionPanel;
 import com.graphi.display.layout.controls.options.CustomizationOptionPanel;
 import com.graphi.display.layout.controls.options.ViewerOptionPanel;
 import com.graphi.display.layout.util.ComponentUtils;
+import com.graphi.display.layout.util.StatusPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -115,34 +114,54 @@ public class SettingsPanel extends MenuSceneTemplate
         
         private class SettingsControlPanel extends JPanel implements ActionListener
         {
+            private final String SAVE_SUCCESS   =   "Successfully saved settings";
+            private final String SAVE_FAIL      =   "Failed to save settings";
+            
             private final JButton saveSettingsBtn;
+            private StatusPanel statusPanel;
             
             private SettingsControlPanel()
             {
                 setBackground(Color.WHITE);
-                saveSettingsBtn =   new JButton();
+                setLayout(new BorderLayout());
+                setPreferredSize(new Dimension(0, 150));
+                statusPanel         =   new StatusPanel(SAVE_SUCCESS, SAVE_FAIL);
+                saveSettingsBtn     =   new JButton();
                 saveSettingsBtn.setIcon(new ImageIcon(AppResources.getInstance().getResource("saveLargeBtn")));
                 ComponentUtils.setTransparentControl(saveSettingsBtn);
                 
-                add(saveSettingsBtn);
+                statusPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
+                add(saveSettingsBtn, BorderLayout.NORTH);
+                add(statusPanel, BorderLayout.SOUTH);
                 saveSettingsBtn.addActionListener(this);
             }
             
             private void saveSettings()
             {
-                boolean hasUpdates  =   false;
-                for(AbstractOptionPanel optionPanel : optionPanels)
+                try
                 {
-                    if(optionPanel.hasUpdates())
+                    boolean hasUpdates  =   false;
+                    for(AbstractOptionPanel optionPanel : optionPanels)
                     {
-                        hasUpdates  =   true;
-                        optionPanel.updateOptions();
-                        optionPanel.clearOptions();
+                        if(optionPanel.hasUpdates())
+                        {
+                            hasUpdates  =   true;
+                            optionPanel.updateOptions();
+                            optionPanel.clearOptions();
+                        }
+                    }
+
+                    if(hasUpdates)
+                    {
+                        ConfigManager.getInstance().getAppConfig().saveConfig();
+                        statusPanel.showStatusLabel(true);
                     }
                 }
                 
-                if(hasUpdates)
-                    ConfigManager.getInstance().getAppConfig().saveConfig();
+                catch(Exception e)
+                {
+                    statusPanel.showStatusLabel(false);
+                }
             }
 
             @Override

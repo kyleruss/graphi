@@ -79,47 +79,39 @@ public class AppConfig implements Config
     }
     
     @Override
-    public void saveConfig() 
+    public void saveConfig() throws Exception
     {
-        try
-        {
-            Document doc                    =   ConfigManager.generateDocument();
-            Element rootElement             =   doc.createElement("app-version");
-            Element advancedSettingsElement =   ConfigManager.attachBodyElement(doc, rootElement, "advanced-settings");
-            Element viewSettingsElement     =   ConfigManager.attachBodyElement(doc, rootElement, "view-settings");
-            Element customSettingsElement   =   ConfigManager.attachBodyElement(doc, rootElement, "customization-settings");
+        Document doc                    =   ConfigManager.generateDocument();
+        Element rootElement             =   doc.createElement("app-version");
+        Element advancedSettingsElement =   ConfigManager.attachBodyElement(doc, rootElement, "advanced-settings");
+        Element viewSettingsElement     =   ConfigManager.attachBodyElement(doc, rootElement, "view-settings");
+        Element customSettingsElement   =   ConfigManager.attachBodyElement(doc, rootElement, "customization-settings");
 
-            doc.appendChild(rootElement);
-            
-            //Advanced settings
-            ConfigManager.createConfigTextElement(doc, advancedSettingsElement, "enable-logging", enableLogging);
-            ConfigManager.createConfigTextElement(doc, advancedSettingsElement, "enable-updating", enableUpdating);
-            ConfigManager.createConfigTextElement(doc, advancedSettingsElement, "enable-debug-mode", enableDebugMode);
-            ConfigManager.createConfigTextElement(doc, advancedSettingsElement, "export-dir", exportDir);
-            
-            //View settings
-            ConfigManager.createConfigTextElement(doc, viewSettingsElement, "view-node-labels", viewNodeLabels);
-            ConfigManager.createConfigTextElement(doc, viewSettingsElement, "view-edge-labels", viewEdgeLabels);
-            ConfigManager.createConfigTextElement(doc, viewSettingsElement, "display-visuals", displayVisuals);
-            
-            //Customization settings
-            ConfigManager.createConfigTextElement(doc, customSettingsElement, "enable-custom-res", enableCustomResolution);
-            ConfigManager.createConfigTextElement(doc, customSettingsElement, "custom-width", customWindowWidth);
-            ConfigManager.createConfigTextElement(doc, customSettingsElement, "custom-height", customWindowHeight);
-            ConfigManager.createConfigTextElement(doc, customSettingsElement, "theme-type", themeType);
-            ConfigManager.createConfigTextElement(doc, customSettingsElement, "display-background", ComponentUtils.colourToHex(displayBackground));
-            ConfigManager.createConfigTextElement(doc, customSettingsElement, "node-background", ComponentUtils.colourToHex(nodeBackground));
-            ConfigManager.createConfigTextElement(doc, customSettingsElement, "edge-background", ComponentUtils.colourToHex(edgeBackground));
-            ConfigManager.createConfigTextElement(doc, customSettingsElement, "selected-background", ComponentUtils.colourToHex(edgeBackground));
-            ConfigManager.createConfigTextElement(doc, customSettingsElement, "edge-type", edgeType);
-            
-            ConfigManager.saveConfig(doc, Consts.APP_CONF_FILE);
-        }
-        
-        catch(Exception e)
-        {
-            JOptionPane.showMessageDialog(null, "Failed to save settings");
-        }
+        doc.appendChild(rootElement);
+
+        //Advanced settings
+        ConfigManager.createConfigTextElement(doc, advancedSettingsElement, "enable-logging", enableLogging);
+        ConfigManager.createConfigTextElement(doc, advancedSettingsElement, "enable-updating", enableUpdating);
+        ConfigManager.createConfigTextElement(doc, advancedSettingsElement, "enable-debug-mode", enableDebugMode);
+        ConfigManager.createConfigTextElement(doc, advancedSettingsElement, "export-dir", exportDir);
+
+        //View settings
+        ConfigManager.createConfigTextElement(doc, viewSettingsElement, "view-node-labels", viewNodeLabels);
+        ConfigManager.createConfigTextElement(doc, viewSettingsElement, "view-edge-labels", viewEdgeLabels);
+        ConfigManager.createConfigTextElement(doc, viewSettingsElement, "display-visuals", displayVisuals);
+
+        //Customization settings
+        ConfigManager.createConfigTextElement(doc, customSettingsElement, "enable-custom-res", enableCustomResolution);
+        ConfigManager.createConfigTextElement(doc, customSettingsElement, "custom-width", customWindowWidth);
+        ConfigManager.createConfigTextElement(doc, customSettingsElement, "custom-height", customWindowHeight);
+        ConfigManager.createConfigTextElement(doc, customSettingsElement, "theme-type", themeType);
+        ConfigManager.createConfigTextElement(doc, customSettingsElement, "display-background", ComponentUtils.colourToHex(displayBackground));
+        ConfigManager.createConfigTextElement(doc, customSettingsElement, "node-background", ComponentUtils.colourToHex(nodeBackground));
+        ConfigManager.createConfigTextElement(doc, customSettingsElement, "edge-background", ComponentUtils.colourToHex(edgeBackground));
+        ConfigManager.createConfigTextElement(doc, customSettingsElement, "selected-background", ComponentUtils.colourToHex(edgeBackground));
+        ConfigManager.createConfigTextElement(doc, customSettingsElement, "edge-type", edgeType);
+
+        ConfigManager.saveConfig(doc, Consts.APP_CONF_FILE);
     }
     
     @Override
