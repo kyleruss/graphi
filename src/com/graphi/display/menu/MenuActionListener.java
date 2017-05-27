@@ -14,7 +14,7 @@ import com.graphi.display.layout.ControlPanel;
 import com.graphi.display.layout.DataPanel;
 import com.graphi.display.layout.GraphPanel;
 import com.graphi.display.layout.OutputPanel;
-import com.graphi.display.layout.ViewPort;
+import com.graphi.display.ViewPort;
 import com.graphi.display.layout.controls.IOControlPanel;
 import com.graphi.display.layout.controls.PlaybackControlPanel;
 import com.graphi.graph.Edge;

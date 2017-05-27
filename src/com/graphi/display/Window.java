@@ -9,7 +9,6 @@ package com.graphi.display;
 import com.graphi.display.menu.MainMenu;
 import com.graphi.app.Consts;
 import com.graphi.config.ConfigManager;
-import com.graphi.display.layout.ViewPort;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.UIManager;

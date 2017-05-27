@@ -9,7 +9,7 @@ package com.graphi.io;
 import com.graphi.display.layout.DataPanel;
 import com.graphi.display.layout.GraphPanel;
 import com.graphi.display.layout.OutputPanel;
-import com.graphi.display.layout.ViewPort;
+import com.graphi.display.ViewPort;
 import com.graphi.graph.GraphDataManager;
 import com.graphi.graph.TableModelBean;
 import com.graphi.plugins.PluginManager;

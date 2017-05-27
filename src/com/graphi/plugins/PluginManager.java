@@ -10,7 +10,7 @@ import com.graphi.config.PluginConfig;
 import com.graphi.config.ConfigManager;
 import com.graphi.display.menu.MainMenu;
 import com.graphi.display.menu.PluginsMenu;
-import com.graphi.display.layout.ViewPort;
+import com.graphi.display.ViewPort;
 import com.graphi.graph.GraphData;
 import java.io.File;
 import java.io.IOException;

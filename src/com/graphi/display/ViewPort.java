@@ -4,12 +4,17 @@
 //  https://github.com/denkers/graphi
 //=========================================
 
-package com.graphi.display.layout;
+package com.graphi.display;
 
 import com.graphi.app.Consts;
+import com.graphi.display.layout.AboutPanel;
+import com.graphi.display.layout.MainPanel;
+import com.graphi.display.layout.PluginPanel;
+import com.graphi.display.layout.SettingsPanel;
+import com.graphi.display.layout.TitlePanel;
+import com.graphi.display.layout.TransitionPanel;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import javax.swing.BorderFactory;

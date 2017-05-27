@@ -6,6 +6,7 @@
 
 package com.graphi.display.layout;
 
+import com.graphi.display.ViewPort;
 import com.graphi.display.AppResources;
 import com.graphi.display.layout.util.ComponentUtils;
 import java.awt.BorderLayout;

@@ -10,7 +10,7 @@ import com.graphi.config.AppConfig;
 import com.graphi.config.ConfigManager;
 import com.graphi.display.layout.GraphPanel;
 import com.graphi.display.layout.MainPanel;
-import com.graphi.display.layout.ViewPort;
+import com.graphi.display.ViewPort;
 import com.graphi.graph.Edge;
 import com.graphi.graph.GraphDataManager;
 import com.graphi.graph.Node;
@@ -155,8 +155,6 @@ public class CustomizationOptionPanel extends AbstractOptionPanel implements Act
         add(selectedBGLabel);
         add(selectedBGWrapper);
         
-        themeBox.addActionListener(this);
-        edgeTypeBox.addActionListener(this);
         displayBGButton.addActionListener(this);
         nodeBGButton.addActionListener(this);
         edgeBGButton.addActionListener(this);
@@ -176,10 +174,15 @@ public class CustomizationOptionPanel extends AbstractOptionPanel implements Act
         nodeBGPanel.setBackgroundColour(appConfig.getNodeBackground());
         edgeBGPanel.setBackgroundColour(appConfig.getEdgeBackground());
         selectedBGPanel.setBackgroundColour(appConfig.getSelectedBackground());
-        themeBox.setSelectedIndex(appConfig.getThemeType());
         
+        themeBox.removeActionListener(this);
+        edgeTypeBox.removeActionListener(this);
+        themeBox.setSelectedIndex(appConfig.getThemeType());
         int edgeType    =   appConfig.getEdgeType() == EdgeType.UNDIRECTED? 0 : 1;
         edgeTypeBox.setSelectedIndex(edgeType);
+        
+        themeBox.addActionListener(this);
+        edgeTypeBox.addActionListener(this);
         
         boolean enableCustomRes     =   appConfig.isEnableCustomResolution();
         enableResCheck.setSelected(enableCustomRes);
@@ -304,7 +307,9 @@ public class CustomizationOptionPanel extends AbstractOptionPanel implements Act
             toggleBackgroundChangeDisplay(EDGE_BG_INDEX);
         
         else if(src == themeBox)
+        {
             addOptionChanged(THEME_INDEX);
+        }
         
         else if(src == edgeTypeBox)
             addOptionChanged(EDGETYPE_INDEX);
