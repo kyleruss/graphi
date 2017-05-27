@@ -9,7 +9,6 @@ package com.graphi.display.layout;
 import com.graphi.display.layout.controls.ComputeControlPanel;
 import com.graphi.display.layout.controls.GraphObjControlPanel;
 import com.graphi.display.layout.controls.IOControlPanel;
-import com.graphi.display.layout.controls.ScriptControlPanel;
 import com.graphi.display.layout.controls.SimulationControlPanel;
 import com.graphi.display.layout.controls.TaskControlPanel;
 import java.awt.Dimension;
@@ -25,7 +24,6 @@ public class ControlPanel extends JPanel
     protected ComputeControlPanel computePanel;
     protected GraphObjControlPanel gObjPanel;
     protected IOControlPanel ioPanel;
-    protected ScriptControlPanel scriptPanel;
     protected SimulationControlPanel simulationPanel;
     protected TaskControlPanel taskPanel;
     private static ControlPanel instance;
@@ -46,8 +44,6 @@ public class ControlPanel extends JPanel
         add(taskPanel);
         add(Box.createRigidArea(new Dimension(230, 30)));
         add(computePanel);
-        add(Box.createRigidArea(new Dimension(230, 30)));
-        add(scriptPanel);
     }
     
     protected void initControls()
@@ -55,7 +51,6 @@ public class ControlPanel extends JPanel
         computePanel    =   new ComputeControlPanel();
         gObjPanel       =   new GraphObjControlPanel();
         ioPanel         =   new IOControlPanel();
-        scriptPanel     =   new ScriptControlPanel();
         simulationPanel =   new SimulationControlPanel();
         taskPanel       =   new TaskControlPanel();
     }
@@ -73,11 +68,6 @@ public class ControlPanel extends JPanel
     public IOControlPanel getIoPanel() 
     {
         return ioPanel;
-    }
-
-    public ScriptControlPanel getScriptPanel() 
-    {
-        return scriptPanel;
     }
 
     public SimulationControlPanel getSimulationPanel() 

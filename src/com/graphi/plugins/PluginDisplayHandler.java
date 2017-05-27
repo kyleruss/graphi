@@ -6,8 +6,6 @@
 
 package com.graphi.plugins;
 
-import java.util.List;
-
 public interface PluginDisplayHandler 
 {
     public void initPluginDisplay();
@@ -15,6 +13,4 @@ public interface PluginDisplayHandler
     public void attachDisplay();
     
     public void destroyDisplay();
-    
-    public List<String> getPluginResources();
 }

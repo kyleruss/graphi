@@ -175,7 +175,6 @@ public class IOControlPanel extends JPanel implements ActionListener
             pbPanel.getGraphPlayback().prepareIO(false);
             
             currentStorageLabel.setText(file.getName());
-            ControlPanel.getInstance().getScriptPanel().getActiveScriptLabel().setText(file.getName());
             pbPanel.addPlaybackEntries();
 
         }
