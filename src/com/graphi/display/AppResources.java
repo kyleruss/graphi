@@ -6,33 +6,19 @@
 
 package com.graphi.display;
 
-import com.graphi.app.Consts;
+import com.graphi.display.layout.util.ResourceMap;
 import com.graphi.error.ErrorManager;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
-import javax.imageio.ImageIO;
 
-public class AppResources 
+public class AppResources extends ResourceMap
 {
     protected static AppResources instance;
-    
-    //Table containing application images
-    //Key: name of the image
-    //Value: the image for the corresponding name
-    protected Map<String, BufferedImage> resourceMap;
-    
-    protected AppResources()
-    {
-        initResources();
-    }
     
     /**
      * Initializes all image resources for the application
      */
-    private void initResources()
+    protected void initResources()
     {
         try
         {
@@ -102,42 +88,6 @@ public class AppResources
         {
             ErrorManager.GUIErrorMessage("Failed to load resources", true, e, null);
         }
-    }
-    
-    /**
-     * Returns an image for the passed image name
-     * @param name Name of the image
-     * @return The BufferedImage corresponding to the passed image name
-     */
-    private BufferedImage getImage(String name) throws IOException
-    {
-        return ImageIO.read(new File(Consts.IMG_DIR + name));
-    }
-    
-    /**
-     * @return The image resources in the application
-     */
-    public Map<String, BufferedImage> getResourceMap()
-    {
-        return resourceMap;
-    }
-    
-    /**
-     * @param resourceName The image name/alias (not path)
-     * @return The image for the corresponding resource name
-     */
-    public BufferedImage getResource(String resourceName)
-    {
-        return resourceMap.get(resourceName);
-    }
-    
-    /**
-     * @param resourceName the name of the image
-     * @return True if the image has been initialized; false otherwise
-     */
-    public boolean hasResource(String resourceName)
-    {
-        return resourceMap.containsKey(resourceName);
     }
     
     public static AppResources getInstance()
