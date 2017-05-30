@@ -18,8 +18,8 @@
 <theme-type>0</theme-type>
 <display-background>#FFFFFF</display-background>
 <node-background>#FF0033</node-background>
-<edge-background>#FFFFFF</edge-background>
-<selected-background>#FFFFFF</selected-background>
-<edge-type>DIRECTED</edge-type>
+<edge-background>#000000</edge-background>
+<selected-background>#000000</selected-background>
+<edge-type/>
 </customization-settings>
 </app-version>

@@ -18,6 +18,7 @@ public class AppResources extends ResourceMap
     /**
      * Initializes all image resources for the application
      */
+    @Override
     protected void initResources()
     {
         try

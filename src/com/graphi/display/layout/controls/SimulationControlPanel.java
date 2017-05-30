@@ -9,7 +9,6 @@ package com.graphi.display.layout.controls;
 import com.graphi.app.Consts;
 import com.graphi.display.AppResources;
 import com.graphi.display.layout.GraphPanel;
-import com.graphi.display.layout.MainPanel;
 import com.graphi.display.layout.ScreenPanel;
 import com.graphi.sim.Network;
 import com.graphi.sim.generator.BerbasiGenerator;
@@ -28,6 +27,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -41,15 +44,15 @@ import net.miginfocom.swing.MigLayout;
 
 public class SimulationControlPanel extends JPanel implements ActionListener
 {
-    protected JComboBox genAlgorithmsBox;
-    protected JButton resetGeneratorBtn, executeGeneratorBtn;
-    protected JPanel genPanel, baGenPanel, klGenPanel, raGenPanel;
-    protected JSpinner latticeSpinner, clusteringSpinner;
-    protected JSpinner initialNSpinner, addNSpinner, randProbSpinner, randNumSpinner;
-    protected JCheckBox simTiesCheck, randDirectedCheck, baDirectedCheck;
-    protected JSpinner simTiesPSpinner;
-    protected JLabel simTiesPLabel;
-    protected JPanel wrapperPanel;
+    private JComboBox genAlgorithmsBox;
+    private JButton resetGeneratorBtn, executeGeneratorBtn;
+    private JPanel genPanel, baGenPanel, klGenPanel, raGenPanel;
+    private JSpinner latticeSpinner, clusteringSpinner;
+    private JSpinner initialNSpinner, addNSpinner, randProbSpinner, randNumSpinner;
+    private JCheckBox simTiesCheck, randDirectedCheck, baDirectedCheck;
+    private JSpinner simTiesPSpinner;
+    private JLabel simTiesPLabel;
+    private JPanel wrapperPanel;
     
     public SimulationControlPanel()
     {
@@ -69,8 +72,8 @@ public class SimulationControlPanel extends JPanel implements ActionListener
         genAlgorithmsBox.addItem("Random");
         genAlgorithmsBox.addActionListener(this);
 
-        resetGeneratorBtn           =   new JButton("Reset");
-        executeGeneratorBtn         =   new JButton("Generate");
+        resetGeneratorBtn      =   new JButton("Reset");
+        executeGeneratorBtn    =   new JButton("Generate");
 
         executeGeneratorBtn.addActionListener(this);
         resetGeneratorBtn.addActionListener(this);
@@ -173,9 +176,7 @@ public class SimulationControlPanel extends JPanel implements ActionListener
     {
         int genIndex    =   genAlgorithmsBox.getSelectedIndex();
         GraphData data  =   GraphDataManager.getGraphDataInstance();
-        data.getNodeFactory().setLastID(0);
-        data.getEdgeFactory().setLastID(0);
-
+        data.resetFactoryIDs();
         
         Thread simThread   =   new Thread(()->
         {
@@ -208,11 +209,11 @@ public class SimulationControlPanel extends JPanel implements ActionListener
     
     protected NetworkGenerator getBASim()
     {
-        int m           =   (int) initialNSpinner.getValue();
-        int n           =   (int) addNSpinner.getValue();
-        boolean dir     =   baDirectedCheck.isSelected();
+        int m                           =   (int) initialNSpinner.getValue();
+        int n                           =   (int) addNSpinner.getValue();
+        boolean dir                     =   baDirectedCheck.isSelected();
         
-       return new BerbasiGenerator(m, n, dir);
+        return new BerbasiGenerator(m, n, dir);
     }
 
     protected NetworkGenerator getRASim()
@@ -308,6 +309,4 @@ public class SimulationControlPanel extends JPanel implements ActionListener
     {
         return simTiesPSpinner;
     }
-    
-    
 }

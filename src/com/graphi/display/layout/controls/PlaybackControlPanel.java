@@ -47,9 +47,9 @@ import net.miginfocom.swing.MigLayout;
 
 public  class PlaybackControlPanel extends JPanel implements ActionListener, ChangeListener
 {
-    public static final int INITIAL_DELAY       =   500;
-    public static final String RECORD_CARD         =   "rec";
-    public static final String PLAYBACK_CARD       =   "pb";
+    public static final int INITIAL_DELAY           =   500;
+    public static final String RECORD_CARD          =   "rec";
+    public static final String PLAYBACK_CARD        =   "pb";
 
     private GraphPlayback gPlayback;
     private Graph<Node, Edge> prevGraph;
@@ -245,7 +245,6 @@ public  class PlaybackControlPanel extends JPanel implements ActionListener, Cha
     public void actionPerformed(ActionEvent e)
     {
         Object src  =   e.getSource();
-        GraphPanel graphPanel   =   GraphPanel.getInstance();
 
         if(src == gpRecSaveBtn)
             addRecordedGraph();
@@ -460,6 +459,4 @@ public  class PlaybackControlPanel extends JPanel implements ActionListener, Cha
     {
         this.gPlayback  =   gPlayback;
     }
-    
-    
 }

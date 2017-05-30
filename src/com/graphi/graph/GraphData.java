@@ -32,6 +32,12 @@ public class GraphData
         edgeFactory     =   new EdgeFactory();
     }
     
+    public void resetFactoryIDs()
+    {
+        nodeFactory.setLastID(0);
+        edgeFactory.setLastID(0);
+    }
+    
     public Graph<Node, Edge> getGraph()
     {
         return graph;

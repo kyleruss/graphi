@@ -11,6 +11,8 @@ import com.graphi.graph.GraphData;
 import com.graphi.graph.GraphDataManager;
 import com.graphi.graph.Node;
 import com.graphi.graph.TableModelBean;
+import com.graphi.util.transformer.EdgeRowListTransformer;
+import com.graphi.util.transformer.NodeRowListTransformer;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
@@ -25,6 +27,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
@@ -44,6 +47,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
+import org.apache.commons.collections15.Transformer;
 
 public class DataPanel extends JPanel implements ActionListener
 {
@@ -54,26 +58,21 @@ public class DataPanel extends JPanel implements ActionListener
     protected JLabel comModelContextLabel;
     protected JButton comContextBtn;
     private static DataPanel instance;
+    private Transformer<Node, List> nodeRowListTransformer;
+    private Transformer<Edge, List> edgeRowListTransformer;
 
     public DataPanel()
     {
         setLayout(new BorderLayout());
         dataTabPane         =   new JTabbedPane();
+        
         initTables();
+        initDefaultTableModels();
 
         vertexScroller      =   new JScrollPane(vertexTable);
         edgeScroller        =   new JScrollPane(edgeTable);
         computeScroller     =   new JScrollPane(computeTable);
         vertexTable.setPreferredScrollableViewportSize(new Dimension(630, 500));
-
-        vertexDataModel.addColumn("NodeID");
-        vertexDataModel.addColumn("Name");
-
-        edgeDataModel.addColumn("EdgeID");
-        edgeDataModel.addColumn("FromVertex");
-        edgeDataModel.addColumn("ToVertex");
-        edgeDataModel.addColumn("Weight");
-        edgeDataModel.addColumn("EdgeType");
 
         comModelContextLabel    =   new JLabel("None");
         comContextBtn           =   new JButton("Change");
@@ -123,6 +122,7 @@ public class DataPanel extends JPanel implements ActionListener
         
         computationModel    =   new DefaultTableModel();
         computeTable        =   new ImmutableTable(computationModel);
+        
     }
     
     public void clearComputeTable()
@@ -163,10 +163,9 @@ public class DataPanel extends JPanel implements ActionListener
             for(Node vertex : vertices)
             {
                 int vID         =   vertex.getID();
-                String vName    =   vertex.getName();
-
                 data.getNodes().put(vID, vertex);
-                vertexDataModel.addRow(new Object[] { vID, vName });
+                
+                vertexDataModel.addRow(nodeRowListTransformer.transform(vertex).toArray());
 
                 if(vID > data.getNodeFactory().getLastID())
                     data.getNodeFactory().setLastID(vID);
@@ -182,6 +181,7 @@ public class DataPanel extends JPanel implements ActionListener
 
         GraphData data  =   GraphDataManager.getGraphDataInstance();
         data.getEdges().clear();
+        
 
         SwingUtilities.invokeLater(() ->
         {
@@ -189,27 +189,9 @@ public class DataPanel extends JPanel implements ActionListener
             for(Edge edge : edges)
             {
                 int eID                     =   edge.getID();
-                double weight               =   edge.getWeight();
-                Collection<Node> vertices   =   graph.getIncidentVertices(edge);
-                String edgeType             =   graph.getEdgeType(edge).toString();
-                Node n1, n2;
-                int n1_id, n2_id;
-                Iterator<Node> iter         =   vertices.iterator();
-                n1  =   iter.next();
-                n2  =   iter.next();
-
-                if(n1 != null)
-                    n1_id   =   n1.getID();
-                else
-                    n1_id   =   -1;
-
-                if(n2 != null)
-                    n2_id   =   n2.getID();
-                else
-                    n2_id   =   -1;
 
                 data.getEdges().put(eID, edge);
-                edgeDataModel.addRow(new Object[] { eID, n1_id, n2_id, weight, edgeType });
+                edgeDataModel.addRow(edgeRowListTransformer.transform(edge).toArray());
 
                 if(eID > data.getEdgeFactory().getLastID())
                     data.getEdgeFactory().setLastID(eID);
@@ -515,7 +497,30 @@ public class DataPanel extends JPanel implements ActionListener
 
         return id;
     }
+    
+    public void resetDefaultTableModels()
+    {
+        setVertexDataModel(null);
+        setEdgeDataModel(null);
+        setComputationModel(null);
+        initDefaultTableModels();
+    }
 
+    public void initDefaultTableModels()
+    {
+        vertexDataModel.addColumn("NodeID");
+        vertexDataModel.addColumn("Name");
+
+        edgeDataModel.addColumn("EdgeID");
+        edgeDataModel.addColumn("FromVertex");
+        edgeDataModel.addColumn("ToVertex");
+        edgeDataModel.addColumn("Weight");
+        edgeDataModel.addColumn("EdgeType");
+        
+        nodeRowListTransformer  =   new NodeRowListTransformer();
+        edgeRowListTransformer  =   new EdgeRowListTransformer();
+    }
+    
     public JTable getComputeTable() 
     {
         return computeTable;
@@ -529,6 +534,24 @@ public class DataPanel extends JPanel implements ActionListener
     public DefaultTableModel getComputationModel()
     {
         return computationModel;
+    }
+    
+    public void setVertexDataModel(DefaultTableModel vertexDataModel)
+    {
+        if(vertexDataModel == null) vertexDataModel = new DefaultTableModel();
+        
+        this.vertexDataModel    =   vertexDataModel;
+        vertexTable.setModel(vertexDataModel);
+        vertexTable.tableChanged(new TableModelEvent(vertexDataModel));
+    }
+    
+    public void setEdgeDataModel(DefaultTableModel edgeDataModel)
+    {
+        if(edgeDataModel == null) edgeDataModel = new DefaultTableModel();
+        
+        this.edgeDataModel  =   edgeDataModel;
+        edgeTable.setModel(edgeDataModel);
+        edgeTable.tableChanged(new TableModelEvent(edgeDataModel));
     }
 
     public void setComputationModel(DefaultTableModel computationModel) 
@@ -687,6 +710,26 @@ public class DataPanel extends JPanel implements ActionListener
     public JTabbedPane getDataTabPane() 
     {
         return dataTabPane;
+    }
+
+    public Transformer<Node, List> getNodeRowListTransformer()
+    {
+        return nodeRowListTransformer;
+    }
+
+    public void setNodeRowListTransformer(Transformer<Node, List> nodeRowListTransformer) 
+    {
+        this.nodeRowListTransformer = nodeRowListTransformer;
+    }
+
+    public Transformer<Edge, List> getEdgeRowListTransformer()
+    {
+        return edgeRowListTransformer;
+    }
+
+    public void setEdgeRowListTransformer(Transformer<Edge, List> edgeRowListTransformer)
+    {
+        this.edgeRowListTransformer = edgeRowListTransformer;
     }
     
     public static DataPanel getInstance()

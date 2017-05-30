@@ -24,6 +24,11 @@ public class BerbasiGenerator extends AbstractGenerator
     private int numAddNodes;
     private boolean directedEdges;
     
+    public BerbasiGenerator()
+    {
+        this(2, 10, false);
+    }
+    
     public BerbasiGenerator(int initialNodeCount, int numAddNodes, boolean directedEdges)
     {
         this.initialNodeCount   =   initialNodeCount;
@@ -94,6 +99,7 @@ public class BerbasiGenerator extends AbstractGenerator
         
         return graph;
     }
+    
 
     public int getInitialNodeCount() 
     {
@@ -124,6 +130,6 @@ public class BerbasiGenerator extends AbstractGenerator
     {
         this.directedEdges = directedEdges;
     }
-    
+
     
 }
