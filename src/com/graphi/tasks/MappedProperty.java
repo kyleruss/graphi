@@ -26,7 +26,7 @@ public class MappedProperty
 
     private void initParams(String propertyStr)
     {
-        Matcher matcher         =   Pattern.compile("(@\\w+\\s?=\\s?\\w+)").matcher(propertyStr);
+        Matcher matcher         =   Pattern.compile("(@\\w+\\s?=\\s?-?\\w+.?(\\w+)?)").matcher(propertyStr);
         Matcher nameMatcher     =   Pattern.compile("(\\w+)").matcher(propertyStr);
         name                    =   nameMatcher.find()? nameMatcher.group() : "";
         
@@ -38,10 +38,10 @@ public class MappedProperty
             {
                 
                 String paramName        =   pNameMatcher.group(1);
-                Matcher pValueMatcher   =   Pattern.compile("=\\s?(\\w+)").matcher(paramGroup);
+                Matcher pValueMatcher   =   Pattern.compile("=\\s?(-?\\w+.?(\\w+)?)").matcher(paramGroup);
                 if(pValueMatcher.find())
                 {
-                    String paramValue      =   pValueMatcher.group(1);
+                    String paramValue      =   pValueMatcher.group(1).replaceAll("[\\),]", "");
                     params.put(paramName, paramValue);
                 }
             }

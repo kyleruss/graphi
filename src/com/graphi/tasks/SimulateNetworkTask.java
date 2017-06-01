@@ -62,7 +62,8 @@ public class SimulateNetworkTask extends AbstractTask
     {
         int m           =   Integer.parseInt(properties.getParamValue("i"));
         int n           =   Integer.parseInt(properties.getParamValue("n"));
-        boolean dir     =   properties.getParamValue("dir").equals("true");
+        Object dirParam =   properties.getParamValue("dir");
+        boolean dir     =   dirParam != null && ((String) dirParam).equals("true");
         
        return new BerbasiGenerator(m, n, dir);
     }
@@ -70,10 +71,12 @@ public class SimulateNetworkTask extends AbstractTask
     protected NetworkGenerator getRASim(MappedProperty properties)
     {
         int n               =   Integer.parseInt(properties.getParamValue("n"));
-        double p            =   Double.parseDouble(properties.getParamValue("p"));
-        boolean directed    =   properties.getParamValue("dir").equals("true");
+        double p            =   properties.getDoubleParamValue("p");
+        System.out.println("P: " + p + " p actual: " + properties.getParamValue("p"));
+        Object dirParam     =   properties.getParamValue("dir");
+        boolean dir         =   dirParam != null && ((String) dirParam).equals("true");
 
-        return new RandomNetworkGenerator(n, p, directed);
+        return new RandomNetworkGenerator(n, p, dir);
     }
     
     protected NetworkGenerator getKleinbergSim(MappedProperty properties)
