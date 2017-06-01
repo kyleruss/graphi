@@ -59,6 +59,22 @@ public class MappedProperty
         return params.get(paramName);
     }
     
+    public int getIntParamValue(String paramName)
+    {
+        return Integer.parseInt(params.get(paramName));
+    }
+
+    public double getDoubleParamValue(String paramName)
+    {
+        return Double.parseDouble(params.get(paramName));
+    }
+    
+    public boolean getBoolParamValue(String paramName)
+    {
+        if(!params.containsKey(paramName)) return false;
+        else return params.get(paramName).equalsIgnoreCase("true");
+    }
+    
     public String getName()
     {
         return name;

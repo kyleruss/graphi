@@ -13,6 +13,7 @@ import com.graphi.plugins.PluginManager;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 
 public class TaskManager 
@@ -55,6 +56,14 @@ public class TaskManager
     public void registerTask(Task task)
     {
         availTaskList.add(task);
+    }
+    
+    public void registerTasks(Task... tasks)
+    {
+        for(Task task : tasks)
+            availTaskList.add(task);
+        
+        
     }
     
     public void importTasksFromBean(TasksBean tasks)

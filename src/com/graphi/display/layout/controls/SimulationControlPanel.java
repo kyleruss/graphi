@@ -19,6 +19,7 @@ import com.graphi.graph.Edge;
 import com.graphi.graph.GraphData;
 import com.graphi.graph.GraphDataManager;
 import com.graphi.graph.Node;
+import edu.uci.ics.jung.algorithms.scoring.EigenvectorCentrality;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import java.awt.BorderLayout;
@@ -194,6 +195,7 @@ public class SimulationControlPanel extends JPanel implements ActionListener
             }
             
             Graph<Node, Edge> generatedGraph    =   gen != null? gen.generateNetwork() : new SparseMultigraph<>();
+            
             data.setGraph(generatedGraph);
 
             if(simTiesCheck.isSelected())

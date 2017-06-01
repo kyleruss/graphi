@@ -83,8 +83,8 @@ public class GraphData
         this.nodeFactory = nodeFactory;
     }
 
-    public void setEdgeFactory(EdgeFactory edgeFactory) 
+ /*   public void setEdgeFactory(EdgeFactory edgeFactory) 
     {
         this.edgeFactory = edgeFactory;
-    }
+    } */
 }

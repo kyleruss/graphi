@@ -23,11 +23,8 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
@@ -47,7 +44,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
-import org.apache.commons.collections15.Transformer;
 
 public class DataPanel extends JPanel implements ActionListener
 {
@@ -58,8 +54,8 @@ public class DataPanel extends JPanel implements ActionListener
     protected JLabel comModelContextLabel;
     protected JButton comContextBtn;
     private static DataPanel instance;
-    private Transformer<Node, List> nodeRowListTransformer;
-    private Transformer<Edge, List> edgeRowListTransformer;
+    private NodeRowListTransformer nodeRowListTransformer;
+    private EdgeRowListTransformer edgeRowListTransformer;
 
     public DataPanel()
     {
@@ -191,6 +187,7 @@ public class DataPanel extends JPanel implements ActionListener
                 int eID                     =   edge.getID();
 
                 data.getEdges().put(eID, edge);
+                edgeRowListTransformer.setGraph(graph);
                 edgeDataModel.addRow(edgeRowListTransformer.transform(edge).toArray());
 
                 if(eID > data.getEdgeFactory().getLastID())
@@ -712,22 +709,22 @@ public class DataPanel extends JPanel implements ActionListener
         return dataTabPane;
     }
 
-    public Transformer<Node, List> getNodeRowListTransformer()
+    public NodeRowListTransformer getNodeRowListTransformer()
     {
         return nodeRowListTransformer;
     }
 
-    public void setNodeRowListTransformer(Transformer<Node, List> nodeRowListTransformer) 
+    public void setNodeRowListTransformer(NodeRowListTransformer nodeRowListTransformer) 
     {
         this.nodeRowListTransformer = nodeRowListTransformer;
     }
 
-    public Transformer<Edge, List> getEdgeRowListTransformer()
+    public EdgeRowListTransformer getEdgeRowListTransformer()
     {
         return edgeRowListTransformer;
     }
 
-    public void setEdgeRowListTransformer(Transformer<Edge, List> edgeRowListTransformer)
+    public void setEdgeRowListTransformer(EdgeRowListTransformer edgeRowListTransformer)
     {
         this.edgeRowListTransformer = edgeRowListTransformer;
     }

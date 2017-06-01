@@ -141,7 +141,7 @@ public class TaskControlPanel extends JPanel implements ActionListener
     
     public void showTasksDialog()
     {
-       
+        updateTaskOptionList();
         String title    =   "Manage tasks";   
         int option      =   JOptionPane.showConfirmDialog(null, taskPopupPanel, title, JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
         
@@ -150,13 +150,19 @@ public class TaskControlPanel extends JPanel implements ActionListener
         
         taskPopupPanel.taskPropPanel.resetProperties();
     }
-    
-    protected void addOption(String name)
+
+    public void updateTaskOptionList()
+    {
+        if(taskPopupPanel != null)
+            taskPopupPanel.taskOptionPanel.addOptionItems();
+    } 
+
+    public void addOption(String name)
     {
         taskPopupPanel.taskOptionPanel.optionsBox.addItem(name);
     }
     
-    protected void removeOption(String name)
+    public void removeOption(String name)
     {
         taskPopupPanel.taskOptionPanel.optionsBox.removeItem(name);
     }
@@ -237,7 +243,7 @@ public class TaskControlPanel extends JPanel implements ActionListener
                 topControlsPanel.add(optionsBox, BorderLayout.CENTER);
                 topControlsPanel.add(addButton, BorderLayout.EAST);
                 add(topControlsPanel, BorderLayout.NORTH);
-                initOptions();
+                addOptionItems();
 
                 
                 taskTypeTabPane.add("Setup", setupTaskListPanel);
@@ -245,9 +251,11 @@ public class TaskControlPanel extends JPanel implements ActionListener
                 add(taskTypeTabPane, BorderLayout.CENTER);
                 addButton.addActionListener(this);
             }
-
-            protected void initOptions()
+            
+            public void addOptionItems()
             {
+                optionsBox.removeAllItems();
+        
                 for(Task taskOption : TaskManager.getInstance().getAvailTaskList())
                     optionsBox.addItem(taskOption);
             }

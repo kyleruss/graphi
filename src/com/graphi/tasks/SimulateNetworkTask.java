@@ -6,7 +6,6 @@
 
 package com.graphi.tasks;
 
-import com.graphi.display.layout.MainPanel;
 import com.graphi.display.layout.ControlPanel;
 import com.graphi.sim.generator.BerbasiGenerator;
 import com.graphi.sim.generator.KleinbergGenerator;
@@ -59,7 +58,7 @@ public class SimulateNetworkTask extends AbstractTask
         }
     }
     
-    private NetworkGenerator getBASim(MappedProperty properties)
+    protected NetworkGenerator getBASim(MappedProperty properties)
     {
         int m           =   Integer.parseInt(properties.getParamValue("i"));
         int n           =   Integer.parseInt(properties.getParamValue("n"));
@@ -68,7 +67,7 @@ public class SimulateNetworkTask extends AbstractTask
        return new BerbasiGenerator(m, n, dir);
     }
 
-    private NetworkGenerator getRASim(MappedProperty properties)
+    protected NetworkGenerator getRASim(MappedProperty properties)
     {
         int n               =   Integer.parseInt(properties.getParamValue("n"));
         double p            =   Double.parseDouble(properties.getParamValue("p"));
@@ -77,7 +76,7 @@ public class SimulateNetworkTask extends AbstractTask
         return new RandomNetworkGenerator(n, p, directed);
     }
     
-    private NetworkGenerator getKleinbergSim(MappedProperty properties)
+    protected NetworkGenerator getKleinbergSim(MappedProperty properties)
     {
         int latticeSize =   Integer.parseInt(properties.getParamValue("latSize"));
         int clusterExp  =   Integer.parseInt(properties.getParamValue("exp"));
