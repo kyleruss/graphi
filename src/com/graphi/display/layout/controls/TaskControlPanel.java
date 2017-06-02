@@ -97,14 +97,15 @@ public class TaskControlPanel extends JPanel implements ActionListener
     {
         List<Task> repeatTasks              =   bean.getRepeatableTasks();
         List<Task> setupTasks               =   bean.getSetupTasks();
+        
         OptionsManagePanel setupTaskList    =   taskPopupPanel.taskOptionPanel.setupTaskListPanel;
         OptionsManagePanel repeatTaskList   =   taskPopupPanel.taskOptionPanel.repeatableTaskListPanel;
         
         for(Task task : repeatTasks)
-            setupTaskList.addOption(task, "");
+            repeatTaskList.addOption(task, "");
         
         for(Task task : setupTasks)
-            repeatTaskList.addOption(task, ""); 
+            setupTaskList.addOption(task, ""); 
     }
     
     public void executeActions(boolean setup, int n)

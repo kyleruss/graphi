@@ -28,6 +28,7 @@ import com.graphi.graph.Edge;
 import com.graphi.graph.GraphData;
 import com.graphi.graph.GraphDataManager;
 import com.graphi.graph.Node;
+import com.graphi.io.EdgeListParser;
 import edu.uci.ics.jung.graph.Graph;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -123,7 +124,8 @@ public class IOControlPanel extends JPanel implements ActionListener
 
     public void importGraph()
     {
-        File file           =   ComponentUtils.getFile(true, "Graphi .graph, adjacency matrix .txt, .gml, graphML .xml", "graph", "txt", "gml", "xml");
+        File file           =   ComponentUtils.getFile(true, "Graphi .graph, adjacency matrix .txt, .gml, graphML .xml, graph lists .edgelist", 
+                                "graph", "txt", "gml", "xml", "edgelist");
         String extension    =   ComponentUtils.getFileExtension(file);   
         GraphData data      =   GraphDataManager.getGraphDataInstance();
 
@@ -143,6 +145,9 @@ public class IOControlPanel extends JPanel implements ActionListener
 
             else if(extension.equalsIgnoreCase("xml"))
                 data.setGraph(GraphMLParser.importGraph(file, data.getNodeFactory(), data.getEdgeFactory()));
+            
+            else if(extension.equalsIgnoreCase("edgelist"))
+                data.setGraph(EdgeListParser.importGraph(file, directedCheck.isSelected(), data.getNodeFactory(), data.getEdgeFactory()));
 
 
             currentStorageLabel.setText(file.getName());
