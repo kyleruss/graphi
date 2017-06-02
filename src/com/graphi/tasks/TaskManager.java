@@ -36,6 +36,7 @@ public class TaskManager
         availTaskList.add(new ClearEntriesTask());
         availTaskList.add(new ResetSimTask());
         availTaskList.add(new ExportTableTask());
+        availTaskList.add(new ExportPlaybackTask());
     }
     
     public List<Task> getAvailTaskList()

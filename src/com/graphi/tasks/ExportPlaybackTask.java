@@ -7,22 +7,24 @@
 package com.graphi.tasks;
 
 import com.graphi.display.layout.ControlPanel;
+import com.graphi.display.layout.GraphPanel;
+import com.graphi.display.layout.controls.PlaybackControlPanel;
+import com.graphi.io.Storage;
 import java.io.File;
 
-public class ExportTableTask extends AbstractTask
+public class ExportPlaybackTask extends AbstractTask
 {
     @Override
     public void initTaskDetails() 
     {
-        setTaskName("Export table");
+        setTaskName("Export Playback");
     }
 
     @Override
     public void initDefaultProperties() 
     {
         setProperty("Directory", "data/");
-        setProperty("File name", "exampletable");
-        setProperty("Table index", "0");
+        setProperty("File name", "exampleplayback");
     }
 
     @Override
@@ -30,8 +32,7 @@ public class ExportTableTask extends AbstractTask
     {
         String dir          =   getProperty("Directory");
         String fileName     =   getProperty("File name");
-        String extension    =   ".csv";   
-        int tableIndex      =   Integer.parseInt(getProperty("Table index"));
+        String extension    =   ".gscript";   
         File file           =   new File(dir + fileName + extension);
         int fileIndex       =   2;
         
@@ -41,6 +42,8 @@ public class ExportTableTask extends AbstractTask
             fileIndex++;
         }
         
-        ControlPanel.getInstance().getIoPanel().exportTable(tableIndex, file);
+        PlaybackControlPanel pbPanel    =   GraphPanel.getInstance().getPlaybackPanel();
+        pbPanel.getGraphPlayback().prepareIO(true);
+        Storage.saveObj(pbPanel.getGraphPlayback(), file);
     }
 }
