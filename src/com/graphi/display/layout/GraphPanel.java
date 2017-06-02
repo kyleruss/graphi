@@ -274,6 +274,11 @@ public class GraphPanel extends JPanel implements ItemListener, GraphMouseListen
 
         gViewer.repaint();
     }
+    
+    public void repaintDisplay()
+    {
+        gViewer.repaint();
+    }
 
     public void showObjectLabels(boolean show, boolean changeVertexLabels)
     {

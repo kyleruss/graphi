@@ -23,16 +23,26 @@ public class ExportTableTask extends AbstractTask
     @Override
     public void initDefaultProperties() 
     {
-        setProperty("File name", "data/exampletable.csv");
+        setProperty("Directory", "data/");
+        setProperty("File name", "exampletable");
         setProperty("Table index", "0");
     }
 
     @Override
     public void performTask() 
     {
-        String fileName =   getProperty("File name");
-        int tableIndex  =   Integer.parseInt(getProperty("Table index"));
-        File file       =   new File(fileName);
+        String dir          =   getProperty("Directory");
+        String fileName     =   getProperty("File name");
+        String extension    =   ".csv";   
+        int tableIndex      =   Integer.parseInt(getProperty("Table index"));
+        File file           =   new File(dir + fileName + extension);
+        int fileIndex       =   2;
+        
+        while(file.exists())
+        {
+            file    =   new File(dir + fileName + fileIndex + extension);
+            fileIndex++;
+        }
         
         ControlPanel.getInstance().getIoPanel().exportTable(tableIndex, file);
     }

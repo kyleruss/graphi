@@ -144,6 +144,13 @@ public class DataPanel extends JPanel implements ActionListener
         setComputationModel(compModel.getModel());
         setComputationContext(compModel.getDescription());
     }
+    
+    public void reloadGraphObjects()
+    {
+        Graph<Node, Edge> graph     =   GraphDataManager.getGraphDataInstance().getGraph();
+        loadNodes(graph);
+        loadEdges(graph);
+    }
 
     public void loadNodes(Graph graph)
     {
@@ -153,21 +160,19 @@ public class DataPanel extends JPanel implements ActionListener
         GraphData data  =   GraphDataManager.getGraphDataInstance();
         data.getNodeFactory().setLastID(0);
         data.getNodes().clear();
-        SwingUtilities.invokeLater(() -> 
+        
+        vertexDataModel.setRowCount(0);
+        for(Node vertex : vertices)
         {
-            vertexDataModel.setRowCount(0);
-            for(Node vertex : vertices)
-            {
-                int vID         =   vertex.getID();
-                data.getNodes().put(vID, vertex);
-                
-                vertexDataModel.addRow(nodeRowListTransformer.transform(vertex).toArray());
+            int vID         =   vertex.getID();
+            data.getNodes().put(vID, vertex);
 
-                if(vID > data.getNodeFactory().getLastID())
-                    data.getNodeFactory().setLastID(vID);
-                
-            }
-        });
+            vertexDataModel.addRow(nodeRowListTransformer.transform(vertex).toArray());
+
+            if(vID > data.getNodeFactory().getLastID())
+                data.getNodeFactory().setLastID(vID);
+
+        }
     }
 
     public void loadEdges(Graph graph)
@@ -177,23 +182,19 @@ public class DataPanel extends JPanel implements ActionListener
 
         GraphData data  =   GraphDataManager.getGraphDataInstance();
         data.getEdges().clear();
-        
 
-        SwingUtilities.invokeLater(() ->
+        edgeDataModel.setRowCount(0);
+        for(Edge edge : edges)
         {
-            edgeDataModel.setRowCount(0);
-            for(Edge edge : edges)
-            {
-                int eID                     =   edge.getID();
+            int eID                     =   edge.getID();
 
-                data.getEdges().put(eID, edge);
-                edgeRowListTransformer.setGraph(graph);
-                edgeDataModel.addRow(edgeRowListTransformer.transform(edge).toArray());
+            data.getEdges().put(eID, edge);
+            edgeRowListTransformer.setGraph(graph);
+            edgeDataModel.addRow(edgeRowListTransformer.transform(edge).toArray());
 
-                if(eID > data.getEdgeFactory().getLastID())
-                    data.getEdgeFactory().setLastID(eID);
-            }
-        });
+            if(eID > data.getEdgeFactory().getLastID())
+                data.getEdgeFactory().setLastID(eID);
+        }
     }
 
     public void addVertex()
