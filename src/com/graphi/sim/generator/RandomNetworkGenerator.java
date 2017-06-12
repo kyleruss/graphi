@@ -8,8 +8,6 @@ package com.graphi.sim.generator;
 
 import com.graphi.graph.Edge;
 import com.graphi.graph.Node;
-import com.graphi.util.factory.GraphFactory;
-import edu.uci.ics.jung.algorithms.generators.random.ErdosRenyiGenerator;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
