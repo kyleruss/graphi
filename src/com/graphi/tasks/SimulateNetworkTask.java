@@ -27,7 +27,7 @@ public class SimulateNetworkTask extends AbstractTask
         MappedProperty prop =   new MappedProperty();
         prop.setName("kleinberg");
         prop.setParamValue("latSize", "15");
-        prop.setParamValue("exp", "2");
+        prop.setParamValue("exp", "2.0");
         setProperty("Generator", prop.toString());
         setProperty("Generate directed edges", "false");
         setProperty("Directed edge chance", "0.0");
@@ -72,7 +72,6 @@ public class SimulateNetworkTask extends AbstractTask
     {
         int n               =   Integer.parseInt(properties.getParamValue("n"));
         double p            =   properties.getDoubleParamValue("p");
-        System.out.println("P: " + p + " p actual: " + properties.getParamValue("p"));
         Object dirParam     =   properties.getParamValue("dir");
         boolean dir         =   dirParam != null && ((String) dirParam).equals("true");
 
@@ -81,8 +80,8 @@ public class SimulateNetworkTask extends AbstractTask
     
     protected NetworkGenerator getKleinbergSim(MappedProperty properties)
     {
-        int latticeSize =   Integer.parseInt(properties.getParamValue("latSize"));
-        int clusterExp  =   Integer.parseInt(properties.getParamValue("exp"));
+        int latticeSize     =   Integer.parseInt(properties.getParamValue("latSize"));
+        double clusterExp   =   Double.parseDouble(properties.getParamValue("exp"));
 
         return new KleinbergGenerator(latticeSize, clusterExp);
     }

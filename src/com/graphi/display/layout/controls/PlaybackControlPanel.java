@@ -60,8 +60,10 @@ public  class PlaybackControlPanel extends JPanel implements ActionListener, Cha
     private JSpinner pbProgressSpeed;
     private JLabel pbName, pbDate;
     private boolean pbPlaying;
+    private boolean repeatPlayer;
     private JPanel gpControlsWrapper;
     private JButton gpCtrlsClose;
+    private JButton pbRepeatBtn;
 
     private JPanel gpRecControls;
     private JButton gpRecSaveBtn;
@@ -74,16 +76,19 @@ public  class PlaybackControlPanel extends JPanel implements ActionListener, Cha
     public PlaybackControlPanel()
     {
         setLayout(new BorderLayout());
-        pbControls      =   new JPanel(new MigLayout("fillx"));
-        pbToggle        =   new JButton("Play");
-        pbProgress      =   new JSlider();
-        pbProgressSpeed =   new JSpinner(new SpinnerNumberModel(0, 0, 10000, 1));
-        pbName          =   new JLabel("N/A");
-        pbDate          =   new JLabel("N/A");
-        gPlayback       =   new GraphPlayback();
-        pbPlaying       =   false;
+        AppResources resources  =   AppResources.getInstance();
+        pbControls              =   new JPanel(new MigLayout("fillx"));
+        pbToggle                =   new JButton("Play");
+        pbRepeatBtn             =   new JButton(new ImageIcon(resources.getResource("toolbarClearIcon")));
+        pbProgress              =   new JSlider();
+        pbProgressSpeed         =   new JSpinner(new SpinnerNumberModel(0, 0, 10000, 1));
+        pbName                  =   new JLabel("N/A");
+        pbDate                  =   new JLabel("N/A");
+        gPlayback               =   new GraphPlayback();
+        pbPlaying               =   false;
+        repeatPlayer            =   false;
 
-        pbToggle.setIcon(new ImageIcon(AppResources.getInstance().getResource("playIcon")));
+        pbToggle.setIcon(new ImageIcon(resources.getResource("playIcon")));
         pbProgress.addChangeListener(this);
         pbProgressSpeed.addChangeListener(this);
 
@@ -99,6 +104,7 @@ public  class PlaybackControlPanel extends JPanel implements ActionListener, Cha
         pbDate.setFont(new Font("Arial", Font.BOLD, 12));
 
         JPanel pbInnerWrapper   =   new JPanel();
+        pbInnerWrapper.add(pbRepeatBtn);
         pbInnerWrapper.add(pbToggle);
         pbInnerWrapper.add(new JLabel("Speed"));
         pbInnerWrapper.add(pbProgressSpeed);
@@ -163,6 +169,7 @@ public  class PlaybackControlPanel extends JPanel implements ActionListener, Cha
         gpRecRemoveBtn.addActionListener(this);
         gpRecEntries.addActionListener(this);
         gpCtrlsClose.addActionListener(this);
+        pbRepeatBtn.addActionListener(this);
         
         recordComputeCheck.setSelected(true);
         recordStateCheck.setSelected(true);
@@ -260,7 +267,11 @@ public  class PlaybackControlPanel extends JPanel implements ActionListener, Cha
 
         else if(src == gpCtrlsClose)
             closeControls();
+        
+        else if(src == pbRepeatBtn)
+            repeatPlayback();
     }
+    
 
     public void resetEntries()
     {
@@ -325,13 +336,24 @@ public  class PlaybackControlPanel extends JPanel implements ActionListener, Cha
         dataPanel.setComputationModel(bean == null? new DefaultTableModel() : bean.getModel());
         dataPanel.setComputationContext(bean == null? null : bean.getDescription());
     }
+    
+    public void repeatPlayback()
+    {
+        repeatPlayer    =   !repeatPlayer;
+    }
 
     protected final Timer PB_TIMER =   new Timer(INITIAL_DELAY, (ActionEvent e) -> 
     {
         if(gPlayback.hasNext())
             pbProgress.setValue(pbProgress.getValue() + 1);
+        
         else
-            togglePlayback();
+        {
+            if(repeatPlayer)
+                pbProgress.setValue(0);
+            else
+                togglePlayback();
+        }
     });
 
     public void startPlayback()

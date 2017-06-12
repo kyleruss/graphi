@@ -8,6 +8,7 @@ package com.graphi.display.layout.controls;
 
 import com.graphi.display.layout.ControlPanel;
 import com.graphi.app.Consts;
+import com.graphi.config.ConfigManager;
 import com.graphi.display.Window;
 import com.graphi.display.AppResources;
 import com.graphi.display.menu.MainMenu;
@@ -158,8 +159,13 @@ public class IOControlPanel extends JPanel implements ActionListener
             GraphPanel graphPanel   =   GraphPanel.getInstance();
             DataPanel dataPanel     =   DataPanel.getInstance();
             
-            graphPanel.getGraphLayout().setGraph(data.getGraph());
-            graphPanel.getGraphViewer().repaint();
+            
+            if(ConfigManager.getInstance().getAppConfig().isDisplayVisuals())
+            {
+                graphPanel.getGraphLayout().setGraph(data.getGraph());
+                graphPanel.getGraphViewer().repaint();
+            }
+            
             dataPanel.loadNodes(data.getGraph());
             dataPanel.loadEdges(data.getGraph());
         }

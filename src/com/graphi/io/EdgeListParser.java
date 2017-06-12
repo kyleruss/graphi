@@ -32,36 +32,40 @@ public class EdgeListParser
         
         try(BufferedReader reader   =   new BufferedReader(new FileReader(file)))
         {
-            String line             =   reader.readLine();
-            String[] nodes          =   line.split("\\s+");
-            int nodeAID             =   Integer.parseInt(nodes[0]);
-            int nodeBID             =   Integer.parseInt(nodes[1]);
-            Node nodeA, nodeB;
-            
-            if(!nodeMap.containsKey(nodeAID))
+            String line;
+            while((line =   reader.readLine()) != null)
             {
-                nodeA   =   nodeFactory.create();
-                nodeA.setID(nodeAID);
-                nodeMap.put(nodeAID, nodeA);
-                
-                if(nodeAID > maxID) maxID   =   nodeAID;
+                String[] nodes          =   line.split("\\s+");
+                int nodeAID             =   Integer.parseInt(nodes[0]);
+                int nodeBID             =   Integer.parseInt(nodes[1]);
+                Node nodeA, nodeB;
+
+                if(!nodeMap.containsKey(nodeAID))
+                {
+                    nodeA   =   nodeFactory.create();
+                    nodeA.setID(nodeAID);
+                    nodeMap.put(nodeAID, nodeA);
+
+                    if(nodeAID > maxID) maxID   =   nodeAID;
+                }
+
+                else nodeA  =   nodeMap.get(nodeAID);
+
+                if(!nodeMap.containsKey(nodeBID))
+                {
+                    nodeB   =   nodeFactory.create();
+                    nodeB.setID(nodeBID);
+                    nodeMap.put(nodeBID, nodeB);
+
+                    if(nodeBID > maxID) maxID   =   nodeBID;
+                }
+
+                else nodeB  =   nodeMap.get(nodeBID);
+
+                graph.addEdge(edgeFactory.create(), nodeA, nodeB, edgeType);
             }
-            
-            else nodeA  =   nodeMap.get(nodeAID);
-            
-            if(!nodeMap.containsKey(nodeBID))
-            {
-                nodeB   =   nodeFactory.create();
-                nodeB.setID(nodeBID);
-                nodeMap.put(nodeBID, nodeB);
-                
-                if(nodeBID > maxID) maxID   =   nodeBID;
-            }
-            
-            else nodeB  =   nodeMap.get(nodeBID);
             
             ((NodeFactory) nodeFactory).setLastID(maxID);
-            graph.addEdge(edgeFactory.create(), nodeA, nodeB, edgeType);
         } 
         
         catch (IOException ex) 

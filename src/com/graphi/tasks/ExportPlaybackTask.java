@@ -9,6 +9,7 @@ package com.graphi.tasks;
 import com.graphi.display.layout.ControlPanel;
 import com.graphi.display.layout.GraphPanel;
 import com.graphi.display.layout.controls.PlaybackControlPanel;
+import com.graphi.graph.GraphDataManager;
 import com.graphi.io.Storage;
 import java.io.File;
 
@@ -30,6 +31,9 @@ public class ExportPlaybackTask extends AbstractTask
     @Override
     public void performTask() 
     {
+        if(GraphDataManager.getInstance().getGraphData().getGraph().getVertices().size() > 0)
+            return;
+        
         String dir          =   getProperty("Directory");
         String fileName     =   getProperty("File name");
         String extension    =   ".gscript";   

@@ -73,8 +73,8 @@ public class BerbasiGenerator extends AbstractGenerator
                 
                 Node next       =   vertices.get(j);
                 int degree      =   (directedEdges)? graph.inDegree(next) : graph.degree(next);
-                int degreeSum   =   GraphUtilities.degreeSum(graph);
-                double p        =   degree / (degreeSum * 1.0);
+                //int degreeSum   =   GraphUtilities.degreeSum(graph);
+                double p        =   (double) (degree + 1) / (double)(graph.getVertices().size() + graph.getEdges().size());//degree / (degreeSum * 1.0);
                 double r        =   rGen.nextDouble();
                 
                 if(r <= p)

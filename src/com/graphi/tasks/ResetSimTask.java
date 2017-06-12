@@ -7,7 +7,6 @@
 package com.graphi.tasks;
 
 import com.graphi.display.layout.GraphPanel;
-import com.graphi.display.layout.MainPanel;
 import com.graphi.graph.GraphDataManager;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 

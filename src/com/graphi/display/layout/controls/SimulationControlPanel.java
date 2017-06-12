@@ -19,7 +19,6 @@ import com.graphi.graph.Edge;
 import com.graphi.graph.GraphData;
 import com.graphi.graph.GraphDataManager;
 import com.graphi.graph.Node;
-import edu.uci.ics.jung.algorithms.scoring.EigenvectorCentrality;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import java.awt.BorderLayout;
@@ -28,10 +27,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -101,7 +96,7 @@ public class SimulationControlPanel extends JPanel implements ActionListener
         raGenPanel.setOpaque(false);
 
         latticeSpinner      =   new JSpinner(new SpinnerNumberModel(15, 0, 100, 1));
-        clusteringSpinner   =   new JSpinner(new SpinnerNumberModel(2, 0, 10, 1));
+        clusteringSpinner   =   new JSpinner(new SpinnerNumberModel(2.5, 0.0, 10.0, 1.0));
         randProbSpinner     =   new JSpinner(new SpinnerNumberModel(0.5, 0.0, 1.0, 0.1));
         randNumSpinner      =   new JSpinner(new SpinnerNumberModel(5, 1, 1000, 1));
 
@@ -229,8 +224,8 @@ public class SimulationControlPanel extends JPanel implements ActionListener
     
     protected NetworkGenerator getKleinbergSim()
     {
-        int latticeSize =   (int) latticeSpinner.getValue();
-        int clusterExp  =   (int) clusteringSpinner.getValue();
+        int latticeSize     =   (int) latticeSpinner.getValue();
+        double clusterExp   =   (double) clusteringSpinner.getValue();
 
         return new KleinbergGenerator(latticeSize, clusterExp);
     }

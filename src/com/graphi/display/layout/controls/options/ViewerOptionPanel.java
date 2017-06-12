@@ -49,6 +49,8 @@ public class ViewerOptionPanel extends AbstractOptionPanel implements ActionList
         enableVisualsCheck.addActionListener(this);
         nodeLabelsCheck.addActionListener(this);
         edgeLabelsCheck.addActionListener(this);
+        
+        loadOptions();
     }
     
     @Override
@@ -59,6 +61,10 @@ public class ViewerOptionPanel extends AbstractOptionPanel implements ActionList
         nodeLabelsCheck.setSelected(appConfig.isViewNodeLabels());
         edgeLabelsCheck.setSelected(appConfig.isViewEdgeLabels());
         enableVisualsCheck.setSelected(appConfig.isDisplayVisuals());
+        
+        toggleNodeLabels();
+        toggleEdgeLabels();
+        toggleDisplayVisuals();
     }
     
     public void toggleNodeLabels()

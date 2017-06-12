@@ -16,14 +16,14 @@ import org.apache.commons.collections15.Factory;
 public class KleinbergGenerator extends AbstractGenerator
 {
     private int latticeSize;
-    private int clusterExp;
+    private double clusterExp;
     
     public KleinbergGenerator()
     {
         this(10, 2);
     }
     
-    public KleinbergGenerator(int latticeSize, int clusterExp)
+    public KleinbergGenerator(int latticeSize, double clusterExp)
     {
         this.latticeSize    =   latticeSize;
         this.clusterExp     =   clusterExp;
@@ -57,12 +57,12 @@ public class KleinbergGenerator extends AbstractGenerator
         this.latticeSize = latticeSize;
     }
 
-    public int getClusterExp() 
+    public double getClusterExp() 
     {
         return clusterExp;
     }
 
-    public void setClusterExp(int clusterExp) 
+    public void setClusterExp(double clusterExp) 
     {
         this.clusterExp = clusterExp;
     }

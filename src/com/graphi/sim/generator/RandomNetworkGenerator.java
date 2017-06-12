@@ -8,10 +8,14 @@ package com.graphi.sim.generator;
 
 import com.graphi.graph.Edge;
 import com.graphi.graph.Node;
+import com.graphi.util.factory.GraphFactory;
+import edu.uci.ics.jung.algorithms.generators.random.ErdosRenyiGenerator;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import org.apache.commons.collections15.Factory;
 
@@ -42,13 +46,39 @@ public class RandomNetworkGenerator extends AbstractGenerator
     @Override
     public Graph<Node, Edge> generateNetwork(Factory<Node> nodeFactory, Factory<Edge> edgeFactory) 
     {
-        Graph<Node, Edge> graph =   new SparseMultigraph<>();
-        Random rGen             =   new Random();
+        /*ErdosRenyiGenerator gen =   new ErdosRenyiGenerator(new GraphFactory(), nodeFactory, edgeFactory, numNodes, edgeProbability);
+        return gen.create(); */
+        
+        Graph<Node, Edge> graph     =   new SparseMultigraph<>();
+        Random rGen                 =   new Random();
+        Map<Integer, Node> nodeMap  =   new HashMap<>();   
         
         for(int i = 0; i < numNodes; i++)
-            graph.addVertex(nodeFactory.create());
+        {
+            Node nextNode   =   nodeFactory.create();
+            graph.addVertex(nextNode);
+            nodeMap.put(i, nextNode);
+        }
         
-        Collection<Node> nodes  =   graph.getVertices();
+        for(int i = 0; i < numNodes; i++)
+        {
+            Node currentNode    =   nodeMap.get(i);   
+            int randomID;
+            Node connectNode;
+        
+            do 
+            { 
+                randomID    =   rGen.nextInt(numNodes); 
+                connectNode =   nodeMap.get(randomID);
+            }
+            
+            while(currentNode.equals(connectNode) || graph.isNeighbor(currentNode, connectNode));
+        
+            graph.addEdge(edgeFactory.create(), currentNode, connectNode, EdgeType.UNDIRECTED);
+        }
+        
+        Collection<Node> nodes  =   nodeMap.values();
+        
         for(Node node : nodes)
         {
             for(Node other : nodes)
@@ -57,13 +87,13 @@ public class RandomNetworkGenerator extends AbstractGenerator
                 {
                     double p    =   rGen.nextDouble();
                     
-                    if(edgeProbability >= p && !(!directed && graph.isNeighbor(other, node)))
-                        graph.addEdge(edgeFactory.create(), node, other, directed? EdgeType.DIRECTED : EdgeType.UNDIRECTED);
+                    if(p <= edgeProbability && !graph.isNeighbor(node, other))
+                        graph.addEdge(edgeFactory.create(), node, other, EdgeType.UNDIRECTED);
                 }
             }
         }
         
-        return graph;
+        return graph; 
     }
 
     public int getNumNodes() 
