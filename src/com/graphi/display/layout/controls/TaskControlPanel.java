@@ -61,13 +61,14 @@ public class TaskControlPanel extends JPanel implements ActionListener
         taskPopupPanel      =   new TaskPopupPanel();
         taskButton          =   new JButton("Tasks");
         executePopupMenu    =   new JPopupMenu();
-        runButton           =   ComponentUtils.generateDropdownButton(executePopupMenu, "Run", null);
+        runButton           =   ComponentUtils.generateDropdownButton(executePopupMenu, null, null);
         repeatManyPanel     =   new JPanel(new MigLayout("fillx"));
         repeatBox           =   new JComboBox();
         execSetupBtn        =   new JMenuItem("Setup tasks");
         execRepeatBtn       =   new JMenuItem("Repeatable tasks");
         repeatCountSpinner  =   new JSpinner(new SpinnerNumberModel(1, 1, 100, 1));
        
+        runButton.setText("Run");
         executePopupMenu.add(execSetupBtn);
         executePopupMenu.add(execRepeatBtn);
         

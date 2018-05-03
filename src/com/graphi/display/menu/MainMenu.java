@@ -115,9 +115,9 @@ public class MainMenu extends JMenuBar
         
         //About menu items
         addMenuItem("aboutItem", new JMenuItem("Author"), aboutMenu);
-        addMenuItem("documentationItem", new JMenuItem("Documentation"), aboutMenu);
-        addMenuItem("licenseItem", new JMenuItem("License"), aboutMenu);
-        addMenuItem("repositoryItem", new JMenuItem("Repository"), aboutMenu);
+       // addMenuItem("documentationItem", new JMenuItem("Documentation"), aboutMenu);
+       // addMenuItem("licenseItem", new JMenuItem("License"), aboutMenu);
+        //addMenuItem("repositoryItem", new JMenuItem("Repository"), aboutMenu);
         
         //----------------------------------------------------------------------
         

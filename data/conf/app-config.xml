@@ -17,7 +17,7 @@
 <custom-height>900</custom-height>
 <theme-type>0</theme-type>
 <display-background>#FFFFFF</display-background>
-<node-background>#000000</node-background>
+<node-background>#0066FF</node-background>
 <edge-background>#000000</edge-background>
 <selected-background>#000000</selected-background>
 <edge-type/>

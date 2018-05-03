@@ -43,7 +43,7 @@ public class MenuActionListener implements ActionListener
         JFrame frame            =   Window.getInstance().getFrame();
         
         if(src == menu.getMenuItem("aboutItem"))
-            menu.showAbout();
+            ViewPort.getInstance().transitionScene(ViewPort.ABOUT_SCENE);
 
         else if(src == menu.getMenuItem("exitItem"))
             System.exit(0);
