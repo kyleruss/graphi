@@ -15,7 +15,7 @@
   * [Network Recording & Playback](#Networkrecording)
   * [Network Simulation](#Networksimulation)
   * [Tasks](#Tasks)
-  * [Menu](#Menu)
+  * [Projects](#Projects)
   * [Plugins](#Plugins)
   * [Settings](#Settings)
   * [Manage Network Objects](#Managenetworkobjects)
@@ -37,22 +37,49 @@
 <a name="Controllingnetworkobjects" />
 
 ### Controlling Network Objects
+The view of the graph pane can be easily manipulated using your mouse  
+You can select, move objects, zoom in/out, rotate the graph and focus a node
+
+<img src="preview/MouseFeaturesPreview.gif" />
+
+The following example multi-node selection 
+
+<img src="preview/MouseSelectionFeaturePreview.gif" />
 
 <a name="Networkrecording" />
 
 ### Network Recording & Playback
+In Graphi you can record the state of a graph many times and create a _playback_  
+All components can be recorded including node properties and data tables  
+You can view specific entries, play & pause and change the speed of the playback  
+
+<img src="preview/PlaybackGrowthPreview.gif" />
+
+This feature is great for analysing network growth and behaviour  
+For example one could observe diffusion/virus phenomenon  
+
+<img src="preview/PlaybackDiffusionPreview.gif" />
 
 <a name="Networksimulation" />
 
 ### Network simulation
 
+<img src="preview/SimulationControlsPreview.png" align="right" />
+
+- Graphi offers a number of network generation algorithms to help simulate scale-free, small-world and random network topologies
+- Supported algorithms include the [Kleinberg Model](https://en.wikipedia.org/wiki/Small-world_routing#The_Kleinberg_model), [Barabasi-Albert Model](https://en.wikipedia.org/wiki/Barab%C3%A1si%E2%80%93Albert_model) and [Erdos-Renyi Random Model](https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93R%C3%A9nyi_model)
+- Network simulations are highly configurable in the UI and script parameters
+- Interpersonal ties can also be simulated using a probabalistic wiring mechanism  
+
+
+
 <a name="Tasks" />
 
 ### Tasks
 
-<a name="Menu" />
+<a name="Projects" />
 
-### Menu
+### Projects
 
 <a name="Plugins" />
 
