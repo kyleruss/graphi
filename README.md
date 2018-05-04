@@ -60,6 +60,8 @@ For example one could observe diffusion/virus phenomenon
 
 <img src="preview/PlaybackDiffusionPreview.gif" />
 
+<br />
+
 <a name="Networksimulation" />
 
 ### Network simulation
@@ -85,6 +87,7 @@ For example one could observe diffusion/virus phenomenon
 - Operation parameters can be set individually for each specific task instance
 - Users can create their own custom tasks using the comprehensive Graphi [Plugins](#Plugins) API
 
+<br />
 
 <a name="Projects" />
 
@@ -178,6 +181,7 @@ Graphi provides multiple network computation algorithms which can be applied on 
 Supported algorithms include centrality measures (eigenvector, closeness, betweenness) and computing clustering  
 If enabled, algorithms are able to transform the network visually i.e. enlarging or coloring central nodes
 
+<br />
 
 <a name="Gettingstarted" />
 
