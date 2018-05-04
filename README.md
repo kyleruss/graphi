@@ -27,6 +27,7 @@
 - [Getting started](#Gettingstarted)
   * [Prerequisites](#Prerequisites)
   * [Installation](#Installation)
+  * [Building](#Building)
   
 - [License](#License)
 
@@ -201,7 +202,9 @@ If enabled, algorithms are able to transform the network visually i.e. enlarging
 - Unpack the zip contents 
 - Run `Graphi.exe`
 
-#### Building
+<a name="Building" />
+
+### Building
 - Clone the Graphi repository
 ```
 git clone https://github.com/kyleruss/graphi.git
