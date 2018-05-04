@@ -186,10 +186,31 @@ If enabled, algorithms are able to transform the network visually i.e. enlarging
 <a name="Prerequisites" />
 
 ### Prerequisites
+- JDK 1.8
+- Maven 3.3
+- **Recommended:** NetBeans 8.1+
 
 <a name="Installation" />
 
 ### Installation
+- [Download](https://github.com/kyleruss/graphi/releases/latest) the latest release
+- Unpack the zip contents 
+- Run `Graphi.exe`
+
+#### Building
+- Clone the Graphi repository
+```
+git clone https://github.com/kyleruss/graphi.git
+```
+
+- Build the project 
+```
+mvn package
+```
+
+**Note:** The Graphi project can be directly imported into NetBeans
+
+
 
 <a name="License" />
 
