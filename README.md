@@ -8,6 +8,13 @@
 [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
 
 ## About
+Graphi is an interactive network network analysis and visualization tool suite  
+
+
+
+#### Projects using Graphi
+- [graphi-research-plugin](https://github.com/kyleruss/graphi-research-plugin)
+- [graphi-suic-plugin](https://github.com/kyleruss/graphi-suic-plugin)
 
 ### Table of Contents
 - [Features](#features)
@@ -133,7 +140,14 @@ Users can also change logging and updating settings
 
 Graph objects such as nodes and edges can be managed from the _Graph Object Controls_  
 Users can create a new node or edge from the `add` button or editing an existing object by selecting it and click `edit`
-Objects can also be removed, simply select the object to removed click `delete` on the controls 
+Objects can also be removed, simply select the object to removed click `delete` on the controls  
+
+<br />
+
+Nodes & Edges can also be easily drawn onto the view pane  
+Simply select the drawing tool and left-click to create a node then drag from one node to another to create an edge  
+
+<img src="preview/GraphObjectDrawingPreview.gif" />
 
 <a name="Searching" />
 
