@@ -28,8 +28,8 @@ The software provides users with the toolkit needed to simulate large random net
   * [Manage Network Objects](#Managenetworkobjects)
   * [Searching](#Searching)
   * [Data & Logging](#Datalogs)
-  * [IO](#io)
   * [Network Computation](#Networkcomputation)
+  * [IO](#io)
   
 - [Getting started](#Gettingstarted)
   * [Prerequisites](#Prerequisites)
@@ -174,6 +174,16 @@ Additionally, some operations generate logs which you can find in the `Output` t
 
 <a name="io" />
 
+<a name="Networkcomputation" />
+
+### Network Computation
+
+<img src="preview/ComputationControlsPreview.png" align="right" />
+
+Graphi provides multiple network computation algorithms which can be applied on a network to analyse its behaviour  
+Supported algorithms include centrality measures (eigenvector, closeness, betweenness) and computing clustering  
+If enabled, algorithms are able to transform the network visually i.e. enlarging or coloring central nodes
+
 ### IO
 
 <img src="preview/IOControlsPreview.png" align="right" />
@@ -185,16 +195,6 @@ Importing/exporting of the following objects and formats is supported:
 - Data tables
 - Tasks
 - Logs
-
-<a name="Networkcomputation" />
-
-### Network Computation
-
-<img src="preview/ComputationControlsPreview.png" align="right" />
-
-Graphi provides multiple network computation algorithms which can be applied on a network to analyse its behaviour  
-Supported algorithms include centrality measures (eigenvector, closeness, betweenness) and computing clustering  
-If enabled, algorithms are able to transform the network visually i.e. enlarging or coloring central nodes
 
 <br />
 
