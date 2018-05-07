@@ -172,8 +172,6 @@ Additionally, some operations generate logs which you can find in the `Output` t
 
 <img src="preview/DataLogsCombinedPreview.png" />
 
-<a name="io" />
-
 <a name="Networkcomputation" />
 
 ### Network Computation
@@ -183,6 +181,10 @@ Additionally, some operations generate logs which you can find in the `Output` t
 Graphi provides multiple network computation algorithms which can be applied on a network to analyse its behaviour  
 Supported algorithms include centrality measures (eigenvector, closeness, betweenness) and computing clustering  
 If enabled, algorithms are able to transform the network visually i.e. enlarging or coloring central nodes
+
+<br />
+
+<a name="io" />
 
 ### IO
 
