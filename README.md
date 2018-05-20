@@ -52,7 +52,7 @@ You can select, move objects, zoom in/out, rotate the graph and focus a node
 
 <img src="preview/MouseFeaturesPreview.gif" />
 
-The following example multi-node selection 
+<br />
 
 <img src="preview/MouseSelectionFeaturePreview.gif" />
 
@@ -65,8 +65,13 @@ You can view specific entries, play & pause and change the speed of the playback
 
 <img src="preview/PlaybackGrowthPreview.gif" />
 
+<br />
+<br />
+
 This feature is great for analysing network growth and behaviour  
 For example one could observe diffusion/virus phenomenon  
+
+<br />
 
 <img src="preview/PlaybackDiffusionPreview.gif" />
 
