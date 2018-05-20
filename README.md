@@ -103,6 +103,7 @@ For example one could observe diffusion/virus phenomenon
 - Users can create their own custom tasks using the comprehensive Graphi [Plugins](#Plugins) API
 
 <br />
+<br />
 
 <a name="Projects" />
 
