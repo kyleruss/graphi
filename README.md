@@ -16,6 +16,8 @@ The software provides users with the toolkit needed to simulate large random net
 - [graphi-research-plugin](https://github.com/kyleruss/graphi-research-plugin)
 - [graphi-suic-plugin](https://github.com/kyleruss/graphi-suic-plugin)
 
+<a name="tableofcontents" />
+
 ### Table of Contents
 - [Features](#features)
   * [Controlling Network Objects](#Controllingnetworkobjects)
