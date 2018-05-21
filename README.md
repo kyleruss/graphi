@@ -53,6 +53,7 @@ You can select, move objects, zoom in/out, rotate the graph and focus a node
 <img src="preview/MouseFeaturesPreview.gif" />
 
 <br />
+<br />
 
 <img src="preview/MouseSelectionFeaturePreview.gif" />
 
