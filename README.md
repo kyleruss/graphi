@@ -154,7 +154,8 @@ Objects can also be removed, simply select the object to removed click `delete` 
 <br />
 
 Nodes & Edges can also be easily drawn onto the view pane  
-Simply select the drawing tool and left-click to create a node then drag from one node to another to create an edge  
+Simply select the drawing tool and left-click to create a node then  
+drag from one node to another to create an edge  
 
 <img src="preview/GraphObjectDrawingPreview.gif" />
 
