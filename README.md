@@ -8,7 +8,7 @@
 [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
 
 ## About
-Graphi is an interactive network network analysis and visualization software suite  
+Graphi is an interactive network analysis and visualization software suite  
 The software provides users with the toolkit needed to simulate large random networks, perform complex network computations and elegantly display results, record network states, bundle common operations and execute them multiple times, import & export networks/data tables/recordings/etc., customize and enhance network visualization viewing with zooming, rotating, transforming, focusing tools. Additionally, the software features a comprehensive plugins API that allows developers to extend the application. Graphi has been used extensively in recent research and by education providers
 
 
