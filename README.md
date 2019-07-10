@@ -18,8 +18,9 @@ The software provides users with the toolkit needed to simulate large random net
 
 <a name="tableofcontents" />
 
-### Table of Contents
-- [Features](#features)
+### Table of Contents  
+
+#### [Features](#Features)
   * [Controlling Network Objects](#Controllingnetworkobjects)
   * [Network Recording & Playback](#Networkrecording)
   * [Network Simulation](#Networksimulation)
@@ -33,14 +34,14 @@ The software provides users with the toolkit needed to simulate large random net
   * [Network Computation](#Networkcomputation)
   * [IO](#io)
   
-- [Getting started](#Gettingstarted)
+#### [Getting started](#Gettingstarted)
   * [Prerequisites](#Prerequisites)
   * [Installation](#Installation)
   * [Building](#Building)
   
-- [License](#License)
+#### [License](#License)
 
-<a name="features" />
+<a name="Features" />
 
 ## Features
 
